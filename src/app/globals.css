@@ -1,26 +1,114 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Brand blues — sampled from the Blue Rich wave logo */
+  --color-brand-50: #f0f8fc;
+  --color-brand-100: #dcedf8;
+  --color-brand-200: #bcdcf1;
+  --color-brand-300: #8ec4e5;
+  --color-brand-400: #59a6d5;
+  --color-brand-500: #3488c1;
+  --color-brand-600: #256da4;
+  --color-brand-700: #1f5785;
+  --color-brand-800: #1d496e;
+  --color-brand-900: #143d5c;
+  --color-brand-950: #0c2438;
+
+  /* Warm accent — reserved for fire / temperature indicators only */
+  --color-flame-400: #fbbf24;
+  --color-flame-500: #f59e0b;
+  --color-flame-600: #d97706;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-body), ui-sans-serif, sans-serif;
+
+  --radius-4xl: 2rem;
+  --radius-5xl: 2.75rem;
+
+  --animate-marquee: marquee 34s linear infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    @apply bg-white text-slate-700 antialiased;
+    font-family: var(--font-sans);
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    @apply text-brand-950 font-semibold tracking-tight;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    @apply bg-brand-600 text-white;
+  }
+}
+
+@layer utilities {
+  /* Rotated rounded-square motif carried over from the original hero collage */
+  .diamond {
+    clip-path: inset(0 round 22%);
+    transform: rotate(45deg);
+  }
+
+  .diamond-inner {
+    transform: rotate(-45deg) scale(1.42);
+  }
+
+  .text-gradient-brand {
+    @apply bg-gradient-to-br from-brand-600 via-brand-500 to-brand-400 bg-clip-text text-transparent;
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+}
+
+/* Progressive reveal on scroll — transform/opacity only, no layout shift */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-marquee {
+    animation: none;
+  }
 }

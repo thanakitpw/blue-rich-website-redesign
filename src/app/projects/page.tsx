@@ -1,0 +1,127 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import { Button, Container, Icon, PageHero } from "@/components/ui";
+import Reveal from "@/components/ui/Reveal";
+import { projects } from "@/data/projects";
+import { lineHref, stats, telHref } from "@/data/site";
+
+export const metadata: Metadata = {
+  title: "ผลงานของเรา",
+  description:
+    "ภาพหน้างานจริงจากโครงการที่ใช้ระบบสีกันไฟ Neocoat Intumescent Paint — โครงสร้างเหล็กโรงงาน โครงหลังคาช่วงกว้าง คานและเสาเหล็กรูปพรรณ",
+};
+
+export default function ProjectsPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Our Works"
+        title="ผลงานงานสีกันไฟโครงสร้างเหล็ก"
+        description="รวมภาพหน้างานจริงจากโครงการที่เลือกใช้ระบบ Neocoat ทั้งงานทาในโรงประกอบก่อนยกติดตั้ง และงานทาหน้าไซต์หลังประกอบเสร็จ"
+        breadcrumb={[{ label: "หน้าหลัก", href: "/" }, { label: "ผลงาน" }]}
+      />
+
+      {/* Stats */}
+      <section className="border-b border-slate-100 bg-white">
+        <Container>
+          <dl className="grid divide-y divide-slate-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+            {stats.map((s) => (
+              <div key={s.label} className="px-2 py-8 text-center">
+                <dt className="font-display text-3xl font-bold text-brand-800 lg:text-4xl">
+                  {s.value}
+                </dt>
+                <dd className="mt-2 text-sm text-slate-500">{s.label}</dd>
+              </div>
+            ))}
+          </dl>
+        </Container>
+      </section>
+
+      {/* Gallery */}
+      <section className="py-16 lg:py-24">
+        <Container>
+          <div className="grid grid-cols-2 gap-4 [grid-auto-flow:dense] lg:grid-cols-4 lg:gap-5">
+            {projects.map((p, i) => (
+              <Reveal
+                key={p.image}
+                delay={(i % 4) * 70}
+                className={
+                  p.span === "wide"
+                    ? "col-span-2"
+                    : p.span === "tall"
+                      ? "row-span-2"
+                      : ""
+                }
+              >
+                <figure className="group relative h-full overflow-hidden rounded-3xl bg-slate-200">
+                  <div
+                    className={
+                      p.span === "wide"
+                        ? "aspect-16/10"
+                        : p.span === "tall"
+                          ? "aspect-4/3 lg:aspect-2/3"
+                          : "aspect-4/3"
+                    }
+                  >
+                    <Image
+                      src={p.image}
+                      alt={p.title}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, 45vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-brand-950/10 to-transparent opacity-90 transition group-hover:opacity-100"
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 p-5">
+                    <p className="font-display text-[0.95rem] font-semibold text-white">
+                      {p.title}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-brand-100/75">{p.scope}</p>
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* CTA */}
+      <section className="pb-20 lg:pb-28">
+        <Container>
+          <Reveal>
+            <div className="relative overflow-hidden rounded-5xl bg-brand-900 px-7 py-14 sm:px-14 lg:py-16">
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-[radial-gradient(40rem_20rem_at_20%_0%,var(--color-brand-700),transparent_70%)]"
+              />
+              <div className="relative flex flex-col items-start gap-7 lg:flex-row lg:items-center lg:justify-between">
+                <div className="max-w-xl">
+                  <h2 className="text-2xl leading-tight text-white sm:text-3xl">
+                    อยากให้โครงการของคุณอยู่ในหน้านี้?
+                  </h2>
+                  <p className="mt-4 text-brand-100/75">
+                    ส่งแบบและขอบเขตงานมาให้ทีมวิศวกรประเมิน เราสรุปปริมาณสี ราคา
+                    และรายการเอกสารรับรองให้ครบภายใน 1–2 วันทำการ
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-wrap gap-3">
+                  <Button href={telHref} size="lg" variant="secondary">
+                    <Icon.phone />
+                    ขอใบเสนอราคา
+                  </Button>
+                  <Button href={lineHref} size="lg" variant="line">
+                    <Icon.line />
+                    ปรึกษาผ่าน LINE
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+    </>
+  );
+}
