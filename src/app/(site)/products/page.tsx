@@ -9,7 +9,7 @@ import { lineHref, telHref } from "@/data/site";
 export const metadata: Metadata = {
   title: "สินค้าทั้งหมด",
   description:
-    "สีกันไฟ-สีทนไฟ Neocoat Intumescent Paint, สีรองพื้นกันสนิม Neocoat Primer 3000, น้ำมันสนและทินเนอร์อินทนิล และผ้ากันไฟใยแก้ว–ซิลิก้า",
+    "สีกันไฟ Neocoat Intumescent Paint สูตรน้ำมันและสูตรน้ำ, สีรองพื้น/ทับหน้า, ซีเมนต์พ่นกันไฟ Fendolite M2 และ Mandolite CP-2, ผ้ากันไฟ Fiberglass Cloth, สีเซรามิคสะท้อนความร้อน Roof Shield, ทินเนอร์/น้ำมันสน และสีน้ำพลาสติก Four Plus",
 };
 
 export default async function ProductsPage({
@@ -29,7 +29,7 @@ export default async function ProductsPage({
         description={
           active
             ? active.description
-            : "วัสดุครบระบบสำหรับงานป้องกันไฟและงานเคลือบผิวโครงสร้างเหล็ก คัดเลือกเฉพาะผลิตภัณฑ์ที่มีผลทดสอบและเอกสารรับรองครบถ้วน"
+            : "สินค้าสีกันไฟ & วัสดุกันไฟ รับรองโดยวุฒิวิศวกรโยธา — ครบระบบตั้งแต่สีรองพื้น สีกันไฟ สีทับหน้า ซีเมนต์พ่นกันไฟ ผ้ากันไฟ ไปจนถึงสีน้ำพลาสติกและตัวทำละลาย"
         }
         breadcrumb={[
           { label: "หน้าหลัก", href: "/" },

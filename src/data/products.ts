@@ -1,3 +1,24 @@
+/**
+ * Product catalogue — mirrored 1:1 from the Infinite Material product pages
+ * (https://infinite-material.vercel.app/products).
+ *
+ * Copy, spec tables, FAQ and download labels are transcribed verbatim; only the
+ * presentation layer is Blue Rich's own. Product photography lives in
+ * `public/assets/products/`, datasheets in `public/docs/`.
+ */
+
+export type SpecRow = { label: string; value: string };
+export type Download = { label: string; href: string };
+export type InfoList = { title: string; items: string[] };
+export type Faq = { q: string; a: string };
+export type Step = { title: string; body: string };
+export type SpecTable = {
+  title: string;
+  columns: string[];
+  rows: string[][];
+  note?: string;
+};
+
 export type Category = {
   slug: string;
   name: string;
@@ -8,291 +29,1076 @@ export type Category = {
 
 export type Product = {
   slug: string;
-  code: string;
   name: string;
   category: string;
+  /** Long lede shown under the product title. */
   tagline: string;
+  /** One-line summary used on listing cards. */
+  cardSummary: string;
+  badges: string[];
+  quickSpecs: SpecRow[];
   image: string;
   gallery: string[];
-  highlights: string[];
+  downloads?: Download[];
+  downloadNote?: string;
   description: string[];
-  specs: { label: string; value: string }[];
+  lists?: InfoList[];
+  specs: SpecRow[];
+  specNote?: string;
+  table?: SpecTable;
+  /** Renders the shared 4-step painting procedure. */
+  installation?: boolean;
+  /** Renders the shared building-code block; value is the standards named in it. */
+  legalStandards?: string;
+  faq: Faq[];
+  related: string[];
   featured?: boolean;
   bestSeller?: boolean;
 };
 
+/* -------------------------------------------------------------- categories */
+
 export const categories: Category[] = [
   {
     slug: "fire-retardant-paint",
-    name: "สีกันไฟ – สีทนไฟ",
+    name: "สีกันไฟ",
     short: "Intumescent Paint",
     description:
-      "สีกันไฟชนิดพองตัวสำหรับทาโครงสร้างเหล็ก ทั้งสูตรน้ำมันและสูตรน้ำ ผ่านมาตรฐาน ASTM E-119 และ ISO 834",
-    image: "/assets/product-neocoat-intumescent.jpg",
+      "Neocoat Intumescent Paint-S · Solvent Base และ Neocoat Intumescent Paint-W · สูตรน้ำ Low VOC",
+    image: "/assets/products/neocoat-paint-s.png",
   },
   {
-    slug: "anti-rust-primer",
-    name: "สีรองพื้นกันสนิมเหล็ก",
-    short: "Anti-rust Primer",
-    description:
-      "สีรองพื้นกันสนิมคุณภาพสูง เสริมการยึดเกาะระหว่างผิวเหล็กกับสีทับหน้า ยืดอายุโครงสร้างก่อนเข้าระบบสีกันไฟ",
-    image: "/assets/product-neocoat-primer.jpg",
+    slug: "primer-topcoat",
+    name: "สีรองพื้น/ทับหน้า",
+    short: "Primer & Top Coat",
+    description: "Neocoat Primer Grey Oxide · Neogloss ทาเหล็ก",
+    image: "/assets/products/neocoat-primer.png",
   },
   {
     slug: "thinner-turpentine",
-    name: "น้ำมันสนและทินเนอร์",
+    name: "ทินเนอร์/น้ำมันสน",
     short: "Thinner & Turpentine",
-    description:
-      "ตัวทำละลายคุณภาพสูงสำหรับผสมสีรองพื้นกันสนิม สีน้ำมัน สีโซลเวนต์ และสีอีพ็อกซี่ จำหน่ายยกแกลลอน",
-    image: "/assets/product-turpentine.jpg",
+    description: "ทินเนอร์ 3A ผสมสี อินทนิล · น้ำมันสน",
+    image: "/assets/products/thinner-3a-intanin.webp",
+  },
+  {
+    slug: "fireproof-cement",
+    name: "ซีเมนต์กันไฟ",
+    short: "Sprayed Fireproofing",
+    description: "Fendolite M2 ซีเมนต์พ่นกันไฟ งานภายนอก",
+    image: "/assets/products/fendolite-m2.png",
   },
   {
     slug: "fire-blanket",
     name: "ผ้ากันไฟ",
     short: "Fire Blanket",
-    description:
-      "ผ้ากันไฟใยแก้วและซิลิก้า ทนอุณหภูมิ 550–1000°C ปลอดแอสเบสตอส สำหรับงานเชื่อมและงานฉนวนความร้อน",
-    image: "/assets/product-silica-silicone.jpg",
+    description: "Fiberglass Cloth ผ้ากันไฟ / กันสะเก็ดไฟ",
+    image: "/assets/products/fiberglass-cloth-panel-main.webp",
+  },
+  {
+    slug: "heat-reflective-ceramic",
+    name: "เซรามิคสะท้อนร้อน",
+    short: "Ceramic Coating",
+    description: "Roof Shield สีเซรามิคสะท้อนความร้อน",
+    image: "/assets/products/roof-shield.png",
+  },
+  {
+    slug: "emulsion-paint",
+    name: "สีน้ำพลาสติก",
+    short: "Emulsion Paint",
+    description: "Four Plus ทาภายใน/ภายนอก · สีรองพื้นปูน",
+    image: "/assets/products/four-plus-exterior.webp",
   },
 ];
 
+/* ------------------------------------------------------------ shared blocks */
+
+/** Identical on both Neocoat intumescent paints. */
+export const installationSteps: Step[] = [
+  {
+    title: "การเตรียมพื้นผิว (Surface Preparation)",
+    body: "ตรวจสอบผิวเหล็กว่าปราศจากคราบน้ำมัน จารบี สนิม คราบเกลือ ฝุ่นละออง และสิ่งสกปรกอื่น ๆ ที่อาจส่งผลกระทบต่อการยึดเกาะของสี",
+  },
+  {
+    title: "สีรองพื้นกันสนิม (Primer Coat)",
+    body: "โครงสร้างต้องทาสีรองพื้นกันสนิมก่อนทาสีกันไฟทุกครั้ง และต้องเป็นสีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat เพื่อป้องกันการหลุดล่อนและปฏิกิริยาเคมีที่ไม่พึงประสงค์",
+  },
+  {
+    title: "สีกันไฟ (Fireproof Coat)",
+    body: "ทาได้ 2 วิธี — ลูกกลิ้งหรือแปรง (Roller & Brush) ทำงานได้ง่าย ไม่ต้องใช้อุปกรณ์และความชำนาญ ค่าการสูญเสียต่ำ · เครื่องพ่นสูญญากาศ (Airless Spray) ใช้คนงานน้อย ทำงานได้ไว ผู้ใช้ต้องมีความชำนาญและมีค่าการสูญเสียสูง",
+  },
+  {
+    title: "สีทับหน้า (Top Coat)",
+    body: "ฟิล์มของสีทับหน้าจะช่วยป้องกันไม่ให้น้ำฝนหรือความชื้นสัมผัสสีกันไฟโดยตรง ซึ่งจะทำให้สีกันไฟบวมและร่อน มักเป็นสีอะคริลิคหรืออีพ็อกซี่ตามคำแนะนำ",
+  },
+];
+
+/** Identical on every fire-protection product that shows the code block. */
+export const legalInfo = {
+  title: "ข้อกฎหมายที่เกี่ยวข้อง",
+  intro:
+    "วัสดุกันไฟเข้ามามีบทบาทในการก่อสร้างไทย โดยเป็นไปตามกฎกระทรวงฉบับปี 2566 ซึ่งออกตามพระราชบัญญัติควบคุมอาคาร พ.ศ. 2522",
+  listTitle: "ประเภทอาคารที่ต้องใช้วัสดุกันไฟ",
+  items: [
+    "อาคารที่ใช้เป็นคลังสินค้า โรงมหรสพ โรงแรม อาคารชุด หรือสถานพยาบาล",
+    "อาคารที่มีพื้นที่รวมกันทุกชั้น หรือชั้นใดชั้นหนึ่งในหลังเดียวกันเกิน 1,000 ตร.ม.",
+    "สำนักงานที่มีความสูงตั้งแต่ 3 ชั้นขึ้นไป และมีพื้นที่รวมเกิน 1,000 ตร.ม.",
+  ],
+};
+
+/** Reused by the two solvent products in the “ทินเนอร์/น้ำมันสน” group. */
+const solventGroupList: InfoList = {
+  title: "สินค้าอื่นในกลุ่มสีและตัวทำละลาย",
+  items: [
+    "สีน้ำพลาสติกอีมัลชั่น — สำหรับทาภายใน สำหรับใช้เพื่องานตกแต่งและสำหรับการปกป้องทุกพื้นผิวภายในอาคารทั้งผนังยิปซั่ม ผนังปูน และผนังอิฐ ทาง่าย ช่วยปกปิดพื้นผิวของผนังที่ดูไม่เนียนเรียบให้สม่ำเสมอ",
+    "สีน้ำภายนอก — สีอะครีลิคอีมัลชั่น ฟิล์มมีความยืดหยุ่นสูง ผสานตัวแน่น สามารถยึดเกาะพื้นผิวและช่วยปกปิดรอยแตกลายงาของผนังได้อย่างดีเยี่ยม และด้วยเนื้อสีที่ลื่น ไม่จับฝุ่นง่าย คงความสวยงาม",
+    "สีน้ำมัน — สีน้ำมันรองพื้น สีน้ำมันทับหน้า ป้องกันสนิมและเชื้อรา พร้อมทั้งสูตรพิเศษแบบที่มีกลิ่นของสารระเหยต่ำ ลดกลิ่นฉุน อีกทั้งยังมีการแห้งตัวในระยะเวลาที่เหมาะสม",
+    "สีอุตสาหกรรม — สีทับหน้าโพลียูรีเทนชนิดสองส่วนผสมกัน สีรองพื้นและทับหน้าระบบอีพ็อกซี่ สำหรับสิ่งก่อสร้างทั้งภายในและภายนอกกลางแจ้งต่างๆ เพื่อความทนทานแม้ในสภาพแวดล้อมที่รุนแรง",
+  ],
+};
+
+/* ---------------------------------------------------------------- products */
+
 export const products: Product[] = [
   {
-    slug: "neocoat-intumescent-paint",
-    code: "A014",
-    name: "สีกันไฟ – สีทนไฟ Neocoat Intumescent Paint",
+    slug: "neocoat-intumescent-paint-s",
+    name: "สีกันไฟ Neocoat สูตรน้ำมัน Intumescent Paint-S",
     category: "fire-retardant-paint",
-    tagline: "Solvent Base และ Water Base สำหรับโครงสร้างเหล็ก",
-    image: "/assets/product-neocoat-intumescent.jpg",
+    tagline:
+      "สีกันไฟชนิดขยายตัว (Intumescent) สูตรน้ำมัน (Solvent Base) สำหรับทา/พ่นโครงสร้างเหล็ก คาน เสา ตามมาตรฐานการทดสอบ ASTM E-119, ISO 834 เนื้อสีขาวด้านและสีเทาด้าน",
+    cardSummary: "22 กก. · ทาได้ 23–25 ตร.ม./ถัง · ฟิล์มแห้ง 500 ไมครอน",
+    badges: ["ISO 834", "ASTM E119", "รับรองสีกันไฟ"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "22 กก." },
+      { label: "ทาได้", value: "23–25 ตร.ม./ถัง" },
+      { label: "ฟิล์มแห้ง", value: "500 µm" },
+      { label: "สูตร", value: "น้ำมัน (Solvent)" },
+      { label: "สี", value: "ขาว / เทา" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/neocoat-paint-s.png",
     gallery: [
-      "/assets/product-neocoat-intumescent.jpg",
-      "/assets/banner-fireproof.jpg",
-      "/assets/cert-documents.jpg",
+      "/assets/products/neocoat-paint-s-promo.webp",
+      "/assets/products/neocoat-paint-s.png",
+      "/assets/products/work-steel-beams-painted.webp",
     ],
-    highlights: [
-      "ทดสอบมาตรฐาน ASTM E-119 โดยจุฬาลงกรณ์มหาวิทยาลัย",
-      "ทดสอบมาตรฐาน ISO 834 ณ ประเทศมาเลเซีย",
-      "รับรองงานโดยวุฒิวิศวกรโยธา แบบ น.4-5 และ น.4-9",
-      "มีทั้งสูตรน้ำมัน (Solvent Base) และสูตรน้ำ (Water Base)",
+    downloads: [
+      { label: "Technical Data Sheet", href: "/docs/neocoat-tds.pdf" },
+      { label: "ISO 834 · FSRG 2019/035", href: "/docs/iso834-fsrg-2019-035.pdf" },
+      { label: "ASTM E119 · TÜV SÜD", href: "/docs/astm-e119-tuv-2025.pdf" },
+      { label: "ASTM E119 · จุฬาฯ 2008", href: "/docs/astm-e119-chula-2008.pdf" },
     ],
+    downloadNote: "ผลทดสอบเป็นหน้าสรุปของรายงานฉบับเต็ม · ขอรายงานฉบับเต็มได้ที่ฝ่ายขาย",
     description: [
-      "สีกันไฟ – สีทนไฟ Neocoat Intumescent Paint เป็นสีกันไฟชนิดพองตัว (Intumescent) สำหรับเคลือบผิวโครงสร้างเหล็ก เมื่อได้รับความร้อนจากเพลิงไหม้ ฟิล์มสีจะพองตัวขึ้นหลายสิบเท่ากลายเป็นชั้นฉนวนคาร์บอน ช่วยชะลอการถ่ายเทความร้อนเข้าสู่เนื้อเหล็ก ทำให้โครงสร้างคงกำลังรับน้ำหนักได้ตามเวลาที่กฎหมายกำหนด",
-      "จำหน่ายทั้งสูตรน้ำมัน (Solvent Base) และสูตรน้ำ (Water Base) เฉดสีขาวและสีเทา ทาได้ทั้งด้วยแปรง ลูกกลิ้ง และเครื่องพ่น ความหนาฟิล์มแห้งตามอัตราการทนไฟที่ต้องการ โดยทั่วไปอยู่ที่ประมาณ 500 ไมครอน",
-      "ทุกโครงการรับรองเอกสารงานสีกันไฟโดยวุฒิวิศวกรโยธาและวิศวกรควบคุมงาน ตามกฎกระทรวงกำหนดการออกแบบโครงสร้างอาคาร และลักษณะและคุณสมบัติของวัสดุที่ใช้ในงานโครงสร้างอาคาร พ.ศ. 2567",
+      "เป็นวัสดุสีป้องกันไฟ หรือสีกันไฟ Neocoat Intumescent Paint-S ประเภทสูตรน้ำมัน (Solvent base) ระบบ Intumescent Coating มีคุณสมบัติพิเศษในการป้องกันการลุกไหม้ของไฟ ไม่ทำลายสิ่งแวดล้อม มีความยืดหยุ่นสูง สามารถยึดติดชั้นรองพื้นผิวงานโลหะและผิวคอนกรีต ในกรณีเมื่อเกิดเพลิงไหม้ความร้อนจะทำให้เกิดปฏิกิริยาทางเคมีในสี สีทนไฟทำหน้าที่เป็นฉนวนป้องกันไฟโครงสร้างเหล็กจากความร้อน ยับยั้งการแผ่ความร้อน ลดการลุกไหม้บริเวณพื้นผิวของวัสดุที่ติดไฟได้ เหมาะกับอาคารทุกประเภท เนื้อสีแห้งไว ทำความหนาสีได้ดีและสะดวกกับผู้ใช้งาน",
+      "เหมาะสำหรับงานโครงสร้างเหล็กภายในอาคาร (Interior Steel) เช่น เสา, คาน, โครงถัก (Truss) ในอาคารพาณิชย์ หรือโรงงานอุตสาหกรรม",
+      "ผ่านการทดสอบวัสดุป้องกันไฟ จากศูนย์วิจัยเพื่อความปลอดภัยจากอัคคีภัย ภาควิชาวิศวกรรมโยธา จุฬาลงกรณ์มหาวิทยาลัย ตามมาตรฐาน ASTM E119 และ ISO 834",
+      "หลักการทำงาน เมื่อได้รับความร้อนจากเพลิงไหม้ ฟิล์มสีจะขยายตัวขึ้นเป็นชั้นหนา เพื่อทำหน้าที่เป็นฉนวนกันความร้อน ไม่ให้ความร้อนเข้าถึงเนื้อเหล็กโดยตรง ช่วยรักษาโครงสร้างเหล็กให้คงรูปอยู่ได้นานขึ้นตามระยะเวลาที่ออกแบบไว้ (Fire Rating)",
     ],
     specs: [
-      { label: "รหัสสินค้า", value: "A014" },
-      { label: "ประเภท", value: "Intumescent Paint ชนิดพองตัว" },
-      { label: "สูตร", value: "Solvent Base / Water Base" },
-      { label: "เฉดสี", value: "ขาว และ เทา" },
-      { label: "ลักษณะฟิล์ม", value: "ด้าน" },
-      { label: "ความหนาแนะนำ", value: "ประมาณ 500 ไมครอน" },
-      { label: "อัตราการทนไฟ", value: "สูงสุด 3 ชั่วโมง" },
-      { label: "มาตรฐานทดสอบ", value: "ASTM E-119 / ISO 834" },
-      { label: "วิธีทา", value: "แปรง ลูกกลิ้ง หรือเครื่องพ่น" },
+      { label: "ประเภท", value: "สีกันไฟชนิดขยายตัว (Intumescent)" },
+      { label: "ฐานสูตร", value: "Solvent-based (สูตรน้ำมัน)" },
+      { label: "สี / ลักษณะฟิล์ม", value: "ขาว / เทา · ด้าน" },
+      { label: "ปริมาณของแข็ง", value: "76 ± 2 %" },
+      { label: "ค่าความถ่วงจำเพาะ", value: "1.41 – 1.43" },
+      { label: "ความหนาฟิล์มแห้ง (DFT)", value: "500 ไมครอน" },
+      { label: "อัตราการใช้งาน", value: "23–25 ตร.ม./ถัง ที่ความหนา 500 ไมครอน" },
+      { label: "ระยะเวลาแห้ง (25–30°C)", value: "สัมผัส 1–2 ชม. · ทาทับ 4 ชม. · แห้งสนิท 72 ชม." },
+      { label: "ตัวทำละลาย", value: "ทินเนอร์ AAA · Thinner 4K No.10 · ผสม 15–20 %" },
+      { label: "เครื่องมือ", value: "ลูกกลิ้ง · แปรง · เครื่องพ่นไร้อากาศ" },
+      { label: "หัวพ่นไร้อากาศ", value: "เบอร์ 311 · มุมพ่น 60° · 2,500–3,000 PSI" },
+      { label: "ระยะเวลาทนไฟ", value: "ASTM E119 : 1 ชม. · ISO 834 : 2 ชม." },
+      { label: "มาตรฐานทดสอบ", value: "ISO 834 · ASTM E119 · FSRG 2019/035" },
+      { label: "อายุการจัดเก็บ", value: "1 ปี" },
+    ],
+    specNote:
+      "ความหนาชั้นสีกันไฟอยู่ในช่วง 500–3,500 ไมครอน ขึ้นอยู่กับอัตราการทนไฟที่ต้องการและค่า Hp/A ของหน้าตัดเหล็ก — ทีมวิศวกรคำนวณให้ตามแบบ",
+    installation: true,
+    legalStandards: "ISO 834 · ASTM E119",
+    faq: [
+      {
+        q: "ทาเองได้ไหม?",
+        a: "ได้ แต่แนะนำช่างที่มีประสบการณ์เพื่อคุมความหนาฟิล์ม",
+      },
+      {
+        q: "ต้องทารองพื้นก่อนไหม?",
+        a: "ต้องทาสีรองพื้นกันสนิมก่อนทาสีกันไฟทุกครั้ง และต้องเป็นสีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat",
+      },
+      {
+        q: "มีใบรับรองให้ไหม?",
+        a: "มีเอกสาร TDS และผลทดสอบ ISO 834 / ASTM E119 ให้ดาวน์โหลด พร้อมเอกสารวุฒิวิศวกรโยธารับรอง",
+      },
+    ],
+    related: [
+      "neocoat-intumescent-paint-w",
+      "neocoat-primer-grey-oxide",
+      "neogloss-enamel",
+      "thinner-3a-intanin",
     ],
     featured: true,
     bestSeller: true,
   },
+
   {
-    slug: "neocoat-primer-3000",
-    code: "A015",
-    name: "Neocoat Primer 3000",
-    category: "anti-rust-primer",
-    tagline: "สีรองพื้นกันสนิมแดงและเทา",
-    image: "/assets/product-neocoat-primer.jpg",
-    gallery: ["/assets/product-neocoat-primer.jpg"],
-    highlights: [
-      "เสริมการยึดเกาะระหว่างผิวโลหะกับสีทับหน้า",
-      "มีให้เลือกทั้งเฉดสีแดงและสีเทา",
-      "ฟิล์มสีชนิดด้าน แห้งเร็ว ทาต่อระบบสีกันไฟได้",
+    slug: "neocoat-intumescent-paint-w",
+    name: "สีกันไฟ Neocoat สูตรน้ำ Intumescent Paint-W",
+    category: "fire-retardant-paint",
+    tagline:
+      "สีกันไฟสูตรผสมด้วยน้ำ (Water Base) เหมาะกับอาคารทุกประเภทสีเขียว (Green Building) ไม่มีการใช้ทินเนอร์เป็นตัวทำละลาย เป็นสีที่มีค่า VOC ต่ำ (Low VOC)",
+    cardSummary: "22 กก. · ทาได้ 23–25 ตร.ม./ถัง · ฟิล์มแห้ง 500 ไมครอน",
+    badges: ["ASTM E119", "Low VOC", "Green Building"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "22 กก." },
+      { label: "ทาได้", value: "23–25 ตร.ม./ถัง" },
+      { label: "ความหนา", value: "500 ไมครอน" },
+      { label: "สูตร", value: "น้ำ (Water Base)" },
+      { label: "สี", value: "ขาว" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
     ],
+    image: "/assets/products/neocoat-paint-w.png",
+    gallery: [
+      "/assets/products/neocoat-paint-w-promo.webp",
+      "/assets/products/neocoat-paint-w.png",
+      "/assets/products/neocoat-paint-w-warehouse.webp",
+    ],
+    downloads: [{ label: "ASTM E119 · TÜV SÜD", href: "/docs/astm-e119-tuv-2025.pdf" }],
+    downloadNote:
+      "ผลทดสอบเป็นหน้าสรุปของรายงานฉบับเต็ม · TDS สูตรน้ำและรายงานฉบับเต็ม ขอได้ที่ฝ่ายขาย",
     description: [
-      "Neocoat Primer 3000 คือสีรองพื้นกันสนิมคุณภาพดี ช่วยเสริมการยึดเกาะบนพื้นผิวโลหะ และป้องกันการเกิดสนิมบนโครงสร้างเหล็กก่อนเข้าสู่ระบบสีกันไฟหรือสีทับหน้า",
-      "เหมาะสำหรับงานโครงสร้างเหล็กรูปพรรณ เสา คาน โครงหลังคา และงานเหล็กทั่วไปทั้งภายในและภายนอกอาคาร",
+      "เป็นสีกันไฟสูตรผสมด้วยน้ำ เหมาะกับอาคารทุกประเภทสีเขียว (Green Building) ไม่มีการใช้ทินเนอร์เป็นตัวทำละลาย เป็นสีที่มีค่า VOC ต่ำ (Low VOC) เหมาะสำหรับงานในสภาวะอากาศร้อนและถ่ายเทสะดวก",
+      "เหมาะสำหรับงานโครงสร้างเหล็กภายในอาคาร (Interior Steel) เช่น เสา, คาน, โครงถัก (Truss) ในอาคารพาณิชย์ หรือโรงงานอุตสาหกรรม",
+      "ผ่านการทดสอบวัสดุป้องกันไฟ จากศูนย์วิจัยเพื่อความปลอดภัยจากอัคคีภัย ภาควิชาวิศวกรรมโยธา จุฬาลงกรณ์มหาวิทยาลัย ตามมาตรฐาน ASTM E119",
+      "หลักการทำงาน เมื่อได้รับความร้อนจากเพลิงไหม้ ฟิล์มสีจะขยายตัวขึ้นเป็นชั้นหนา เพื่อทำหน้าที่เป็นฉนวนกันความร้อน ไม่ให้ความร้อนเข้าถึงเนื้อเหล็กโดยตรง ช่วยรักษาโครงสร้างเหล็กให้คงรูปอยู่ได้นานขึ้นตามระยะเวลาที่ออกแบบไว้ (Fire Rating)",
     ],
     specs: [
-      { label: "รหัสสินค้า", value: "A015" },
-      { label: "ประเภท", value: "สีรองพื้นกันสนิม" },
-      { label: "เฉดสี", value: "แดง และ เทา" },
-      { label: "ลักษณะฟิล์ม", value: "ด้าน" },
-      { label: "ใช้กับ", value: "โครงสร้างเหล็ก งานเหล็กทั่วไป" },
+      { label: "ประเภท", value: "สีกันไฟชนิดขยายตัว (Intumescent)" },
+      { label: "ฐานสูตร", value: "Water Base (สูตรน้ำ)" },
+      { label: "สี", value: "ขาว" },
+      { label: "ค่า VOC", value: "ต่ำ (Low VOC)" },
+      { label: "ตัวทำละลาย", value: "น้ำ — ไม่ใช้ทินเนอร์" },
+      { label: "ความหนาฟิล์มแห้ง (DFT)", value: "500 ไมครอน" },
+      { label: "อัตราการใช้งาน", value: "23–25 ตร.ม./ถัง ที่ความหนา 500 ไมครอน" },
+      { label: "ขนาดบรรจุ", value: "22 กก." },
+      { label: "มาตรฐานทดสอบ", value: "ASTM E119" },
+      { label: "เหมาะกับ", value: "อาคารเขียว (Green Building) · งานในสภาวะอากาศร้อน ถ่ายเทสะดวก" },
+      { label: "อายุการจัดเก็บ", value: "1 ปี" },
     ],
-    bestSeller: true,
-  },
-  {
-    slug: "turpentine-inthanin",
-    code: "A013",
-    name: "น้ำมันสนอินทนิล",
-    category: "thinner-turpentine",
-    tagline: "น้ำมันสนเชียงใหม่ 100% Turpentine",
-    image: "/assets/product-turpentine.jpg",
-    gallery: ["/assets/product-turpentine.jpg"],
-    highlights: [
-      "น้ำมันสนเชียงใหม่แท้ 100%",
-      "ผสมสีรองพื้นกันสนิมและสีน้ำมันทั่วไป",
-      "บรรจุแกลลอนขนาดใหญ่ ราคาพิเศษสำหรับงานโครงการ",
-    ],
-    description: [
-      "น้ำมันสนอินทนิล ผลิตจากน้ำมันสนเชียงใหม่ 100% สำหรับผสมสีรองพื้นกันสนิมและสีน้ำมันทั่วไป ช่วยให้เนื้อสีกระจายตัวสม่ำเสมอและทาลื่นขึ้น",
-      "บรรจุแกลลอนขนาดใหญ่ เหมาะกับงานทาสีโครงสร้างปริมาณมาก มีราคาพิเศษสำหรับผู้รับเหมาและงานโครงการ",
-    ],
-    specs: [
-      { label: "รหัสสินค้า", value: "A013" },
-      { label: "ประเภท", value: "น้ำมันสน (Turpentine)" },
-      { label: "ส่วนผสม", value: "น้ำมันสนเชียงใหม่ 100%" },
-      { label: "ใช้ผสม", value: "สีรองพื้นกันสนิม สีน้ำมันทั่วไป" },
-    ],
-  },
-  {
-    slug: "thinner-inthanin",
-    code: "A012",
-    name: "ทินเนอร์อินทนิล AAA (3A)",
-    category: "thinner-turpentine",
-    tagline: "ทินเนอร์เกรดคุณภาพสูง สำหรับงานสีอุตสาหกรรม",
-    image: "/assets/product-thinner.jpg",
-    gallery: ["/assets/product-thinner.jpg"],
-    highlights: [
-      "ผสมสีรองพื้นกันสนิม และสีสูตรน้ำมัน",
-      "ผสมสีสูตรโซลเวนต์ และสีอีพ็อกซี่",
-      "คุณภาพสูง ราคาพิเศษสำหรับงานโครงการ",
-    ],
-    description: [
-      "ทินเนอร์อินทนิล เกรด AAA (3A) เป็นตัวทำละลายคุณภาพสูงสำหรับผสมสีรองพื้นกันสนิม สีสูตรน้ำมัน สีสูตรโซลเวนต์ และสีอีพ็อกซี่",
-      "ช่วยปรับความหนืดของสีให้เหมาะกับวิธีการทาแต่ละแบบ ทั้งงานแปรง ลูกกลิ้ง และงานพ่น",
-    ],
-    specs: [
-      { label: "รหัสสินค้า", value: "A012" },
-      { label: "ประเภท", value: "ทินเนอร์ เกรด AAA (3A)" },
+    specNote:
+      "สเปคทางเทคนิคฉบับเต็มของสูตรน้ำ (TDS) ขอได้ที่ฝ่ายขาย — ตัวเลขในตารางนี้เป็นข้อมูลที่ระบุไว้บนหน้าสินค้าเดิม",
+    installation: true,
+    legalStandards: "ASTM E119",
+    faq: [
       {
-        label: "ใช้ผสม",
-        value: "สีรองพื้นกันสนิม สีน้ำมัน สีโซลเวนต์ สีอีพ็อกซี่",
+        q: "ต่างจากสูตรน้ำมันยังไง?",
+        a: "สูตรน้ำไม่ใช้ทินเนอร์เป็นตัวทำละลาย ค่า VOC ต่ำ เหมาะกับอาคารเขียวและงานที่อากาศถ่ายเทสะดวก",
+      },
+      {
+        q: "ต้องทารองพื้นก่อนไหม?",
+        a: "ต้องทาสีรองพื้นกันสนิมก่อนทาสีกันไฟทุกครั้ง และต้องเป็นสีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat",
+      },
+      {
+        q: "ใช้กับงานภายนอกได้ไหม?",
+        a: "เหมาะสำหรับงานโครงสร้างเหล็กภายในอาคาร (Interior Steel) — งานภายนอกปรึกษาทีมวิศวกรก่อน",
       },
     ],
+    related: [
+      "neocoat-intumescent-paint-s",
+      "neocoat-primer-grey-oxide",
+      "neogloss-enamel",
+      "fendolite-m2",
+    ],
   },
+
   {
-    slug: "fire-blanket-silica-silicone",
-    code: "A004",
-    name: "ผ้ากันไฟซิลิก้าเคลือบซิลิโคน",
-    category: "fire-blanket",
-    tagline: "ทนอุณหภูมิสูงสุด 1000°C หนา 0.8 มม.",
-    image: "/assets/product-silica-silicone.jpg",
-    gallery: ["/assets/product-silica-silicone.jpg", "/assets/spec-silica-silicone.jpg"],
-    highlights: [
-      "ทนอุณหภูมิสูงสุด 1000°C",
-      "เคลือบซิลิโคนสีแดงทั้งสองด้าน",
-      "ปลอดแอสเบสตอส ไม่ลามไฟ",
+    slug: "neocoat-primer-grey-oxide",
+    name: "สีรองพื้นเทา Neocoat Primer Grey Oxide",
+    category: "primer-topcoat",
+    tagline:
+      "สีรองพื้นกันสนิมสำหรับทาเหล็กก่อนทาสีกันไฟ มีสีแดงและสีเทา น้ำหนัก 25 กก. (5 Gl.) ทาได้ 60–80 ตร.ม./ถัง",
+    cardSummary: "25 กก. · ทาได้ 60–80 ตร.ม./ถัง",
+    badges: ["รองพื้นกันสนิม", "ระบบ Neocoat"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "25 กก." },
+      { label: "ทาได้", value: "60–80 ตร.ม./ถัง" },
+      { label: "สี", value: "แดง / เทา" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/neocoat-primer.png",
+    gallery: ["/assets/products/neocoat-primer.png"],
+    downloads: [
+      { label: "สเปกสีรองพื้นกันสนิม Neocoat Primer", href: "/docs/neocoat-primer-spec.pdf" },
     ],
     description: [
-      "ผ้ากันไฟซิลิก้าเคลือบซิลิโคนกันความร้อนสีแดง ทนอุณหภูมิสูงสุด 1000°C ความหนา 0.8 มม. ทอจากเส้นใยซิลิก้าต่อเนื่องซึ่งมีความแข็งแรงสูงกว่าผ้าใยแก้วทั่วไป",
-      "เหมาะสำหรับงานฉนวนกันความร้อน ผ้าคลุมงานเชื่อม ผ้าคลุมเทอร์ไบน์ ปลอกหุ้มท่อไอเสีย และม่านกันสะเก็ดไฟ ใช้แพร่หลายในอุตสาหกรรมปิโตรเคมี น้ำมันและก๊าซ อู่ต่อเรือ และโรงงานเหล็ก",
+      "สีรองพื้นกันสนิม (Primer Coat) — โครงสร้างต้องทาสีรองพื้นกันสนิมก่อนทาสีกันไฟทุกครั้ง",
+      "ต้องใช้สีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat เพื่อป้องกันการหลุดล่อนและปฏิกิริยาเคมีที่ไม่พึงประสงค์ระหว่างชั้นสีรองพื้นกับชั้นสีกันไฟ",
+      "การเตรียมพื้นผิว ก่อนทาสีรองพื้น ให้ตรวจสอบผิวเหล็กว่าปราศจากคราบน้ำมัน จารบี สนิม คราบเกลือ ฝุ่นละออง และสิ่งสกปรกอื่น ๆ ที่อาจส่งผลกระทบต่อการยึดเกาะของสี",
     ],
     specs: [
-      { label: "รหัสสินค้า", value: "A004 / STR850" },
-      { label: "เนื้อผ้า", value: "ซิลิก้าเคลือบซิลิโคนสองด้าน" },
-      { label: "ความหนา", value: "0.80 มม. (±0.05)" },
-      { label: "หน้ากว้าง", value: "0.920 เมตร" },
-      { label: "ความยาวม้วน", value: "46 / 50 เมตร" },
-      { label: "สี", value: "แดง" },
-      { label: "น้ำหนัก", value: "800 g/m²" },
-      { label: "ทนอุณหภูมิ", value: "1000°C (ซิลิโคน 280°C)" },
-      { label: "การลามไฟ", value: "ไม่ลามไฟ (0 rating)" },
+      { label: "ประเภท", value: "สีรองพื้นกันสนิม (Primer)" },
+      { label: "สี", value: "แดง / เทา (Grey Oxide)" },
+      { label: "ขนาดบรรจุ", value: "25 กก." },
+      { label: "ปริมาณ", value: "5 Gl." },
+      { label: "อัตราการใช้งาน", value: "60–80 ตร.ม./ถัง" },
+      { label: "ใช้กับ", value: "ผิวเหล็กโครงสร้าง ก่อนทาสีกันไฟ Neocoat" },
+      { label: "ตำแหน่งในระบบสี", value: "ชั้นที่ 1 — รองพื้น → สีกันไฟ → สีทับหน้า" },
     ],
-    bestSeller: true,
+    faq: [
+      {
+        q: "ข้ามรองพื้นได้ไหม?",
+        a: "ไม่ได้ โครงสร้างต้องทาสีรองพื้นกันสนิมก่อนทาสีกันไฟทุกครั้ง",
+      },
+      {
+        q: "1 ถังทาได้กี่ตารางเมตร?",
+        a: "ทาได้ 60–80 ตร.ม./ถัง ขึ้นกับสภาพผิวเหล็กและความหนาที่ทา",
+      },
+      {
+        q: "ใช้รองพื้นยี่ห้ออื่นได้ไหม?",
+        a: "ต้องใช้สีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat เพื่อป้องกันการหลุดล่อนและปฏิกิริยาเคมีที่ไม่พึงประสงค์",
+      },
+    ],
+    related: [
+      "neocoat-intumescent-paint-s",
+      "neocoat-intumescent-paint-w",
+      "neogloss-enamel",
+      "thinner-3a-intanin",
+    ],
   },
+
   {
-    slug: "fire-blanket-fiberglass",
-    code: "A005",
-    name: "ผ้ากันไฟผ้าใยแก้วไฟเบอร์กลาส",
-    category: "fire-blanket",
-    tagline: "ทนอุณหภูมิสูงสุด 550°C หนา 1.0 มม.",
-    image: "/assets/product-fiberglass.jpg",
-    gallery: ["/assets/product-fiberglass.jpg", "/assets/spec-fiberglass.jpg"],
-    highlights: [
-      "ทนอุณหภูมิต่อเนื่องสูงสุด 550°C",
-      "ทอลายซาติน ผ่านกระบวนการ Heat Treated",
-      "ผิวไม่ระคายเคือง ปลอดแอสเบสตอส",
+    slug: "neogloss-enamel",
+    name: "สีน้ำมันทาเหล็ก Neogloss",
+    category: "primer-topcoat",
+    tagline: "สีน้ำมันทับหน้าผิวเหล็ก (Steel Surface Overlay) Dosage 5 Gl. ใช้ทับหน้าชั้นสีกันไฟ",
+    cardSummary: "Steel Surface Overlay · 5 Gl.",
+    badges: ["สีทับหน้า", "ระบบ Neocoat"],
+    quickSpecs: [
+      { label: "ปริมาณ", value: "5 Gl." },
+      { label: "ประเภท", value: "Steel Surface Overlay" },
+      { label: "ตำแหน่ง", value: "ชั้นทับหน้า (Top Coat)" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/neogloss-enamel.png",
+    gallery: ["/assets/products/neogloss-enamel.png"],
+    downloads: [
+      { label: "แคตตาล็อก Neogloss สีน้ำมัน", href: "/docs/neogloss-catalog.pdf" },
+      { label: "TDS สีน้ำมัน Neogloss", href: "/docs/neogloss-tds.pdf" },
     ],
     description: [
-      "ผ้ากันไฟผ้าใยแก้วไฟเบอร์กลาส สีทอง ทนอุณหภูมิสูงสุด 550°C ความหนา 1.0 มม. เป็นผ้าฉนวนใยแก้วที่ใช้แพร่หลายที่สุดในตลาด",
-      "ทอลายซาตินแน่นและผ่านความร้อน ทำให้ผ้าหนาและแข็งแรง ทนแรงกระแทกจากสะเก็ดไฟเชื่อมได้ดีกว่าผ้าบางทั่วไป ผิวสัมผัสไม่เป็นขุย ลดการระคายเคืองผิวหนัง",
+      "สีน้ำมันยูนิคโปรดักส์ — คุณสมบัติเด่นของสี เป็นสีเคลือบเงาคุณภาพเกรดดีเยี่ยม เพื่อการตกแต่งและปกป้องผิวโลหะให้มีความสวยงาม และทนทานต่อทุกสภาวะ ด้วยพลังของอณูเม็ดสีที่ละเอียดมีพลังยึดเกาะสูง เหมาะสำหรับการใช้งานทั้งภายนอกและภายใน ใช้งานง่าย คงความทนทาน เงางามได้ยาวนาน อีกทั้งยังเป็นมิตรกับสิ่งแวดล้อมโดยไม่ผสมสารตะกั่วและสารปรอท",
+      "สีทับหน้า (Top Coat) — ฟิล์มของสีทับหน้าจะช่วยป้องกันไม่ให้น้ำฝนหรือความชื้นสัมผัสสีกันไฟโดยตรง ซึ่งจะทำให้สีกันไฟบวมและร่อน",
+      "แม้สีกันไฟจะทนทาน แต่การทาสีทับหน้าจะช่วยปกป้องชั้นสีกันไฟจากความชื้น ฝุ่นละออง และทำให้เช็ดล้างทำความสะอาดได้ง่ายขึ้น",
     ],
     specs: [
-      { label: "รหัสสินค้า", value: "A005 / HT800" },
-      { label: "เนื้อผ้า", value: "ใยแก้วไฟเบอร์กลาส" },
-      { label: "ความหนา", value: "1.0 มม." },
-      { label: "หน้ากว้าง", value: "1.0 เมตร" },
-      { label: "ความยาวม้วน", value: "50 เมตร" },
-      { label: "สี", value: "ทอง / น้ำตาลทอง" },
-      { label: "ความหนาแน่น", value: "860 g/m³" },
-      { label: "ทนอุณหภูมิ", value: "550°C (ต่อเนื่อง)" },
-      { label: "ลายทอ", value: "Satin, Heat Treated" },
+      { label: "ประเภท", value: "สีน้ำมันทับหน้าผิวเหล็ก (Steel Surface Overlay)" },
+      { label: "ปริมาณ", value: "5 Gl." },
+      { label: "ตำแหน่งในระบบสี", value: "ชั้นที่ 3 — รองพื้น → สีกันไฟ → สีทับหน้า" },
+      { label: "หน้าที่", value: "กันน้ำฝน ความชื้น ฝุ่นละออง · เช็ดล้างทำความสะอาดง่าย" },
+    ],
+    table: {
+      title: "ตารางผสมทินเนอร์ & ระยะเวลาแห้ง",
+      columns: [
+        "ประเภทสี",
+        "ลักษณะพื้นผิว",
+        "การปกคลุมพื้นที่ (ตร.ม./แกลลอน/เที่ยว)",
+        "ชนิดเครื่องมือ",
+        "ผสมทินเนอร์ (แปรง)",
+        "ผสมทินเนอร์ (ลูกกลิ้ง)",
+        "แห้งผิว (ชม.)",
+        "แห้งทาทับได้ (ชม.)",
+      ],
+      rows: [
+        [
+          "สีเคลือบเงา · UNIQUE GLOSS ENAMEL",
+          "เงามาก",
+          "50-65",
+          "แปรง ลูกกลิ้ง หรือเครื่องพ่น",
+          "Victor Thinner AAA 5-10%",
+          "Victor Thinner AAA 5-10%",
+          "1-2",
+          "5-6",
+        ],
+        [
+          "สีรองพื้นแดงกันสนิม · UNIQUE RED OXIDE PRIMER",
+          "ด้านถึงกึ่งเงา",
+          "55-60",
+          "แปรง ลูกกลิ้ง หรือเครื่องพ่น",
+          "Victor Thinner AAA 5-10%",
+          "Victor Thinner AAA 5-10%",
+          "0.5-1",
+          "5-6",
+        ],
+        [
+          "สีรองพื้นเทากันสนิม · UNIQUE GREY OXIDE PRIMER",
+          "ด้านถึงกึ่งเงา",
+          "55-60",
+          "แปรง ลูกกลิ้ง หรือเครื่องพ่น",
+          "Victor Thinner AAA 5-10%",
+          "Victor Thinner AAA 5-10%",
+          "0.5-1",
+          "5-6",
+        ],
+        [
+          "สีรองพื้นส้มกันสนิม · UNIQUE RED LEAD OXIDE PRIMER",
+          "ด้านถึงกึ่งเงา",
+          "55-60",
+          "แปรง ลูกกลิ้ง หรือเครื่องพ่น",
+          "Victor Thinner AAA 5-10%",
+          "Victor Thinner AAA 5-10%",
+          "0.5-1",
+          "5-6",
+        ],
+        [
+          "สีรองพื้นซิงค์กันสนิม · UNIQUE ZINC CHROMATE OXIDE PRIMER",
+          "ด้านถึงกึ่งเงา",
+          "55-60",
+          "แปรง ลูกกลิ้ง หรือเครื่องพ่น",
+          "Victor Thinner AAA 5-10%",
+          "Victor Thinner AAA 5-10%",
+          "0.5-1",
+          "5-6",
+        ],
+      ],
+      note: "อัตราส่วนผสมทินเนอร์ตามคำแนะนำผู้ผลิต Victor Thinner AAA · ค่าอาจแตกต่างตามสภาพอากาศและวิธีการใช้งานจริง",
+    },
+    faq: [
+      {
+        q: "จำเป็นต้องทาทับหน้าไหม?",
+        a: "ควรทา เพราะฟิล์มสีทับหน้าจะกันไม่ให้น้ำฝนหรือความชื้นสัมผัสสีกันไฟโดยตรง ซึ่งจะทำให้สีกันไฟบวมและร่อน",
+      },
+      {
+        q: "ใช้สีทับหน้าชนิดไหน?",
+        a: "มักเป็นสีอะคริลิคหรืออีพ็อกซี่ตามคำแนะนำของผู้ผลิต",
+      },
+    ],
+    related: [
+      "neocoat-intumescent-paint-s",
+      "neocoat-primer-grey-oxide",
+      "thinner-3a-intanin",
+      "turpentine-intanin",
     ],
   },
+
   {
-    slug: "fire-blanket-silica",
-    code: "A006",
-    name: "ผ้ากันไฟซิลิก้า",
-    category: "fire-blanket",
-    tagline: "ทนอุณหภูมิสูงสุด 1000°C จุดหลอมเหลว 1800°C",
-    image: "/assets/product-silica.jpg",
-    gallery: ["/assets/product-silica.jpg", "/assets/spec-silica.jpg"],
-    highlights: [
-      "ทนอุณหภูมิใช้งาน 1000°C จุดหลอมเหลว 1800°C",
-      "ปริมาณ SiO₂ ไม่น้อยกว่า 96%",
-      "ไม่ติดไฟ ไม่ปล่อยควันพิษเมื่อโดนความร้อน",
+    slug: "thinner-3a-intanin",
+    name: "ทินเนอร์ 3A ผสมสี อินทนิล",
+    category: "thinner-turpentine",
+    tagline:
+      "ทินเนอร์ AAA (3A) จากอินทนิล บรรจุน้ำหนัก 9 กก. 15 กก. และ 150 กก. ให้ประสิทธิภาพในการทำงานได้ดีเยี่ยม เหมาะสำหรับใช้ผสมสีพ่นในงานอุตสาหกรรม สีน้ำมันทุกชนิด ใช้ล้างมือ เครื่องมือช่าง หรืออุปกรณ์ต่าง ๆ ได้ง่าย",
+    cardSummary: "9 / 15 / 150 กก. · คุณภาพงานอุตสาหกรรม",
+    badges: ["พร้อมส่ง", "คุณภาพสูง"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "9 / 15 / 150 กก." },
+      { label: "ประเภท", value: "ทินเนอร์ AAA (3A)" },
+      { label: "ยี่ห้อ", value: "อินทนิล" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/thinner-3a-intanin.webp",
+    gallery: ["/assets/products/thinner-3a-intanin.webp"],
+    downloads: [
+      { label: "MSDS ทินเนอร์ AAA (3A) อินทนิล", href: "/docs/thinner-3a-intanin-msds.pdf" },
     ],
     description: [
-      "ผ้ากันไฟผ้าซิลิก้า สีทอง ทนอุณหภูมิสูงสุด 1000°C ความหนา 0.7 มม. ทอจากเส้นใยซิลิก้าต่อเนื่องที่มีปริมาณซิลิกอนไดออกไซด์ไม่น้อยกว่า 96%",
-      "มีอัตราส่วนความแข็งแรงต่อน้ำหนักสูงมาก ไม่ติดไฟ ทนเชื้อรา และป้องกันความร้อนได้ดีเยี่ยม เมื่อสัมผัสความร้อนจะไม่ปล่อยเปลวไฟหรือสารพิษ",
+      "ทินเนอร์ AAA (3A) อินทนิล คุณภาพสูง พร้อมส่ง ราคาถูก คุณภาพดี ผสมสีรองพื้น สีทับหน้า สีชนิดโซลเวนต์",
+      "ทินเนอร์ AAA (3A) ใช้เป็นตัวทำละลาย ผสมสีสูตรน้ำมัน ชนิดต่างๆ",
     ],
+    lists: [solventGroupList],
     specs: [
-      { label: "รหัสสินค้า", value: "A006 / ST750" },
-      { label: "เนื้อผ้า", value: "ซิลิก้า (Silica)" },
-      { label: "ความหนา", value: "0.7 มม. (±5%)" },
-      { label: "หน้ากว้าง", value: "0.920 เมตร" },
-      { label: "ความยาวม้วน", value: "46 เมตร" },
-      { label: "สี", value: "ทอง / เบจทอง" },
-      { label: "SiO₂", value: "ไม่น้อยกว่า 96%" },
-      { label: "ทนอุณหภูมิ", value: "1000°C" },
-      { label: "จุดหลอมเหลว", value: "1800°C" },
+      { label: "ประเภท", value: "ทินเนอร์ AAA (3A)" },
+      { label: "ยี่ห้อ", value: "อินทนิล" },
+      { label: "ขนาดบรรจุ", value: "9 / 15 / 150 กก." },
+      { label: "การใช้งาน", value: "ตัวทำละลาย ผสมสีสูตรน้ำมันชนิดต่างๆ" },
+      { label: "ใช้ผสม", value: "สีรองพื้น · สีทับหน้า · สีชนิดโซลเวนต์" },
+    ],
+    faq: [
+      {
+        q: "ใช้ผสมสีกันไฟ Neocoat ได้ไหม?",
+        a: "สีกันไฟ Neocoat สูตรน้ำมันระบุตัวทำละลายเป็น Thinner 4K No.10 ผสม 15–20% — สอบถามฝ่ายขายก่อนใช้ทินเนอร์ชนิดอื่น",
+      },
+      {
+        q: "ต่างจากน้ำมันสนยังไง?",
+        a: "ทั้งสองใช้เป็นตัวทำละลายผสมสีสูตรน้ำมัน แจ้งงานที่จะใช้ให้ฝ่ายขายช่วยเลือกได้",
+      },
+    ],
+    related: [
+      "thinner-2k",
+      "turpentine-intanin",
+      "neocoat-primer-grey-oxide",
+      "neogloss-enamel",
     ],
   },
+
   {
-    slug: "fire-blanket-fiberglass-silicone",
-    code: "A007",
-    name: "ผ้ากันไฟผ้าใยแก้วเคลือบซิลิโคน",
+    slug: "thinner-2k",
+    name: "ทินเนอร์ 2K ทินเนอร์ 3A",
+    category: "thinner-turpentine",
+    tagline:
+      "ทินเนอร์ 2K Centare เป็นทินเนอร์อะคริลิคเกรดพรีเมียม ออกแบบมาเพื่อใช้ผสมสีจริง สีพ่นรถยนต์ ขนาดบรรจุ 3.75 ลิตร หรือ 1 แกลลอน เหมาะกับสภาพอากาศร้อนชื้น ป้องกันอาการฝ้าหรือสีเดือด อัตราการระเหยตัวพอดี ไม่แห้งเร็วหรือช้าเกินไป",
+    cardSummary: "งานสีรถยนต์ · ผสมสีอุตสาหกรรม · ล้างเครื่องมือ",
+    badges: ["งานสีรถยนต์", "พร้อมส่ง"],
+    quickSpecs: [
+      { label: "ประเภท", value: "ทินเนอร์ 2K Centare" },
+      { label: "จุดเด่น", value: "ป้องกันฝ้า/สีเดือด อัตราระเหยพอดี" },
+      { label: "ขนาดบรรจุ", value: "3.75 ลิตร / 1 แกลลอน" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/thinner-2k.jpg",
+    gallery: ["/assets/products/thinner-2k.jpg"],
+    description: [
+      "ทินเนอร์ 2K Centare เป็นทินเนอร์อะคริลิคเกรดพรีเมียม ออกแบบมาเพื่อใช้ผสมสีจริง สีพ่นรถยนต์ ขนาดบรรจุ 3.75 ลิตร หรือ 1 แกลลอน เหมาะกับสภาพอากาศร้อนชื้น ป้องกันอาการฝ้าหรือสีเดือด อัตราการระเหยตัวพอดี ไม่แห้งเร็วหรือช้าเกินไป",
+      "ในกลุ่มสินค้านี้ยังมี ทินเนอร์ล้างเครื่องมือ · น้ำมันสน",
+    ],
+    specs: [
+      { label: "ประเภท", value: "ทินเนอร์ 2K Centare อะคริลิคเกรดพรีเมียม" },
+      { label: "การใช้งาน", value: "ผสมสีจริง สีพ่นรถยนต์" },
+      { label: "ขนาดบรรจุ", value: "3.75 ลิตร / 1 แกลลอน" },
+      {
+        label: "คุณสมบัติ",
+        value: "ป้องกันฝ้า/สีเดือด อัตราการระเหยตัวพอดี เหมาะกับสภาพอากาศร้อนชื้น",
+      },
+      { label: "สินค้าในกลุ่ม", value: "ทินเนอร์ล้างเครื่องมือ · น้ำมันสน" },
+    ],
+    faq: [
+      {
+        q: "เหมาะกับสภาพอากาศแบบไทยไหม?",
+        a: "เหมาะ ออกแบบมาสำหรับสภาพอากาศร้อนชื้น ป้องกันอาการฝ้าหรือสีเดือด อัตราการระเหยตัวพอดี ไม่แห้งเร็วหรือช้าเกินไป",
+      },
+      { q: "มีทินเนอร์ล้างเครื่องมือไหม?", a: "มี สอบถามฝ่ายขายได้" },
+    ],
+    related: [
+      "thinner-3a-intanin",
+      "turpentine-intanin",
+      "neogloss-enamel",
+      "neocoat-primer-grey-oxide",
+    ],
+  },
+
+  {
+    slug: "turpentine-intanin",
+    name: "น้ำมันสนผสมสี อินทนิล",
+    category: "thinner-turpentine",
+    tagline:
+      "น้ำมันสน จากอินทนิล บรรจุน้ำหนัก 9 กก. 15 กก. และ 150 กก. ให้ประสิทธิภาพในการทำงานได้ดีเยี่ยม เหมาะสำหรับใช้ผสมสีพ่นในงานอุตสาหกรรม สีน้ำมันทุกชนิด ใช้ล้างมือ เครื่องมือช่าง หรืออุปกรณ์ต่าง ๆ ได้ง่าย",
+    cardSummary: "15 กก. · น้ำมันสนเชียงใหม่",
+    badges: ["น้ำมันสนเชียงใหม่", "พร้อมส่ง"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "9 / 15 / 150 กก." },
+      { label: "ยี่ห้อ", value: "อินทนิล" },
+      { label: "แหล่งผลิต", value: "เชียงใหม่" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/turpentine-intanin.webp",
+    gallery: ["/assets/products/turpentine-intanin.webp"],
+    description: [
+      "น้ำมันสนเชียงใหม่ อินทนิล พร้อมส่ง ราคาถูก คุณภาพดี ผสมสีรองพื้น สีทับหน้า สีชนิดโซลเวนต์",
+      "น้ำมันสน ใช้เป็นตัวทำละลาย ผสมสีสูตรน้ำมัน ชนิดต่างๆ",
+    ],
+    lists: [solventGroupList],
+    specs: [
+      { label: "ประเภท", value: "น้ำมันสนผสมสี" },
+      { label: "ยี่ห้อ", value: "อินทนิล (น้ำมันสนเชียงใหม่)" },
+      { label: "ขนาดบรรจุ", value: "9 / 15 / 150 กก." },
+      { label: "การใช้งาน", value: "ตัวทำละลาย ผสมสีสูตรน้ำมันชนิดต่างๆ" },
+      { label: "ใช้ผสม", value: "สีรองพื้น · สีทับหน้า · สีชนิดโซลเวนต์" },
+    ],
+    faq: [
+      {
+        q: "ต่างจากทินเนอร์ 3A ยังไง?",
+        a: "ทั้งสองใช้เป็นตัวทำละลายผสมสีสูตรน้ำมัน แจ้งงานที่จะใช้ให้ฝ่ายขายช่วยเลือกได้",
+      },
+      { q: "มีขนาดอื่นไหม?", a: "สอบถามฝ่ายขายได้" },
+    ],
+    related: [
+      "thinner-3a-intanin",
+      "thinner-2k",
+      "neogloss-enamel",
+      "neocoat-primer-grey-oxide",
+    ],
+  },
+
+  {
+    slug: "mandolite-cp2",
+    name: "ซีเมนต์กันไฟ Mandolite CP-2 งานภายใน",
+    category: "fireproof-cement",
+    tagline:
+      "ซีเมนต์พ่นกันไฟ CAFCO Mandolite CP-2 ชนิด Medium density น้ำหนัก 12.5 กก. ทนไฟได้ 1–3 ชม. สำหรับงานภายใน",
+    cardSummary: "12.5 กก. · ทนไฟ 1–3 ชม. · Medium density",
+    badges: ["Medium density", "ทนไฟ 1–3 ชม.", "U.L. Listed", "Asbestos Free"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "12.5 กก." },
+      { label: "ชนิด", value: "Medium density" },
+      { label: "ทนไฟ", value: "1–3 ชม." },
+      { label: "ใช้กับ", value: "งานภายในอาคาร" },
+      { label: "ส่วนผสม", value: "แร่เวอร์มิคูไลท์ + ซีเมนต์" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/cafco-400.png",
+    gallery: ["/assets/products/cafco-400.png"],
+    description: [
+      "ซีเมนต์พ่นกันไฟ หรือ ซีเมนต์พ่นทนไฟ Mandolite CP-2 ชนิด Medium density มีอัตราทนไฟได้ 1-4 ชั่วโมง เป็นส่วนผสมของแร่เวอร์มิคูไรท์และซีเมนต์ ปราศจาก Asbestos และ Fiber",
+      "CAFCO Mandolite CP-2 เป็นสาร Alkaline Based โดยธรรมชาติของสารดังกล่าว มีค่า pH อยู่ระหว่าง 12-12.5 ซีเมนต์พ่นกันไฟจึงช่วยป้องกันสาเหตุที่ทำให้เกิดสนิมในผิวเหล็กปกติ",
+      "CAFCO Mandolite CP-2 นั้น จะมีการยึดเกาะที่ดีกับผิวเหล็กปกติ โดยพื้นผิวที่จะพ่นนั้นจะต้องแห้งและปราศจากน้ำมัน, จารบี หรือวัสดุอื่น ๆ ที่จะทำให้การยึดเกาะน้อยลง",
+      "ซีเมนต์พ่นกันไฟ หรือ ซีเมนต์พ่นทนไฟ ผ่านการทดสอบได้ตามมาตรฐานสากล U.L. Underwriter’s Laboratories Inc",
+    ],
+    specs: [
+      { label: "ประเภท", value: "ซีเมนต์พ่นกันไฟ (Sprayed cementitious fireproofing)" },
+      { label: "ชนิด", value: "Medium density" },
+      { label: "ส่วนผสม", value: "แร่เวอร์มิคูไลท์ และซีเมนต์" },
+      { label: "ปราศจาก", value: "Asbestos และ Fiber" },
+      { label: "ค่า pH", value: "12 – 12.5 (Alkaline Based)" },
+      { label: "คุณสมบัติกันสนิม", value: "ช่วยป้องกันสาเหตุที่ทำให้เกิดสนิมในผิวเหล็กปกติ" },
+      { label: "ขนาดบรรจุ", value: "12.5 กก." },
+      { label: "ใช้กับ", value: "งานภายในอาคาร" },
+      { label: "มาตรฐาน", value: "U.L. Underwriter’s Laboratories Inc" },
+    ],
+    specNote:
+      "อัตราทนไฟบนหน้าสินค้าเดิมระบุ 1–3 ชม. ส่วนหน้าเนื้อหาของเว็บเดิมระบุช่วง 1–4 ชม. — โปรดยืนยันตัวเลขกับฝ่ายเทคนิคก่อนใช้อ้างอิงในเอกสารยื่นขออนุญาต",
+    legalStandards: "ISO 834 · ASTM E119",
+    faq: [
+      {
+        q: "ต่างจาก Fendolite M II ยังไง?",
+        a: "Mandolite CP-2 เป็นชนิด Medium density สำหรับงานภายในอาคาร · Fendolite M II เป็นชนิด High density สำหรับงานภายนอก",
+      },
+      { q: "มีใยหินไหม?", a: "ไม่มี ปราศจาก Asbestos และ Fiber" },
+      {
+        q: "ต้องเตรียมผิวยังไง?",
+        a: "พื้นผิวที่จะพ่นต้องแห้งและปราศจากน้ำมัน จารบี หรือวัสดุอื่น ๆ ที่จะทำให้การยึดเกาะน้อยลง",
+      },
+    ],
+    related: [
+      "fendolite-m2",
+      "neocoat-intumescent-paint-s",
+      "fiberglass-cloth",
+      "roof-shield-ceramic",
+    ],
+  },
+
+  {
+    slug: "fendolite-m2",
+    name: "ซีเมนต์กันไฟ Fendolite M2 งานภายนอก",
+    category: "fireproof-cement",
+    tagline:
+      "ซีเมนต์พ่นกันไฟ กันไฟลาม Fendolite M II ชนิด High density น้ำหนัก 20 กก. ทนไฟได้ 1–3 ชม. สำหรับงานภายนอก",
+    cardSummary: "20 กก. · ทนไฟ 1–3 ชม.",
+    badges: ["High density", "ทนไฟ 1–3 ชม.", "U.L. Listed", "Asbestos Free"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "20 กก." },
+      { label: "ชนิด", value: "High density" },
+      { label: "ทนไฟ", value: "1–3 ชม." },
+      { label: "ใช้กับ", value: "งานภายนอก" },
+      { label: "ส่วนผสม", value: "แร่เวอร์มิคูไลท์ + ซีเมนต์" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/fendolite-m2.png",
+    gallery: ["/assets/products/fendolite-m2.png"],
+    description: [
+      "ซีเมนต์พ่นกันไฟ หรือ ซีเมนต์พ่นทนไฟ กันไฟลาม Fendolite M II วัสดุพ่นกันไฟ Fendolite M II เป็นชนิด High density มีอัตราทนไฟได้ไม่น้อยกว่า 3 ชั่วโมง เป็นส่วนผสมของแร่เวอร์มิคูไรท์และซีเมนต์ ปราศจาก Asbestos และ Fiber",
+      "Fendolite M II ไม่ทำให้เกิดสนิมในผิวเหล็กปกติ และมีการยึดเกาะที่ดีกับผิวเหล็กปกติ พื้นซีเมนต์ ช่องชาร์ปงานระบบไฟ ประปา",
+      "โดยพื้นผิวที่จะพ่นนั้นจะต้องแห้งและปราศจากน้ำมัน, จารบี หรือวัสดุอื่น ๆ ที่จะทำให้การยึดเกาะน้อยลง",
+      "ซีเมนต์พ่นกันไฟ หรือ ซีเมนต์พ่นทนไฟ ผ่านการทดสอบได้ตามมาตรฐานสากล U.L. Underwriter’s Laboratories Inc",
+    ],
+    specs: [
+      { label: "ประเภท", value: "ซีเมนต์พ่นกันไฟ / กันไฟลาม" },
+      { label: "ชนิด", value: "High density" },
+      { label: "ส่วนผสม", value: "แร่เวอร์มิคูไลท์ และซีเมนต์" },
+      { label: "ปราศจาก", value: "Asbestos และ Fiber" },
+      { label: "ยึดเกาะได้กับ", value: "ผิวเหล็กปกติ · พื้นซีเมนต์ · ช่องชาร์ปงานระบบไฟ ประปา" },
+      { label: "คุณสมบัติกันสนิม", value: "ไม่ทำให้เกิดสนิมในผิวเหล็กปกติ" },
+      { label: "ขนาดบรรจุ", value: "20 กก." },
+      { label: "ใช้กับ", value: "งานภายนอก" },
+      { label: "มาตรฐาน", value: "U.L. Underwriter’s Laboratories Inc" },
+    ],
+    specNote:
+      "อัตราทนไฟบนหน้าสินค้าเดิมระบุ 1–3 ชม. ส่วนหน้าเนื้อหาของเว็บเดิมระบุ “ไม่น้อยกว่า 3 ชั่วโมง” — โปรดยืนยันตัวเลขกับฝ่ายเทคนิคก่อนใช้อ้างอิงในเอกสารยื่นขออนุญาต",
+    legalStandards: "ISO 834 · ASTM E119",
+    faq: [
+      {
+        q: "ต่างจาก Mandolite CP-2 ยังไง?",
+        a: "Fendolite M II เป็นชนิด High density สำหรับงานภายนอก · Mandolite CP-2 เป็นชนิด Medium density สำหรับงานภายในอาคาร",
+      },
+      {
+        q: "พ่นบนพื้นซีเมนต์ได้ไหม?",
+        a: "ได้ ยึดเกาะได้ดีกับผิวเหล็กปกติ พื้นซีเมนต์ และช่องชาร์ปงานระบบไฟ ประปา",
+      },
+      { q: "มีใยหินไหม?", a: "ไม่มี ปราศจาก Asbestos และ Fiber" },
+    ],
+    related: [
+      "mandolite-cp2",
+      "neocoat-intumescent-paint-s",
+      "fiberglass-cloth",
+      "roof-shield-ceramic",
+    ],
+  },
+
+  {
+    slug: "fiberglass-cloth",
+    name: "ผ้ากันไฟ Fiberglass Cloth",
     category: "fire-blanket",
-    tagline: "ทนอุณหภูมิ 550°C หนา 0.5 มม. สีเทา",
-    image: "/assets/product-fiberglass-silicone.jpg",
+    tagline:
+      "ผ้ากันไฟ ผ้ากันสะเก็ดไฟ Fiberglass Cloth ทนอุณหภูมิใช้งาน 550°C และ 1000°C ขนาด กว้าง 1 ม. ยาว 1 ม. ราคาถูก พร้อมส่งทั่วไทย",
+    cardSummary: "กว้าง 1 ม. × ยาว 1 ม. · ทน 550–1000°C",
+    badges: ["ทน 550°C", "ทน 1000°C", "ทอแบบซาติน", "พร้อมส่งทั่วไทย"],
+    quickSpecs: [
+      { label: "ขนาด", value: "กว้าง 1 ม. × ยาว 1 ม." },
+      { label: "ความหนา", value: "1 มม." },
+      { label: "เนื้อผ้า", value: "สีทอง ทอแบบซาติน" },
+      { label: "ทนความร้อน", value: "550°C และ 1000°C" },
+      { label: "การอบ", value: "Double Heat Treatment" },
+      { label: "สต็อก", value: "พร้อมส่งทั่วไทย" },
+    ],
+    image: "/assets/products/fiberglass-cloth-panel-main.webp",
     gallery: [
-      "/assets/product-fiberglass-silicone.jpg",
-      "/assets/spec-fiberglass-silicone.jpg",
+      "/assets/products/fiberglass-cloth-panel-main.webp",
+      "/assets/products/fiberglass-cloth-weave-detail.webp",
+      "/assets/products/fiberglass-cloth-fringe-detail.webp",
+      "/assets/products/fiberglass-cloth-panels-grommet.webp",
+      "/assets/products/fiberglass-cloth-roll-grey.webp",
     ],
-    highlights: [
-      "เคลือบซิลิโคนทั้งสองด้าน กันน้ำ",
-      "ทนการขัดถูและมีความยืดหยุ่นดี",
-      "ทนสารเคมีและด่าง กันคราบน้ำมัน",
+    downloads: [
+      { label: "ผ้ากันไฟสีทอง 550°C หนา 1 มม.", href: "/docs/fiberglass-gold-550c-1mm.pdf" },
+      {
+        label: "ผ้ากันไฟสีทอง 1000°C หนา 0.70 มม.",
+        href: "/docs/fiberglass-gold-1000c-0.7mm.pdf",
+      },
+      {
+        label: "ผ้ากันไฟใยแก้วเคลือบซิลิโคน เทา/แดง 550°C หนา 0.5 มม.",
+        href: "/docs/fiberglass-silicone-grey-red-550c.pdf",
+      },
+      {
+        label: "ผ้ากันไฟซิลิก้าเคลือบซิลิโคน สีแดง 1000°C หนา 0.8 มม.",
+        href: "/docs/fiberglass-silica-silicone-red-1000c.pdf",
+      },
     ],
     description: [
-      "ผ้ากันไฟผ้าใยแก้วเคลือบซิลิโคนกันความร้อน สีเทา ทนอุณหภูมิ 550°C ความหนา 0.5 มม. เคลือบซิลิโคนทั้งสองด้าน",
-      "เหมาะสำหรับทำแผ่นฉนวนแบบถอดได้ ปลอกหุ้มหน้าแปลน ผ้าคลุมอุปกรณ์ ม่านกันสะเก็ดไฟเชื่อม และ Expansion Joint ทนช่วงอุณหภูมิ -50 ถึง 550°C",
+      "ผ้ากันไฟ ชนิด Fiberglass สำหรับงานความร้อนจากการเชื่อมแบบทั่วไป ที่เราเรียกกันว่า ผ้ากันไฟ ผ้าทนความร้อน ผ้าสำหรับงานเชื่อม อุณหภูมิใช้งานไม่เกิน 550°C เป็นผ้าที่ผลิตจาก Fiberglass (หรือที่เรียกกันว่า ใยแก้ว) สามารถทนความร้อนได้สูง",
+    ],
+    lists: [
+      {
+        title: "รายละเอียดผ้ากันไฟ Fiberglass",
+        items: [
+          "เป็นผ้ากันความร้อนเนื้อสีทองละเอียดสวยงาม หนา 1 มม. โดยใช้เทคโนโลยีการผลิตจากยุโรป",
+          "ผ้าผ่านการอบ 2 ครั้ง (Double Heat Treatment) เพื่อเพิ่มขีดจำกัดความทนไฟของตัวเส้นด้าย",
+          "เส้นด้ายที่ทอ ทนความร้อนได้สูงถึง 550°C",
+          "ลักษณะการทอเป็นการทอแบบซาติน (Satin Type)",
+          "มีบริการเจาะรูตาไก่ (Eyelet) สำหรับแขวนผ้า ตามระยะที่ลูกค้าต้องการ (มาตรฐานระยะห่าง 50 ซม. หรือทำตามความต้องการของลูกค้าได้)",
+        ],
+      },
+      {
+        title: "เหมาะสำหรับการใช้งาน",
+        items: [
+          "เป็นผ้ากันสะเก็ดไฟจากงานเชื่อม งานที่มีประกายไฟ",
+          "ทำฉนวนหุ้มวาล์วได้",
+          "เป็นม่านกันความร้อน สำหรับไลน์เครื่องจักรที่มีสายพานการผลิต หรือต้องการกั้นความร้อนเฉพาะโซน",
+          "คลุมอุปกรณ์ หรือชิ้นงาน เพื่อป้องกันลูกไฟจากงานเชื่อมกระเด็นมาโดน",
+          "เป็นผ้ากันไฟ สำหรับคลุมตัวออกมาจากอาคารที่เกิดเพลิงไหม้",
+          "สามารถนำไปแขวนกับรางได้ เพื่อทำเป็นห้องเฉพาะที่มีไฟด้านใน",
+        ],
+      },
+      {
+        title: "ขนาดที่จำหน่าย",
+        items: [
+          "สามารถตัดเย็บตามขนาดที่ลูกค้าต้องการได้ เช่น 1×1 ม., 1×1.5 ม., 1×2 ม., 2×2 ม., 3×5 ม. หรือต่อผ้าจนถึงยาว 100 เมตร",
+          "สามารถทำ U shape ตรงปลายผ้า เพื่อให้นำผ้าไปสอดไว้กับรางม่านได้เลย (เหมือนงานผ้าม่าน)",
+        ],
+      },
     ],
     specs: [
-      { label: "รหัสสินค้า", value: "A007 / SC470" },
-      { label: "เนื้อผ้า", value: "ใยแก้วเคลือบซิลิโคนสองด้าน" },
-      { label: "ความหนา", value: "0.5 มม. (±5%)" },
-      { label: "หน้ากว้าง", value: "1.50 เมตร" },
-      { label: "ความยาวม้วน", value: "50 เมตร" },
-      { label: "สี", value: "เทา / แดง" },
-      { label: "น้ำหนัก", value: "560 g/m²" },
-      { label: "ช่วงอุณหภูมิ", value: "-50 ถึง 550°C" },
-      { label: "ซิลิโคนทนได้", value: "260°C" },
+      { label: "ประเภท", value: "ผ้ากันไฟ / ผ้ากันสะเก็ดไฟ (Fiberglass Cloth)" },
+      { label: "วัสดุ", value: "Fiberglass (ใยแก้ว)" },
+      { label: "สี / เนื้อผ้า", value: "สีทอง ละเอียด" },
+      { label: "ความหนา", value: "1 มม." },
+      { label: "ลักษณะการทอ", value: "ทอแบบซาติน (Satin Type)" },
+      { label: "การอบ", value: "อบ 2 ครั้ง (Double Heat Treatment)" },
+      { label: "อุณหภูมิใช้งาน", value: "550°C และ 1000°C" },
+      { label: "เทคโนโลยีการผลิต", value: "ยุโรป" },
+      { label: "ขนาดมาตรฐาน", value: "กว้าง 1 ม. × ยาว 1 ม. (สั่งตัดได้ถึงยาว 100 ม.)" },
+      { label: "บริการเพิ่ม", value: "เจาะรูตาไก่ (Eyelet) ระยะมาตรฐาน 50 ซม. · ทำ U shape ปลายผ้า" },
+    ],
+    faq: [
+      {
+        q: "สั่งตัดขนาดพิเศษได้ไหม?",
+        a: "ได้ ตัดเย็บตามขนาดที่ต้องการ เช่น 1×1, 1×1.5, 1×2, 2×2, 3×5 ม. หรือต่อผ้าจนถึงยาว 100 เมตร",
+      },
+      {
+        q: "เจาะรูแขวนให้ได้ไหม?",
+        a: "ได้ มีบริการเจาะรูตาไก่ (Eyelet) ระยะมาตรฐาน 50 ซม. หรือกำหนดระยะเองได้",
+      },
+      {
+        q: "ใช้แทนสีกันไฟได้ไหม?",
+        a: "ไม่ได้ ผ้ากันไฟใช้กันสะเก็ดไฟและกั้นความร้อน — งานกันไฟโครงสร้างเหล็กใช้สีกันไฟหรือซีเมนต์พ่นกันไฟ",
+      },
+    ],
+    related: [
+      "mandolite-cp2",
+      "fendolite-m2",
+      "roof-shield-ceramic",
+      "neocoat-intumescent-paint-s",
+    ],
+  },
+
+  {
+    slug: "roof-shield-ceramic",
+    name: "สีเซรามิคสะท้อนความร้อน Roof Shield White",
+    category: "heat-reflective-ceramic",
+    tagline:
+      "สี Ceramic Coating (สีขาว White Pigment) ประเภทสีอะคริลิค สูตรน้ำ (Water Base) สะท้อนความร้อนและรังสีอินฟราเรดของดวงอาทิตย์ ลดความร้อนได้สูงสุด 93%",
+    cardSummary: "ลดความร้อนหลังคา/ผนัง ประหยัดพลังงาน",
+    badges: ["ลดความร้อน 93%", "ประหยัดค่าไฟ 30%", "สูตรน้ำ"],
+    quickSpecs: [
+      { label: "ประเภท", value: "Ceramic Coating อะคริลิคสูตรน้ำ" },
+      { label: "สี", value: "ขาว (White Pigment)" },
+      { label: "ลดความร้อน", value: "สูงสุด 93%" },
+      { label: "ลดอุณหภูมิผิวหลังคา", value: "มากกว่า 10 องศา" },
+      { label: "ประหยัดค่าไฟ", value: "กว่า 30%" },
+      { label: "สต็อก", value: "พร้อมส่ง" },
+    ],
+    image: "/assets/products/roof-shield.png",
+    gallery: ["/assets/products/roof-shield.png"],
+    downloads: [
+      {
+        label: "สเปกสีเซรามิคสะท้อนความร้อน Roof Shield",
+        href: "/docs/roof-shield-ceramic-spec.pdf",
+      },
+    ],
+    description: [
+      "สีเซรามิคสะท้อนความร้อน เป็นวัสดุสี Ceramic Coating (สีขาว White Pigment) ประเภทสีอะคริลิค สูตรน้ำ (Water Base) ทำหน้าที่สะท้อนความร้อน รังสีอินฟราเรดของดวงอาทิตย์จากภายนอกไม่ให้เข้าไปในอาคาร มีคุณภาพพิเศษและมีประสิทธิภาพ ทำให้ทนต่อสภาวะอากาศได้ทุกสภาพ สามารถลดความร้อนได้สูงสุด 93% ทั้งช่วยลดความร้อนภายในอาคาร และช่วยประหยัดพลังงานได้ดี",
+    ],
+    lists: [
+      {
+        title: "พื้นผิวที่ติดตั้งได้",
+        items: [
+          "หลังคาเหล็กรีดลอน (Metal Sheet)",
+          "หลังคากระเบื้องลอนคู่ (Asbestos)",
+          "พื้นดาดฟ้า คสล. (RC Slab)",
+          "ผนังอาคารภายนอก (Exterior Wall)",
+          "รางน้ำ คสล. และรางน้ำเหล็ก (Gutter)",
+        ],
+      },
+      {
+        title: "ข้อดีและจุดเด่น",
+        items: [
+          "สามารถลดความร้อนผิวหลังคาได้มากกว่า 10 องศา",
+          "ประหยัดค่าไฟฟ้ากว่า 30%",
+          "ติดตั้งง่าย",
+          "เหมาะสำหรับอาคารทุกประเภท",
+          "สำหรับงานปรับปรุงอาคาร โรงงานเก่า สามารถทำการติดตั้งระบบได้โดยไม่ต้องหยุดการทำงานภายในอาคาร",
+        ],
+      },
+    ],
+    specs: [
+      { label: "ประเภท", value: "Ceramic Coating (สีเซรามิคสะท้อนความร้อน)" },
+      { label: "ฐานสูตร", value: "อะคริลิค สูตรน้ำ (Water Base)" },
+      { label: "สี", value: "ขาว (White Pigment)" },
+      { label: "หน้าที่", value: "สะท้อนความร้อนและรังสีอินฟราเรดของดวงอาทิตย์" },
+      { label: "ลดความร้อน", value: "สูงสุด 93%" },
+      { label: "ลดอุณหภูมิผิวหลังคา", value: "มากกว่า 10 องศา" },
+      { label: "ประหยัดค่าไฟฟ้า", value: "กว่า 30%" },
+      { label: "ทนสภาวะอากาศ", value: "ทนต่อสภาวะอากาศได้ทุกสภาพ" },
+    ],
+    faq: [
+      {
+        q: "ต้องหยุดไลน์ผลิตไหม?",
+        a: "ไม่ต้อง งานปรับปรุงอาคารและโรงงานเก่าสามารถติดตั้งระบบได้โดยไม่ต้องหยุดการทำงานภายในอาคาร",
+      },
+      {
+        q: "เป็นสีกันไฟไหม?",
+        a: "ไม่ใช่ สินค้าตัวนี้ทำหน้าที่สะท้อนความร้อนเพื่อลดอุณหภูมิและประหยัดพลังงาน — งานกันไฟใช้ Neocoat Intumescent Paint",
+      },
+      {
+        q: "ทาบนหลังคาแบบไหนได้?",
+        a: "หลังคาเหล็กรีดลอน กระเบื้องลอนคู่ ดาดฟ้า คสล. ผนังอาคารภายนอก และรางน้ำ",
+      },
+    ],
+    related: [
+      "neocoat-intumescent-paint-s",
+      "fendolite-m2",
+      "fiberglass-cloth",
+      "neogloss-enamel",
+    ],
+  },
+
+  {
+    slug: "four-plus-pro-masonry-sealer",
+    name: "สีรองพื้นปูน Four Plus Pro Masonry Sealer",
+    category: "emulsion-paint",
+    tagline:
+      "สีรองพื้นอะคริลิกอิมัลชั่น 100% สำหรับผนังปูนใหม่ที่ยังมีความเป็นด่างสูง ช่วยกันด่างดันสีทับหน้าเสียหาย และเพิ่มการยึดเกาะให้ระบบสีที่ทาทับ",
+    cardSummary: "รองพื้นปูนใหม่ ทนด่างสูง เพิ่มการยึดเกาะสีทับหน้า",
+    badges: ["อะคริลิก 100%", "ทนด่างสูง", "สำหรับปูนใหม่"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "18.925 ลิตร (1 ถัง)" },
+      { label: "ทาได้", value: "150 ตร.ม./ถัง/เที่ยว" },
+      { label: "แห้งผิว", value: "30 นาที" },
+      { label: "ทาทับได้", value: "2 ชั่วโมง" },
+      { label: "สี", value: "ขาว" },
+      { label: "ระบบทา", value: "รองพื้น 1 + ทับหน้า 2 เที่ยว" },
+    ],
+    image: "/assets/products/four-plus-masonry-sealer.webp",
+    gallery: ["/assets/products/four-plus-masonry-sealer.webp"],
+    description: [
+      "Four Plus Pro Masonry Sealer เป็นสีรองพื้นอะคริลิกอิมัลชั่น 100% ออกแบบมาสำหรับผนังปูนใหม่โดยเฉพาะ ซึ่งเป็นพื้นผิวที่มีความเป็นด่างสูงและเป็นสาเหตุหลักของปัญหาสีลอก สีด่าง และสีเปลี่ยนเฉดหลังทาไปได้ไม่นาน",
+      "ตัวสีทำหน้าที่เป็นชั้นกั้นด่างจากเนื้อปูนไม่ให้ขึ้นมาทำลายฟิล์มสีทับหน้า พร้อมกับเพิ่มแรงยึดเกาะให้สีที่จะทาทับ ทำให้ระบบสีทั้งระบบมีอายุการใช้งานยาวขึ้น เหมาะกับงานอาคารและโรงงานที่ต้องการควบคุมคุณภาพงานสีตั้งแต่ชั้นแรก",
+      "ก่อนทาต้องแน่ใจว่าผนังปูนบ่มตัวเต็มที่แล้วประมาณ 1 เดือน และมีความชื้นในผนังต่ำกว่า 15% หากทาเร็วกว่านั้นความชื้นและด่างที่ยังเหลืออยู่จะดันฟิล์มสีให้เสียหายได้",
+    ],
+    specs: [
+      { label: "ประเภท", value: "สีรองพื้นปูนใหม่ (Acrylic Emulsion Primer)" },
+      { label: "เนื้อสี", value: "อะคริลิกอิมัลชั่น 100%" },
+      { label: "ขนาดบรรจุ", value: "18.925 ลิตร (Pail)" },
+      { label: "พื้นที่ทาได้", value: "150 ตร.ม. ต่อถัง ต่อเที่ยว" },
+      { label: "แห้งผิว (Touch Dry)", value: "30 นาที ที่ 25–30°C" },
+      { label: "ทาทับได้ (Recoat)", value: "2 ชั่วโมง ที่ 25–30°C" },
+      { label: "สี", value: "ขาว" },
+      { label: "ระบบทาที่แนะนำ", value: "รองพื้น 1 เที่ยว + สีทับหน้า 2 เที่ยว" },
+      { label: "การเตรียมพื้นผิว", value: "ปูนบ่มตัวประมาณ 1 เดือน ความชื้นต่ำกว่า 15%" },
+      { label: "คุณสมบัติเด่น", value: "ทนด่างจากผนังปูนใหม่ · เพิ่มการยึดเกาะให้สีทับหน้า" },
+    ],
+    faq: [
+      {
+        q: "ทาทับด้วยสีอะไรได้บ้าง?",
+        a: "ทาทับได้ทั้ง Four Plus Exterior (ภายนอก) และ Four Plus Pro Interior (ภายใน) หรือสีน้ำอะคริลิกทั่วไป",
+      },
+      {
+        q: "ผนังปูนเก่าต้องใช้ไหม?",
+        a: "ปูนเก่าที่บ่มตัวนานแล้วความเป็นด่างจะลดลง สอบถามฝ่ายขายเพื่อเลือกระบบให้เหมาะกับหน้างาน",
+      },
+      {
+        q: "ทาได้กี่ตารางเมตร?",
+        a: "150 ตร.ม. ต่อถัง ต่อเที่ยว ขึ้นกับความเรียบและการดูดซึมของพื้นผิว",
+      },
+    ],
+    related: [
+      "four-plus-exterior",
+      "four-plus-pro-interior",
+      "roof-shield-ceramic",
+      "neocoat-primer-grey-oxide",
+    ],
+  },
+
+  {
+    slug: "four-plus-exterior",
+    name: "สีน้ำพลาสติกทาภายนอก Four Plus Exterior",
+    category: "emulsion-paint",
+    tagline:
+      "สีอะคริลิกอิมัลชั่น 100% สำหรับงานทาภายนอกอาคาร ทนต่อแดดจัดและการเปลี่ยนแปลงของสภาพอากาศ ต้านการเกิดเชื้อราและตะไคร่น้ำ เฉดสีคงทนไม่ซีดง่าย",
+    cardSummary: "อะคริลิก 100% ทนแดดทนฝน กันเชื้อรา-ตะไคร่น้ำ",
+    badges: ["อะคริลิก 100%", "ผิวด้าน (Matt)", "กันเชื้อรา-ตะไคร่"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "18.925 ลิตร (1 ถัง)" },
+      { label: "ทาได้", value: "150 ตร.ม./ถัง/เที่ยว" },
+      { label: "แห้งผิว", value: "30 นาที" },
+      { label: "ทาทับได้", value: "2 ชั่วโมง" },
+      { label: "ความเงา", value: "ด้าน (Matt)" },
+      { label: "ระบบทา", value: "รองพื้น 1 + ทับหน้า 2 เที่ยว" },
+    ],
+    image: "/assets/products/four-plus-exterior.webp",
+    gallery: ["/assets/products/four-plus-exterior.webp"],
+    description: [
+      "Four Plus Exterior เป็นสีน้ำพลาสติกทาภายนอกเนื้ออะคริลิกอิมัลชั่น 100% ผสมเม็ดสีคุณภาพสูงที่ทนแสง ทำให้เฉดสีคงตัวไม่ซีดจางเร็วแม้โดนแดดจัดตลอดวัน",
+      "จุดเด่นอยู่ที่ความทนทานต่อสภาพอากาศที่เปลี่ยนแปลง ทั้งแดดและฝน พร้อมสูตรที่ต้านการเกิดเชื้อราและตะไคร่น้ำ ซึ่งเป็นปัญหาหลักของผนังภายนอกในเมืองไทย และทนด่างจากเนื้อปูนที่เป็นสาเหตุให้ฟิล์มสีเสียหาย",
+      "แนะนำให้ทารองพื้นด้วย Four Plus Pro Masonry Sealer ก่อน 1 เที่ยว แล้วจึงทาทับหน้าด้วย Four Plus Exterior อีก 2 เที่ยว เพื่อให้ได้อายุการใช้งานเต็มที่",
+    ],
+    specs: [
+      { label: "ประเภท", value: "สีน้ำพลาสติกทาภายนอก (100% Acrylic Emulsion Paint)" },
+      { label: "เนื้อสี", value: "อะคริลิกอิมัลชั่น 100%" },
+      { label: "ความเงา", value: "ด้าน (Matt)" },
+      { label: "ขนาดบรรจุ", value: "18.925 ลิตร (Pail)" },
+      { label: "พื้นที่ทาได้", value: "150 ตร.ม. ต่อถัง ต่อเที่ยว" },
+      { label: "แห้งผิว (Touch Dry)", value: "30 นาที" },
+      { label: "ทาทับได้ (Recoat)", value: "2 ชั่วโมง" },
+      { label: "ระบบทาที่แนะนำ", value: "รองพื้น 1 เที่ยว + สีทับหน้า 2 เที่ยว" },
+      { label: "คุณสมบัติเด่น", value: "ทนแดดจัด · กันเชื้อราและตะไคร่น้ำ · ทนด่าง" },
+    ],
+    faq: [
+      {
+        q: "ต้องทารองพื้นก่อนไหม?",
+        a: "ผนังปูนใหม่ควรทา Four Plus Pro Masonry Sealer รองพื้นก่อน 1 เที่ยว เพื่อกันด่างดันสีเสียหาย",
+      },
+      {
+        q: "มีกี่เฉดสี?",
+        a: "สั่งผสมได้ตามการ์ดสี สอบถามฝ่ายขายเพื่อขอการ์ดสีและเช็คสต็อก",
+      },
+      {
+        q: "ใช้ทาภายในได้ไหม?",
+        a: "ได้ แต่ถ้าเน้นงานภายในโดยเฉพาะ แนะนำ Four Plus Pro Interior จะคุ้มกว่า",
+      },
+    ],
+    related: [
+      "four-plus-pro-masonry-sealer",
+      "four-plus-pro-interior",
+      "roof-shield-ceramic",
+      "neogloss-enamel",
+    ],
+  },
+
+  {
+    slug: "four-plus-pro-interior",
+    name: "สีน้ำพลาสติกทาภายใน Four Plus Pro Interior",
+    category: "emulsion-paint",
+    tagline:
+      "สีอะคริลิกอิมัลชั่น 100% สำหรับงานทาภายในอาคาร ผิวด้านเนียนเรียบ ต้านการเกิดเชื้อรา ทนด่างจากผนังปูน ใช้เม็ดสีทนแสงทำให้เฉดสีคงตัว",
+    cardSummary: "อะคริลิก 100% ผิวด้าน กันเชื้อรา ทนด่าง",
+    badges: ["อะคริลิก 100%", "ผิวด้าน (Matt)", "กันเชื้อรา"],
+    quickSpecs: [
+      { label: "ขนาดบรรจุ", value: "18.925 ลิตร (1 ถัง)" },
+      { label: "ทาได้", value: "150 ตร.ม./ถัง/เที่ยว" },
+      { label: "แห้งผิว", value: "30 นาที" },
+      { label: "ทาทับได้", value: "2 ชั่วโมง" },
+      { label: "ความเงา", value: "ด้าน (Matt)" },
+      { label: "การผสมน้ำ", value: "น้ำสะอาด 20–25%" },
+    ],
+    image: "/assets/products/four-plus-pro-interior.webp",
+    gallery: ["/assets/products/four-plus-pro-interior.webp"],
+    description: [
+      "Four Plus Pro Interior เป็นสีน้ำพลาสติกทาภายในเนื้ออะคริลิกอิมัลชั่น 100% ผสมเม็ดสีทนแสง (light-fast pigments) ให้ผิวสำเร็จแบบด้านเนียนเรียบ ช่วยกลบพื้นผิวผนังที่ไม่สม่ำเสมอให้ดูเรียบขึ้น",
+      "สูตรมีความต้านทานต่อการเกิดเชื้อราและทนด่างจากผนังปูนฉาบ ซึ่งเป็นสองสาเหตุหลักที่ทำให้สีภายในขึ้นราและลอกร่อน เหมาะกับงานผนังภายในทั้งผนังปูน ผนังยิปซัม และผนังอิฐ",
+      "ผสมน้ำสะอาดได้ 20–25% ก่อนทา และควรทารองพื้นด้วย Four Plus Pro Masonry Sealer 1 เที่ยวก่อน แล้วทาทับหน้าอีก 2 เที่ยว โดยผนังปูนควรบ่มตัวแล้วประมาณ 1 เดือน ความชื้นต่ำกว่า 15%",
+    ],
+    specs: [
+      { label: "ประเภท", value: "สีน้ำพลาสติกทาภายใน (Acrylic Emulsion Paint)" },
+      { label: "เนื้อสี", value: "อะคริลิกอิมัลชั่น 100%" },
+      { label: "ความเงา", value: "ด้าน (Matt)" },
+      { label: "ขนาดบรรจุ", value: "18.925 ลิตร (Pail)" },
+      { label: "พื้นที่ทาได้", value: "150 ตร.ม. ต่อถัง ต่อเที่ยว" },
+      { label: "แห้งผิว (Touch Dry)", value: "30 นาที ที่ 25–30°C" },
+      { label: "ทาทับได้ (Recoat)", value: "2 ชั่วโมง ที่ 25–30°C" },
+      { label: "การผสม", value: "น้ำสะอาด 20–25%" },
+      { label: "สี", value: "ตามการ์ดสี" },
+      { label: "ระบบทาที่แนะนำ", value: "รองพื้น 1 เที่ยว + สีทับหน้า 2 เที่ยว" },
+      { label: "การเตรียมพื้นผิว", value: "ปูนบ่มตัวประมาณ 1 เดือน ความชื้นต่ำกว่า 15%" },
+      { label: "คุณสมบัติเด่น", value: "กันเชื้อรา · ทนด่าง · เม็ดสีทนแสง" },
+    ],
+    faq: [
+      { q: "ทาผนังยิปซัมได้ไหม?", a: "ได้ ใช้ได้ทั้งผนังปูนฉาบ ผนังยิปซัม และผนังอิฐ" },
+      {
+        q: "ผสมน้ำได้เท่าไร?",
+        a: "ผสมน้ำสะอาดได้ 20–25% ผสมมากกว่านั้นจะทำให้ฟิล์มสีบางและกลบไม่มิด",
+      },
+      { q: "มีกี่เฉดสี?", a: "สั่งผสมได้ตามการ์ดสี สอบถามฝ่ายขายเพื่อขอการ์ดสี" },
+    ],
+    related: [
+      "four-plus-pro-masonry-sealer",
+      "four-plus-exterior",
+      "neogloss-enamel",
+      "neocoat-primer-grey-oxide",
     ],
   },
 ];
+
+/* ----------------------------------------------------------------- helpers */
 
 export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
 export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
 export const productsByCategory = (slug: string) =>
   products.filter((p) => p.category === slug);
+
+/** Order of the “สินค้าขายดี” row on the home page. */
+export const bestSellers = [
+  "neocoat-intumescent-paint-s",
+  "neocoat-intumescent-paint-w",
+  "neocoat-primer-grey-oxide",
+  "fendolite-m2",
+]
+  .map((slug) => getProduct(slug))
+  .filter((p): p is Product => Boolean(p));
+
+export const relatedProducts = (product: Product) =>
+  product.related.map((slug) => getProduct(slug)).filter((p): p is Product => Boolean(p));

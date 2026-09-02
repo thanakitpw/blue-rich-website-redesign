@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blue Rich | สีกันไฟโครงสร้างเหล็ก · ผ้ากันไฟ · รับรองโดยวุฒิวิศวกร</title>
+<meta name="description" content="ผู้จำหน่ายสีกันไฟ Neocoat Intumescent Paint สีรองพื้นกันสนิม ซีเมนต์กันไฟ ผ้ากันไฟ ทินเนอร์ พร้อมบริการรับรองงานสีกันไฟโดยวุฒิวิศวกร">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   Blue Rich — Concept B
+   ทิศทางดีไซน์อ้างอิงจาก energyreform-solar.com
+   (การ์ดหมวดใหญ่คู่, แถบจุดเด่น 4 ช่อง, หัวข้อขีดสี, การ์ดสินค้าเรียบ,
+    บล็อกคำโปรย, แถบ about ภาพเต็มขอบ, CTA ไลน์, FAQ accordion, footer เข้ม)
+   ========================================================================= */
+
+:root{
+  --navy-950:#20404f;
+  --navy-900:#2a5068;
+  --navy-800:#33607c;
+  --blue-700:#3a6f92;
+  --blue-600:#4a86ab;
+  --blue-500:#6aa4c4;
+  --blue-300:#b3d7ea;
+  --blue-100:#e5f1f8;
+  --sky:#f1f7fb;
+  --flame:#ef7622;
+  --flame-dark:#d25c0c;
+  --ink:#15242f;
+  --muted:#62798a;
+  --line:#e3ebf2;
+  --line-soft:#eef3f7;
+  --green:#06c755;
+  --paper:#ffffff;
+  --shell:#f6f9fb;
+  --radius:14px;
+  --radius-lg:20px;
+  --wrap:1180px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Prompt",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:15px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,h5{font-family:"Prompt",system-ui,sans-serif;font-weight:600;line-height:1.35;margin:0;color:var(--navy-800)}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+ul{margin:0;padding:0;list-style:none}
+
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.eyebrow-en{font-family:"Prompt",sans-serif;font-style:italic;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.flame{color:var(--flame)}
+
+/* ---------------------------------------------------------------- buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:"Prompt",sans-serif;font-weight:500;font-size:14px;line-height:1;
+  padding:11px 20px;border-radius:999px;border:1px solid transparent;
+  transition:.18s ease;cursor:pointer;white-space:nowrap;
+}
+.btn-primary{background:var(--blue-700);color:#fff}
+.btn-primary:hover{background:var(--navy-800)}
+.btn-flame{background:var(--flame);color:#fff}
+.btn-flame:hover{background:var(--flame-dark)}
+.btn-line{background:var(--green);color:#fff}
+.btn-line:hover{filter:brightness(.93)}
+.btn-ghost{background:#fff;color:var(--blue-700);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--blue-300);background:var(--sky)}
+.btn-sm{padding:8px 16px;font-size:13px}
+
+/* ----------------------------------------------------------------- header */
+.utility{background:#fff;border-bottom:1px solid var(--line-soft)}
+.utility-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:42px;width:auto}
+.brand-txt{font-family:"Prompt",sans-serif;line-height:1.15}
+.brand-txt b{display:block;font-weight:600;font-size:16px;color:var(--navy-800)}
+.brand-txt span{font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.utility-cta{display:flex;align-items:center;gap:10px}
+.icon-round{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:var(--flame);color:#fff;flex:none;
+}
+.icon-round svg{width:18px;height:18px}
+
+.nav{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(42,80,104,.03)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:9px 0}
+.nav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.nav-links a{
+  font-family:"Prompt",sans-serif;font-weight:400;font-size:14px;
+  padding:8px 14px;border-radius:999px;color:var(--navy-900);transition:.16s;
+}
+.nav-links a:hover{background:var(--sky);color:var(--blue-700)}
+.nav-links a.active{background:var(--blue-700);color:#fff;font-weight:500}
+.nav-social{display:flex;gap:8px}
+.nav-social a{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.nav-social .fb{background:#1877f2}
+.nav-social .li{background:var(--green)}
+.nav-social svg{width:16px;height:16px}
+.nav-toggle{display:none}
+
+/* ----------------------------------------------------------- hero slider */
+.slider{
+  position:relative;height:550px;border-radius:var(--radius-lg);overflow:hidden;
+  background:var(--navy-900);margin-bottom:30px;
+}
+/* หน่วง visibility ไว้ท้าย transition ไม่งั้นสไลด์เก่าจะหายทันที เห็นพื้นดำคั่น */
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;display:flex;align-items:center;
+  transition:opacity .65s ease,visibility 0s linear .65s}
+.slide.on{opacity:1;visibility:visible;transition:opacity .65s ease,visibility 0s linear 0s}
+.slide > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slide::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(32,64,79,.46) 0%,rgba(32,64,79,.14) 26%,rgba(32,64,79,0) 52%);
+}
+
+.slider .arrow{
+  position:absolute;bottom:26px;z-index:6;width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.32);color:#fff;
+  display:grid;place-items:center;cursor:pointer;transition:.18s;backdrop-filter:blur(4px);padding:0;
+}
+.slider .arrow:hover{background:#fff;color:var(--navy-800);border-color:#fff}
+.slider .arrow svg{width:19px;height:19px}
+.slider .prev{right:80px}
+.slider .next{right:26px}
+.slider .dots{position:absolute;left:64px;bottom:30px;z-index:6;display:flex;gap:9px}
+.slider .dots button{width:30px;height:4px;border-radius:2px;border:0;padding:0;cursor:pointer;
+  background:rgba(255,255,255,.34);transition:.22s}
+.slider .dots button:hover{background:rgba(255,255,255,.6)}
+.slider .dots button[aria-selected="true"]{background:var(--flame);width:46px}
+/* ป้ายบอกว่ารูปยังเป็น mockup — ลบ .mock-tag ทิ้งได้เลยเมื่อใส่แบนเนอร์จริง */
+.mock-tag{
+  position:absolute;top:20px;right:20px;z-index:6;
+  background:rgba(255,255,255,.16);border:1px dashed rgba(255,255,255,.5);color:#fff;
+  border-radius:8px;padding:6px 13px;font-size:11.5px;letter-spacing:.05em;backdrop-filter:blur(4px);
+}
+
+/* ------------------------------------------------------------------- hero */
+.hero{padding:34px 0 0}
+.hero h1{
+  text-align:center;font-size:clamp(21px,2.6vw,32px);font-weight:600;
+  color:var(--navy-800);margin-bottom:26px;
+}
+.hero-duo{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.hero-card{
+  position:relative;border-radius:var(--radius-lg);overflow:hidden;
+  min-height:355px;display:flex;align-items:flex-end;
+  background:var(--navy-900);
+}
+.hero-card > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-card .mosaic{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px}
+.hero-card .mosaic img{width:100%;height:100%;object-fit:cover}
+.hero-card::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(32,64,79,.94) 0%,rgba(32,64,79,.72) 26%,rgba(32,64,79,.12) 58%,rgba(32,64,79,0) 100%);
+}
+.hero-card .cap{position:relative;z-index:2;padding:22px 26px 24px;color:#fff}
+.hero-card .cap .en{font-size:12px;color:rgba(255,255,255,.72);margin-bottom:2px}
+.hero-card .cap .th{font-family:"Prompt",sans-serif;font-weight:600;font-size:clamp(20px,2.2vw,27px);color:#fff}
+.hero-card .cap .th em{font-style:normal;color:var(--flame)}
+.hero-card .cap .sub{font-size:13px;color:rgba(255,255,255,.78);margin-top:4px}
+.hero-card:hover > img,.hero-card:hover .mosaic{transform:scale(1.03)}
+.hero-card > img,.hero-card .mosaic{transition:transform .6s ease}
+
+/* ----------------------------------------------------------- trust ribbon */
+.ribbon{margin:26px 0 0}
+.ribbon-box{
+  background:var(--sky);border:1.5px solid var(--blue-300);border-radius:var(--radius);
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.ribbon-item{display:flex;align-items:center;gap:12px;padding:18px 20px;position:relative}
+.ribbon-item + .ribbon-item::before{
+  content:"";position:absolute;left:0;top:22%;height:56%;width:1px;background:var(--blue-300);
+}
+.ribbon-item .ic{width:34px;height:34px;flex:none;color:var(--blue-600)}
+.ribbon-item .ic svg{width:100%;height:100%}
+.ribbon-item b{display:block;font-family:"Prompt",sans-serif;font-weight:500;font-size:14.5px;color:var(--navy-800);line-height:1.4}
+.ribbon-item span{font-size:12.5px;color:var(--muted)}
+
+/* ------------------------------------------------------------- section UI */
+section{scroll-margin-top:70px}
+.sec{padding:52px 0}
+.sec-shell{background:var(--shell)}
+.sec-head{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  border-bottom:1px solid var(--line);padding-bottom:11px;margin-bottom:26px;
+}
+.sec-head h2{position:relative;padding-left:13px;font-size:20px;font-weight:600}
+.sec-head h2::before{
+  content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;border-radius:2px;background:var(--flame);
+}
+.sec-head .more{font-family:"Prompt",sans-serif;font-size:13.5px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.sec-head .more:hover{color:var(--blue-700)}
+.sec-title-center{text-align:center;margin-bottom:30px}
+.sec-title-center .en{font-size:13px;color:var(--flame);margin-bottom:2px}
+.sec-title-center h2{font-size:clamp(20px,2.3vw,27px)}
+
+/* ------------------------------------------------------- product showcase */
+.showcase{display:grid;grid-template-columns:330px 1fr;gap:26px;align-items:stretch}
+.feature-card{
+  border:1.5px solid var(--blue-300);border-radius:var(--radius);background:#fff;
+  overflow:hidden;position:relative;display:flex;flex-direction:column;
+}
+.feature-card .ph{background:var(--sky);flex:1;min-height:260px;display:grid;place-items:center;padding:22px}
+.feature-card .ph img{max-height:100%;width:auto;object-fit:contain}
+.feature-card .body{display:block;padding:16px 18px 20px}
+.pill-corner{
+  position:absolute;top:12px;right:12px;z-index:3;
+  background:var(--flame);color:#fff;border-radius:50%;
+  width:58px;height:58px;display:grid;place-content:center;text-align:center;
+  font-family:"Prompt",sans-serif;font-weight:500;font-size:11px;line-height:1.25;
+  box-shadow:0 4px 12px rgba(239,118,34,.32);
+}
+.p-name{display:block;font-family:"Prompt",sans-serif;font-weight:500;font-size:15px;color:var(--navy-800);line-height:1.45}
+.p-sku{display:block;font-size:11.5px;color:var(--muted);margin:3px 0 8px;letter-spacing:.02em}
+.p-sku b{color:var(--blue-700);font-weight:600}
+.p-desc{font-size:13px;color:var(--muted);line-height:1.7;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.p-foot{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.p-spec{font-family:"Prompt",sans-serif;font-weight:600;font-size:14px;color:var(--flame)}
+.p-ask{font-size:12.5px;color:var(--blue-700);font-weight:600}
+
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.p-card{
+  border:1px solid var(--line);border-radius:var(--radius);background:#fff;
+  overflow:hidden;position:relative;transition:.2s;display:flex;flex-direction:column;
+}
+.p-card:hover{border-color:var(--blue-300);box-shadow:0 8px 24px rgba(42,80,104,.07);transform:translateY(-2px)}
+.p-card .ph{flex:none;background:var(--shell);aspect-ratio:1/.86;display:grid;place-items:center;padding:14px}
+.p-card .ph img{max-height:100%;width:auto;object-fit:contain}
+.p-card .body{padding:13px 15px 17px;flex:1;display:flex;flex-direction:column}
+.p-card .p-name{font-size:13.5px}
+.p-card .p-desc{-webkit-line-clamp:2;font-size:12.5px}
+.p-card .p-foot{margin-top:auto;padding-top:10px}
+.p-card .p-spec{font-size:13px}
+.tagdot{
+  position:absolute;top:10px;left:10px;z-index:3;background:var(--blue-700);color:#fff;
+  font-family:"Prompt",sans-serif;font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;
+}
+
+/* --------------------------------------------------------------- category */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.cat-card{
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;
+  transition:.2s;display:flex;flex-direction:column;
+}
+.cat-card:hover{border-color:var(--blue-300);box-shadow:0 8px 24px rgba(42,80,104,.07)}
+.cat-card .ph{flex:none;background:var(--sky);aspect-ratio:1/.72;display:grid;place-items:center;padding:16px}
+.cat-card .ph img{max-height:100%;width:auto;object-fit:contain;mix-blend-mode:multiply}
+.cat-card .body{display:block;padding:14px 16px 18px}
+.cat-card .en{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--blue-500);font-family:"Prompt",sans-serif}
+.cat-card h3{font-size:16px;font-weight:600;margin:1px 0 5px}
+.cat-card p{font-size:12.5px;color:var(--muted);line-height:1.65}
+
+/* ------------------------------------------------------------ value block */
+.value{display:grid;grid-template-columns:1fr 1.15fr;gap:44px;align-items:center}
+.value .quote-mark{color:var(--flame);display:block}
+.value .quote-mark svg{width:46px;height:auto;display:block}
+.value .lead{font-family:"Prompt",sans-serif;font-weight:600;line-height:1.2;margin:14px 0 6px}
+.value .lead .l1{display:block;font-size:15px;letter-spacing:.1em;color:var(--blue-300);text-transform:uppercase;font-style:italic}
+.value .lead .l2{display:block;font-size:clamp(24px,3vw,34px);letter-spacing:.02em;color:var(--blue-100);text-transform:uppercase;font-style:italic}
+.value .lead .l2 em{font-style:italic;color:var(--navy-800)}
+.value .note{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+.value-list li{
+  display:flex;align-items:center;gap:12px;background:var(--shell);
+  border-radius:10px;padding:10px 14px;margin-bottom:9px;
+}
+.value-list .ic{
+  width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:var(--blue-700);color:#fff;
+}
+.value-list .ic svg{width:15px;height:15px}
+.value-list span{font-family:"Prompt",sans-serif;font-weight:400;font-size:14px;color:var(--navy-900)}
+.value-media{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);position:relative;aspect-ratio:16/10;background:var(--navy-900)}
+.value-media img{width:100%;height:100%;object-fit:cover;opacity:.92}
+.value-media .badge{
+  position:absolute;left:18px;bottom:18px;z-index:2;color:#fff;
+  font-family:"Prompt",sans-serif;font-weight:500;font-size:14px;
+  background:rgba(32,64,79,.72);backdrop-filter:blur(4px);
+  padding:8px 15px;border-radius:999px;
+}
+
+/* -------------------------------------------------------------- standards */
+.trusted{text-align:center}
+.trusted .quote{
+  font-family:"Prompt",sans-serif;font-style:italic;font-weight:500;
+  font-size:clamp(16px,2vw,21px);color:var(--navy-800);line-height:1.55;
+}
+.std-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:24px}
+.std-chip{
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:14px 22px;min-width:170px;box-shadow:0 2px 10px rgba(42,80,104,.04);
+}
+.std-chip b{display:block;font-family:"Prompt",sans-serif;font-weight:600;font-size:15px;color:var(--blue-700)}
+.std-chip span{font-size:12px;color:var(--muted)}
+
+/* ----------------------------------------------------------------- works */
+.work-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:14px;grid-auto-flow:dense}
+.work-grid a{border-radius:12px;overflow:hidden;position:relative;background:var(--shell)}
+.work-grid img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.work-grid a:hover img{transform:scale(1.06)}
+.work-grid .big{grid-column:span 2;grid-row:span 2}
+.work-grid .tall{grid-row:span 2}
+
+/* ------------------------------------------------------------ about band */
+.about-outer{overflow-x:clip}
+.about{
+  --gutter:calc((100vw - min(100vw - 40px,var(--wrap))) / 2);
+  display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  align-items:center;gap:52px;
+  width:min(100% - 40px,var(--wrap));margin-inline:auto;
+}
+.about-media{
+  position:relative;border-radius:0 var(--radius-lg) var(--radius-lg) 0;overflow:hidden;
+  aspect-ratio:16/11;
+  margin-left:calc(-1 * var(--gutter));width:calc(100% + var(--gutter));
+}
+.about-media img{width:100%;height:100%;object-fit:cover}
+.about-media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(42,80,104,.55),rgba(42,80,104,.08))}
+.stamp{
+  position:absolute;right:22px;bottom:22px;z-index:2;width:120px;height:120px;border-radius:50%;
+  background:linear-gradient(140deg,var(--flame),var(--blue-600));
+  display:grid;place-items:center;box-shadow:0 10px 26px rgba(32,64,79,.35);
+}
+.stamp .in{
+  width:98px;height:98px;border-radius:50%;background:#fff;display:grid;place-content:center;text-align:center;
+  font-family:"Prompt",sans-serif;line-height:1.1;padding:6px;
+}
+.stamp .in b{display:block;font-size:30px;font-weight:700;color:var(--navy-800)}
+.stamp .in span{display:block;font-size:9.5px;letter-spacing:.07em;color:var(--flame);font-weight:600;text-transform:uppercase;margin-top:1px}
+.about-body{padding:0}
+.about-body .en{font-size:13px;color:var(--blue-300);margin-bottom:-2px}
+.about-body h2{font-family:"Prompt",sans-serif;font-style:italic;font-weight:700;font-size:clamp(22px,2.6vw,30px);letter-spacing:.02em}
+.about-body h2 em{font-style:italic;color:var(--flame)}
+.about-body p{font-size:14px;color:var(--muted);margin:12px 0 20px;max-width:640px}
+.stat-row{display:flex;flex-wrap:wrap;gap:26px;margin-bottom:22px}
+.stat-row div b{display:block;font-family:"Prompt",sans-serif;font-weight:700;font-size:24px;color:var(--blue-700);line-height:1.1}
+.stat-row div span{font-size:12.5px;color:var(--muted)}
+
+/* -------------------------------------------------------------- line CTA */
+.linecta{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.linecta .head{display:flex;align-items:center;gap:14px}
+.linecta h2{font-family:"Prompt",sans-serif;font-style:italic;font-weight:700;font-size:clamp(22px,2.6vw,30px);color:var(--flame)}
+.linecta .rule{height:2px;flex:1;max-width:110px;background:var(--flame);opacity:.5}
+.linecta .sub{font-size:14.5px;color:var(--muted);margin:4px 0 20px}
+.phone-list{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.phone-list a{display:flex;align-items:center;gap:11px;font-family:"Prompt",sans-serif;font-weight:600;font-size:20px;color:var(--navy-800)}
+.phone-list a .icon-round{width:32px;height:32px}
+.phone-list a .icon-round svg{width:15px;height:15px}
+.phone-list a:hover{color:var(--flame)}
+.mock{justify-self:center;width:230px;border-radius:32px;background:#12181d;padding:10px;box-shadow:0 18px 40px rgba(32,64,79,.24)}
+.mock-screen{border-radius:24px;background:#fff;padding:22px 18px 26px;text-align:center;position:relative;overflow:hidden}
+.mock-notch{width:74px;height:16px;border-radius:0 0 12px 12px;background:#12181d;position:absolute;top:0;left:50%;transform:translateX(-50%)}
+.mock-screen .hi{font-family:"Prompt",sans-serif;font-weight:600;color:var(--green);font-size:17px;margin-top:14px}
+.mock-line-logo{width:62px;height:62px;border-radius:18px;background:var(--green);display:grid;place-items:center;margin:14px auto 10px}
+.mock-line-logo svg{width:34px;height:34px;color:#fff}
+.mock-id{font-family:"Prompt",sans-serif;font-weight:700;font-size:22px;color:var(--navy-800);letter-spacing:.02em}
+.mock-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.mock-btn{margin-top:14px;width:100%;justify-content:center}
+
+/* --------------------------------------------------------------- article */
+.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.art{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;transition:.2s;display:flex;flex-direction:column}
+.art:hover{box-shadow:0 8px 24px rgba(42,80,104,.08);border-color:var(--blue-300)}
+.art .ph{display:block;aspect-ratio:16/10;overflow:hidden;background:var(--shell)}
+.art .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.art:hover .ph img{transform:scale(1.05)}
+.art .body{padding:15px 17px 18px;flex:1;display:flex;flex-direction:column}
+.art .tag{display:block;font-family:"Prompt",sans-serif;font-size:11px;color:var(--flame);font-weight:500;letter-spacing:.04em}
+.art h3{font-size:15px;font-weight:500;line-height:1.5;margin:4px 0 7px}
+.art p{font-size:12.5px;color:var(--muted);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.art .date{margin-top:auto;padding-top:12px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+
+/* ------------------------------------------------------------------- FAQ */
+.faq{display:grid;grid-template-columns:.85fr 1.15fr;gap:36px;align-items:start}
+.faq-left .en{font-family:"Prompt",sans-serif;font-size:14px;color:var(--muted)}
+.faq-left h2{font-size:clamp(21px,2.4vw,28px);margin-bottom:18px}
+.faq-left .ph{border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3}
+.faq-left .ph img{width:100%;height:100%;object-fit:cover}
+details.qa{border:1.5px solid var(--blue-300);border-radius:10px;margin-bottom:11px;background:#fff;overflow:hidden}
+details.qa summary{
+  list-style:none;cursor:pointer;padding:13px 46px 13px 17px;position:relative;
+  font-family:"Prompt",sans-serif;font-weight:400;font-size:14.5px;color:var(--navy-800);line-height:1.5;
+}
+details.qa summary::-webkit-details-marker{display:none}
+details.qa summary::after{
+  content:"";position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:20px;height:20px;border-radius:50%;background:var(--flame);
+  background-image:linear-gradient(#fff,#fff),linear-gradient(#fff,#fff);
+  background-size:9px 1.8px,1.8px 9px;background-position:center,center;background-repeat:no-repeat;
+  transition:.2s;
+}
+details.qa[open]{border-color:var(--flame)}
+details.qa[open] summary::after{background-size:9px 1.8px,0 0;transform:translateY(-50%) rotate(180deg)}
+details.qa .ans{padding:0 18px 15px;font-size:13.5px;color:var(--muted);line-height:1.8;border-top:1px solid var(--line-soft);padding-top:13px;margin:0 0 0}
+
+/* ---------------------------------------------------------------- footer */
+footer{background:#12181d;color:#c6d2db;margin-top:10px}
+.f-top{display:grid;grid-template-columns:200px 1.35fr 1fr 1fr;gap:34px;padding:44px 0 34px}
+.f-logo{background:#fff;border-radius:10px;padding:12px;display:inline-block}
+.f-logo img{height:44px;width:auto}
+.f-h{font-family:"Prompt",sans-serif;font-weight:500;font-size:14.5px;color:#fff;margin-bottom:12px}
+.f-row{display:flex;gap:10px;font-size:13px;line-height:1.75;margin-bottom:12px}
+.f-row svg{width:15px;height:15px;flex:none;margin-top:5px;color:var(--flame)}
+.f-row b{color:#fff;font-weight:600;font-family:"Prompt",sans-serif;font-size:13px}
+.f-links li{margin-bottom:8px;font-size:13px}
+.f-links a:hover{color:var(--flame)}
+.f-social{display:flex;gap:9px;margin-top:14px}
+.f-social a{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff}
+.f-social a:hover{background:var(--flame)}
+.f-social svg{width:15px;height:15px}
+.f-bot{border-top:1px solid rgba(255,255,255,.09);padding:16px 0;font-size:12px;color:#8a9aa7;text-align:center}
+
+/* ------------------------------------------------------- mobile sticky CTA */
+.mcta{display:none}
+
+/* -------------------------------------------------------------- responsive */
+@media (max-width:1024px){
+  .slider{height:430px}
+  .showcase{grid-template-columns:1fr}
+  .feature-card .ph{flex:none;aspect-ratio:1/.6}
+  .p-grid{grid-template-columns:repeat(2,1fr)}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .value{grid-template-columns:1fr;gap:28px}
+  .about{grid-template-columns:1fr;gap:26px}
+  .about-media{border-radius:0 0 var(--radius-lg) var(--radius-lg);
+    margin-left:calc(-1 * var(--gutter));width:calc(100% + 2 * var(--gutter));aspect-ratio:16/9}
+  .about-body{padding:0}
+  .art-grid{grid-template-columns:repeat(2,1fr)}
+  .faq{grid-template-columns:1fr}
+  .f-top{grid-template-columns:1fr 1fr;gap:26px}
+  .work-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:760px){
+  .utility-in{padding:10px 0}
+  .brand img{height:34px}
+  .brand-txt b{font-size:14px}
+  .brand-txt span{font-size:10px}
+  .nav-links{display:none;position:absolute;left:0;right:0;top:100%;background:#fff;
+    border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:8px 20px 14px;gap:2px;
+    box-shadow:0 12px 24px rgba(42,80,104,.09)}
+  .nav-links.open{display:flex}
+  .nav-links a{border-radius:8px}
+  .nav{position:sticky}
+  .nav-in{position:relative}
+  .nav-toggle{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid var(--line);
+    border-radius:8px;padding:7px 12px;font-family:"Prompt",sans-serif;font-size:14px;color:var(--navy-800)}
+  .slider{height:300px;border-radius:var(--radius);margin-bottom:24px}
+  .slider .arrow{display:none}
+  .slider .dots{left:20px;bottom:16px}
+  .mock-tag{top:auto;bottom:14px;right:14px;font-size:10px;padding:4px 9px}
+  .hero-duo{grid-template-columns:1fr}
+  .hero-card{min-height:250px}
+  .ribbon-box{grid-template-columns:1fr 1fr}
+  .ribbon-item + .ribbon-item::before{display:none}
+  .ribbon-item{border-top:1px solid rgba(179,215,234,.5)}
+  .ribbon-item:nth-child(-n+2){border-top:0}
+  .ribbon-item:nth-child(even){border-left:1px solid rgba(179,215,234,.5)}
+  .p-grid{grid-template-columns:1fr 1fr;gap:14px}
+  .cat-grid{grid-template-columns:1fr 1fr;gap:14px}
+  .art-grid{grid-template-columns:1fr}
+  .linecta{grid-template-columns:1fr;gap:26px}
+  .work-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:120px}
+  .f-top{grid-template-columns:1fr;padding:34px 0 26px}
+  .sec{padding:38px 0}
+  body{padding-bottom:62px}
+  .mcta{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:80;
+    background:#fff;border-top:1px solid var(--line);padding:8px 12px;
+    box-shadow:0 -6px 18px rgba(42,80,104,.09);
+  }
+  .mcta a{justify-content:center;font-size:13px;padding:10px 8px}
+}
+@media (max-width:520px){
+  .brand-txt span{display:none}
+  .brand-txt b{font-size:13.5px;line-height:1.25}
+  .utility-cta .btn{padding:9px 14px;font-size:13px}
+}
+@media (max-width:430px){
+  .slider{height:240px}
+  .p-grid,.cat-grid{grid-template-columns:1fr}
+  .ribbon-box{grid-template-columns:1fr}
+  .ribbon-item:nth-child(even){border-left:0}
+  .ribbon-item:nth-child(-n+2){border-top:0}
+  .ribbon-item:nth-child(n+2){border-top:1px solid rgba(179,215,234,.5)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ UTILITY BAR -->
+<div class="utility">
+  <div class="wrap utility-in">
+    <a class="brand" href="#">
+      <img src="../assets/logo.png" alt="Blue Rich Material Products">
+      <span class="brand-txt">
+        <b>บลูริช แมททีเรียล โปรดักส์</b>
+        <span>Blue Rich Material Products</span>
+      </span>
+    </a>
+    <div class="utility-cta">
+      <a class="icon-round" href="tel:0994586692" aria-label="โทร 099-458-6692">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+      <a class="btn btn-primary" href="#contact">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        ขอใบเสนอราคา
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================== NAV -->
+<nav class="nav">
+  <div class="wrap nav-in">
+    <button class="nav-toggle" id="navToggle" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      เมนู
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a class="active" href="#">หน้าแรก</a></li>
+      <li><a href="#products">สีกันไฟ Neocoat</a></li>
+      <li><a href="#categories">ผ้ากันไฟ</a></li>
+      <li><a href="#categories">ทินเนอร์/น้ำมันสน</a></li>
+      <li><a href="#about">เกี่ยวกับเรา</a></li>
+      <li><a href="#works">ผลงานของเรา</a></li>
+      <li><a href="#articles">บทความ</a></li>
+      <li><a href="#contact">ติดต่อเรา</a></li>
+    </ul>
+    <div class="nav-social">
+      <a class="fb" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg></a>
+      <a class="li" href="https://line.me/ti/p/~blue999" aria-label="LINE"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.66 2 10.16c0 4.03 3.55 7.4 8.35 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.54 1.06-.45 5.71-3.36 7.79-5.76C21.13 13.68 22 12 22 10.16 22 5.66 17.52 2 12 2zM8.2 12.9H6.3a.35.35 0 0 1-.35-.35V8.72c0-.19.16-.35.35-.35s.35.16.35.35v3.48H8.2c.2 0 .35.16.35.35s-.15.35-.35.35zm1.43-.35c0 .19-.16.35-.35.35a.35.35 0 0 1-.35-.35V8.72c0-.19.16-.35.35-.35s.35.16.35.35v3.83zm4.35 0a.35.35 0 0 1-.63.21l-1.96-2.67v2.46c0 .19-.16.35-.35.35a.35.35 0 0 1-.35-.35V8.72a.35.35 0 0 1 .63-.21l1.96 2.67V8.72c0-.19.16-.35.35-.35s.35.16.35.35v3.83zm2.87-2.27c.2 0 .35.16.35.35s-.15.35-.35.35h-1.55v.92h1.55c.2 0 .35.16.35.35s-.15.35-.35.35H15c-.19 0-.35-.16-.35-.35V8.72c0-.19.16-.35.35-.35h1.85c.2 0 .35.16.35.35s-.15.35-.35.35H15.3v.92h1.55z"/></svg></a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================================================================= HERO -->
+<header class="hero">
+  <div class="wrap">
+    <!-- แบนเนอร์สไลด์ — รูปเป็น mockup 1600×550 รอไฟล์จริงจากลูกค้า -->
+    <div class="slider" id="heroSlider" aria-roledescription="carousel" aria-label="แบนเนอร์หน้าแรก">
+      <div class="slide on" role="group" aria-roledescription="slide" aria-label="1 จาก 3">
+        <img src="../assets/banner-mock-1.jpg" alt="">
+      </div>
+
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="2 จาก 3">
+        <img src="../assets/banner-mock-2.jpg" alt="">
+      </div>
+
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="3 จาก 3">
+        <img src="../assets/banner-mock-3.jpg" alt="">
+      </div>
+
+      <span class="mock-tag">MOCKUP — รอไฟล์แบนเนอร์จริง</span>
+
+      <button class="arrow prev" type="button" aria-label="สไลด์ก่อนหน้า"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="arrow next" type="button" aria-label="สไลด์ถัดไป"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+
+      <div class="dots" role="tablist" aria-label="เลือกสไลด์">
+        <button type="button" role="tab" aria-selected="true" aria-label="สไลด์ 1"></button>
+        <button type="button" role="tab" aria-selected="false" aria-label="สไลด์ 2"></button>
+        <button type="button" role="tab" aria-selected="false" aria-label="สไลด์ 3"></button>
+      </div>
+    </div>
+
+    <h1>ผู้จำหน่ายสีกันไฟโครงสร้างเหล็กและรับรองงานโดยวุฒิวิศวกรครบวงจร</h1>
+
+    <div class="hero-duo">
+      <a class="hero-card" href="#products">
+        <img src="../assets/products/work-steel-beams-painted.webp" alt="งานทาสีกันไฟโครงสร้างเหล็ก">
+        <div class="cap">
+          <div class="en eyebrow-en">Intumescent Paint</div>
+          <div class="th"><em>สีกันไฟ</em> โครงสร้างเหล็ก</div>
+          <div class="sub">Neocoat สูตรน้ำมัน &amp; สูตรน้ำ · ASTM E-119 · ISO 834</div>
+        </div>
+      </a>
+
+      <a class="hero-card" href="#certify">
+        <div class="mosaic">
+          <img src="../assets/work-02.jpg" alt="ผลงานทาสีกันไฟ">
+          <img src="../assets/work-07.jpg" alt="ผลงานโครงสร้างเหล็ก">
+          <img src="../assets/work-11.jpg" alt="งานพ่นสีกันไฟ">
+          <img src="../assets/work-13.jpg" alt="ตรวจงานสีกันไฟหน้างาน">
+        </div>
+        <div class="cap">
+          <div class="en eyebrow-en">Engineer Certified</div>
+          <div class="th"><em>รับรองงาน</em> โดยวุฒิวิศวกร</div>
+          <div class="sub">แบบ กสอ. น.4-5 / น.4-9 · กฎกระทรวง พ.ศ. 2567</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- trust ribbon -->
+    <div class="ribbon">
+      <div class="ribbon-box">
+        <div class="ribbon-item">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <span><b>ผ่านมาตรฐานสากล</b><span>ASTM E-119 · ISO 834</span></span>
+        </div>
+        <div class="ribbon-item">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg></span>
+          <span><b>ถูกต้องตามกฎหมาย</b><span>เอกสาร น.4-5 / น.4-9</span></span>
+        </div>
+        <div class="ribbon-item">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="3" width="15" height="13" rx="1.5"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg></span>
+          <span><b>สินค้าพร้อมส่ง</b><span>มีสต็อกในไทย ส่งทั่วประเทศ</span></span>
+        </div>
+        <div class="ribbon-item">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></span>
+          <span><b>ทีมงานมืออาชีพ</b><span>ดูแลตั้งแต่เลือกสีถึงส่งมอบเอกสาร</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================ BEST SELLER -->
+<section class="sec" id="products">
+  <div class="wrap">
+    <div class="showcase">
+
+      <!-- featured -->
+      <a class="feature-card" href="#">
+        <span class="pill-corner">สินค้า<br>เรือธง</span>
+        <span class="ph"><img src="../assets/products/neocoat-paint-s.png" alt="สีกันไฟ Neocoat Intumescent Paint-S"></span>
+        <span class="body">
+          <span class="p-name">สีกันไฟ Neocoat สูตรน้ำมัน Intumescent&nbsp;Paint-S</span>
+          <span class="p-sku">รหัส: <b>NEO-IP-S</b> · หมวดสีกันไฟ</span>
+          <span class="p-desc">สีกันไฟชนิดขยายตัว (Intumescent) สูตรน้ำมัน สำหรับทา/พ่นโครงสร้างเหล็ก คาน เสา ตามมาตรฐานการทดสอบ ASTM E-119, ISO 834 เนื้อสีขาวด้านและสีเทาด้าน</span>
+          <span class="p-foot">
+            <span class="p-spec">22 กก. · 23–25 ตร.ม./ถัง</span>
+            <span class="p-ask">สอบถามราคา →</span>
+          </span>
+        </span>
+      </a>
+
+      <!-- list -->
+      <div>
+        <div class="sec-head">
+          <h2>สินค้าขายดี</h2>
+          <a class="more" href="#">ดูสินค้าทั้งหมด
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+
+        <div class="p-grid">
+          <a class="p-card" href="#">
+            <span class="tagdot">Low VOC</span>
+            <span class="ph"><img src="../assets/products/neocoat-paint-w.png" alt="สีกันไฟ Neocoat สูตรน้ำ"></span>
+            <span class="body">
+              <span class="p-name">สีกันไฟ Neocoat สูตรน้ำ Intumescent Paint-W</span>
+              <span class="p-sku">รหัส: <b>NEO-IP-W</b></span>
+              <span class="p-desc">สูตรผสมด้วยน้ำ (Water Base) เหมาะกับอาคารเขียว ไม่ใช้ทินเนอร์เป็นตัวทำละลาย ค่า VOC ต่ำ</span>
+              <span class="p-foot"><span class="p-spec">22 กก.</span><span class="p-ask">รายละเอียด →</span></span>
+            </span>
+          </a>
+
+          <a class="p-card" href="#">
+            <span class="tagdot">ขายดี</span>
+            <span class="ph"><img src="../assets/products/neocoat-primer.png" alt="สีรองพื้นเทา Neocoat Primer"></span>
+            <span class="body">
+              <span class="p-name">สีรองพื้นเทา Neocoat Primer Grey Oxide</span>
+              <span class="p-sku">รหัส: <b>NEO-PR-GO</b></span>
+              <span class="p-desc">สีรองพื้นกันสนิมสำหรับทาเหล็กก่อนทาสีกันไฟ มีสีแดงและสีเทา น้ำหนัก 25 กก.</span>
+              <span class="p-foot"><span class="p-spec">60–80 ตร.ม./ถัง</span><span class="p-ask">รายละเอียด →</span></span>
+            </span>
+          </a>
+
+          <a class="p-card" href="#">
+            <span class="tagdot">U.L. Listed</span>
+            <span class="ph"><img src="../assets/products/fendolite-m2.png" alt="ซีเมนต์กันไฟ Fendolite M2"></span>
+            <span class="body">
+              <span class="p-name">ซีเมนต์กันไฟ Fendolite M2 งานภายนอก</span>
+              <span class="p-sku">รหัส: <b>FEN-M2</b></span>
+              <span class="p-desc">ซีเมนต์พ่นกันไฟชนิด High density น้ำหนัก 20 กก. ทนไฟ 1–3 ชม. สำหรับงานภายนอก</span>
+              <span class="p-foot"><span class="p-spec">ทนไฟ 1–3 ชม.</span><span class="p-ask">รายละเอียด →</span></span>
+            </span>
+          </a>
+
+          <a class="p-card" href="#">
+            <span class="ph"><img src="../assets/products/fiberglass-cloth-panel-main.webp" alt="ผ้ากันไฟ Fiberglass Cloth"></span>
+            <span class="body">
+              <span class="p-name">ผ้ากันไฟ Fiberglass Cloth</span>
+              <span class="p-sku">รหัส: <b>FBG-CLOTH</b></span>
+              <span class="p-desc">ผ้ากันสะเก็ดไฟ ทออแบบซาติน ทนอุณหภูมิใช้งาน 550°C และ 1000°C ขนาด 1×1 ม.</span>
+              <span class="p-foot"><span class="p-spec">550–1000°C</span><span class="p-ask">รายละเอียด →</span></span>
+            </span>
+          </a>
+
+          <a class="p-card" href="#">
+            <span class="ph"><img src="../assets/products/thinner-3a-intanin.webp" alt="ทินเนอร์ 3A อินทนิล"></span>
+            <span class="body">
+              <span class="p-name">ทินเนอร์ 3A ผสมสี อินทนิล</span>
+              <span class="p-sku">รหัส: <b>THN-3A</b></span>
+              <span class="p-desc">ทินเนอร์ผสมสีคุณภาพสูง สำหรับผสมสีน้ำมันและสีกันไฟสูตรน้ำมัน มีหลายขนาดบรรจุ</span>
+              <span class="p-foot"><span class="p-spec">พร้อมส่ง</span><span class="p-ask">รายละเอียด →</span></span>
+            </span>
+          </a>
+
+          <a class="p-card" href="#">
+            <span class="ph"><img src="../assets/products/roof-shield.png" alt="สีเซรามิคสะท้อนความร้อน Roof Shield"></span>
+            <span class="body">
+              <span class="p-name">สีเซรามิคสะท้อนความร้อน Roof Shield White</span>
+              <span class="p-sku">รหัส: <b>RSH-W</b></span>
+              <span class="p-desc">สีเซรามิคสูตรน้ำ สะท้อนความร้อนเข้าสู่ตัวอาคาร ช่วยลดอุณหภูมิใต้หลังคา</span>
+              <span class="p-foot"><span class="p-spec">ลดความร้อน 93%</span><span class="p-ask">รายละเอียด →</span></span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= CATEGORIES -->
+<section class="sec sec-shell" id="categories">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>เลือกสินค้าตามลักษณะงาน</h2>
+      <a class="btn btn-ghost btn-sm" href="#">ดูสินค้าทั้งหมด</a>
+    </div>
+
+    <div class="cat-grid">
+      <a class="cat-card" href="#">
+        <span class="ph"><img src="../assets/products/neocoat-paint-s.png" alt="สีกันไฟ"></span>
+        <span class="body">
+          <span class="en">Intumescent Paint</span>
+          <h3>สีกันไฟ</h3>
+          <p>Neocoat Intumescent Paint-S · Solvent Base และสูตรน้ำ Low VOC</p>
+        </span>
+      </a>
+      <a class="cat-card" href="#">
+        <span class="ph"><img src="../assets/products/neocoat-primer.png" alt="สีรองพื้นและทับหน้า"></span>
+        <span class="body">
+          <span class="en">Primer &amp; Top Coat</span>
+          <h3>สีรองพื้น / ทับหน้า</h3>
+          <p>Neocoat Primer Grey Oxide · Neogloss สีน้ำมันทาเหล็ก</p>
+        </span>
+      </a>
+      <a class="cat-card" href="#">
+        <span class="ph"><img src="../assets/products/fendolite-m2.png" alt="ซีเมนต์กันไฟ"></span>
+        <span class="body">
+          <span class="en">Sprayed Fireproofing</span>
+          <h3>ซีเมนต์กันไฟ</h3>
+          <p>Fendolite M2 ซีเมนต์พ่นกันไฟ งานภายนอก · Mandolite CP-2 งานภายใน</p>
+        </span>
+      </a>
+      <a class="cat-card" href="#">
+        <span class="ph"><img src="../assets/products/fiberglass-cloth-panel-main.webp" alt="ผ้ากันไฟ"></span>
+        <span class="body">
+          <span class="en">Fire Blanket</span>
+          <h3>ผ้ากันไฟ</h3>
+          <p>Fiberglass Cloth ผ้ากันไฟ / กันสะเก็ดไฟ 550–1000°C</p>
+        </span>
+      </a>
+      <a class="cat-card" href="#">
+        <span class="ph"><img src="../assets/products/thinner-3a-intanin.webp" alt="ทินเนอร์และน้ำมันสน"></span>
+        <span class="body">
+          <span class="en">Thinner &amp; Turpentine</span>
+          <h3>ทินเนอร์ / น้ำมันสน</h3>
+          <p>ทินเนอร์ 3A ผสมสี อินทนิล · ทินเนอร์ 2K · น้ำมันสน</p>
+        </span>
+      </a>
+      <a class="cat-card" href="#">
+        <span class="ph"><img src="../assets/products/roof-shield.png" alt="เซรามิคสะท้อนความร้อน"></span>
+        <span class="body">
+          <span class="en">Ceramic Coating</span>
+          <h3>เซรามิคสะท้อนร้อน</h3>
+          <p>Roof Shield สีเซรามิคสะท้อนความร้อน ลดอุณหภูมิใต้หลังคา</p>
+        </span>
+      </a>
+      <a class="cat-card" href="#">
+        <span class="ph"><img src="../assets/products/four-plus-exterior.webp" alt="สีน้ำพลาสติก"></span>
+        <span class="body">
+          <span class="en">Emulsion Paint</span>
+          <h3>สีน้ำพลาสติก</h3>
+          <p>Four Plus ทาภายใน / ภายนอก และสีรองพื้นปูน</p>
+        </span>
+      </a>
+      <a class="cat-card" href="#certify">
+        <span class="ph"><img src="../assets/cert-documents.jpg" alt="บริการรับรองโดยวุฒิวิศวกร"></span>
+        <span class="body">
+          <span class="en">Engineering Service</span>
+          <h3>บริการรับรองงาน</h3>
+          <p>จัดทำเอกสาร น.4-5 / น.4-9 รับรองโดยวุฒิวิศวกรโยธา</p>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================== VALUE / QUOTE -->
+<section class="sec" id="certify">
+  <div class="wrap value">
+    <div>
+      <div class="quote-mark">
+        <svg viewBox="0 0 48 34" fill="currentColor" aria-hidden="true">
+          <path d="M0 34V19.6C0 8.9 6.2 1.4 17 0l1.7 5.6C12.4 7.4 9 11.2 9 15.3h6.9V34H0zm29.3 0V19.6C29.3 8.9 35.5 1.4 46.3 0L48 5.6c-6.3 1.8-9.7 5.6-9.7 9.7h6.9V34H29.3z"/>
+        </svg>
+      </div>
+      <div class="lead">
+        <span class="l1">Protect your</span>
+        <span class="l2">Steel <em>Structure</em></span>
+      </div>
+      <p class="note">ปกป้องโครงสร้างเหล็กให้คงรูปได้นานขึ้นตามอัตราการทนไฟที่ออกแบบไว้</p>
+      <ul class="value-list">
+        <li>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span>ฟิล์มสีขยายตัวเป็นฉนวนเมื่อโดนความร้อน</span>
+        </li>
+        <li>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span>คำนวณความหนาฟิล์มตามค่า Section Factor รายชิ้น</span>
+        </li>
+        <li>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span>ตรวจวัดความหนาฟิล์มทั้งขณะเปียกและเมื่อแห้ง</span>
+        </li>
+        <li>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span>ปิดงานด้วยเอกสารรับรองจากวุฒิวิศวกรโยธา</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="value-media">
+      <img src="../assets/hero-steel-truss.jpg" alt="โครงสร้างเหล็กที่ทาสีกันไฟแล้ว">
+      <span class="badge">ระบบสีกันไฟ Neocoat — รองพื้น → สีกันไฟ → ทับหน้า</span>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================== STANDARDS -->
+<section class="sec sec-shell">
+  <div class="wrap trusted">
+    <p class="quote">&ldquo;Blue Rich Material Products<br>วัสดุกันไฟที่ผ่านการทดสอบและรับรองตามมาตรฐานที่กฎหมายกำหนด&rdquo;</p>
+    <div class="std-row">
+      <div class="std-chip"><b>ASTM E-119</b><span>ทดสอบโดยจุฬาลงกรณ์มหาวิทยาลัย</span></div>
+      <div class="std-chip"><b>ISO 834</b><span>ทดสอบ ณ ประเทศมาเลเซีย</span></div>
+      <div class="std-chip"><b>ISO 9001 : 2015</b><span>ระบบบริหารคุณภาพโรงงานผู้ผลิต</span></div>
+      <div class="std-chip"><b>กฎกระทรวง พ.ศ. 2567</b><span>การออกแบบโครงสร้างอาคาร</span></div>
+      <div class="std-chip"><b>แบบ น.4-5 / น.4-9</b><span>รับรองโดยวุฒิวิศวกรโยธา</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ WORKS -->
+<section class="sec" id="works">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>ผลงานที่ผ่านมาของเรา</h2>
+      <a class="btn btn-primary btn-sm" href="#">ผลงานทั้งหมด</a>
+    </div>
+    <div class="work-grid">
+      <a class="big" href="#"><img src="../assets/work-02.jpg" alt="งานทาสีกันไฟโครงสร้างหลัก"></a>
+      <a href="#"><img src="../assets/work-05.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-07.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-09.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-12.jpg" alt="งานสีกันไฟ"></a>
+      <a class="tall" href="#"><img src="../assets/work-14.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-03.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-16.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-10.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-06.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-01.jpg" alt="งานสีกันไฟ"></a>
+      <a href="#"><img src="../assets/work-04.jpg" alt="งานสีกันไฟ"></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ ABOUT -->
+<section class="sec about-outer" id="about" style="padding-top:10px">
+  <div class="about">
+    <div class="about-media">
+      <img src="../assets/products/neocoat-paint-w-warehouse.webp" alt="คลังสินค้า Blue Rich Material Products">
+      <span class="stamp"><span class="in"><b>1</b><span>One Stop Service</span></span></span>
+    </div>
+    <div class="about-body">
+      <div class="en eyebrow-en">Blue Rich Material Products</div>
+      <h2>BY <em>BLUE RICH</em></h2>
+      <p>
+        จำหน่ายวัสดุป้องกันอัคคีภัยครบวงจร ทั้งสีกันไฟ Neocoat Intumescent Paint สีรองพื้นกันสนิม
+        ซีเมนต์พ่นกันไฟ ผ้ากันไฟ ทินเนอร์และน้ำมันสน พร้อมบริการจัดทำเอกสารรับรองงานสีกันไฟโดยวุฒิวิศวกรโยธา
+        ตามกฎกระทรวงกำหนดการออกแบบโครงสร้างอาคาร พ.ศ. 2567 — ดูแลตั้งแต่เลือกระบบสี คำนวณความหนาฟิล์ม
+        จนถึงส่งมอบเอกสารให้ผ่านการตรวจ
+      </p>
+      <div class="stat-row">
+        <div><b>15+</b><span>ปีประสบการณ์งานสีกันไฟ</span></div>
+        <div><b>3 ชม.</b><span>อัตราการทนไฟสูงสุดที่รับรอง</span></div>
+        <div><b>1000°C</b><span>อุณหภูมิสูงสุดของผ้ากันไฟ</span></div>
+        <div><b>100%</b><span>งานรับรองโดยวุฒิวิศวกร</span></div>
+      </div>
+      <a class="btn btn-ghost" href="#">เกี่ยวกับเรา</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== LINE CTA -->
+<section class="sec" id="contact">
+  <div class="wrap linecta">
+    <div>
+      <div class="head"><h2>สนใจสั่งซื้อ</h2><span class="rule"></span></div>
+      <p class="sub">หรือสอบถามรายละเอียดเพิ่มเติม ทีมงานยินดีช่วยเลือกระบบสีให้ตรงกับอัตราการทนไฟที่โครงการต้องการ</p>
+
+      <a class="btn btn-line" href="https://line.me/ti/p/~blue999">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2C6.48 2 2 5.66 2 10.16c0 4.03 3.55 7.4 8.35 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.54 1.06-.45 5.71-3.36 7.79-5.76C21.13 13.68 22 12 22 10.16 22 5.66 17.52 2 12 2z"/></svg>
+        เพิ่มเพื่อนทาง LINE · @blue999
+      </a>
+
+      <div class="phone-list">
+        <a href="tel:0994586692"><span class="icon-round"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92z"/></svg></span>099-458-6692</a>
+        <a href="tel:0614215422"><span class="icon-round"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92z"/></svg></span>061-421-5422</a>
+      </div>
+    </div>
+
+    <!-- phone mockup -->
+    <div class="mock">
+      <div class="mock-screen">
+        <span class="mock-notch"></span>
+        <div class="hi">แอดไลน์เลย</div>
+        <div class="mock-line-logo">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.66 2 10.16c0 4.03 3.55 7.4 8.35 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.54 1.06-.45 5.71-3.36 7.79-5.76C21.13 13.68 22 12 22 10.16 22 5.66 17.52 2 12 2zM8.2 12.9H6.3a.35.35 0 0 1-.35-.35V8.72c0-.19.16-.35.35-.35s.35.16.35.35v3.48H8.2c.2 0 .35.16.35.35s-.15.35-.35.35zm1.43-.35c0 .19-.16.35-.35.35a.35.35 0 0 1-.35-.35V8.72c0-.19.16-.35.35-.35s.35.16.35.35v3.83zm4.35 0a.35.35 0 0 1-.63.21l-1.96-2.67v2.46c0 .19-.16.35-.35.35a.35.35 0 0 1-.35-.35V8.72a.35.35 0 0 1 .63-.21l1.96 2.67V8.72c0-.19.16-.35.35-.35s.35.16.35.35v3.83zm2.87-2.27c.2 0 .35.16.35.35s-.15.35-.35.35h-1.55v.92h1.55c.2 0 .35.16.35.35s-.15.35-.35.35H15c-.19 0-.35-.16-.35-.35V8.72c0-.19.16-.35.35-.35h1.85c.2 0 .35.16.35.35s-.15.35-.35.35H15.3v.92h1.55z"/></svg>
+        </div>
+        <div class="mock-id">@blue999</div>
+        <div class="mock-sub">LINE Official Account</div>
+        <a class="btn btn-line btn-sm mock-btn" href="https://line.me/ti/p/~blue999">เพิ่มเพื่อน</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= ARTICLES -->
+<section class="sec sec-shell" id="articles">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>บทความสาระน่ารู้</h2>
+      <a class="more" href="#">บทความทั้งหมด
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="art-grid">
+      <a class="art" href="#">
+        <span class="ph"><img src="../assets/work-02.jpg" alt="งานทาสีกันไฟ Neocoat"></span>
+        <span class="body">
+          <span class="tag">ผลงาน</span>
+          <h3>รูปภาพงานทาสีกันไฟ Neocoat Intumescent Paint</h3>
+          <p>โครงการทาสีกันไฟโครงสร้างหลัก เลือกใช้ Neocoat Intumescent Paint Solvent Base สูตรน้ำมัน ชนิดเนื้อสีขาวด้าน</p>
+          <span class="date">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            12 มิถุนายน 2567
+          </span>
+        </span>
+      </a>
+
+      <a class="art" href="#">
+        <span class="ph"><img src="../assets/cert-documents.jpg" alt="กฎกระทรวง พ.ศ. 2567"></span>
+        <span class="body">
+          <span class="tag">กฎหมาย</span>
+          <h3>กฎกระทรวง พ.ศ. 2567 กับงานสีกันไฟโครงสร้างเหล็ก</h3>
+          <p>กฎกระทรวงกำหนดการออกแบบโครงสร้างอาคาร และคุณสมบัติของวัสดุที่ใช้ในงานโครงสร้างอาคาร ส่งผลอย่างไรกับเจ้าของโครงการ</p>
+          <span class="date">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            20 พฤษภาคม 2567
+          </span>
+        </span>
+      </a>
+
+      <a class="art" href="#">
+        <span class="ph"><img src="../assets/news-law.png" alt="กฎหมายป้องกันอัคคีภัย"></span>
+        <span class="body">
+          <span class="tag">กฎหมาย</span>
+          <h3>เรื่องควรรู้เกี่ยวกับกฎหมายการป้องกันอัคคีภัย</h3>
+          <p>กฎกระทรวงฉบับที่ 60 พ.ศ. 2549 กำหนดมาตรฐานขั้นต่ำด้านโครงสร้างและการทนไฟของอาคารไว้อย่างไร</p>
+          <span class="date">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            8 มีนาคม 2567
+          </span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== FAQ -->
+<section class="sec">
+  <div class="wrap faq">
+    <div class="faq-left">
+      <div class="en">รวบรวม</div>
+      <h2>คำถามที่พบบ่อย?</h2>
+      <div class="ph"><img src="../assets/work-08.jpg" alt="ทีมงานทาสีกันไฟ"></div>
+    </div>
+
+    <div>
+      <details class="qa" open>
+        <summary>สีกันไฟ Neocoat ทำงานอย่างไร ต่างจากสีทาเหล็กทั่วไปตรงไหน?</summary>
+        <div class="ans">สีกันไฟเป็นสีชนิดขยายตัว (Intumescent) เมื่อได้รับความร้อนจากเพลิงไหม้ ฟิล์มสีจะพองตัวขึ้นเป็นชั้นหนา ทำหน้าที่เป็นฉนวนกันความร้อน ไม่ให้ความร้อนเข้าถึงเนื้อเหล็กโดยตรง ช่วยรักษาโครงสร้างเหล็กให้คงรูปได้นานขึ้นตามระยะเวลาที่ออกแบบไว้ (Fire Rating) ซึ่งสีทาเหล็กทั่วไปไม่มีคุณสมบัตินี้</div>
+      </details>
+
+      <details class="qa">
+        <summary>เลือกสูตรน้ำมัน (Paint-S) หรือสูตรน้ำ (Paint-W) ดี?</summary>
+        <div class="ans">สูตรน้ำมัน (Solvent Base) แห้งไว ทำความหนาได้ดี เหมาะกับงานทั่วไป ส่วนสูตรน้ำ (Water Base) ไม่ใช้ทินเนอร์เป็นตัวทำละลาย มีค่า VOC ต่ำ เหมาะกับอาคารเขียว (Green Building) และงานในพื้นที่ที่ต้องการลดกลิ่นตัวทำละลาย ทั้งสองสูตรบรรจุ 22 กก. ทาได้ 23–25 ตร.ม./ถัง</div>
+      </details>
+
+      <details class="qa">
+        <summary>ต้องทาสีรองพื้นก่อนทาสีกันไฟหรือไม่?</summary>
+        <div class="ans">ต้องทาทุกครั้ง โครงสร้างเหล็กต้องทาสีรองพื้นกันสนิมก่อนเสมอ และต้องเป็นสีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat เพื่อป้องกันการหลุดล่อนและปฏิกิริยาเคมีที่ไม่พึงประสงค์ระหว่างชั้นสีรองพื้นกับชั้นสีกันไฟ</div>
+      </details>
+
+      <details class="qa">
+        <summary>งานสีกันไฟต้องมีเอกสารรับรองอะไรบ้าง?</summary>
+        <div class="ans">งานสีกันไฟที่ถูกต้องตามกฎหมายต้องมีเอกสารรับรองโดยวุฒิวิศวกรโยธาและวิศวกรควบคุมงาน ตามแบบ น.4-5 และ น.4-9 พร้อมผลทดสอบตามมาตรฐาน ASTM E-119 หรือ ISO 834 ประกอบ ทางบริษัทฯ ให้บริการจัดทำเอกสารชุดนี้ให้กับทุกโครงการที่ใช้ผลิตภัณฑ์ของเรา</div>
+      </details>
+
+      <details class="qa">
+        <summary>ต้องทาสีกันไฟหนาเท่าไร ถึงจะได้อัตราการทนไฟตามที่ต้องการ?</summary>
+        <div class="ans">ความหนาฟิล์มแห้งต้องคำนวณให้สอดคล้องกับค่า Section Factor ของชิ้นส่วนแต่ละชิ้นและอัตราการทนไฟที่โครงการกำหนด ไม่ใช่ค่าคงที่ค่าเดียวทั้งอาคาร ส่งแบบและรายการเหล็กมาให้ทีมงาน แล้วเราจะคำนวณความหนาและปริมาณสีให้</div>
+      </details>
+
+      <details class="qa">
+        <summary>ผ้ากันไฟ กับ สีกันไฟ ใช้แทนกันได้ไหม?</summary>
+        <div class="ans">ใช้แทนกันไม่ได้ สีกันไฟใช้เคลือบโครงสร้างเหล็กถาวรเพื่อให้ได้อัตราการทนไฟตามกฎหมาย ส่วนผ้ากันไฟ (Fiberglass Cloth) ใช้คลุม/กั้นสะเก็ดไฟจากงานเชื่อมหรือกันความร้อนชั่วคราว ทนอุณหภูมิใช้งาน 550°C และ 1000°C</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================== FOOTER -->
+<footer>
+  <div class="wrap f-top">
+    <div>
+      <span class="f-logo"><img src="../assets/logo-flat.jpg" alt="Blue Rich"></span>
+    </div>
+
+    <div>
+      <div class="f-h">บริษัท บลูริช แมททีเรียล โปรดักส์ จำกัด</div>
+      <div class="f-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>หมู่บ้านบุราสิริ ปัญญาอินทรา เลขที่ 288/60 ถนนเลียบคลองสอง<br>แขวงบางชัน เขตคลองสามวา กรุงเทพมหานคร 10510</span>
+      </div>
+      <div class="f-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92z"/></svg>
+        <span><b>เบอร์ติดต่อ</b><br>099-458-6692 · 061-421-5422 · 086-339-4682</span>
+      </div>
+      <div class="f-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+        <span><b>อีเมล</b><br>bluerich.sale@gmail.com</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="f-h">สินค้าและบริการ</div>
+      <ul class="f-links">
+        <li><a href="#products">สีกันไฟ Neocoat</a></li>
+        <li><a href="#categories">สีรองพื้น / ทับหน้า</a></li>
+        <li><a href="#categories">ซีเมนต์กันไฟ</a></li>
+        <li><a href="#categories">ผ้ากันไฟ</a></li>
+        <li><a href="#categories">ทินเนอร์ / น้ำมันสน</a></li>
+        <li><a href="#certify">บริการรับรองโดยวุฒิวิศวกร</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="f-h">ติดต่อขอใบเสนอราคา</div>
+      <a class="btn btn-flame btn-sm" href="#contact">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        ขอใบเสนอราคา
+      </a>
+      <div class="f-social">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></svg></a>
+        <a href="https://line.me/ti/p/~blue999" aria-label="LINE"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.66 2 10.16c0 4.03 3.55 7.4 8.35 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.54 1.06-.45 5.71-3.36 7.79-5.76C21.13 13.68 22 12 22 10.16 22 5.66 17.52 2 12 2z"/></svg></a>
+      </div>
+      <p style="font-size:12.5px;margin-top:14px;color:#8a9aa7">เวลาทำการ<br>จันทร์ – เสาร์ 08:00 – 17:30 น.</p>
+    </div>
+  </div>
+  <div class="f-bot">Copyright © 2026 Blue Rich Material Products Co., Ltd. — All rights reserved.</div>
+</footer>
+
+<!-- ================================================= mobile sticky actions -->
+<div class="mcta">
+  <a class="btn btn-line" href="https://line.me/ti/p/~blue999">LINE</a>
+  <a class="btn btn-flame" href="tel:0994586692">โทร</a>
+  <a class="btn btn-primary" href="#contact">ขอราคา</a>
+</div>
+
+<script>
+  var t = document.getElementById('navToggle');
+  var l = document.getElementById('navLinks');
+  t.addEventListener('click', function () {
+    var open = l.classList.toggle('open');
+    t.setAttribute('aria-expanded', String(open));
+  });
+  l.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') l.classList.remove('open');
+  });
+
+  /* แบนเนอร์สไลด์ */
+  (function () {
+    var box = document.getElementById('heroSlider');
+    if (!box) return;
+    var slides = [].slice.call(box.querySelectorAll('.slide'));
+    var dots = [].slice.call(box.querySelectorAll('.dots button'));
+    var i = 0, timer = null, DELAY = 6000;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach(function (s, k) {
+        s.classList.toggle('on', k === i);
+        s.setAttribute('aria-hidden', String(k !== i));
+      });
+      dots.forEach(function (d, k) { d.setAttribute('aria-selected', String(k === i)); });
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function play() { if (reduce) return; stop(); timer = setInterval(function () { show(i + 1); }, DELAY); }
+
+    box.querySelector('.prev').addEventListener('click', function () { show(i - 1); play(); });
+    box.querySelector('.next').addEventListener('click', function () { show(i + 1); play(); });
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { show(k); play(); }); });
+    box.addEventListener('mouseenter', stop);
+    box.addEventListener('mouseleave', play);
+    box.addEventListener('focusin', stop);
+    box.addEventListener('focusout', play);
+
+    show(0);
+    play();
+  })();
+</script>
+</body>
+</html>

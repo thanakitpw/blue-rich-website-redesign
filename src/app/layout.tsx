@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Anuphan, Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import FloatingActions from "@/components/layout/FloatingActions";
 import { site } from "@/data/site";
 
 const display = Anuphan({
@@ -48,7 +45,8 @@ export const metadata: Metadata = {
     description: site.description,
     images: ["/assets/banner-fireproof.jpg"],
   },
-  icons: { icon: "/assets/logo.png" },
+  // Icons come from the app/ file convention (favicon.ico, icon.png,
+  // apple-icon.png) — all generated from the Blue Rich logo.
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -81,16 +79,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
       </head>
       <body>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-brand-700 focus:px-4 focus:py-2 focus:text-white"
-        >
-          ข้ามไปยังเนื้อหาหลัก
-        </a>
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <FloatingActions />
+        {/*
+         * Chrome (header / footer / floating actions) lives in the (site) group
+         * layout — the landing pages sit outside that group on purpose and
+         * render without it.
+         */}
+        {children}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

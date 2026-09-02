@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blue Rich | สีกันไฟ Neocoat · ผ้ากันไฟ · รับรองโดยวุฒิวิศวกร</title>
+<meta name="description" content="จำหน่ายสีกันไฟ Neocoat Intumescent Paint สีรองพื้นกันสนิม ซีเมนต์กันไฟ ผ้ากันไฟ ทินเนอร์ พร้อมบริการรับรองงานสีกันไฟโดยวุฒิวิศวกร">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   Blue Rich — Concept C
+   ใช้ "หน้าตา" ชุดเดียวกับ Concept B (โทนน้ำเงิน-ฟ้า + ส้ม, การ์ดมุมมน,
+   เงานุ่ม, ฟอนต์ Prompt) แต่ "จัดเลย์เอาต์ใหม่ทั้งหน้า"
+   ========================================================================= */
+
+:root{
+  --navy-950:#20404f;
+  --navy-900:#2a5068;
+  --navy-800:#33607c;
+  --blue-700:#3a6f92;
+  --blue-600:#4a86ab;
+  --blue-500:#6aa4c4;
+  --blue-300:#b3d7ea;
+  --blue-100:#e5f1f8;
+  --sky:#f1f7fb;
+  --sky-2:#f7fbfd;
+  --flame:#ef7622;
+  --flame-dark:#d25c0c;
+  --flame-soft:#fdefe4;
+  --ink:#15242f;
+  --muted:#62798a;
+  --line:#e3ebf2;
+  --line-soft:#eef3f7;
+  --green:#06c755;
+  --shell:#f6f9fb;
+  --r:16px;
+  --r-lg:24px;
+  --r-xl:32px;
+  --sh:0 10px 30px rgba(42,80,104,.08);
+  --sh-lg:0 18px 46px rgba(42,80,104,.13);
+  --wrap:1200px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:#fff;color:var(--ink);
+  font-family:"Prompt",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-weight:300;font-size:15px;line-height:1.8;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0;font-weight:600;line-height:1.35;color:var(--navy-800)}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+ul{margin:0;padding:0;list-style:none}
+
+.wrap{width:min(100% - 40px,var(--wrap));margin-inline:auto}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;background:var(--flame-soft);color:var(--flame-dark);
+  font-size:12.5px;font-weight:500;padding:6px 14px;border-radius:999px;
+}
+.eyebrow.on-sky{background:#fff;color:var(--blue-700)}
+.eyebrow.on-dark{background:rgba(255,255,255,.12);color:#fff}
+.sec{padding:76px 0}
+.sec-sky{background:var(--sky-2)}
+.sec-shell{background:var(--shell)}
+.head-c{text-align:center;max-width:660px;margin:0 auto 44px}
+.head-c h2{font-size:clamp(24px,3vw,36px);margin:14px 0 0}
+.head-c p{margin-top:12px;color:var(--muted);font-size:15px}
+
+/* --------------------------------------------------------------- buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:inherit;font-weight:500;font-size:14.5px;line-height:1;
+  padding:14px 24px;border-radius:999px;border:1.5px solid transparent;
+  cursor:pointer;transition:.18s ease;white-space:nowrap;
+}
+.btn-primary{background:var(--blue-700);color:#fff}
+.btn-primary:hover{background:var(--navy-800)}
+.btn-flame{background:var(--flame);color:#fff;box-shadow:0 8px 20px rgba(239,118,34,.28)}
+.btn-flame:hover{background:var(--flame-dark)}
+.btn-line{background:var(--green);color:#fff}
+.btn-line:hover{filter:brightness(.93)}
+.btn-out{border-color:var(--line);color:var(--navy-800);background:#fff}
+.btn-out:hover{border-color:var(--blue-300);background:var(--sky)}
+.btn-out-d{border-color:rgba(255,255,255,.3);color:#fff}
+.btn-out-d:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn-sm{padding:10px 18px;font-size:13.5px}
+
+/* ---------------------------------------------------------------- header */
+.announce{background:var(--navy-900);color:rgba(255,255,255,.82);font-size:12.5px}
+.announce-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 0;flex-wrap:wrap}
+.announce b{color:#fff;font-weight:500}
+.announce a{color:#fff}
+.announce a:hover{color:var(--flame)}
+
+.hdr{position:sticky;top:0;z-index:70;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hdr-in{display:flex;align-items:center;gap:24px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:11px;flex:none}
+.brand img{height:42px;width:auto}
+.brand b{display:block;font-weight:600;font-size:16px;color:var(--navy-800);line-height:1.2}
+.brand small{display:block;font-size:10px;font-weight:400;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.nav{display:flex;align-items:center;gap:2px;margin-left:auto}
+.nav a{padding:9px 13px;font-size:14.5px;font-weight:400;color:var(--navy-900);border-radius:999px;transition:.16s}
+.nav a:hover{background:var(--sky);color:var(--blue-700)}
+.nav a.on{background:var(--sky);color:var(--blue-700);font-weight:500}
+.hdr-cta{display:flex;gap:9px;flex:none}
+.burger{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:999px;
+  padding:9px 15px;font-family:inherit;font-size:14px;color:var(--navy-800);cursor:pointer}
+
+/* ---------------------------------------------------------------- banner */
+/* เปิดหน้าด้วยภาพล้วน เต็มความกว้างจอ ไม่มีข้อความทับ */
+.banner{position:relative;height:520px;overflow:hidden;background:var(--sky)}
+.banner img{width:100%;height:100%;object-fit:cover}
+/* ป้ายบอกว่ารูปยังเป็น mockup — ลบทิ้งได้เลยเมื่อใส่ภาพจริง */
+.mock-tag{
+  position:absolute;top:18px;right:18px;z-index:3;
+  background:rgba(255,255,255,.82);border:1px dashed var(--blue-300);color:var(--navy-800);
+  border-radius:8px;padding:6px 13px;font-size:11.5px;letter-spacing:.04em;backdrop-filter:blur(4px);
+}
+
+/* ------------------------------------------------------------------ hero */
+.hero{background:linear-gradient(180deg,var(--sky) 0%,var(--sky-2) 55%,#fff 100%);padding:56px 0 0}
+.intro{text-align:center;max-width:780px;margin:0 auto}
+.intro h1{font-size:clamp(26px,3.4vw,42px);line-height:1.26;letter-spacing:-.01em;margin:18px 0 0}
+.intro h1 em{font-style:normal;color:var(--flame)}
+.intro .lead{margin:16px auto 0;font-size:16px;color:var(--muted);max-width:640px}
+.intro .acts{display:flex;justify-content:center;flex-wrap:wrap;gap:11px;margin-top:26px}
+.chips{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:7px 14px;font-size:13px;color:var(--navy-800);box-shadow:0 2px 8px rgba(42,80,104,.05)}
+.chip svg{width:14px;height:14px;color:var(--green);flex:none}
+
+
+/* ----------------------------------------------- entry cards (ซ้อนขึ้นมา) */
+.entry-shell{padding-bottom:76px}
+.entry{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.entry-card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 24px 24px;
+  box-shadow:var(--sh);transition:.2s;display:block;position:relative;overflow:hidden;
+}
+.entry-card::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--blue-500);transform:scaleX(0);transform-origin:left;transition:.25s}
+.entry-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg)}
+.entry-card:hover::after{transform:scaleX(1)}
+.entry-card .ic{width:52px;height:52px;border-radius:14px;background:var(--sky);color:var(--blue-700);
+  display:grid;place-items:center;margin-bottom:16px}
+.entry-card .ic svg{width:25px;height:25px}
+.entry-card h3{font-size:19px}
+.entry-card p{margin-top:7px;font-size:14px;color:var(--muted);line-height:1.75}
+.entry-card .more{margin-top:16px;display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:var(--flame)}
+.entry-card .more svg{width:15px;height:15px;transition:.2s}
+.entry-card:hover .more svg{transform:translateX(4px)}
+
+/* ----------------------------------------------------------------- stats */
+.statband{background:var(--navy-900);border-radius:var(--r-lg);padding:34px 30px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.statband div{text-align:center;position:relative}
+.statband div+div::before{content:"";position:absolute;left:-12px;top:12%;height:76%;width:1px;background:rgba(255,255,255,.14)}
+.statband b{display:block;font-size:clamp(26px,3vw,36px);font-weight:600;color:#fff;line-height:1.1}
+.statband span{display:block;font-size:13px;color:rgba(255,255,255,.66);margin-top:5px}
+
+/* -------------------------------------------------- products: side + grid */
+.shop{display:grid;grid-template-columns:250px minmax(0,1fr);gap:38px;align-items:start}
+.side{position:sticky;top:86px}
+.side h3{font-size:17px;margin-bottom:14px}
+.side ul{border-top:1px solid var(--line)}
+.side button{
+  width:100%;text-align:left;font-family:inherit;font-size:14.5px;font-weight:400;color:var(--navy-900);
+  background:none;border:0;border-bottom:1px solid var(--line);padding:12px 4px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;transition:.16s;
+}
+.side button:hover{color:var(--blue-700);padding-left:9px}
+.side button[aria-pressed="true"]{color:var(--flame);font-weight:500}
+.side button i{font-style:normal;font-size:12px;color:var(--muted)}
+.side .helper{margin-top:22px;background:var(--sky);border-radius:var(--r);padding:18px 18px 20px}
+.side .helper p{font-size:13.5px;color:var(--navy-800);line-height:1.75}
+.side .helper .btn{margin-top:12px;width:100%}
+
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  display:flex;flex-direction:column;transition:.2s;position:relative}
+.pcard:hover{border-color:var(--blue-300);box-shadow:var(--sh);transform:translateY(-3px)}
+.pcard .ph{flex:none;background:var(--sky-2);aspect-ratio:1/.84;display:grid;place-items:center;padding:16px}
+.pcard .ph img{max-height:100%;width:auto;object-fit:contain}
+.pcard .bd{padding:15px 17px 18px;display:flex;flex-direction:column;flex:1}
+.pcard h3{font-size:14.5px;font-weight:500;line-height:1.5}
+.pcard .desc{margin-top:6px;font-size:12.5px;color:var(--muted);line-height:1.7;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard .ft{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pcard .spec{font-size:13px;font-weight:500;color:var(--flame)}
+.pcard .lnk{font-size:12.5px;color:var(--blue-700);font-weight:500}
+.tag{position:absolute;top:11px;left:11px;z-index:2;background:var(--blue-700);color:#fff;
+  font-size:11px;font-weight:400;padding:3px 10px;border-radius:999px}
+.tag.hot{background:var(--flame)}
+
+/* --------------------------------------------------------- 3-layer system */
+.sys{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative}
+.sys::before{content:"";position:absolute;left:12%;right:12%;top:44px;height:2px;
+  background:repeating-linear-gradient(90deg,var(--blue-300) 0 8px,transparent 8px 16px)}
+.sys-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 24px;
+  box-shadow:var(--sh);position:relative;z-index:2}
+.sys-card .n{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px;
+  font-size:19px;font-weight:600;color:#fff;background:var(--blue-600)}
+.sys-card.mid .n{background:var(--flame)}
+.sys-card h3{font-size:17px;text-align:center}
+.sys-card .prod{display:block;text-align:center;font-size:12.5px;color:var(--blue-700);font-weight:500;margin-top:3px}
+.sys-card p{margin-top:12px;font-size:13.5px;color:var(--muted);line-height:1.8;text-align:center}
+.sys-card .th{margin-top:14px;background:var(--sky);border-radius:10px;padding:9px 12px;text-align:center;
+  font-size:12.5px;color:var(--navy-800)}
+.sys-card .th b{font-weight:500}
+.sys-note{margin-top:22px;background:var(--flame-soft);border-radius:var(--r);padding:16px 20px;
+  display:flex;gap:13px;align-items:flex-start}
+.sys-note svg{width:19px;height:19px;color:var(--flame);flex:none;margin-top:4px}
+.sys-note p{font-size:13.5px;color:var(--navy-800);line-height:1.8}
+
+/* ----------------------------------------------------------------- why us */
+.why{display:grid;grid-template-columns:.92fr 1.08fr;gap:52px;align-items:center}
+.why-media{position:relative;border-radius:var(--r-xl);overflow:hidden;aspect-ratio:4/4.4}
+.why-media img{width:100%;height:100%;object-fit:cover}
+.why-media .ov{position:absolute;left:18px;right:18px;bottom:18px;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(6px);border-radius:var(--r);padding:15px 18px}
+.why-media .ov b{display:block;font-size:15px;font-weight:500;color:var(--navy-800)}
+.why-media .ov span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px}
+.feat .it .ic{width:46px;height:46px;border-radius:13px;background:var(--sky);color:var(--blue-700);
+  display:grid;place-items:center;margin-bottom:12px}
+.feat .it .ic svg{width:22px;height:22px}
+.feat .it h3{font-size:16px}
+.feat .it p{margin-top:5px;font-size:13.5px;color:var(--muted);line-height:1.75}
+
+/* ----------------------------------------------------------------- works */
+.works{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;grid-auto-flow:dense}
+.works a{position:relative;border-radius:var(--r);overflow:hidden;display:block;background:var(--shell)}
+.works img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.works a:hover img{transform:scale(1.05)}
+.works .w1{grid-column:span 2;grid-row:span 2}
+.works .w1 img{height:100%;min-height:420px}
+.works .sm img{height:202px}
+.works .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 18px 14px;color:#fff;font-size:13px;
+  background:linear-gradient(0deg,rgba(32,64,79,.82),rgba(32,64,79,0))}
+
+/* ------------------------------------------------------------------ cert */
+.cert{background:var(--sky);border-radius:var(--r-xl);padding:44px;display:grid;
+  grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center}
+.cert-media{border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh)}
+.docs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+.docs li{background:#fff;border-radius:12px;padding:13px 15px;display:flex;gap:11px;align-items:flex-start}
+.docs .n{font-size:12px;font-weight:600;color:var(--flame);flex:none;margin-top:3px}
+.docs b{display:block;font-size:13.5px;font-weight:500;color:var(--navy-800);line-height:1.55}
+
+/* -------------------------------------------------------------- articles */
+.feature-post{display:grid;grid-template-columns:1.05fr .95fr;gap:0;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh)}
+.feature-post .ph{overflow:hidden;min-height:280px}
+.feature-post .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.feature-post:hover .ph img{transform:scale(1.04)}
+.feature-post .bd{padding:32px 34px;display:flex;flex-direction:column;justify-content:center}
+.feature-post h3{font-size:22px;margin-top:12px;line-height:1.45}
+.feature-post p{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.8}
+.feature-post .meta{margin-top:16px;font-size:12.5px;color:var(--muted)}
+.mini{display:flex;flex-direction:column;gap:16px}
+.mini a{display:grid;grid-template-columns:118px minmax(0,1fr);gap:16px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;transition:.2s}
+.mini a:hover{border-color:var(--blue-300);box-shadow:var(--sh)}
+.mini img{width:100%;height:100%;min-height:118px;object-fit:cover}
+.mini .bd{padding:14px 16px 14px 0;display:flex;flex-direction:column;justify-content:center}
+.mini h3{font-size:15px;font-weight:500;line-height:1.5}
+.mini .meta{margin-top:6px;font-size:12px;color:var(--muted)}
+.tagx{display:inline-block;font-size:11.5px;color:var(--flame);font-weight:500}
+
+/* ------------------------------------------------------------------- FAQ */
+.faqgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;align-items:start}
+details.qa{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.2s}
+details.qa[open]{border-color:var(--blue-300);box-shadow:var(--sh)}
+details.qa summary{
+  list-style:none;cursor:pointer;padding:16px 46px 16px 18px;position:relative;
+  font-size:15px;font-weight:400;color:var(--navy-800);line-height:1.6;
+}
+details.qa summary::-webkit-details-marker{display:none}
+details.qa summary::after{
+  content:"";position:absolute;right:16px;top:50%;transform:translateY(-50%);width:22px;height:22px;
+  border-radius:50%;background:var(--sky);
+  background-image:linear-gradient(var(--flame),var(--flame)),linear-gradient(var(--flame),var(--flame));
+  background-size:10px 1.8px,1.8px 10px;background-position:center,center;background-repeat:no-repeat;
+  transition:.2s;
+}
+details.qa[open] summary{font-weight:500}
+details.qa[open] summary::after{background-size:10px 1.8px,0 0}
+details.qa .a{padding:0 18px 18px;font-size:13.5px;color:var(--muted);line-height:1.9}
+
+/* ---------------------------------------------------------------- CTA/foot */
+.ctaband{background:var(--navy-900);border-radius:var(--r-xl);padding:52px 48px;text-align:center;position:relative;overflow:hidden}
+.ctaband::before{content:"";position:absolute;width:380px;height:380px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.07);right:-120px;top:-140px}
+.ctaband::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.07);left:-90px;bottom:-120px}
+.ctaband h2{color:#fff;font-size:clamp(23px,2.9vw,34px);margin:16px auto 0;max-width:620px;position:relative;z-index:2}
+.ctaband p{margin:14px auto 0;color:rgba(255,255,255,.72);max-width:560px;font-size:15px;position:relative;z-index:2}
+.ctaband .acts{display:flex;justify-content:center;flex-wrap:wrap;gap:11px;margin-top:28px;position:relative;z-index:2}
+.ctaband .tel{margin-top:20px;font-size:14px;color:rgba(255,255,255,.72);position:relative;z-index:2}
+.ctaband .tel b{color:#fff;font-weight:500}
+
+footer{background:var(--navy-950);color:#b7c6d2;margin-top:76px}
+.fgrid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.15fr;gap:40px;padding:52px 0 40px}
+.fbrand b{display:block;font-size:19px;font-weight:600;color:#fff}
+.fbrand small{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7d92a3;margin-top:1px}
+.fbrand p{margin-top:16px;font-size:13.5px;line-height:1.85;max-width:330px}
+.fgrid h4{font-size:12.5px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:#fff;margin-bottom:15px}
+.fgrid li{margin-bottom:9px;font-size:13.5px}
+.fgrid a:hover{color:var(--flame)}
+.fcon li{display:flex;gap:10px;line-height:1.7;margin-bottom:13px}
+.fcon svg{width:15px;height:15px;color:var(--flame);flex:none;margin-top:5px}
+.fcon b{display:block;color:#fff;font-weight:500;font-size:13px}
+.fbar{border-top:1px solid rgba(255,255,255,.09);padding:17px 0;font-size:12.5px;color:#7d92a3;
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+.mbar{display:none}
+
+/* ------------------------------------------------------------- responsive */
+@media (max-width:1080px){
+  .banner{height:420px}
+  .entry{grid-template-columns:1fr;gap:14px;margin-top:44px}
+  .shop{grid-template-columns:1fr;gap:26px}
+  .side{position:static}
+  .side ul{display:flex;flex-wrap:wrap;gap:8px;border-top:0}
+  .side button{width:auto;border:1px solid var(--line);border-radius:999px;padding:8px 15px}
+  .side button:hover{padding-left:15px}
+  .side button i{display:none}
+  .side .helper{display:none}
+  .pgrid{grid-template-columns:1fr 1fr}
+  .sys{grid-template-columns:1fr;gap:14px}
+  .sys::before{display:none}
+  .why{grid-template-columns:1fr;gap:32px}
+  .why-media{aspect-ratio:16/9}
+  .cert{grid-template-columns:1fr;padding:32px;gap:30px}
+  .feature-post{grid-template-columns:1fr}
+  .faqgrid{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:1fr 1fr;gap:30px}
+  .works{grid-template-columns:1fr 1fr}
+  .works .w1{grid-column:span 2;grid-row:auto}
+  .works .w1 img{min-height:280px}
+}
+@media (max-width:820px){
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:#fff;border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;padding:8px 20px 14px;box-shadow:var(--sh)}
+  .nav.open{display:flex}
+  .nav a{border-radius:10px}
+  .hdr-in{position:relative}
+  .burger{display:inline-flex;align-items:center;gap:8px}
+  .hdr-cta{display:none}
+  .sec{padding:52px 0}
+  .statband{grid-template-columns:1fr 1fr;gap:22px 10px;padding:26px 18px}
+  .statband div:nth-child(3)::before,.statband div:nth-child(2n+1)::before{display:none}
+  .banner{height:320px}
+  .mock-tag{top:14px;right:14px;font-size:10.5px;padding:5px 10px}
+  .feat{grid-template-columns:1fr;gap:18px}
+  .docs{grid-template-columns:1fr}
+  .mini a{grid-template-columns:100px minmax(0,1fr)}
+  .mini img{min-height:100px}
+  .ctaband{padding:36px 22px}
+  .fgrid{grid-template-columns:1fr;padding:38px 0 28px}
+  body{padding-bottom:62px}
+  .mbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:80;
+    background:#fff;border-top:1px solid var(--line);padding:8px 12px;box-shadow:0 -6px 18px rgba(42,80,104,.1)}
+  .mbar .btn{padding:11px 6px;font-size:13px}
+}
+@media (max-width:520px){
+  .pgrid{grid-template-columns:1fr}
+  .works{grid-template-columns:1fr}
+  .works .w1{grid-column:auto}
+  .works .sm img{height:180px}
+  .brand small{display:none}
+  .banner{height:250px}
+  .intro .acts .btn{flex:1 1 100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============================================================= ANNOUNCE -->
+<div class="announce">
+  <div class="wrap announce-in">
+    <div><b>สีกันไฟ Neocoat</b> ผ่าน ASTM E-119 · ISO 834 — พร้อมงานรับรองโดยวุฒิวิศวกรโยธา</div>
+    <div>โทร <a href="tel:0994586692">099-458-6692</a> · LINE <a href="https://line.me/ti/p/~blue999">@blue999</a></div>
+  </div>
+</div>
+
+<!-- =============================================================== HEADER -->
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="#">
+      <img src="../assets/logo.png" alt="Blue Rich">
+      <span><b>บลูริช แมททีเรียล</b><small>Blue Rich Material Products</small></span>
+    </a>
+    <button class="burger" id="burger" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      เมนู
+    </button>
+    <nav class="nav" id="nav">
+      <a class="on" href="#">หน้าแรก</a>
+      <a href="#products">สินค้า</a>
+      <a href="#system">ระบบสีกันไฟ</a>
+      <a href="#why">เกี่ยวกับเรา</a>
+      <a href="#works">ผลงาน</a>
+      <a href="#cert">งานรับรอง</a>
+      <a href="#news">บทความ</a>
+    </nav>
+    <div class="hdr-cta">
+      <a class="btn btn-line btn-sm" href="https://line.me/ti/p/~blue999">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 5.66 2 10.16c0 4.03 3.55 7.4 8.35 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.54 1.06-.45 5.71-3.36 7.79-5.76C21.13 13.68 22 12 22 10.16 22 5.66 17.52 2 12 2z"/></svg>
+        LINE
+      </a>
+      <a class="btn btn-primary btn-sm" href="#contact">ขอใบเสนอราคา</a>
+    </div>
+  </div>
+</header>
+
+<!-- =============================================================== BANNER -->
+<!-- ภาพล้วน ไม่มีข้อความทับ — รูปเป็น mockup รอไฟล์จริง -->
+<section class="banner">
+  <img src="../assets/banner-mock-wide.jpg" alt="งานทาสีกันไฟโครงสร้างเหล็ก">
+  <span class="mock-tag">MOCKUP — รอไฟล์แบนเนอร์จริง</span>
+</section>
+
+<!-- ================================================================= HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="intro">
+      <span class="eyebrow">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-4z"/></svg>
+        วัสดุป้องกันอัคคีภัยครบวงจร
+      </span>
+      <h1>สีกันไฟโครงสร้างเหล็ก พร้อม<em>เอกสารรับรอง</em> โดยวุฒิวิศวกร</h1>
+      <p class="lead">
+        จำหน่ายสีกันไฟ Neocoat Intumescent Paint สีรองพื้นกันสนิม ซีเมนต์พ่นกันไฟ
+        ผ้ากันไฟ และทินเนอร์ พร้อมคำนวณความหนาฟิล์มและออกเอกสาร น.4-5 / น.4-9 ให้ทุกโครงการ
+      </p>
+      <div class="acts">
+        <a class="btn btn-flame" href="#contact">ขอใบเสนอราคา</a>
+        <a class="btn btn-out" href="#products">ดูสินค้าทั้งหมด</a>
+      </div>
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>ASTM E-119 · ISO 834</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>กฎกระทรวง พ.ศ. 2567</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>มีสต็อก ส่งทั่วไทย</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- การ์ดทางเข้า 3 ใบ -->
+  <div class="wrap entry-shell">
+    <div class="entry">
+      <a class="entry-card" href="#products">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11a7 7 0 1 1-14 0c0-4 3-6 4.5-9C11 5 12 6.5 12 8c1.5-1 2-2.5 2-4 2 2.5 5 4 5 7z"/></svg></span>
+        <h3>สีกันไฟ Neocoat</h3>
+        <p>สูตรน้ำมันและสูตรน้ำ ฟิล์มพองตัวเป็นฉนวนเมื่อโดนความร้อน พร้อมสีรองพื้นและสีทับหน้าครบระบบ</p>
+        <span class="more">ดูสินค้าในหมวดนี้
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <a class="entry-card" href="#products">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span>
+        <h3>ผ้ากันไฟ &amp; ซีเมนต์กันไฟ</h3>
+        <p>Fiberglass Cloth ทน 550–1000°C สำหรับกันสะเก็ดไฟ และซีเมนต์พ่นกันไฟ Fendolite / Mandolite</p>
+        <span class="more">ดูสินค้าในหมวดนี้
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <a class="entry-card" href="#cert">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/></svg></span>
+        <h3>บริการรับรองโดยวุฒิวิศวกร</h3>
+        <p>คำนวณความหนาฟิล์มรายชิ้นส่วน ตรวจวัดหน้างาน และออกเอกสาร น.4-5 / น.4-9 พร้อมยื่น</p>
+        <span class="more">ดูรายละเอียดบริการ
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== PRODUCTS -->
+<section class="sec sec-shell" id="products">
+  <div class="wrap">
+    <div class="head-c">
+      <span class="eyebrow">รายการสินค้า</span>
+      <h2>เลือกสินค้าตามหมวดที่ต้องการ</h2>
+      <p>ทุกรายการมีสต็อกในไทย ขอเอกสาร TDS และผลทดสอบได้ที่ฝ่ายขาย</p>
+    </div>
+
+    <div class="shop">
+      <aside class="side">
+        <h3>หมวดสินค้า</h3>
+        <ul id="cats">
+          <li><button aria-pressed="true" data-cat="all">ทั้งหมด <i>11</i></button></li>
+          <li><button aria-pressed="false" data-cat="fire">สีกันไฟ <i>2</i></button></li>
+          <li><button aria-pressed="false" data-cat="primer">สีรองพื้น / ทับหน้า <i>2</i></button></li>
+          <li><button aria-pressed="false" data-cat="cement">ซีเมนต์กันไฟ <i>2</i></button></li>
+          <li><button aria-pressed="false" data-cat="blanket">ผ้ากันไฟ <i>1</i></button></li>
+          <li><button aria-pressed="false" data-cat="solvent">ทินเนอร์ / น้ำมันสน <i>2</i></button></li>
+          <li><button aria-pressed="false" data-cat="other">สีทั่วไป <i>2</i></button></li>
+        </ul>
+
+        <div class="helper">
+          <p><b>ไม่แน่ใจว่าต้องใช้ตัวไหน?</b><br>ส่งแบบหรือรายการเหล็กมาทาง LINE ทีมงานช่วยเลือกระบบสีให้ตรงกับอัตราทนไฟที่โครงการต้องการ</p>
+          <a class="btn btn-line btn-sm" href="https://line.me/ti/p/~blue999">ปรึกษาทาง LINE</a>
+        </div>
+      </aside>
+
+      <div class="pgrid" id="pgrid">
+        <a class="pcard" href="#" data-cat="fire">
+          <span class="tag hot">สินค้าเรือธง</span>
+          <div class="ph"><img src="../assets/products/neocoat-paint-s.png" alt="สีกันไฟ Neocoat Intumescent Paint-S"></div>
+          <div class="bd">
+            <h3>สีกันไฟ Neocoat สูตรน้ำมัน Intumescent Paint-S</h3>
+            <p class="desc">สีกันไฟชนิดขยายตัว สูตรน้ำมัน สำหรับทา/พ่นโครงสร้างเหล็ก คาน เสา ตาม ASTM E-119, ISO 834</p>
+            <div class="ft"><span class="spec">22 กก. · 23–25 ตร.ม.</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="fire">
+          <span class="tag">Low VOC</span>
+          <div class="ph"><img src="../assets/products/neocoat-paint-w.png" alt="สีกันไฟ Neocoat สูตรน้ำ"></div>
+          <div class="bd">
+            <h3>สีกันไฟ Neocoat สูตรน้ำ Intumescent Paint-W</h3>
+            <p class="desc">สูตรผสมด้วยน้ำ เหมาะกับอาคารเขียว ไม่ใช้ทินเนอร์เป็นตัวทำละลาย ค่า VOC ต่ำ</p>
+            <div class="ft"><span class="spec">22 กก. · 23–25 ตร.ม.</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="primer">
+          <span class="tag">ขายดี</span>
+          <div class="ph"><img src="../assets/products/neocoat-primer.png" alt="สีรองพื้นเทา Neocoat Primer"></div>
+          <div class="bd">
+            <h3>สีรองพื้นเทา Neocoat Primer Grey Oxide</h3>
+            <p class="desc">สีรองพื้นกันสนิมสำหรับทาเหล็กก่อนทาสีกันไฟ มีสีแดงและสีเทา น้ำหนัก 25 กก.</p>
+            <div class="ft"><span class="spec">60–80 ตร.ม./ถัง</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="primer">
+          <div class="ph"><img src="../assets/products/neogloss-enamel.png" alt="สีน้ำมันทาเหล็ก Neogloss"></div>
+          <div class="bd">
+            <h3>สีน้ำมันทาเหล็ก Neogloss</h3>
+            <p class="desc">สีน้ำมันทับหน้าผิวเหล็ก ใช้ทับหน้าชั้นสีกันไฟ ป้องกันความชื้นสัมผัสฟิล์มโดยตรง</p>
+            <div class="ft"><span class="spec">Dosage 5 Gl.</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="cement">
+          <span class="tag">U.L. Listed</span>
+          <div class="ph"><img src="../assets/products/fendolite-m2.png" alt="ซีเมนต์กันไฟ Fendolite M2"></div>
+          <div class="bd">
+            <h3>ซีเมนต์กันไฟ Fendolite M2 งานภายนอก</h3>
+            <p class="desc">ซีเมนต์พ่นกันไฟชนิด High density น้ำหนัก 20 กก. ส่วนผสมแร่เวอร์มิคูไลท์และซีเมนต์</p>
+            <div class="ft"><span class="spec">ทนไฟ 1–3 ชม.</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="cement">
+          <span class="tag">U.L. Listed</span>
+          <div class="ph"><img src="../assets/products/cafco-400.png" alt="ซีเมนต์กันไฟ Mandolite CP-2"></div>
+          <div class="bd">
+            <h3>ซีเมนต์กันไฟ Mandolite CP-2 งานภายใน</h3>
+            <p class="desc">ชนิด Medium density สำหรับงานภายในอาคาร ปราศจาก Asbestos และ Fiber</p>
+            <div class="ft"><span class="spec">ทนไฟ 1–3 ชม.</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="blanket">
+          <div class="ph"><img src="../assets/products/fiberglass-cloth-panel-main.webp" alt="ผ้ากันไฟ Fiberglass Cloth"></div>
+          <div class="bd">
+            <h3>ผ้ากันไฟ Fiberglass Cloth</h3>
+            <p class="desc">ผ้ากันสะเก็ดไฟ ทอแบบซาติน ขนาด 1×1 ม. หนา 1 มม. อบด้วย Double Heat Treatment</p>
+            <div class="ft"><span class="spec">ทน 550–1000°C</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="solvent">
+          <div class="ph"><img src="../assets/products/thinner-3a-intanin.webp" alt="ทินเนอร์ 3A อินทนิล"></div>
+          <div class="bd">
+            <h3>ทินเนอร์ 3A ผสมสี อินทนิล</h3>
+            <p class="desc">ทินเนอร์ผสมสีคุณภาพสูง สำหรับผสมสีน้ำมันและสีกันไฟสูตรน้ำมัน มีหลายขนาดบรรจุ</p>
+            <div class="ft"><span class="spec">พร้อมส่ง</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="solvent">
+          <div class="ph"><img src="../assets/products/turpentine-intanin.webp" alt="น้ำมันสนผสมสี อินทนิล"></div>
+          <div class="bd">
+            <h3>น้ำมันสนผสมสี อินทนิล</h3>
+            <p class="desc">น้ำมันสนเชียงใหม่ ใช้เป็นตัวทำละลายสำหรับสีน้ำมันและงานล้างอุปกรณ์</p>
+            <div class="ft"><span class="spec">พร้อมส่ง</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="other">
+          <div class="ph"><img src="../assets/products/roof-shield.png" alt="สีเซรามิคสะท้อนความร้อน Roof Shield"></div>
+          <div class="bd">
+            <h3>สีเซรามิคสะท้อนความร้อน Roof Shield White</h3>
+            <p class="desc">สีเซรามิคสูตรน้ำ สะท้อนความร้อนเข้าสู่ตัวอาคาร ช่วยลดอุณหภูมิใต้หลังคา</p>
+            <div class="ft"><span class="spec">ลดความร้อน 93%</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" data-cat="other">
+          <div class="ph"><img src="../assets/products/four-plus-exterior.webp" alt="สีน้ำพลาสติก Four Plus Exterior"></div>
+          <div class="bd">
+            <h3>สีน้ำพลาสติกทาภายนอก Four Plus Exterior</h3>
+            <p class="desc">อะคริลิก 100% ผิวด้าน กันเชื้อรา-ตะไคร่ สำหรับผนังภายนอกอาคาร</p>
+            <div class="ft"><span class="spec">อะคริลิก 100%</span><span class="lnk">รายละเอียด →</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ STATS -->
+<div class="wrap" style="margin-top:-38px;position:relative;z-index:5">
+  <div class="statband">
+    <div><b>15+</b><span>ปีประสบการณ์งานสีกันไฟ</span></div>
+    <div><b>3 ชม.</b><span>อัตราการทนไฟสูงสุดที่รับรอง</span></div>
+    <div><b>1000°C</b><span>อุณหภูมิสูงสุดของผ้ากันไฟ</span></div>
+    <div><b>100%</b><span>งานรับรองโดยวุฒิวิศวกร</span></div>
+  </div>
+</div>
+
+<!-- =============================================================== SYSTEM -->
+<section class="sec" id="system">
+  <div class="wrap">
+    <div class="head-c">
+      <span class="eyebrow">ระบบสีกันไฟ</span>
+      <h2>ทา 3 ชั้น ระบบถึงจะทำงาน</h2>
+      <p>ข้ามชั้นใดชั้นหนึ่ง ฟิล์มจะหลุดล่อนหรือพองตัวได้ไม่เต็มที่</p>
+    </div>
+
+    <div class="sys">
+      <div class="sys-card">
+        <div class="n">1</div>
+        <h3>สีรองพื้นกันสนิม</h3>
+        <span class="prod">Neocoat Primer Grey Oxide</span>
+        <p>ทาบนผิวเหล็กที่เตรียมสะอาดแล้ว ต้องเป็นสีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat เพื่อป้องกันการหลุดล่อน</p>
+        <div class="th">ความหนา <b>ทั่วไป 1 – 2 เที่ยว</b></div>
+      </div>
+
+      <div class="sys-card mid">
+        <div class="n">2</div>
+        <h3>สีกันไฟชนิดพองตัว</h3>
+        <span class="prod">Neocoat Intumescent Paint</span>
+        <p>หัวใจของระบบ ทาให้ได้ความหนาฟิล์มแห้งตามที่คำนวณไว้สำหรับอัตราการทนไฟและค่า Section Factor ของชิ้นส่วนนั้น</p>
+        <div class="th">ความหนา <b>ประมาณ 500 ไมครอน</b></div>
+      </div>
+
+      <div class="sys-card">
+        <div class="n">3</div>
+        <h3>สีทับหน้า</h3>
+        <span class="prod">Neogloss / Top Coat</span>
+        <p>ป้องกันไม่ให้น้ำฝนหรือความชื้นสัมผัสสีกันไฟโดยตรง และให้เฉดสีตามแบบสถาปัตย์ที่ต้องการ</p>
+        <div class="th">ความหนา <b>ตามเฉดที่เลือก</b></div>
+      </div>
+    </div>
+
+    <div class="sys-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+      <p>ความหนาฟิล์มไม่ใช่ค่าเดียวทั้งอาคาร ต้องคำนวณตามค่า Section Factor ของแต่ละหน้าตัดเหล็กและอัตราการทนไฟที่โครงการกำหนด — ส่งแบบหรือรายการเหล็กมาให้ทีมวิศวกรคำนวณให้ได้</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ WHY US -->
+<section class="sec sec-sky" id="why">
+  <div class="wrap why">
+    <div class="why-media">
+      <img src="../assets/products/neocoat-paint-w-warehouse.webp" alt="คลังสินค้า Blue Rich">
+      <div class="ov">
+        <b>มีสต็อกในไทย ส่งได้ทั้งโครงการ</b>
+        <span>ไม่ต้องรอสั่งผลิต ลดความเสี่ยงงานหยุดกลางคัน</span>
+      </div>
+    </div>
+
+    <div>
+      <span class="eyebrow on-sky">ทำไมต้องเลือกเรา</span>
+      <h2 style="font-size:clamp(24px,3vw,34px);margin-top:14px">ดูแลตั้งแต่เลือกระบบสี<br>จนถึงส่งมอบเอกสาร</h2>
+      <p style="margin-top:14px;color:var(--muted);font-size:15px;max-width:560px">
+        บริษัท บลูริช แมททีเรียล โปรดักส์ จำกัด จำหน่ายวัสดุป้องกันอัคคีภัยครบวงจร
+        พร้อมทีมวิศวกรที่อ่านแบบและสรุปอัตราทนไฟให้ได้ตั้งแต่ก่อนเสนอราคา
+      </p>
+
+      <div class="feat">
+        <div class="it">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <h3>ผ่านมาตรฐานสากล</h3>
+          <p>ทดสอบตาม ASTM E-119 โดยจุฬาลงกรณ์มหาวิทยาลัย และ ISO 834</p>
+        </div>
+        <div class="it">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+          <h3>ปิดงานด้วยเอกสาร</h3>
+          <p>แบบ น.4-5 / น.4-9 ลงนามโดยวุฒิวิศวกรโยธา ใช้ยื่นขออนุญาตได้</p>
+        </div>
+        <div class="it">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>
+          <h3>คำนวณให้รายชิ้นส่วน</h3>
+          <p>สรุปความหนาฟิล์มและปริมาณสีตามค่า Section Factor ของเหล็กแต่ละหน้าตัด</p>
+        </div>
+        <div class="it">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1.5"/><path d="M16 8h4l3 3v5h-7z"/><circle cx="5.5" cy="18.5" r="2"/><circle cx="18.5" cy="18.5" r="2"/></svg></span>
+          <h3>ของพร้อมส่งทั่วไทย</h3>
+          <p>สีกันไฟ ทินเนอร์ ผ้ากันไฟ มีสต็อก จัดส่งได้ทันทีตามรอบงาน</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ WORKS -->
+<section class="sec" id="works">
+  <div class="wrap">
+    <div class="head-c">
+      <span class="eyebrow">ผลงาน</span>
+      <h2>งานสีกันไฟที่ผ่านมา</h2>
+    </div>
+
+    <div class="works">
+      <a class="w1" href="#">
+        <img src="../assets/work-02.jpg" alt="งานทาสีกันไฟโครงสร้างหลัก">
+        <span class="cap">โครงถักเหล็กภายในอาคาร · Neocoat Intumescent Paint-S ทาด้วยแปรงและลูกกลิ้ง</span>
+      </a>
+      <a class="sm" href="#"><img src="../assets/work-05.jpg" alt=""><span class="cap">โครงหลังคาเหล็ก</span></a>
+      <a class="sm" href="#"><img src="../assets/work-09.jpg" alt=""><span class="cap">งานพ่นสีกันไฟ</span></a>
+      <a class="sm" href="#"><img src="../assets/work-13.jpg" alt=""><span class="cap">เสาเหล็กโครงสร้างหลัก</span></a>
+      <a class="sm" href="#"><img src="../assets/work-16.jpg" alt=""><span class="cap">อาคารพาณิชย์</span></a>
+      <a class="sm" href="#"><img src="../assets/work-06.jpg" alt=""><span class="cap">คานเหล็ก H-Beam</span></a>
+      <a class="sm" href="#"><img src="../assets/work-14.jpg" alt=""><span class="cap">ตรวจวัดความหนาฟิล์ม</span></a>
+      <a class="sm" href="#"><img src="../assets/work-03.jpg" alt=""><span class="cap">งานเตรียมผิวเหล็ก</span></a>
+      <a class="sm" href="#"><img src="../assets/work-10.jpg" alt=""><span class="cap">โครงสร้างเหล็กโรงงาน</span></a>
+    </div>
+
+    <div style="text-align:center;margin-top:30px">
+      <a class="btn btn-out" href="#">ดูผลงานทั้งหมด</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================= CERT -->
+<section class="sec" id="cert" style="padding-top:0">
+  <div class="wrap">
+    <div class="cert">
+      <div class="cert-media">
+        <img src="../assets/cert-documents.jpg" alt="ชุดเอกสารรับรองงานสีกันไฟ">
+      </div>
+      <div>
+        <span class="eyebrow on-sky">งานรับรองโดยวุฒิวิศวกร</span>
+        <h2 style="font-size:clamp(22px,2.7vw,31px);margin-top:14px">เอกสาร 6 ชุดที่เราออกให้ทุกโครงการ</h2>
+        <p style="margin-top:12px;color:var(--muted);font-size:14.5px">
+          ไม่ต้องวิ่งหาวุฒิวิศวกรเอง เราจัดทำและลงนามให้พร้อมยื่นขออนุญาตและตรวจรับงาน
+        </p>
+        <ul class="docs">
+          <li><span class="n">01</span><b>หนังสือแสดงความยินยอมของผู้ควบคุมงาน (น.4-5)</b></li>
+          <li><span class="n">02</span><b>หนังสือรับรองของผู้ควบคุมงาน (น.4-9)</b></li>
+          <li><span class="n">03</span><b>หนังสือรับรองโครงสร้างเหล็กทนไฟ</b></li>
+          <li><span class="n">04</span><b>รายการคำนวณความหนาฟิล์ม</b></li>
+          <li><span class="n">05</span><b>รายงานตรวจวัดความหนาฟิล์มหน้างาน</b></li>
+          <li><span class="n">06</span><b>เอกสารข้อมูลผลิตภัณฑ์ TDS / MSDS</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= ARTICLES -->
+<section class="sec sec-shell" id="news">
+  <div class="wrap">
+    <div class="head-c">
+      <span class="eyebrow">บทความ</span>
+      <h2>เรื่องที่เจ้าของโครงการควรรู้</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:22px" class="newswrap">
+      <a class="feature-post" href="#">
+        <div class="ph"><img src="../assets/news-law.png" alt="กฎกระทรวง พ.ศ. 2567"></div>
+        <div class="bd">
+          <span class="tagx">กฎหมาย</span>
+          <h3>กฎกระทรวง พ.ศ. 2567 กับงานสีกันไฟโครงสร้างเหล็ก</h3>
+          <p>กฎกระทรวงกำหนดการออกแบบโครงสร้างอาคาร และลักษณะและคุณสมบัติของวัสดุที่ใช้ในงานโครงสร้างอาคาร ส่งผลอย่างไรกับเจ้าของโครงการ และต้องเตรียมเอกสารอะไรบ้าง</p>
+          <span class="meta">20 พฤษภาคม 2567 · อ่าน 4 นาที</span>
+        </div>
+      </a>
+
+      <div class="mini">
+        <a href="#">
+          <img src="../assets/cert-documents.jpg" alt="กฎหมายป้องกันอัคคีภัย">
+          <div class="bd">
+            <span class="tagx">กฎหมาย</span>
+            <h3>เรื่องควรรู้เกี่ยวกับกฎหมายการป้องกันอัคคีภัย</h3>
+            <span class="meta">8 มีนาคม 2567</span>
+          </div>
+        </a>
+        <a href="#">
+          <img src="../assets/work-02.jpg" alt="งานทาสีกันไฟ Neocoat">
+          <div class="bd">
+            <span class="tagx">ผลงาน</span>
+            <h3>รูปภาพงานทาสีกันไฟ Neocoat Intumescent Paint</h3>
+            <span class="meta">12 มิถุนายน 2567</span>
+          </div>
+        </a>
+        <a href="#">
+          <img src="../assets/news-rust.jpg" alt="กำจัดสนิม">
+          <div class="bd">
+            <span class="tagx">ความรู้</span>
+            <h3>5 วิธีกำจัดสนิมที่ถูกต้องและน่าลอง</h3>
+            <span class="meta">30 มกราคม 2567</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== FAQ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="head-c">
+      <span class="eyebrow">คำถามที่พบบ่อย</span>
+      <h2>ถามกันมาบ่อย ตอบไว้ตรงนี้</h2>
+    </div>
+
+    <div class="faqgrid">
+      <details class="qa" open>
+        <summary>สีกันไฟ Neocoat ทำงานอย่างไร</summary>
+        <div class="a">เป็นสีชนิดขยายตัว (Intumescent) เมื่อได้รับความร้อน ฟิล์มสีจะพองตัวเป็นชั้นถ่านที่มีรูพรุน ทำหน้าที่เป็นฉนวนกันความร้อน ไม่ให้เนื้อเหล็กถึงอุณหภูมิวิกฤต 550°C ภายในเวลาที่ออกแบบไว้</div>
+      </details>
+
+      <details class="qa">
+        <summary>ต้องทาหนาเท่าไหร่ถึงจะทนไฟ 2 หรือ 3 ชั่วโมง</summary>
+        <div class="a">ไม่มีค่าเดียวที่ใช้ได้กับทุกงาน ความหนาฟิล์มแห้งขึ้นกับค่า Section Factor ของแต่ละหน้าตัดเหล็ก จำนวนด้านที่โดนไฟ และอัตราการทนไฟที่ต้องการ งานทั่วไปอยู่ที่ประมาณ 500 ไมครอน ส่งรายการเหล็กมาให้ทีมวิศวกรคำนวณให้ได้</div>
+      </details>
+
+      <details class="qa">
+        <summary>เลือกสูตรน้ำมัน (Paint-S) หรือสูตรน้ำ (Paint-W) ดี</summary>
+        <div class="a">สูตรน้ำมันแห้งไว ทำความหนาได้ดี เหมาะกับงานทั่วไป ส่วนสูตรน้ำไม่ใช้ทินเนอร์เป็นตัวทำละลาย ค่า VOC ต่ำ เหมาะกับอาคารเขียว (Green Building) ทั้งสองสูตรบรรจุ 22 กก. ทาได้ 23–25 ตร.ม./ถัง</div>
+      </details>
+
+      <details class="qa">
+        <summary>ข้ามสีรองพื้น ทาสีกันไฟลงบนเหล็กเลยได้ไหม</summary>
+        <div class="a">ไม่ได้ครับ โครงสร้างต้องทาสีรองพื้นกันสนิมก่อนทุกครั้ง และต้องเป็นสีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat เพื่อป้องกันการหลุดล่อนและปฏิกิริยาเคมีที่ไม่พึงประสงค์ระหว่างชั้นสี</div>
+      </details>
+
+      <details class="qa">
+        <summary>ออกเอกสารรับรองให้ครบไหม</summary>
+        <div class="a">ครบครับ ทั้ง น.4-5 น.4-9 หนังสือรับรองโครงสร้างเหล็กทนไฟ รายการคำนวณความหนาฟิล์ม และรายงานตรวจวัดหน้างาน ลงนามโดยวุฒิวิศวกรโยธา ใช้ยื่นขออนุญาตและตรวจรับงานได้</div>
+      </details>
+
+      <details class="qa">
+        <summary>ผ้ากันไฟใช้แทนสีกันไฟได้ไหม</summary>
+        <div class="a">ใช้แทนกันไม่ได้ สีกันไฟใช้เคลือบโครงสร้างเหล็กถาวรเพื่อให้ได้อัตราการทนไฟตามกฎหมาย ส่วนผ้ากันไฟ Fiberglass Cloth ใช้คลุมหรือกั้นสะเก็ดไฟจากงานเชื่อมและกันความร้อนชั่วคราว</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================== CTA -->
+<section class="wrap" id="contact">
+  <div class="ctaband">
+    <span class="eyebrow on-dark">ขั้นตอนถัดไป</span>
+    <h2>ส่งแบบหรือ BOQ มา เราสรุปอัตราทนไฟและปริมาณสีให้</h2>
+    <p>ทีมวิศวกรอ่านแบบ คำนวณความหนาฟิล์มรายชิ้นส่วน แล้วสรุปราคาพร้อมบอกว่าต้องใช้เอกสารรับรองชุดไหนบ้าง</p>
+    <div class="acts">
+      <a class="btn btn-line" href="https://line.me/ti/p/~blue999">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2C6.48 2 2 5.66 2 10.16c0 4.03 3.55 7.4 8.35 8.04.33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.54 1.06-.45 5.71-3.36 7.79-5.76C21.13 13.68 22 12 22 10.16 22 5.66 17.52 2 12 2z"/></svg>
+        ส่งแบบทาง LINE @blue999
+      </a>
+      <a class="btn btn-out-d" href="mailto:bluerich.sale@gmail.com">ส่งทางอีเมล</a>
+    </div>
+    <p class="tel">หรือโทรหาเราได้ที่ <b>099-458-6692</b> · <b>061-421-5422</b> · <b>086-339-4682</b></p>
+  </div>
+</section>
+
+<!-- =============================================================== FOOTER -->
+<footer>
+  <div class="wrap fgrid">
+    <div class="fbrand">
+      <b>Blue Rich</b>
+      <small>Material Products</small>
+      <p>
+        บริษัท บลูริช แมททีเรียล โปรดักส์ จำกัด<br>
+        หมู่บ้านบุราสิริ ปัญญาอินทรา เลขที่ 288/60 ถนนเลียบคลองสอง
+        แขวงบางชัน เขตคลองสามวา กรุงเทพมหานคร 10510
+      </p>
+    </div>
+
+    <div>
+      <h4>สินค้า</h4>
+      <ul>
+        <li><a href="#products">สีกันไฟ Neocoat</a></li>
+        <li><a href="#products">สีรองพื้น / ทับหน้า</a></li>
+        <li><a href="#products">ซีเมนต์กันไฟ</a></li>
+        <li><a href="#products">ผ้ากันไฟ</a></li>
+        <li><a href="#products">ทินเนอร์ / น้ำมันสน</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>บริการ</h4>
+      <ul>
+        <li><a href="#cert">งานรับรองวุฒิวิศวกร</a></li>
+        <li><a href="#system">ระบบสีกันไฟ 3 ชั้น</a></li>
+        <li><a href="#works">ผลงาน</a></li>
+        <li><a href="#news">บทความ</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>ติดต่อเรา</h4>
+      <ul class="fcon">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92z"/></svg>
+          <span><b>โทรศัพท์</b>099-458-6692 · 061-421-5422</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+          <span><b>อีเมล</b>bluerich.sale@gmail.com</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span><b>เวลาทำการ</b>จันทร์ – เสาร์ 08:00 – 17:30 น.</span>
+        </li>
+      </ul>
+      <a class="btn btn-line btn-sm" href="https://line.me/ti/p/~blue999" style="margin-top:6px">LINE @blue999</a>
+    </div>
+  </div>
+
+  <div class="wrap fbar">
+    <span>© 2026 Blue Rich Material Products Co., Ltd.</span>
+    <span>สีกันไฟ · ผ้ากันไฟ · ซีเมนต์กันไฟ · ทินเนอร์</span>
+  </div>
+</footer>
+
+<!-- =========================================================== mobile bar -->
+<div class="mbar">
+  <a class="btn btn-line" href="https://line.me/ti/p/~blue999">LINE</a>
+  <a class="btn btn-flame" href="tel:0994586692">โทร</a>
+  <a class="btn btn-primary" href="#contact">ขอราคา</a>
+</div>
+
+<script>
+  var b = document.getElementById('burger'), n = document.getElementById('nav');
+  b.addEventListener('click', function () {
+    var open = n.classList.toggle('open');
+    b.setAttribute('aria-expanded', String(open));
+  });
+  n.addEventListener('click', function (e) { if (e.target.tagName === 'A') n.classList.remove('open'); });
+
+  var cats = document.getElementById('cats'), cards = document.querySelectorAll('#pgrid .pcard');
+  cats.addEventListener('click', function (e) {
+    var btn = e.target.closest('button'); if (!btn) return;
+    cats.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === btn)); });
+    var c = btn.dataset.cat;
+    cards.forEach(function (card) { card.style.display = (c === 'all' || card.dataset.cat === c) ? '' : 'none'; });
+  });
+</script>
+</body>
+</html>

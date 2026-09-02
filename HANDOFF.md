@@ -79,18 +79,27 @@ hero เดิมของเว็บใช้ภาพสี่เหลี่
 
 ## 4. โครงสร้างหน้า
 
-จากเดิม **5 หน้า** → **8 routes** (build ออกมา 25 หน้า)
+จากเดิม **5 หน้า** → **13 routes** (build ออกมา 38 หน้า)
+
+หน้าเว็บหลักอยู่ใน route group `src/app/(site)/` (มี Header/Footer/FloatingActions)
+ส่วนหน้า landing page อยู่ **นอก group** (`src/app/<slug>/`) เพื่อให้ render โดยไม่มีเมนู
+URL อยู่ระดับ root ไม่มี prefix — ตรงกับโครงสร้างของ infinitematerialtech.com ที่ลูกค้าอ้างอิง
 
 | Route | ไฟล์ | ประเภท | หมายเหตุ |
 |---|---|---|---|
-| `/` | `src/app/page.tsx` | Static | 12 section |
-| `/products` | `src/app/products/page.tsx` | **Dynamic** | อ่าน `?cat=` เพื่อกรองหมวด |
-| `/products/[slug]` | `src/app/products/[slug]/page.tsx` | SSG × 8 | `generateStaticParams` |
-| `/projects` | `src/app/projects/page.tsx` | Static | **หน้าใหม่** |
-| `/about` | `src/app/about/page.tsx` | Static | |
-| `/news` | `src/app/news/page.tsx` | Static | |
-| `/news/[slug]` | `src/app/news/[slug]/page.tsx` | SSG × 7 | |
-| `/contact` | `src/app/contact/page.tsx` | Static | ฟอร์ม + แผนที่ |
+| `/` | `src/app/(site)/page.tsx` | Static | 12 section |
+| `/products` | `src/app/(site)/products/page.tsx` | **Dynamic** | อ่าน `?cat=` เพื่อกรองหมวด |
+| `/products/[slug]` | `src/app/(site)/products/[slug]/page.tsx` | SSG × 14 | `generateStaticParams` |
+| `/projects` | `src/app/(site)/projects/page.tsx` | Static | **หน้าใหม่** |
+| `/about` | `src/app/(site)/about/page.tsx` | Static | |
+| `/news` | `src/app/(site)/news/page.tsx` | Static | |
+| `/news/[slug]` | `src/app/(site)/news/[slug]/page.tsx` | SSG × 7 | |
+| `/contact` | `src/app/(site)/contact/page.tsx` | Static | ฟอร์ม + แผนที่ |
+| `/neocoat` | `src/app/neocoat/page.tsx` | Static | **Landing page** — noindex |
+| `/thinner` | `src/app/thinner/page.tsx` | Static | **Landing page** — noindex |
+| `/engineering` | `src/app/engineering/page.tsx` | Static | **Landing page** — noindex |
+| `/four-plus` | `src/app/four-plus/page.tsx` | Static | **Landing page** — noindex |
+| `/fire-blanket` | `src/app/fire-blanket/page.tsx` | Static | **Landing page** — noindex |
 | `/sitemap.xml` | `src/app/sitemap.ts` | Static | สร้างจาก data |
 | 404 | `src/app/not-found.tsx` | Static | |
 
@@ -98,9 +107,9 @@ hero เดิมของเว็บใช้ภาพสี่เหลี่
 
 1. **Hero** — headline + CTA + trust chips + diamond collage + แถบติดต่อด่วน 3 ช่อง
 2. **Marquee มาตรฐาน** — ASTM E-119 / ISO 834 / ISO 9001 / กฎกระทรวง 2567 / น.4-5, น.4-9
-3. **หมวดหมู่สินค้า** — 4 การ์ด
+3. **หมวดหมู่สินค้า** — 7 การ์ด
 4. **สินค้าเรือธง** — Neocoat Intumescent Paint
-5. **Best Seller** — 3 สินค้า + การ์ด "ดูทั้งหมด"
+5. **Best Seller** — 4 สินค้า (`bestSellers` ใน `products.ts`) + การ์ด "ดูทั้งหมด"
 6. **ทำไมต้องเลือกเรา** — 4 จุดแข็ง + แถบสถิติ 4 ตัว
 7. **ขั้นตอนการทำงาน** — 4 สเต็ป
 8. **ผลงาน** — 6 รูป (ลิงก์ไป `/projects`)
@@ -111,6 +120,83 @@ hero เดิมของเว็บใช้ภาพสี่เหลี่
 
 ---
 
+## 4.5 Landing Pages — หน้าสำหรับยิงแอด
+
+5 หน้า ทำตามชุดหน้าของ infinitematerialtech.com ที่ลูกค้าส่งมาเป็นตัวอย่าง
+แต่ **ใช้ดีไซน์ของ Blue Rich เอง** เพราะลูกค้ากังวลว่าจะเหมือน Infinite เกินไป
+
+| Route | สินค้า/บริการ | เทียบกับหน้าของ Infinite |
+|---|---|---|
+| `/neocoat` | สีกันไฟ Neocoat | `/neocoat` |
+| `/thinner` | ทินเนอร์ 3A · 2K · น้ำมันสน | `/thinner` |
+| `/engineering` | บริการรับรองโดยวุฒิวิศวกร | `/engineering` |
+| `/four-plus` | สีน้ำพลาสติก Four Plus | `/four-plus` |
+| `/fire-blanket` | ผ้ากันไฟ Fiberglass Cloth | `/fire-blanket` |
+
+### วิธีทำให้ไม่เหมือน Infinite
+
+| Infinite | Blue Rich |
+|---|---|
+| พื้นขาว–ดำ, CTA ส้ม/ทอง | hero น้ำเงินเข้ม `brand-950`, CTA น้ำเงิน + LINE เขียว |
+| หัวข้อแบบ `SPEC \| ...`, `SYSTEM \| ...`, `TESTED BY`, `HOW IT WORKS` | หัวข้อไทยล้วน ไม่ใช้ label อังกฤษนำ |
+| การ์ดเหลี่ยม | `rounded-3xl` / `rounded-4xl` + ลาย diamond 45° |
+| ทุกหน้าใช้เลย์เอาต์เดียวกัน | แต่ละหน้ามี **ลูกเล่นเฉพาะตัว** (ดูตารางล่าง) |
+
+ข้อความทั้งหมด **เขียนขึ้นใหม่** ไม่ได้ก๊อปจาก Infinite — ทั้งเพื่อความต่างและเพื่อเลี่ยง duplicate content
+
+### ลูกเล่นเฉพาะของแต่ละหน้า
+
+| หน้า | hero | ตัวชูโรง |
+|---|---|---|
+| สีกันไฟ | น้ำเงินเข้ม + ภาพแบนเนอร์ | marquee มาตรฐาน, ตารางอัตราทนไฟตามประเภทอาคาร, กลไกการพองตัว 4 สเต็ป |
+| ทินเนอร์ | **สว่าง** (`brand-50` → ขาว) + สินค้า 3 ชิ้นเรียง | ตารางเทียบ 3 ตัว, บล็อก "ทินเนอร์ vs น้ำมันสน", การ์ดขนาดบรรจุ 4 ขนาด, **หัวข้อความปลอดภัย** (Infinite ไม่มี) |
+| บริการวิศวกร | น้ำเงินเข้ม + ภาพเอกสารรับรอง | **timeline แนวตั้ง** แยก "คุณส่งให้เรา / เราส่งกลับ" ทุกขั้น, checklist เอกสารส่งมอบ, **บล็อกขอบเขต "รับ / ไม่รับ"** (Infinite ไม่มี) |
+| Four Plus | สว่าง + ถังสี 3 ใบเหลื่อมกัน | **ไดอะแกรมระบบสี 3 ชั้น** (ทับหน้า→รองพื้น→พื้นผิว), **ตารางคำนวณจำนวนถัง**, บล็อกสาเหตุสีลอก/ด่าง/ขึ้นรา |
+| ผ้ากันไฟ | น้ำเงินเข้ม + ภาพผ้าทอง | **การ์ดเลือกเกรด 4 ตัวพร้อม badge อุณหภูมิ**, แกลเลอรีเนื้อผ้า 5 รูป, **บล็อก "ผ้ากันไฟ ≠ สีกันไฟ"** (กันลูกค้าเข้าใจผิด) |
+
+### Component ที่ใช้ร่วมกัน
+
+```
+src/components/landing/
+├── kit.tsx          Wrap, Check, Eyebrow, SectionHead, DarkBand  (server components)
+├── LpHeader.tsx     'use client' — sticky header, รับ prop `sections` (เมนูกระโดดในหน้า)
+├── LpFooter.tsx     footer ไม่มีลิงก์ออกจากหน้า + prop `note` สำหรับ disclaimer รายหน้า
+├── LpStickyCta.tsx  'use client' — แถบ CTA ล่างจอมือถือ, prop `quoteLabel`
+├── LpQuoteForm.tsx  'use client' — **ฟอร์มขับด้วย config** (`LpQuoteFormConfig`)
+└── LpFaq.tsx        <details> ล้วน ไม่ใช้ JS
+```
+
+`LpQuoteForm` รับ `config` จากไฟล์ data ของแต่ละหน้า — ช่อง **ชื่อ + เบอร์โทร** คงที่ทุกหน้า
+ที่เหลือกำหนดเป็น `text` / `select` / `textarea` ได้ เช่นหน้าสีกันไฟถามอัตราทนไฟ
+หน้าทินเนอร์ถามขนาดบรรจุ หน้าผ้ากันไฟถามขนาดผ้าและการเจาะตาไก่
+
+ฟอร์มยังส่งผ่าน `mailto:` + ปุ่มคัดลอกไป LINE เหมือนเดิม (ยังไม่มี backend)
+
+### Data
+
+| ไฟล์ | ใช้กับ |
+|---|---|
+| `src/data/fire-paint-lp.ts` | `/neocoat` |
+| `src/data/thinner-lp.ts` | `/thinner` |
+| `src/data/engineering-lp.ts` | `/engineering` |
+| `src/data/four-plus-lp.ts` | `/four-plus` |
+| `src/data/fire-blanket-lp.ts` | `/fire-blanket` |
+
+ทุกไฟล์ export `navSections` (เมนูในหน้า) และ `quoteForm` (config ฟอร์ม)
+
+### SEO
+
+ทุกหน้าตั้ง `robots: { index: false, follow: true }` และ **ไม่อยู่ใน `sitemap.ts`**
+เพื่อไม่ให้แย่ง keyword กับหน้า `/products/*` ที่ทำมาให้ติดอันดับแบบ organic
+ถ้าวันหนึ่งอยากให้หน้า LP ติดอันดับเองด้วย ให้ลบ `robots` ออกและเพิ่ม path เข้า `sitemap.ts`
+
+มี JSON-LD ทุกหน้า — `FAQPage` ทุกหน้า, `Product` ในหน้าสีกันไฟกับผ้ากันไฟ, `Service` ในหน้าบริการ
+
+### Tracking
+
+ทุกปุ่ม CTA มี `data-cta="..."` เช่น `hero-quote`, `sticky-line`, `form-submit-line`
+เอาไว้ผูก event ของ GA4 / Google Ads ได้เลยโดยไม่ต้องแก้ markup
+
 ## 5. Data Layer
 
 เนื้อหาทั้งหมดแยกเป็นไฟล์ TS ไม่ฝังใน component — แก้เนื้อหาได้โดยไม่ต้องแตะ UI
@@ -118,24 +204,43 @@ hero เดิมของเว็บใช้ภาพสี่เหลี่
 | ไฟล์ | เนื้อหา |
 |---|---|
 | `src/data/site.ts` | ชื่อบริษัท, ที่อยู่, เบอร์, อีเมล, LINE, เมนู, มาตรฐาน, สถิติ, helper links (`telHref`, `lineHref`, `mapEmbed`, …) |
-| `src/data/products.ts` | 4 หมวดหมู่ + 8 สินค้า (พร้อม specs, highlights, gallery) |
+| `src/data/products.ts` | 7 หมวดหมู่ + 14 สินค้า (badges, quickSpecs, specs, downloads, lists, installation, legal, FAQ, related, gallery) |
 | `src/data/news.ts` | 7 บทความ (พร้อม body เต็ม) |
 | `src/data/projects.ts` | 16 ผลงาน (พร้อม caption + span สำหรับ grid) |
 
-### สินค้า 8 รายการ
+### สินค้า 14 รายการ
 
-| รหัส | ชื่อ | หมวด | อ้างอิง datasheet |
-|---|---|---|---|
-| A014 | สีกันไฟ–สีทนไฟ Neocoat Intumescent Paint | สีกันไฟ | — |
-| A015 | Neocoat Primer 3000 | สีรองพื้น | — |
-| A013 | น้ำมันสนอินทนิล | น้ำมันสน/ทินเนอร์ | — |
-| A012 | ทินเนอร์อินทนิล AAA (3A) | น้ำมันสน/ทินเนอร์ | — |
-| A004 | ผ้ากันไฟซิลิก้าเคลือบซิลิโคน | ผ้ากันไฟ | HERA **STR850** |
-| A005 | ผ้ากันไฟผ้าใยแก้วไฟเบอร์กลาส | ผ้ากันไฟ | HERA **HT800** |
-| A006 | ผ้ากันไฟซิลิก้า | ผ้ากันไฟ | HERA **ST750** |
-| A007 | ผ้ากันไฟผ้าใยแก้วเคลือบซิลิโคน | ผ้ากันไฟ | HERA **SC470** |
+ข้อมูลสินค้าทั้งชุด (ชื่อ, tagline, badges, quick spec, สเปกเทคนิค, ขั้นตอนติดตั้ง,
+ข้อกฎหมาย, FAQ, สินค้าที่เกี่ยวข้อง, ลิงก์เอกสาร) **ถอดมาแบบคำต่อคำ**
+จาก https://infinite-material.vercel.app/products — เปลี่ยนเฉพาะ presentation
 
-spec ของผ้ากันไฟ (ความหนา/หน้ากว้าง/น้ำหนัก/อุณหภูมิ) ถอดมาจาก datasheet HERA ที่อยู่ในเว็บเดิม
+| slug | ชื่อ | หมวด |
+|---|---|---|
+| `neocoat-intumescent-paint-s` | สีกันไฟ Neocoat สูตรน้ำมัน Intumescent Paint-S | สีกันไฟ |
+| `neocoat-intumescent-paint-w` | สีกันไฟ Neocoat สูตรน้ำ Intumescent Paint-W | สีกันไฟ |
+| `neocoat-primer-grey-oxide` | สีรองพื้นเทา Neocoat Primer Grey Oxide | สีรองพื้น/ทับหน้า |
+| `neogloss-enamel` | สีน้ำมันทาเหล็ก Neogloss | สีรองพื้น/ทับหน้า |
+| `thinner-3a-intanin` | ทินเนอร์ 3A ผสมสี อินทนิล | ทินเนอร์/น้ำมันสน |
+| `thinner-2k` | ทินเนอร์ 2K ทินเนอร์ 3A | ทินเนอร์/น้ำมันสน |
+| `turpentine-intanin` | น้ำมันสนผสมสี อินทนิล | ทินเนอร์/น้ำมันสน |
+| `mandolite-cp2` | ซีเมนต์กันไฟ Mandolite CP-2 งานภายใน | ซีเมนต์กันไฟ |
+| `fendolite-m2` | ซีเมนต์กันไฟ Fendolite M2 งานภายนอก | ซีเมนต์กันไฟ |
+| `fiberglass-cloth` | ผ้ากันไฟ Fiberglass Cloth | ผ้ากันไฟ |
+| `roof-shield-ceramic` | สีเซรามิคสะท้อนความร้อน Roof Shield White | เซรามิคสะท้อนร้อน |
+| `four-plus-pro-masonry-sealer` | สีรองพื้นปูน Four Plus Pro Masonry Sealer | สีน้ำพลาสติก |
+| `four-plus-exterior` | สีน้ำพลาสติกทาภายนอก Four Plus Exterior | สีน้ำพลาสติก |
+| `four-plus-pro-interior` | สีน้ำพลาสติกทาภายใน Four Plus Pro Interior | สีน้ำพลาสติก |
+
+**บล็อกที่ใช้ร่วมกัน** — `installationSteps` (4 สเต็ป, ใช้กับสีกันไฟ 2 ตัว) และ
+`legalInfo` (กฎกระทรวง 2566, ใช้กับสีกันไฟ 2 ตัว + ซีเมนต์กันไฟ 2 ตัว)
+
+**ตัวเลขที่ต้องยืนยันก่อนใช้อ้างอิงเอกสารราชการ** — อัตราทนไฟของ Fendolite M II
+และ Mandolite CP-2 ในเว็บต้นทางระบุไม่ตรงกันระหว่างหน้า listing กับหน้าเนื้อหา
+(`specNote` ของทั้งสองตัวเตือนไว้แล้ว)
+
+**ไฟล์ประกอบ**
+- `public/assets/products/` (22 ไฟล์) — รูปสินค้าจริง ดึงมาจากเว็บต้นทาง
+- `public/docs/` (13 ไฟล์ PDF, ~25 MB) — TDS / ผลทดสอบ ISO 834, ASTM E119 / MSDS / สเปกผ้ากันไฟ
 
 ---
 
@@ -210,6 +315,11 @@ src/components/
 | `/contact` | "ทีมงานจะติดต่อกลับภายใน **1 วันทำการ**" | ❗ แต่งเอง |
 | หน้าแรก → ขั้นตอนการทำงาน 4 สเต็ป | เนื้อหาทั้ง 4 ขั้น | ❗ เขียนจากความเข้าใจทั่วไปของงานสีกันไฟ |
 | `stats` → "3 ชม.", "1000°C", "100%" | อ้างอิงจาก spec สินค้าจริง | ✅ มีที่มา |
+| `/four-plus` → ตารางคำนวณจำนวนถัง | คำนวณเองจาก 150 ตร.ม./ถัง/เที่ยว × (รองพื้น 1 + ทับหน้า 2) ปัดขึ้นเป็นถังเต็ม | ⚠️ เป็นเลขคณิต ไม่ใช่ตัวเลขจากผู้ผลิต — หน้าเว็บระบุว่าเป็นค่าประมาณแล้ว |
+| `/thinner` → หัวข้อความปลอดภัย | ข้อปฏิบัติการเก็บ/ใช้ตัวทำละลาย 4 ข้อ | ❗ เขียนจากแนวปฏิบัติทั่วไป ควรให้ลูกค้าตรวจว่าตรงกับ MSDS |
+| `/engineering` → ทุกหัวข้อ | ขอบเขตบริการ 3 อย่าง, timeline 5 ขั้น, รายการเอกสารส่งมอบ 6 รายการ, บล็อก "รับ/ไม่รับ" | ❗ **สำคัญ** เขียนจากความเข้าใจงานรับรองสีกันไฟทั่วไป ต้องให้วุฒิวิศวกรของลูกค้าตรวจก่อน publish |
+| `/fire-blanket` → การจับคู่เกรดผ้ากับรูป | จับคู่จากภาพจริง (ทอง 2 เกรด / เคลือบซิลิโคนเทา / ซิลิก้าแดง) | ⚠️ ทั้ง 2 เกรดสีทองใช้รูปผ้าทองคนละใบแต่เป็นผ้าชุดเดียวกัน — ถ้าลูกค้ามีรูปแยกรายเกรดจะดีกว่า |
+| ทุกหน้า LP | "เสนอราคาภายใน 1–2 วันทำการ" / "ภายใน 1 วันทำการ" | ❗ แต่งเอง (ต่อจากที่เคยระบุไว้ในตารางนี้) |
 | `standards` → ISO 9001:2015 | เป็นใบรับรองของ **โรงงานผู้ผลิต (UNIQUE Products)** ที่เห็นบนฉลากถัง ไม่ใช่ของ Blue Rich — ผมระบุกำกับว่า "ระบบบริหารคุณภาพโรงงานผู้ผลิต" | ⚠️ ตรวจถ้อยคำอีกครั้ง |
 
 ---

@@ -4,7 +4,7 @@ import Hero from "@/components/home/Hero";
 import Reveal from "@/components/ui/Reveal";
 import { Button, Container, Icon, SectionHeading } from "@/components/ui";
 import { CategoryCard, NewsCard, ProductCard } from "@/components/cards";
-import { categories, products, productsByCategory } from "@/data/products";
+import { bestSellers, categories, products, productsByCategory } from "@/data/products";
 import { articles } from "@/data/news";
 import { projects } from "@/data/projects";
 import { lineHref, site, standards, stats, telHref } from "@/data/site";
@@ -75,7 +75,6 @@ const process = [
 
 export default function HomePage() {
   const featured = products.find((p) => p.featured)!;
-  const bestSellers = products.filter((p) => p.bestSeller);
   const latest = articles.slice(0, 3);
   const showcase = projects.slice(0, 6);
 
@@ -158,9 +157,9 @@ export default function HomePage() {
                 {featured.description[0]}
               </p>
 
-              <ul className="mt-7 grid gap-3">
-                {featured.highlights.map((h) => (
-                  <li key={h} className="flex gap-3 text-[0.95rem] text-slate-700">
+              <dl className="mt-7 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                {featured.quickSpecs.map((s) => (
+                  <div key={s.label} className="flex gap-2.5 text-[0.95rem]">
                     <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-brand-600 text-white">
                       <svg viewBox="0 0 20 20" className="size-3" fill="none" aria-hidden>
                         <path
@@ -172,10 +171,11 @@ export default function HomePage() {
                         />
                       </svg>
                     </span>
-                    {h}
-                  </li>
+                    <dt className="text-slate-500">{s.label}</dt>
+                    <dd className="font-semibold text-brand-900">{s.value}</dd>
+                  </div>
                 ))}
-              </ul>
+              </dl>
 
               <div className="mt-9 flex flex-wrap gap-3">
                 <Button href={`/products/${featured.slug}`} size="lg">
@@ -258,7 +258,7 @@ export default function HomePage() {
                   ดูสินค้าทั้งหมด
                 </span>
                 <span className="text-sm text-slate-500">
-                  {products.length} รายการ · 4 หมวดหมู่
+                  {products.length} รายการ · {categories.length} หมวดหมู่
                 </span>
               </Link>
             </Reveal>

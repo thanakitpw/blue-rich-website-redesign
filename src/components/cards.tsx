@@ -30,12 +30,12 @@ export function ProductCard({ product }: { product: Product }) {
 
       <div className="flex flex-1 flex-col p-5">
         <span className="text-[0.7rem] font-semibold tracking-wide text-brand-500">
-          {cat?.name} · {product.code}
+          {cat?.name}
         </span>
         <h3 className="mt-2 line-clamp-2 text-[1.05rem] leading-snug transition group-hover:text-brand-700">
           {product.name}
         </h3>
-        <p className="mt-2 line-clamp-2 flex-1 text-sm text-slate-500">{product.tagline}</p>
+        <p className="mt-2 line-clamp-2 flex-1 text-sm text-slate-500">{product.cardSummary}</p>
         <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">
           ดูรายละเอียด
           <Icon.arrow className="transition-transform duration-300 group-hover:translate-x-1" />
