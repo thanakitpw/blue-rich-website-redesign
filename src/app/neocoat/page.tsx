@@ -113,7 +113,7 @@ export default function FireRetardantPaintLanding() {
             <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
               <div>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-brand-100 ring-1 ring-inset ring-white/20">
-                  <Icon.flame className="size-4 text-flame-400" />
+                  <Icon.flame className="size-4 text-accent-400" />
                   {hero.eyebrow}
                 </span>
 
@@ -130,7 +130,7 @@ export default function FireRetardantPaintLanding() {
 
                 <ul className="mt-7 grid gap-2.5">
                   {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[0.95rem] text-brand-50">
+                    <li key={p} className="flex gap-3 text-[1.02rem] text-brand-50">
                       <Check />
                       {p}
                     </li>
@@ -141,7 +141,7 @@ export default function FireRetardantPaintLanding() {
                   <a
                     href="#quote"
                     data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[0.95rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
                   >
                     ขอใบเสนอราคาฟรี
                     <Icon.arrow />
@@ -149,7 +149,7 @@ export default function FireRetardantPaintLanding() {
                   <a
                     href={telHref}
                     data-cta="hero-call"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-brand-500 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-accent-600 active:scale-[0.98]"
                   >
                     <Icon.phone />
                     โทร {site.phones[0]}
@@ -159,14 +159,14 @@ export default function FireRetardantPaintLanding() {
                     target="_blank"
                     rel="noreferrer"
                     data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
                     แอดไลน์ @{site.lineId}
                   </a>
                 </div>
 
-                <p className="mt-6 text-[0.82rem] text-brand-200/70">{hero.proof}</p>
+                <p className="mt-6 text-[0.9rem] text-brand-200/70">{hero.proof}</p>
               </div>
 
               <div className="relative">
@@ -192,7 +192,7 @@ export default function FireRetardantPaintLanding() {
                       className="h-14 w-auto"
                     />
                     <div>
-                      <p className="font-display text-sm font-semibold text-brand-900">
+                      <p className="font-display text-sm font-semibold text-brand-700">
                         Solvent &amp; Water Base
                       </p>
                       <p className="text-xs text-slate-500">เฉดสีขาว และสีเทา · รหัส A014</p>
@@ -217,10 +217,10 @@ export default function FireRetardantPaintLanding() {
                     >
                       <Icon.shield className="size-5 shrink-0 text-brand-500" />
                       <span>
-                        <span className="block font-display text-sm font-semibold text-brand-900">
+                        <span className="block font-display text-sm font-semibold text-brand-700">
                           {s.label}
                         </span>
-                        <span className="block text-[0.7rem] whitespace-nowrap text-slate-500">
+                        <span className="block text-[0.78rem] whitespace-nowrap text-slate-500">
                           {s.note}
                         </span>
                       </span>
@@ -236,14 +236,14 @@ export default function FireRetardantPaintLanding() {
         <section id="why" className="py-20 lg:py-24">
           <Wrap>
             <Reveal className="mx-auto max-w-3xl text-center">
-              <span className="inline-flex items-center gap-2 rounded-full bg-flame-500/10 px-3.5 py-1.5 text-xs font-semibold text-flame-600 ring-1 ring-inset ring-flame-500/20">
+              <span className="inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-3.5 py-1.5 text-xs font-semibold text-accent-600 ring-1 ring-inset ring-accent-500/20">
                 <Icon.flame className="size-4" />
                 {risk.eyebrow}
               </span>
               <h2 className="mt-4 text-3xl leading-[1.25] sm:text-4xl lg:text-[2.6rem]">
                 {risk.title}
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-[1.05rem]">
+              <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-[1.12rem]">
                 {risk.lead}
               </p>
             </Reveal>
@@ -252,7 +252,7 @@ export default function FireRetardantPaintLanding() {
               {risk.facts.map((f, i) => (
                 <Reveal key={f.label} delay={i * 90}>
                   <div className="h-full rounded-3xl bg-white p-7 text-center ring-1 ring-slate-200/80">
-                    <p className="font-display text-4xl font-bold text-flame-600 lg:text-[2.75rem]">
+                    <p className="font-display text-4xl font-bold text-accent-600 lg:text-[2.75rem]">
                       {f.value}
                     </p>
                     <p className="mt-3 font-display font-semibold text-brand-950">{f.label}</p>
@@ -263,7 +263,7 @@ export default function FireRetardantPaintLanding() {
             </div>
 
             <Reveal delay={160}>
-              <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-brand-50/70 px-7 py-6 text-center text-[0.98rem] leading-relaxed text-slate-700 ring-1 ring-inset ring-brand-100">
+              <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-brand-50/70 px-7 py-6 text-center text-[1.05rem] leading-relaxed text-slate-700 ring-1 ring-inset ring-brand-100">
                 {risk.outro}
               </p>
             </Reveal>
@@ -285,7 +285,7 @@ export default function FireRetardantPaintLanding() {
               <h2 className="mt-4 text-3xl leading-[1.25] text-white sm:text-4xl lg:text-[2.6rem]">
                 {mechanism.title}
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-100/75 sm:text-[1.05rem]">
+              <p className="mt-5 text-base leading-relaxed text-brand-100/75 sm:text-[1.12rem]">
                 {mechanism.description}
               </p>
             </Reveal>
@@ -297,10 +297,10 @@ export default function FireRetardantPaintLanding() {
                     <span className="font-display text-4xl font-bold text-brand-500/40">
                       {s.step}
                     </span>
-                    <span className="mt-3 inline-flex rounded-full bg-flame-500/15 px-3 py-1 text-[0.7rem] font-semibold text-flame-400">
+                    <span className="mt-3 inline-flex rounded-full bg-accent-500/15 px-3 py-1 text-[0.78rem] font-semibold text-accent-400">
                       {s.temp}
                     </span>
-                    <h3 className="mt-3 text-[1.05rem] text-white">{s.title}</h3>
+                    <h3 className="mt-3 text-[1.12rem] text-white">{s.title}</h3>
                     <p className="mt-2.5 text-sm leading-relaxed text-brand-100/65">{s.text}</p>
                   </li>
                 </Reveal>
@@ -345,13 +345,13 @@ export default function FireRetardantPaintLanding() {
                         key={r.type}
                         className={i % 2 ? "bg-brand-50/40" : "bg-white"}
                       >
-                        <td className="px-6 py-4 align-top text-[0.92rem] font-medium text-brand-950">
+                        <td className="px-6 py-4 align-top text-[1rem] font-medium text-brand-950">
                           {r.type}
                         </td>
-                        <td className="px-6 py-4 align-top text-[0.92rem] text-slate-600">
+                        <td className="px-6 py-4 align-top text-[1rem] text-slate-600">
                           {r.parts}
                         </td>
-                        <td className="px-6 py-4 align-top text-[0.92rem] font-semibold text-brand-700">
+                        <td className="px-6 py-4 align-top text-[1rem] font-semibold text-brand-700">
                           {r.rating}
                         </td>
                       </tr>
@@ -363,11 +363,11 @@ export default function FireRetardantPaintLanding() {
 
             <Reveal delay={180}>
               <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-3xl bg-brand-50/70 px-7 py-6 ring-1 ring-inset ring-brand-100 sm:flex-row">
-                <p className="text-[0.95rem] leading-relaxed text-slate-700">{legal.note}</p>
+                <p className="text-[1.02rem] leading-relaxed text-slate-700">{legal.note}</p>
                 <a
                   href="#quote"
                   data-cta="legal-quote"
-                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
                 >
                   ส่งแบบให้ประเมิน
                   <Icon.arrow />
@@ -416,7 +416,7 @@ export default function FireRetardantPaintLanding() {
                       <dt className="text-xs font-semibold tracking-wide text-slate-400">
                         {s.label}
                       </dt>
-                      <dd className="mt-1 text-[0.95rem] font-medium text-brand-950">
+                      <dd className="mt-1 text-[1.02rem] font-medium text-brand-950">
                         {s.value}
                       </dd>
                     </div>
@@ -431,7 +431,7 @@ export default function FireRetardantPaintLanding() {
                   <div className="h-full rounded-3xl bg-white p-7 ring-1 ring-slate-200/80">
                     <div className="flex flex-wrap items-center gap-3">
                       <h3 className="text-xl">{f.name}</h3>
-                      <span className="rounded-full bg-brand-50 px-3 py-1 text-[0.7rem] font-semibold text-brand-700 ring-1 ring-inset ring-brand-100">
+                      <span className="rounded-full bg-brand-50 px-3 py-1 text-[0.78rem] font-semibold text-brand-700 ring-1 ring-inset ring-brand-100">
                         {f.tag}
                       </span>
                     </div>
@@ -470,7 +470,7 @@ export default function FireRetardantPaintLanding() {
               {system.layers.map((l, i) => (
                 <Reveal key={l.step} delay={i * 100}>
                   <div className="relative h-full rounded-3xl bg-white p-7 ring-1 ring-slate-200/80 transition hover:shadow-[0_24px_48px_-28px_rgba(12,36,56,0.3)] hover:ring-brand-300">
-                    <span className="inline-flex rounded-full bg-brand-600 px-3.5 py-1 text-[0.7rem] font-semibold text-white">
+                    <span className="inline-flex rounded-full bg-brand-600 px-3.5 py-1 text-[0.78rem] font-semibold text-white">
                       {l.step}
                     </span>
                     <h3 className="mt-4 text-xl">{l.name}</h3>
@@ -480,7 +480,7 @@ export default function FireRetardantPaintLanding() {
                     <p className="mt-3.5 text-[0.93rem] leading-relaxed text-slate-600">
                       {l.detail}
                     </p>
-                    <p className="mt-5 rounded-2xl bg-slate-50 px-4 py-3 text-[0.82rem] text-slate-500 ring-1 ring-inset ring-slate-100">
+                    <p className="mt-5 rounded-2xl bg-slate-50 px-4 py-3 text-[0.9rem] text-slate-500 ring-1 ring-inset ring-slate-100">
                       ความหนา : {l.thickness}
                     </p>
                   </div>
@@ -507,7 +507,7 @@ export default function FireRetardantPaintLanding() {
                 </p>
 
                 <div className="mt-8 rounded-3xl bg-brand-950 p-7 text-brand-100/85">
-                  <p className="text-[0.95rem] leading-relaxed">{calculation.cta}</p>
+                  <p className="text-[1.02rem] leading-relaxed">{calculation.cta}</p>
                   <a
                     href="#quote"
                     data-cta="calc-quote"
@@ -533,7 +533,7 @@ export default function FireRetardantPaintLanding() {
                         <span className="block font-display font-semibold text-brand-950">
                           {f.title}
                         </span>
-                        <span className="mt-1.5 block text-[0.92rem] leading-relaxed text-slate-600">
+                        <span className="mt-1.5 block text-[1rem] leading-relaxed text-slate-600">
                           {f.text}
                         </span>
                       </span>
@@ -582,10 +582,10 @@ export default function FireRetardantPaintLanding() {
                     >
                       <Icon.doc className="mt-0.5 size-5 shrink-0 text-brand-600" />
                       <span>
-                        <span className="block text-[0.95rem] font-semibold text-brand-950">
+                        <span className="block text-[1.02rem] font-semibold text-brand-950">
                           {d.title}
                         </span>
-                        <span className="mt-1 block text-[0.88rem] leading-relaxed text-slate-600">
+                        <span className="mt-1 block text-[0.96rem] leading-relaxed text-slate-600">
                           {d.text}
                         </span>
                       </span>
@@ -733,7 +733,7 @@ export default function FireRetardantPaintLanding() {
                 <Reveal key={r.name} delay={i * 90}>
                   <figure className="flex h-full flex-col rounded-3xl bg-white p-7 ring-1 ring-slate-200/80">
                     <Icon.quote className="text-brand-200" />
-                    <blockquote className="mt-4 flex-1 text-[0.95rem] leading-relaxed text-slate-600">
+                    <blockquote className="mt-4 flex-1 text-[1.02rem] leading-relaxed text-slate-600">
                       {r.text}
                     </blockquote>
                     <figcaption className="mt-6 flex items-center gap-3 border-t border-slate-100 pt-5">
@@ -741,7 +741,7 @@ export default function FireRetardantPaintLanding() {
                         {r.name.replace("คุณ", "").charAt(0)}
                       </span>
                       <span>
-                        <span className="block font-display font-semibold text-brand-900">
+                        <span className="block font-display font-semibold text-brand-700">
                           {r.name}
                         </span>
                         <span className="block text-xs text-slate-500">{r.role}</span>
@@ -784,10 +784,10 @@ export default function FireRetardantPaintLanding() {
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-6">
-                      <span className="text-[0.7rem] font-semibold tracking-wide text-brand-500">
+                      <span className="text-[0.78rem] font-semibold tracking-wide text-brand-500">
                         {r.role}
                       </span>
-                      <h3 className="mt-1.5 text-[1.05rem]">{r.name}</h3>
+                      <h3 className="mt-1.5 text-[1.12rem]">{r.name}</h3>
                       <p className="mt-2 text-sm leading-relaxed text-slate-500">{r.text}</p>
                     </div>
                   </div>
@@ -815,7 +815,7 @@ export default function FireRetardantPaintLanding() {
             </div>
 
             <Reveal delay={140}>
-              <p className="mt-10 text-center text-[0.95rem] text-slate-600">
+              <p className="mt-10 text-center text-[1.02rem] text-slate-600">
                 ยังไม่เจอคำตอบที่ต้องการ?{" "}
                 <a
                   href={telHref}

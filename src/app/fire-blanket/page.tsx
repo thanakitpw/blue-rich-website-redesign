@@ -101,7 +101,7 @@ export default function FireBlanketLanding() {
 
                 <h1 className="mt-5 text-[2.1rem] leading-[1.18] text-white sm:text-5xl lg:text-[3.2rem]">
                   {hero.title}
-                  <span className="mt-2 block bg-gradient-to-br from-flame-400 via-brand-200 to-white bg-clip-text text-transparent">
+                  <span className="mt-2 block bg-gradient-to-br from-accent-400 via-brand-200 to-white bg-clip-text text-transparent">
                     {hero.titleAccent}
                   </span>
                 </h1>
@@ -112,7 +112,7 @@ export default function FireBlanketLanding() {
 
                 <ul className="mt-7 grid gap-2.5">
                   {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[0.95rem] text-brand-50">
+                    <li key={p} className="flex gap-3 text-[1.02rem] text-brand-50">
                       <Check />
                       {p}
                     </li>
@@ -123,7 +123,7 @@ export default function FireBlanketLanding() {
                   <a
                     href="#quote"
                     data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[0.95rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
                   >
                     แจ้งขนาดเพื่อขอราคา
                     <Icon.arrow />
@@ -131,7 +131,7 @@ export default function FireBlanketLanding() {
                   <a
                     href={telHref}
                     data-cta="hero-call"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-brand-500 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-accent-600 active:scale-[0.98]"
                   >
                     <Icon.phone />
                     โทร {site.phones[0]}
@@ -141,14 +141,14 @@ export default function FireBlanketLanding() {
                     target="_blank"
                     rel="noreferrer"
                     data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
                     แอดไลน์ @{site.lineId}
                   </a>
                 </div>
 
-                <p className="mt-6 text-[0.82rem] text-brand-200/70">{hero.proof}</p>
+                <p className="mt-6 text-[0.9rem] text-brand-200/70">{hero.proof}</p>
               </div>
 
               <div className="relative">
@@ -166,11 +166,11 @@ export default function FireBlanketLanding() {
 
                 <div className="absolute -bottom-5 -left-3 hidden rounded-3xl bg-white p-4 shadow-2xl shadow-brand-950/30 sm:block">
                   <div className="flex items-center gap-4">
-                    <span className="grid size-12 place-items-center rounded-2xl bg-flame-500/10 text-flame-600">
+                    <span className="grid size-12 place-items-center rounded-2xl bg-accent-500/10 text-accent-600">
                       <Icon.flame className="size-6" />
                     </span>
                     <div>
-                      <p className="font-display text-sm font-semibold text-brand-900">
+                      <p className="font-display text-sm font-semibold text-brand-700">
                         550°C และ 1000°C
                       </p>
                       <p className="text-xs text-slate-500">ทอแบบซาติน · อบ 2 ครั้ง</p>
@@ -203,21 +203,21 @@ export default function FireBlanketLanding() {
                         sizes="(min-width: 1024px) 24vw, 45vw"
                         className="object-cover"
                       />
-                      <span className="absolute top-4 left-4 rounded-full bg-brand-950/85 px-3.5 py-1.5 font-display text-sm font-bold text-flame-400 backdrop-blur">
+                      <span className="absolute top-4 left-4 rounded-full bg-brand-950/85 px-3.5 py-1.5 font-display text-sm font-bold text-accent-400 backdrop-blur">
                         {g.temp}
                       </span>
                     </div>
 
                     <div className="flex flex-1 flex-col p-6">
-                      <h3 className="text-[1.05rem] leading-snug">{g.name}</h3>
-                      <p className="mt-1 text-[0.8rem] font-semibold text-brand-600">
+                      <h3 className="text-[1.12rem] leading-snug">{g.name}</h3>
+                      <p className="mt-1 text-[0.88rem] font-semibold text-brand-600">
                         {g.thickness}
                       </p>
-                      <p className="mt-3 flex-1 text-[0.88rem] leading-relaxed text-slate-600">
+                      <p className="mt-3 flex-1 text-[0.96rem] leading-relaxed text-slate-600">
                         {g.summary}
                       </p>
 
-                      <p className="mt-5 rounded-2xl bg-slate-50 px-4 py-3 text-[0.8rem] leading-relaxed text-slate-500 ring-1 ring-inset ring-slate-100">
+                      <p className="mt-5 rounded-2xl bg-slate-50 px-4 py-3 text-[0.88rem] leading-relaxed text-slate-500 ring-1 ring-inset ring-slate-100">
                         เหมาะกับ : {g.bestFor}
                       </p>
 
@@ -238,7 +238,7 @@ export default function FireBlanketLanding() {
             </div>
 
             <Reveal delay={160}>
-              <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-flame-500/[0.07] px-7 py-6 text-center text-[0.95rem] leading-relaxed text-slate-700 ring-1 ring-inset ring-flame-500/20">
+              <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-accent-500/[0.07] px-7 py-6 text-center text-[1.02rem] leading-relaxed text-slate-700 ring-1 ring-inset ring-accent-500/20">
                 {gradeNote}
               </p>
             </Reveal>
@@ -273,7 +273,7 @@ export default function FireBlanketLanding() {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
-                    <figcaption className="px-4 py-3 text-[0.78rem] leading-snug text-slate-500">
+                    <figcaption className="px-4 py-3 text-[0.86rem] leading-snug text-slate-500">
                       {g.caption}
                     </figcaption>
                   </figure>
@@ -305,7 +305,7 @@ export default function FireBlanketLanding() {
                       </span>
                       <div>
                         <h3 className="text-lg">{s.title}</h3>
-                        <p className="mt-2 text-[0.92rem] leading-relaxed text-slate-600">
+                        <p className="mt-2 text-[1rem] leading-relaxed text-slate-600">
                           {s.text}
                         </p>
                       </div>
@@ -316,7 +316,7 @@ export default function FireBlanketLanding() {
                 <a
                   href="#quote"
                   data-cta="service-quote"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
                 >
                   ส่งขนาดให้คิดราคา
                   <Icon.arrow />
@@ -335,7 +335,7 @@ export default function FireBlanketLanding() {
                         className="flex flex-wrap justify-between gap-x-6 gap-y-1 bg-white px-6 py-3.5"
                       >
                         <dt className="text-[0.85rem] text-slate-500">{s.label}</dt>
-                        <dd className="text-[0.88rem] font-medium text-brand-950">{s.value}</dd>
+                        <dd className="text-[0.96rem] font-medium text-brand-950">{s.value}</dd>
                       </div>
                     ))}
                   </dl>
@@ -382,7 +382,7 @@ export default function FireBlanketLanding() {
                   className={`h-full rounded-4xl p-8 ring-1 ring-inset ${
                     c.tone === "yes"
                       ? "bg-white/[0.06] ring-white/10"
-                      : "bg-flame-500/[0.08] ring-flame-500/25"
+                      : "bg-accent-500/[0.08] ring-accent-500/25"
                   }`}
                 >
                   <h3 className="text-2xl text-white">{c.name}</h3>
@@ -395,7 +395,7 @@ export default function FireBlanketLanding() {
                         {c.tone === "yes" ? (
                           <Check />
                         ) : (
-                          <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-flame-500/20 text-flame-400">
+                          <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-accent-500/20 text-accent-400">
                             <svg viewBox="0 0 20 20" className="size-3" fill="none" aria-hidden>
                               <path
                                 d="M6 6l8 8M14 6l-8 8"
@@ -417,7 +417,7 @@ export default function FireBlanketLanding() {
 
           <Reveal delay={200}>
             <div className="mx-auto mt-10 flex max-w-3xl flex-col items-center justify-between gap-4 rounded-3xl bg-white/[0.06] px-7 py-6 ring-1 ring-inset ring-white/10 sm:flex-row">
-              <p className="text-[0.95rem] leading-relaxed text-brand-100/80">{boundary.outro}</p>
+              <p className="text-[1.02rem] leading-relaxed text-brand-100/80">{boundary.outro}</p>
               <a
                 href={telHref}
                 data-cta="boundary-call"
@@ -449,7 +449,7 @@ export default function FireBlanketLanding() {
                       <Icon.doc className="size-5" />
                     </span>
                     <span className="flex-1">
-                      <span className="block text-[0.98rem] font-semibold text-brand-950">
+                      <span className="block text-[1.05rem] font-semibold text-brand-950">
                         {g.name} {g.temp}
                       </span>
                       <span className="mt-0.5 block text-[0.85rem] text-slate-500">
@@ -474,7 +474,7 @@ export default function FireBlanketLanding() {
             </div>
 
             <Reveal delay={140}>
-              <p className="mt-10 text-center text-[0.95rem] text-slate-600">
+              <p className="mt-10 text-center text-[1.02rem] text-slate-600">
                 ยังไม่เจอคำตอบที่ต้องการ?{" "}
                 <a
                   href={telHref}

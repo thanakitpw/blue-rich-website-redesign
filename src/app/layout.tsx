@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { Anuphan, Noto_Sans_Thai } from "next/font/google";
+import { Prompt } from "next/font/google";
 import "./globals.css";
 import { site } from "@/data/site";
 
-const display = Anuphan({
+/* Concept B is set entirely in Prompt — one family for both roles. */
+const display = Prompt({
   subsets: ["thai", "latin"],
   weight: ["500", "600", "700"],
   variable: "--font-display",
   display: "swap",
 });
 
-const body = Noto_Sans_Thai({
+const body = Prompt({
   subsets: ["thai", "latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
   variable: "--font-body",
   display: "swap",
 });

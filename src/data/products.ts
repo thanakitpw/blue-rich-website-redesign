@@ -82,13 +82,6 @@ export const categories: Category[] = [
     image: "/assets/products/thinner-3a-intanin.webp",
   },
   {
-    slug: "fireproof-cement",
-    name: "ซีเมนต์กันไฟ",
-    short: "Sprayed Fireproofing",
-    description: "Fendolite M2 ซีเมนต์พ่นกันไฟ งานภายนอก",
-    image: "/assets/products/fendolite-m2.png",
-  },
-  {
     slug: "fire-blanket",
     name: "ผ้ากันไฟ",
     short: "Fire Blanket",
@@ -305,7 +298,6 @@ export const products: Product[] = [
       "neocoat-intumescent-paint-s",
       "neocoat-primer-grey-oxide",
       "neogloss-enamel",
-      "fendolite-m2",
     ],
   },
 
@@ -616,120 +608,6 @@ export const products: Product[] = [
   },
 
   {
-    slug: "mandolite-cp2",
-    name: "ซีเมนต์กันไฟ Mandolite CP-2 งานภายใน",
-    category: "fireproof-cement",
-    tagline:
-      "ซีเมนต์พ่นกันไฟ CAFCO Mandolite CP-2 ชนิด Medium density น้ำหนัก 12.5 กก. ทนไฟได้ 1–3 ชม. สำหรับงานภายใน",
-    cardSummary: "12.5 กก. · ทนไฟ 1–3 ชม. · Medium density",
-    badges: ["Medium density", "ทนไฟ 1–3 ชม.", "U.L. Listed", "Asbestos Free"],
-    quickSpecs: [
-      { label: "ขนาดบรรจุ", value: "12.5 กก." },
-      { label: "ชนิด", value: "Medium density" },
-      { label: "ทนไฟ", value: "1–3 ชม." },
-      { label: "ใช้กับ", value: "งานภายในอาคาร" },
-      { label: "ส่วนผสม", value: "แร่เวอร์มิคูไลท์ + ซีเมนต์" },
-      { label: "สต็อก", value: "พร้อมส่ง" },
-    ],
-    image: "/assets/products/cafco-400.png",
-    gallery: ["/assets/products/cafco-400.png"],
-    description: [
-      "ซีเมนต์พ่นกันไฟ หรือ ซีเมนต์พ่นทนไฟ Mandolite CP-2 ชนิด Medium density มีอัตราทนไฟได้ 1-4 ชั่วโมง เป็นส่วนผสมของแร่เวอร์มิคูไรท์และซีเมนต์ ปราศจาก Asbestos และ Fiber",
-      "CAFCO Mandolite CP-2 เป็นสาร Alkaline Based โดยธรรมชาติของสารดังกล่าว มีค่า pH อยู่ระหว่าง 12-12.5 ซีเมนต์พ่นกันไฟจึงช่วยป้องกันสาเหตุที่ทำให้เกิดสนิมในผิวเหล็กปกติ",
-      "CAFCO Mandolite CP-2 นั้น จะมีการยึดเกาะที่ดีกับผิวเหล็กปกติ โดยพื้นผิวที่จะพ่นนั้นจะต้องแห้งและปราศจากน้ำมัน, จารบี หรือวัสดุอื่น ๆ ที่จะทำให้การยึดเกาะน้อยลง",
-      "ซีเมนต์พ่นกันไฟ หรือ ซีเมนต์พ่นทนไฟ ผ่านการทดสอบได้ตามมาตรฐานสากล U.L. Underwriter’s Laboratories Inc",
-    ],
-    specs: [
-      { label: "ประเภท", value: "ซีเมนต์พ่นกันไฟ (Sprayed cementitious fireproofing)" },
-      { label: "ชนิด", value: "Medium density" },
-      { label: "ส่วนผสม", value: "แร่เวอร์มิคูไลท์ และซีเมนต์" },
-      { label: "ปราศจาก", value: "Asbestos และ Fiber" },
-      { label: "ค่า pH", value: "12 – 12.5 (Alkaline Based)" },
-      { label: "คุณสมบัติกันสนิม", value: "ช่วยป้องกันสาเหตุที่ทำให้เกิดสนิมในผิวเหล็กปกติ" },
-      { label: "ขนาดบรรจุ", value: "12.5 กก." },
-      { label: "ใช้กับ", value: "งานภายในอาคาร" },
-      { label: "มาตรฐาน", value: "U.L. Underwriter’s Laboratories Inc" },
-    ],
-    specNote:
-      "อัตราทนไฟบนหน้าสินค้าเดิมระบุ 1–3 ชม. ส่วนหน้าเนื้อหาของเว็บเดิมระบุช่วง 1–4 ชม. — โปรดยืนยันตัวเลขกับฝ่ายเทคนิคก่อนใช้อ้างอิงในเอกสารยื่นขออนุญาต",
-    legalStandards: "ISO 834 · ASTM E119",
-    faq: [
-      {
-        q: "ต่างจาก Fendolite M II ยังไง?",
-        a: "Mandolite CP-2 เป็นชนิด Medium density สำหรับงานภายในอาคาร · Fendolite M II เป็นชนิด High density สำหรับงานภายนอก",
-      },
-      { q: "มีใยหินไหม?", a: "ไม่มี ปราศจาก Asbestos และ Fiber" },
-      {
-        q: "ต้องเตรียมผิวยังไง?",
-        a: "พื้นผิวที่จะพ่นต้องแห้งและปราศจากน้ำมัน จารบี หรือวัสดุอื่น ๆ ที่จะทำให้การยึดเกาะน้อยลง",
-      },
-    ],
-    related: [
-      "fendolite-m2",
-      "neocoat-intumescent-paint-s",
-      "fiberglass-cloth",
-      "roof-shield-ceramic",
-    ],
-  },
-
-  {
-    slug: "fendolite-m2",
-    name: "ซีเมนต์กันไฟ Fendolite M2 งานภายนอก",
-    category: "fireproof-cement",
-    tagline:
-      "ซีเมนต์พ่นกันไฟ กันไฟลาม Fendolite M II ชนิด High density น้ำหนัก 20 กก. ทนไฟได้ 1–3 ชม. สำหรับงานภายนอก",
-    cardSummary: "20 กก. · ทนไฟ 1–3 ชม.",
-    badges: ["High density", "ทนไฟ 1–3 ชม.", "U.L. Listed", "Asbestos Free"],
-    quickSpecs: [
-      { label: "ขนาดบรรจุ", value: "20 กก." },
-      { label: "ชนิด", value: "High density" },
-      { label: "ทนไฟ", value: "1–3 ชม." },
-      { label: "ใช้กับ", value: "งานภายนอก" },
-      { label: "ส่วนผสม", value: "แร่เวอร์มิคูไลท์ + ซีเมนต์" },
-      { label: "สต็อก", value: "พร้อมส่ง" },
-    ],
-    image: "/assets/products/fendolite-m2.png",
-    gallery: ["/assets/products/fendolite-m2.png"],
-    description: [
-      "ซีเมนต์พ่นกันไฟ หรือ ซีเมนต์พ่นทนไฟ กันไฟลาม Fendolite M II วัสดุพ่นกันไฟ Fendolite M II เป็นชนิด High density มีอัตราทนไฟได้ไม่น้อยกว่า 3 ชั่วโมง เป็นส่วนผสมของแร่เวอร์มิคูไรท์และซีเมนต์ ปราศจาก Asbestos และ Fiber",
-      "Fendolite M II ไม่ทำให้เกิดสนิมในผิวเหล็กปกติ และมีการยึดเกาะที่ดีกับผิวเหล็กปกติ พื้นซีเมนต์ ช่องชาร์ปงานระบบไฟ ประปา",
-      "โดยพื้นผิวที่จะพ่นนั้นจะต้องแห้งและปราศจากน้ำมัน, จารบี หรือวัสดุอื่น ๆ ที่จะทำให้การยึดเกาะน้อยลง",
-      "ซีเมนต์พ่นกันไฟ หรือ ซีเมนต์พ่นทนไฟ ผ่านการทดสอบได้ตามมาตรฐานสากล U.L. Underwriter’s Laboratories Inc",
-    ],
-    specs: [
-      { label: "ประเภท", value: "ซีเมนต์พ่นกันไฟ / กันไฟลาม" },
-      { label: "ชนิด", value: "High density" },
-      { label: "ส่วนผสม", value: "แร่เวอร์มิคูไลท์ และซีเมนต์" },
-      { label: "ปราศจาก", value: "Asbestos และ Fiber" },
-      { label: "ยึดเกาะได้กับ", value: "ผิวเหล็กปกติ · พื้นซีเมนต์ · ช่องชาร์ปงานระบบไฟ ประปา" },
-      { label: "คุณสมบัติกันสนิม", value: "ไม่ทำให้เกิดสนิมในผิวเหล็กปกติ" },
-      { label: "ขนาดบรรจุ", value: "20 กก." },
-      { label: "ใช้กับ", value: "งานภายนอก" },
-      { label: "มาตรฐาน", value: "U.L. Underwriter’s Laboratories Inc" },
-    ],
-    specNote:
-      "อัตราทนไฟบนหน้าสินค้าเดิมระบุ 1–3 ชม. ส่วนหน้าเนื้อหาของเว็บเดิมระบุ “ไม่น้อยกว่า 3 ชั่วโมง” — โปรดยืนยันตัวเลขกับฝ่ายเทคนิคก่อนใช้อ้างอิงในเอกสารยื่นขออนุญาต",
-    legalStandards: "ISO 834 · ASTM E119",
-    faq: [
-      {
-        q: "ต่างจาก Mandolite CP-2 ยังไง?",
-        a: "Fendolite M II เป็นชนิด High density สำหรับงานภายนอก · Mandolite CP-2 เป็นชนิด Medium density สำหรับงานภายในอาคาร",
-      },
-      {
-        q: "พ่นบนพื้นซีเมนต์ได้ไหม?",
-        a: "ได้ ยึดเกาะได้ดีกับผิวเหล็กปกติ พื้นซีเมนต์ และช่องชาร์ปงานระบบไฟ ประปา",
-      },
-      { q: "มีใยหินไหม?", a: "ไม่มี ปราศจาก Asbestos และ Fiber" },
-    ],
-    related: [
-      "mandolite-cp2",
-      "neocoat-intumescent-paint-s",
-      "fiberglass-cloth",
-      "roof-shield-ceramic",
-    ],
-  },
-
-  {
     slug: "fiberglass-cloth",
     name: "ผ้ากันไฟ Fiberglass Cloth",
     category: "fire-blanket",
@@ -824,12 +702,10 @@ export const products: Product[] = [
       },
       {
         q: "ใช้แทนสีกันไฟได้ไหม?",
-        a: "ไม่ได้ ผ้ากันไฟใช้กันสะเก็ดไฟและกั้นความร้อน — งานกันไฟโครงสร้างเหล็กใช้สีกันไฟหรือซีเมนต์พ่นกันไฟ",
+        a: "ไม่ได้ ผ้ากันไฟใช้กันสะเก็ดไฟและกั้นความร้อน — งานกันไฟโครงสร้างเหล็กใช้สีกันไฟชนิดพองตัวตามที่ออกแบบ",
       },
     ],
     related: [
-      "mandolite-cp2",
-      "fendolite-m2",
       "roof-shield-ceramic",
       "neocoat-intumescent-paint-s",
     ],
@@ -910,7 +786,6 @@ export const products: Product[] = [
     ],
     related: [
       "neocoat-intumescent-paint-s",
-      "fendolite-m2",
       "fiberglass-cloth",
       "neogloss-enamel",
     ],
@@ -1095,7 +970,6 @@ export const bestSellers = [
   "neocoat-intumescent-paint-s",
   "neocoat-intumescent-paint-w",
   "neocoat-primer-grey-oxide",
-  "fendolite-m2",
 ]
   .map((slug) => getProduct(slug))
   .filter((p): p is Product => Boolean(p));

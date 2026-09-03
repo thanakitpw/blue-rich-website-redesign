@@ -36,46 +36,195 @@ Scaffold ด้วย `create-next-app` (App Router + src dir + import alias `@/
 
 ทั้งหมดอยู่ใน `src/app/globals.css` ภายใต้ `@theme`
 
-### สี
+### สี — พอร์ตจาก Concept B
 
-สเกล `brand-50` → `brand-950` **สุ่มค่าจากโลโก้คลื่นเดิม** เพื่อคงโทนสีตามที่ลูกค้าขอ
+ลูกค้าเลือก **Concept B** (`public/concept-b/index.html`) เป็นดีไซน์ของเว็บจริง
+ตัวแปร CSS ของ Concept B ถูก map ลงบนสเกล `brand` / `slate` / `flame` ที่โค้ดใช้อยู่แล้ว
+ทำให้ utility class เดิมทั้งหมดเปลี่ยนมาใช้พาเลตของ Concept B โดยไม่ต้องไล่แก้ทีละไฟล์
 
 ```
-brand-50  #f0f8fc   brand-500 #3488c1   brand-900 #143d5c
-brand-100 #dcedf8   brand-600 #256da4   brand-950 #0c2438
-brand-200 #bcdcf1   brand-700 #1f5785
-brand-300 #8ec4e5   brand-800 #1d496e
-brand-400 #59a6d5
+Concept B          →  Tailwind
+--sky      #f1f7fb →  brand-50      --shell    #f6f9fb →  slate-50
+--blue-100 #e5f1f8 →  brand-100     --line-soft#eef3f7 →  slate-100
+--blue-300 #b3d7ea →  brand-200     --line     #e3ebf2 →  slate-200
+--blue-500 #6aa4c4 →  brand-400     --muted    #62798a →  slate-500
+--blue-600 #4a86ab →  brand-500     --ink      #15242f →  slate-950 / brand-950
+--blue-700 #3a6f92 →  brand-600
+--navy-800 #33607c →  brand-700     LINE green #06c755 →  ใช้ตรง ๆ ในคอมโพเนนต์
+--navy-900 #2a5068 →  brand-800
+--navy-950 #20404f →  brand-900
 ```
 
-`flame-400/500/600` (เหลือง–ส้ม) — **ใช้เฉพาะจุดที่สื่อถึงไฟ/อุณหภูมิเท่านั้น** (badge "ขายดี", "สินค้าเรือธง", เครื่องหมาย required ในฟอร์ม) ไม่ใช้เป็นสีตกแต่งทั่วไป เพื่อไม่ให้หลุดโทนเดิม
+### สี action + สีหัวข้อ = `#206CA4`
+
+ลูกค้าขอให้ **ปุ่ม, element ต่าง ๆ และตัวอักษรหัวข้อทั้งเว็บเป็นสีฟ้า `#206CA4`**
+สีส้มของ Concept B (`--flame #ef7622`) ถูกแทนที่ทั้งหมด — ไม่มีสีส้มเหลือในเว็บแล้ว
+
+```
+accent-50  #eef5fa   accent-300 #7db2d4   accent-600 #1a5885  (hover)
+accent-100 #d7e8f3   accent-400 #4a90bf   accent-700 #154668
+accent-200 #aecfe6   accent-500 #206ca4   ← สีที่ลูกค้ากำหนด
+```
+
+**สองช่องใน `brand` ถูกตั้งเป็น `#206ca4` ด้วย** เพื่อให้ utility class เดิมทั่วทั้งโค้ด
+(รวมหน้า landing page) เปลี่ยนตามโดยไม่ต้องไล่แก้ทีละจุด
+
+| token | บทบาทเดิมใน Concept B | ใช้ที่ไหน |
+|---|---|---|
+| `brand-600` | `--blue-700` สี action | ปุ่ม, pill เมนู active, ลิงก์, ไอคอนวงกลม, badge |
+| `brand-700` | `--navy-800` สีหัวข้อ | `h1–h5` (กฎใน `@layer base`), ชื่อสินค้าในการ์ด, หัวข้อ FAQ, breadcrumb ปัจจุบัน |
+
+- `text-brand-900` ที่เคยใช้กับหัวข้อย่อย/ป้ายกำกับ ถูกเปลี่ยนเป็น `text-brand-700` ทั้งหมด
+  จะได้เดินตามสีหัวข้อชุดเดียวกัน (`brand-900` เหลือไว้ใช้เป็น**พื้นเข้ม**เท่านั้น)
+- ปุ่มที่เคย hover เป็น `brand-800` เปลี่ยนเป็น `accent-600` เพื่อให้เป็นการเข้มขึ้นของสีเดียวกัน
+- จุดที่เคยเป็นส้ม → `#206CA4` : ขีด 4px หน้าหัวข้อ (`.rule-bar`), ปุ่มโทรกลมบน header,
+  badge "ขายดี", ปุ่ม +/− ของ FAQ, eyebrow ภาษาอังกฤษ, ไอคอนใน footer,
+  ตราวงกลม One Stop Service และปุ่ม CTA ทั้งหมด
+- ปุ่ม LINE ยังเป็นเขียว `#06C755` และไอคอน Facebook ยังเป็น `#1877f2` ตามสีแบรนด์เจ้าของ
+- contrast `#206ca4` บนพื้นขาว = **5.6:1** ผ่าน WCAG AA ทั้งตัวอักษรปกติและตัวอักษรบนปุ่ม
+
+### ตัวเลข/ระยะ
+
+- `--wrap: 1180px` → `Container` = `max-w-[1180px] px-5`
+- section = `py-[38px] lg:py-[52px]` (`.sec` ของ Concept B)
+- radius 14 / 20px → override `--radius-3xl: 14px`, `--radius-4xl/5xl: 20px`
+- เส้นขอบเป็น hairline `border border-slate-200` แทน `ring-*` แบบเดิม
+
+### สเกลตัวอักษร (ยกขึ้นหนึ่งขั้นตามที่ลูกค้าขอ)
+
+body = **16px / line-height 1.7** (เดิม 15/1.75) และ override สเกล `text-*` ทั้งชุดใน `@theme`
+
+```
+text-xs 13px   text-base 16px   text-2xl 24px
+text-sm 15px   text-lg   19px   text-3xl 30px
+               text-xl   21px   text-4xl 38px
+```
+
+ค่า `text-[Npx]` ที่ port มาจาก Concept B ถูกยกขึ้นหนึ่งขั้นทั้ง 31 ไฟล์เช่นกัน
+ชื่อสินค้าในการ์ดใหญ่ขึ้นและหนาขึ้น (`text-[17px] font-semibold`, การ์ดเรือธง `text-[20px]`)
+
+### พื้นหลังฟ้าของ section (เข้มขึ้นตามที่ลูกค้าขอ)
+
+```
+--color-brand-50  #f1f7fb → #dfecf7   (PageHero, chip, hover)
+--color-slate-50  #f6f9fb → #eaf2f9   (section tone="shell")
+--color-slate-500 #62798a → #4f6879   (muted text — เข้มขึ้นให้ contrast ยังผ่าน AA
+                                        บนพื้นฟ้าที่เข้มขึ้น: 4.9:1)
+```
 
 ### ฟอนต์
 
-ผูกผ่าน CSS variable: `--font-display` (Anuphan 500/600/700) และ `--font-body` (Noto Sans Thai 400/500/600/700)
-`h1–h4` ใช้ display อัตโนมัติผ่าน `@layer base`
+**Prompt** ทั้งเว็บ (เดิม Anuphan + Noto Sans Thai) — `--font-display` 500/600/700,
+`--font-body` 300/400/500/600 ตามที่ Concept B ใช้
 
-### Motif — "diamond"
+### Utilities ที่พอร์ตมาจาก Concept B
 
-hero เดิมของเว็บใช้ภาพสี่เหลี่ยมเอียง 45° มุมมน ผมเก็บลายนี้ไว้เป็นเอกลักษณ์ แต่ทำให้ทันสมัยขึ้น
+- `.rule-bar` — ขีดส้ม 4px หน้าหัวข้อ (`.sec-head h2::before`)
+- `.eyebrow-en` — ตัวเอียงพิมพ์ใหญ่สำหรับบรรทัดภาษาอังกฤษ
+- `.bleed-left` — ภาพทะลุขอบซ้ายในแถบ About
+- `.line-clamp-3-b` — ตัด 3 บรรทัดของการ์ดสินค้าเรือธง
 
-```css
-.diamond       { clip-path: inset(0 round 22%); transform: rotate(45deg); }
-.diamond-inner { transform: rotate(-45deg) scale(1.42); }   /* หมุนรูปกลับ ไม่ให้ภาพเอียง */
-```
+### คอมโพเนนต์ที่พอร์ตมาจาก Concept B
 
-ใช้ที่: hero collage, วงแหวนตกแต่งใน `PageHero` / footer / CTA band
+`src/components/concept.tsx` เก็บบล็อกหลักของ Concept B ไว้ใช้ซ้ำทุกหน้า
+
+| Export | มาจาก Concept B |
+|---|---|
+| `Section` | `.sec` / `.sec-shell` |
+| `Ribbon` | `.ribbon-box` แถบจุดเด่น 4 ช่อง |
+| `ValueBlock` | `.value` — เครื่องหมายคำพูดส้ม + หัวข้อเอียง + เช็คลิสต์ + ภาพมี badge |
+| `StandardsBand` | `.trusted` + `.std-chip` |
+| `WorksGrid` | `.work-grid` masonry |
+| `AboutBand` | `.about` ภาพทะลุขอบ + ตราวงกลม One Stop Service |
+| `LineCta` | `.linecta` + `.mock` โมเดลจอมือถือ LINE |
+| `Faq` | `details.qa` ขอบฟ้า → ส้มเมื่อเปิด |
+| `CtaBand` | แถบปิดท้ายของหน้าใน |
+
+`src/components/cards.tsx` — `ProductCard` (`.p-card`), `FeatureCard` (`.feature-card`
+พร้อม `.pill-corner` ส้ม), `CategoryCard` (`.cat-card`), `NewsCard` (`.art`)
+
+**Concept B ไม่มี SKU จริง** — ในคอนเซปต์ใส่รหัสสินค้าไว้เป็นตัวอย่าง (NEO-IP-S ฯลฯ)
+เว็บจริงไม่มีข้อมูลนี้ จึงแสดงชื่อหมวดแทนในตำแหน่งเดียวกัน ไม่ได้แต่งรหัสขึ้นเอง
+
+### เลย์เอาต์หน้าสินค้า / หมวดหมู่ / เกี่ยวกับเรา (รอบแก้ตาม ref ของลูกค้า)
+
+| หน้า | Ref | สิ่งที่ทำ |
+|---|---|---|
+| `/products/[slug]` | ภาพสกรีนช็อตที่ลูกค้าส่ง | breadcrumb ไอคอนบ้าน → 2 คอลัมน์ : แกลเลอรีมีลูกศร ‹ › + แถบ thumbnail / ชื่อสินค้าตัวใหญ่สีฟ้า, หมวด, badge, เส้นคั่น, คำโปรย, bullet สเปก (2 ข้อแรกจุดสีฟ้าเน้น), ช่องราคา, ปุ่มสั่งซื้อผ่าน LINE, การ์ดการันตี 3 ข้อ, กล่องดาวน์โหลดเอกสาร |
+| `/intumescent` `/paint` `/hardware` `/products` | `energyreform-solar.com/product-category/…` | `CatalogSection` — sidebar หมวดหมู่ (สร้างจาก `nav` ใน site.ts) + แถบ "เรียงโดย" + กริดสินค้า แล้วตามด้วยเนื้อหาเชิงบทความเดิมของแต่ละหน้า |
+| `/about` | `energyreform-solar.com/about-us/` | คำโปรยกลางหน้า + ชิปมาตรฐาน → ผังขั้นตอนทำงาน 5 ขั้นแบบมีตัวเลข → บล็อกแนะนำบริษัท + สถิติ + ตรา One Stop Service → ค่านิยม 4 ข้อ → แกลเลอรีผลงาน 8 รูป → ขอบเขตผลิตภัณฑ์ → CTA |
+
+**ref หน้า about เปิดด้วยวันจดทะเบียนและทุนจดทะเบียนของบริษัท** — ลูกค้ายังไม่ได้ให้ตัวเลขนี้
+บล็อกนั้นจึงเขียนว่าบริษัททำอะไรแทน ไม่ได้แต่งข้อมูลการจดทะเบียนขึ้นเอง
+
+**ราคาสินค้า** — ไม่มีในระบบ ช่องราคาบนหน้าสินค้าจึงเขียนว่า "สอบถามราคา"
+พร้อมหมายเหตุว่าราคาขึ้นกับปริมาณและขอบเขตงาน ไม่ได้ใส่ตัวเลขสมมติ
+
+### สินค้าที่ถอดออก
+
+**ซีเมนต์กันไฟ** (หมวด `fireproof-cement` + `mandolite-cp2` + `fendolite-m2`) ถูกลบออก
+จาก `products.ts` และทุกจุดที่อ้างถึงตามที่ลูกค้าสั่ง — เหลือ 6 หมวด 12 สินค้า
+ยกเว้นบทความกฎหมาย `/news/fire-protection-law` ที่ยังเอ่ยถึง "ซีเมนต์กันไฟ"
+ในฐานะหนึ่งในสามวิธีป้องกันไฟที่กฎหมายยอมรับ (เป็นข้อมูลกฎหมาย ไม่ใช่รายการสินค้าที่ขาย)
 
 ### Utilities อื่น
 
-- `.text-gradient-brand` — ไล่สีตัวอักษร
 - `.mask-fade-x` — fade ขอบซ้าย/ขวา (ใช้กับ marquee และแถบ filter)
 - `.reveal` + `[data-visible="true"]` — fade-in ตอน scroll
-- `@keyframes marquee` — แถบมาตรฐานเลื่อนอัตโนมัติ
 - `prefers-reduced-motion` — ปิด animation ทั้งหมด
 - `<noscript>` ใน `layout.tsx` — บังคับ `.reveal` ให้มองเห็นเมื่อปิด JS (ไม่งั้นเนื้อหาหายทั้งเว็บ)
 
 ---
+
+## 3.5 โครงสร้างเมนู (ตามที่ลูกค้าร่างมา)
+
+เมนูหลัก 9 รายการ ตามภาพร่างที่ลูกค้าส่งมา — นิยามอยู่ที่ `nav` ใน `src/data/site.ts`
+รายการที่ 2–5 มีเมนูย่อย ส่วน 6–9 เป็นหน้าเดี่ยว
+
+```
+1  หน้าแรก              /
+2  สีกันไฟ Neocoat      /intumescent
+     ├ สีกันไฟสูตรน้ำมัน  /products/neocoat-intumescent-paint-s
+     └ สีกันไฟสูตรน้ำ     /products/neocoat-intumescent-paint-w
+3  รับรองสีกันไฟ         /fireproofing
+     ├ วิศวกรรับรองสีกันไฟ      /fireproofing/certification
+     └ วิศวกรควบคุมสีกันไฟ      /fireproofing/supervision
+4  สีน้ำ/สีน้ำมัน         /paint
+     ├ สีรองพื้นกันสนิมทาเหล็ก   /products/neocoat-primer-grey-oxide
+     ├ สีทับหน้าเหล็ก           /products/neogloss-enamel
+     ├ สีรองพื้นปูนใหม่/เก่า      /products/four-plus-pro-masonry-sealer
+     └ สีน้ำพลาสติก            /paint#emulsion
+5  ฮาร์ดแวร์             /hardware
+     ├ ทินเนอร์ 3A       /products/thinner-3a-intanin
+     ├ ทินเนอร์ล้าง       /hardware#thinner-wash   ← ยังไม่มีหน้าสินค้า รอสเปกจากลูกค้า
+     ├ น้ำมันสน          /products/turpentine-intanin
+     ├ ทินเนอร์ 2K       /products/thinner-2k
+     └ ผ้ากันไฟ          /products/fiberglass-cloth
+6  เกี่ยวกับเรา           /about
+7  ผลงานของเรา          /projects
+8  บทความ              /news
+9  ติดต่อเรา             /contact
+```
+
+- **Header 3 ชั้น** (`src/components/layout/Header.tsx`) — แถบ utility (ยุบเมื่อ scroll) →
+  แถวโลโก้ + CTA → แถบเมนูสีน้ำเงิน dropdown เปิดด้วย `group-hover` / `group-focus-within`
+  (ไม่ใช้ state ต่อเมนู) · จอ < `lg` ใช้ drawer แบบ accordion
+- **Footer** สร้าง sitemap จาก `nav` ตัวเดียวกัน — แก้เมนูที่ `site.ts` ที่เดียว เปลี่ยนทั้ง header/footer/sitemap.xml
+- `navRoutes` (site.ts) คือ flatten ของทั้งต้นไม้ ใช้ป้อน `src/app/sitemap.ts`
+- หน้า `/products` (แคตตาล็อกรวม + filter ตามหมวด) ยังอยู่เหมือนเดิม ใช้เป็นปลายทางของปุ่ม
+  "ดูสินค้าทั้งหมด" — เมนูใหม่เป็นชั้นนำทางที่วางทับแคตตาล็อกเดิม ไม่ได้แทนที่
+
+### หน้าใหม่ที่เพิ่มเข้ามา
+
+| Route | เนื้อหา |
+|---|---|
+| `/intumescent` | แคตตาล็อก 4 สินค้า, หลักการทำงาน + ไดอะแกรม SVG ตัดขวางระบบสี, เทียบสูตรน้ำมัน/สูตรน้ำ (ตัดส่วนมาตรฐาน / ขั้นตอน / ข้อกฎหมาย / FAQ ออกตามที่ลูกค้าสั่ง) |
+| `/fireproofing` | 2 บริการหลัก, timeline, เอกสารที่ส่งมอบ, ขอบเขตงานที่รับ/ไม่รับ, ผลงาน, FAQ |
+| `/fireproofing/certification` · `/fireproofing/supervision` | หน้าบริการย่อย — ข้อมูลจาก `src/data/fireproofing.ts` |
+| `/paint` | ระบบสีงานเหล็ก (รองพื้น/ทับหน้า) และงานปูน (รองพื้นปูน/สีน้ำพลาสติก) มี anchor `#emulsion` |
+| `/hardware` | ทินเนอร์ 3 ตัว + บล็อก **ทินเนอร์ล้าง** (`#thinner-wash`) + ตารางเลือกตัวทำละลายตามชนิดสี + ผ้ากันไฟ |
+
+เนื้อหาทุกหน้าอ้างจาก `products.ts` และ `engineering-lp.ts` ที่มีอยู่แล้ว **ไม่มีการแต่งสเปกหรือราคาขึ้นใหม่**
 
 ## 4. โครงสร้างหน้า
 
@@ -88,8 +237,13 @@ URL อยู่ระดับ root ไม่มี prefix — ตรงกั�
 | Route | ไฟล์ | ประเภท | หมายเหตุ |
 |---|---|---|---|
 | `/` | `src/app/(site)/page.tsx` | Static | 12 section |
+| `/intumescent` | `src/app/(site)/intumescent/page.tsx` | Static | **หน้าใหม่** — เมนู 2 (เดิม `/fire-paint`) |
+| `/fireproofing` | `src/app/(site)/fireproofing/page.tsx` | Static | **หน้าใหม่** — เมนู 3 (รวมหัวข้องานหน้างานที่รับเหมา) |
+| `/fireproofing/[slug]` | `src/app/(site)/fireproofing/[slug]/page.tsx` | SSG × 2 | **หน้าใหม่** — certification, supervision |
+| `/paint` | `src/app/(site)/paint/page.tsx` | Static | **หน้าใหม่** — เมนู 4 |
+| `/hardware` | `src/app/(site)/hardware/page.tsx` | Static | **หน้าใหม่** — เมนู 5 |
 | `/products` | `src/app/(site)/products/page.tsx` | **Dynamic** | อ่าน `?cat=` เพื่อกรองหมวด |
-| `/products/[slug]` | `src/app/(site)/products/[slug]/page.tsx` | SSG × 14 | `generateStaticParams` |
+| `/products/[slug]` | `src/app/(site)/products/[slug]/page.tsx` | SSG × 11 | `generateStaticParams` |
 | `/projects` | `src/app/(site)/projects/page.tsx` | Static | **หน้าใหม่** |
 | `/about` | `src/app/(site)/about/page.tsx` | Static | |
 | `/news` | `src/app/(site)/news/page.tsx` | Static | |
@@ -103,20 +257,21 @@ URL อยู่ระดับ root ไม่มี prefix — ตรงกั�
 | `/sitemap.xml` | `src/app/sitemap.ts` | Static | สร้างจาก data |
 | 404 | `src/app/not-found.tsx` | Static | |
 
-### Section ในหน้าแรก (ตามลำดับ)
+### Section ในหน้าแรก (ตามลำดับ — ตาม Concept B)
 
-1. **Hero** — headline + CTA + trust chips + diamond collage + แถบติดต่อด่วน 3 ช่อง
-2. **Marquee มาตรฐาน** — ASTM E-119 / ISO 834 / ISO 9001 / กฎกระทรวง 2567 / น.4-5, น.4-9
-3. **หมวดหมู่สินค้า** — 7 การ์ด
-4. **สินค้าเรือธง** — Neocoat Intumescent Paint
-5. **Best Seller** — 4 สินค้า (`bestSellers` ใน `products.ts`) + การ์ด "ดูทั้งหมด"
-6. **ทำไมต้องเลือกเรา** — 4 จุดแข็ง + แถบสถิติ 4 ตัว
-7. **ขั้นตอนการทำงาน** — 4 สเต็ป
-8. **ผลงาน** — 6 รูป (ลิงก์ไป `/projects`)
-9. **บริการรับรองงาน** — รูปเอกสาร + รายการเอกสาร 4 อย่าง
-10. **รีวิวลูกค้า** — 3 รีวิว
-11. **บทความ** — 3 บทความล่าสุด
-12. **CTA band**
+1. **Hero** — สไลด์แบนเนอร์ 3 รูป + h1 + การ์ดคู่ (สีกันไฟ / รับรองงาน) + แถบจุดเด่น 4 ช่อง
+2. **สินค้าขายดี** — การ์ดเรือธง 330px + กริดสินค้า 6 ตัว
+3. **เลือกสินค้าตามลักษณะงาน** — 8 การ์ดหมวด ลิงก์เข้าโครงสร้างเมนูใหม่
+4. **Protect your Steel Structure** — บล็อกคำโปรย + เช็คลิสต์ 4 ข้อ + ภาพมี badge
+5. **มาตรฐาน** — คำโปรยเอียง + ชิป 5 มาตรฐาน (พื้น shell)
+6. **ผลงานที่ผ่านมาของเรา** — masonry 6 รูป
+7. **BY BLUE RICH** — แถบ about ภาพทะลุขอบซ้าย + ตรา One Stop Service + สถิติ 4 ตัว
+8. **สนใจสั่งซื้อ** — CTA ไลน์ + เบอร์โทร + โมเดลจอมือถือ
+9. **บทความสาระน่ารู้** — 3 บทความ (พื้น shell)
+10. **คำถามที่พบบ่อย?** — ภาพ + accordion 6 ข้อ (`src/data/faq.ts`)
+
+รูปสไลด์ใช้ `banner-mock-1/2/3.jpg` ซึ่งเป็น**ภาพหน้างานจริง**ที่ครอปเป็นสัดส่วนแบนเนอร์
+(ชื่อไฟล์ติดคำว่า mock มาตั้งแต่ตอนทำคอนเซปต์) — เปลี่ยนเป็นแบนเนอร์ออกแบบได้ทันทีเมื่อลูกค้าส่งไฟล์มา
 
 ---
 

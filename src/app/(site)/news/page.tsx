@@ -19,10 +19,10 @@ export default function NewsPage() {
         eyebrow="Insights"
         title="บทความและข่าวสาร"
         description="อัปเดตข้อกำหนดด้านการป้องกันอัคคีภัย มาตรฐานงานสีกันไฟ และความรู้เรื่องวัสดุก่อสร้างที่นำไปใช้ได้จริง"
-        breadcrumb={[{ label: "หน้าหลัก", href: "/" }, { label: "บทความ" }]}
+        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: "บทความ" }]}
       />
 
-      <section className="py-16 lg:py-24">
+      <section className="py-[38px] lg:py-[52px]">
         <Container>
           <Reveal>
             <NewsCard article={featured} featured />

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui";
-import { lineHref, telHref } from "@/data/site";
+import { lineHref, lineHref2, telHref } from "@/data/site";
 
 /**
  * Bottom action bar for phones, where the sticky header CTA scrolls out of the
@@ -21,19 +21,19 @@ export default function LpStickyCta({ quoteLabel = "ขอใบเสนอร�
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 bg-white/95 backdrop-blur-xl transition-transform duration-300 lg:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-50 border-t border-brand-200 bg-white/95 backdrop-blur-xl transition-transform duration-300 lg:hidden ${
         show ? "translate-y-0" : "translate-y-full"
       }`}
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <div className="grid grid-cols-3 gap-2 p-3">
+      <div className="grid grid-cols-4 gap-1.5 p-3">
         <a
           href={telHref}
           data-cta="sticky-call"
           className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-brand-700 py-2.5 text-white transition active:scale-[0.97]"
         >
           <Icon.phone className="size-5" />
-          <span className="text-[0.7rem] font-semibold">โทรสอบถาม</span>
+          <span className="text-[0.78rem] font-semibold">โทรสอบถาม</span>
         </a>
         <a
           href={lineHref}
@@ -43,7 +43,17 @@ export default function LpStickyCta({ quoteLabel = "ขอใบเสนอร�
           className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-[#06C755] py-2.5 text-white transition active:scale-[0.97]"
         >
           <Icon.line className="size-5" />
-          <span className="text-[0.7rem] font-semibold">แชท LINE</span>
+          <span className="text-[0.78rem] font-semibold">LINE 1</span>
+        </a>
+        <a
+          href={lineHref2}
+          target="_blank"
+          rel="noreferrer"
+          data-cta="sticky-line-2"
+          className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-[#06C755] py-2.5 text-white transition active:scale-[0.97]"
+        >
+          <Icon.line className="size-5" />
+          <span className="text-[0.78rem] font-semibold">LINE 2</span>
         </a>
         <a
           href="#quote"
@@ -51,7 +61,7 @@ export default function LpStickyCta({ quoteLabel = "ขอใบเสนอร�
           className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-brand-50 py-2.5 text-brand-800 ring-1 ring-inset ring-brand-200 transition active:scale-[0.97]"
         >
           <Icon.doc className="size-5" />
-          <span className="text-[0.7rem] font-semibold">{quoteLabel}</span>
+          <span className="text-[0.78rem] font-semibold">{quoteLabel}</span>
         </a>
       </div>
     </div>

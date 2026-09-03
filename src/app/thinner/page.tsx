@@ -92,7 +92,7 @@ export default function ThinnerLanding() {
 
                 <ul className="mt-7 grid gap-2.5">
                   {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[0.95rem] text-slate-700">
+                    <li key={p} className="flex gap-3 text-[1.02rem] text-slate-700">
                       <Check />
                       {p}
                     </li>
@@ -103,7 +103,7 @@ export default function ThinnerLanding() {
                   <a
                     href="#quote"
                     data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
                   >
                     ขอราคาตามจำนวน
                     <Icon.arrow />
@@ -111,7 +111,7 @@ export default function ThinnerLanding() {
                   <a
                     href={telHref}
                     data-cta="hero-call"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[0.95rem] font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-50 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-50 active:scale-[0.98]"
                   >
                     <Icon.phone />
                     โทร {site.phones[0]}
@@ -121,14 +121,14 @@ export default function ThinnerLanding() {
                     target="_blank"
                     rel="noreferrer"
                     data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
                     แอดไลน์ @{site.lineId}
                   </a>
                 </div>
 
-                <p className="mt-6 text-[0.82rem] text-slate-500">{hero.proof}</p>
+                <p className="mt-6 text-[0.9rem] text-slate-500">{hero.proof}</p>
               </div>
 
               {/* Product trio rather than one banner — the range is the pitch. */}
@@ -150,7 +150,7 @@ export default function ThinnerLanding() {
                         className="object-contain p-3"
                       />
                     </div>
-                    <p className="border-t border-slate-100 px-3 py-2.5 text-center text-[0.7rem] font-semibold text-brand-800">
+                    <p className="border-t border-slate-100 px-3 py-2.5 text-center text-[0.78rem] font-semibold text-brand-800">
                       {p.tag}
                     </p>
                   </div>
@@ -198,7 +198,7 @@ export default function ThinnerLanding() {
                         sizes="(min-width: 1024px) 32vw, 92vw"
                         className="object-contain p-6"
                       />
-                      <span className="absolute top-4 left-4 rounded-full bg-brand-600 px-3 py-1 text-[0.7rem] font-semibold text-white">
+                      <span className="absolute top-4 left-4 rounded-full bg-brand-600 px-3 py-1 text-[0.78rem] font-semibold text-white">
                         {p.tag}
                       </span>
                     </div>
@@ -227,7 +227,7 @@ export default function ThinnerLanding() {
                             key={s.label}
                             className="flex justify-between gap-4 bg-white px-4 py-3"
                           >
-                            <dt className="text-[0.8rem] text-slate-500">{s.label}</dt>
+                            <dt className="text-[0.88rem] text-slate-500">{s.label}</dt>
                             <dd className="text-[0.85rem] font-semibold text-brand-950">
                               {s.value}
                             </dd>
@@ -301,11 +301,11 @@ export default function ThinnerLanding() {
 
             <Reveal delay={180}>
               <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-3xl bg-white px-7 py-6 ring-1 ring-slate-200 sm:flex-row">
-                <p className="text-[0.95rem] leading-relaxed text-slate-700">{compare.note}</p>
+                <p className="text-[1.02rem] leading-relaxed text-slate-700">{compare.note}</p>
                 <a
                   href={telHref}
                   data-cta="compare-call"
-                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
                 >
                   <Icon.phone />
                   โทรถามฝ่ายขาย
@@ -330,7 +330,7 @@ export default function ThinnerLanding() {
                 <div className="h-full rounded-4xl bg-white/[0.05] p-8 ring-1 ring-inset ring-white/10">
                   <div className="flex items-baseline gap-3">
                     <h3 className="text-2xl text-white">{c.name}</h3>
-                    <span className="rounded-full bg-brand-500/20 px-3 py-1 text-[0.7rem] font-semibold text-brand-200">
+                    <span className="rounded-full bg-brand-500/20 px-3 py-1 text-[0.78rem] font-semibold text-brand-200">
                       {c.caption}
                     </span>
                   </div>
@@ -351,7 +351,7 @@ export default function ThinnerLanding() {
           </div>
 
           <Reveal delay={200}>
-            <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-white/[0.06] px-7 py-6 text-center text-[0.95rem] leading-relaxed text-brand-100/80 ring-1 ring-inset ring-white/10">
+            <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-white/[0.06] px-7 py-6 text-center text-[1.02rem] leading-relaxed text-brand-100/80 ring-1 ring-inset ring-white/10">
               {difference.outro}
             </p>
           </Reveal>
@@ -387,7 +387,7 @@ export default function ThinnerLanding() {
                 <a
                   href="#quote"
                   data-cta="ordering-quote"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
                 >
                   แจ้งจำนวนเพื่อขอราคา
                   <Icon.arrow />
@@ -420,7 +420,7 @@ export default function ThinnerLanding() {
               {safety.items.map((s, i) => (
                 <Reveal key={s.title} delay={i * 80}>
                   <div className="h-full rounded-3xl bg-white p-7 ring-1 ring-slate-200/80">
-                    <span className="grid size-11 place-items-center rounded-2xl bg-flame-500/10 text-flame-600">
+                    <span className="grid size-11 place-items-center rounded-2xl bg-accent-500/10 text-accent-600">
                       <Icon.flame className="size-5" />
                     </span>
                     <h3 className="mt-5 text-lg">{s.title}</h3>
@@ -458,7 +458,7 @@ export default function ThinnerLanding() {
                           <Icon.doc className="size-5" />
                         </span>
                         <span className="flex-1">
-                          <span className="block text-[0.95rem] font-semibold text-brand-950">
+                          <span className="block text-[1.02rem] font-semibold text-brand-950">
                             {d.label}
                           </span>
                           <span className="mt-0.5 block text-[0.85rem] text-slate-500">
@@ -485,7 +485,7 @@ export default function ThinnerLanding() {
             </div>
 
             <Reveal delay={140}>
-              <p className="mt-10 text-center text-[0.95rem] text-slate-600">
+              <p className="mt-10 text-center text-[1.02rem] text-slate-600">
                 ยังไม่เจอคำตอบที่ต้องการ?{" "}
                 <a
                   href={telHref}

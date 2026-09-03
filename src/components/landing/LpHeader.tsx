@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui";
-import { lineHref, site, telHref } from "@/data/site";
+import { lineHref, lineHref2, site, telHref } from "@/data/site";
 
 export type LpSection = { href: string; label: string };
 
@@ -45,7 +45,7 @@ export default function LpHeader({ sections }: { sections: LpSection[] }) {
             className={`w-auto transition-all duration-300 ${scrolled ? "h-9" : "h-10 lg:h-11"}`}
           />
           <span className="hidden leading-tight sm:block">
-            <span className="block font-display text-[0.95rem] font-bold text-brand-900">
+            <span className="block font-display text-[1.02rem] font-bold text-brand-700">
               BLUE RICH
             </span>
             <span className="block text-[0.62rem] font-semibold tracking-[0.18em] text-brand-500">
@@ -78,9 +78,19 @@ export default function LpHeader({ sections }: { sections: LpSection[] }) {
             แอดไลน์
           </a>
           <a
+            href={lineHref2}
+            target="_blank"
+            rel="noreferrer"
+            data-cta="header-line"
+            className="hidden items-center gap-2 rounded-full bg-[#06C755] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98] sm:inline-flex"
+          >
+            <Icon.line />
+            แอดไลน์ 2
+          </a>
+          <a
             href={telHref}
             data-cta="header-call"
-            className="inline-flex items-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
           >
             <Icon.phone />
             <span className="hidden sm:inline">โทร {site.phones[0]}</span>

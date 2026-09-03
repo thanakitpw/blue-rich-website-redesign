@@ -1,10 +1,17 @@
 import type { MetadataRoute } from "next";
 import { products } from "@/data/products";
 import { articles } from "@/data/news";
-import { site } from "@/data/site";
+import { navRoutes, site } from "@/data/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/products", "/projects", "/about", "/news", "/contact"];
+  /* Everything reachable from the main menu, plus the catalogue index. The
+   * menu links straight to some product pages — those are de-duplicated
+   * against the product loop below. */
+  const menuRoutes = navRoutes
+    .filter((path) => !path.includes("#") && !path.startsWith("/products/"))
+    .map((path) => (path === "/" ? "" : path));
+
+  const staticRoutes = Array.from(new Set([...menuRoutes, "/products"]));
 
   return [
     ...staticRoutes.map((path) => ({

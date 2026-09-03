@@ -29,7 +29,7 @@ export type LpQuoteFormConfig = {
 };
 
 const field =
-  "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-[0.95rem] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-brand-400 focus:ring-4 focus:ring-brand-100";
+  "w-full rounded-2xl border border-brand-200 bg-white px-4 py-3 text-[1.02rem] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-brand-400 focus:ring-4 focus:ring-brand-100";
 
 const labelText = "text-sm font-medium text-slate-700";
 
@@ -99,13 +99,13 @@ export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2">
           <span className={labelText}>
-            ชื่อผู้ติดต่อ <span className="text-flame-600">*</span>
+            ชื่อผู้ติดต่อ <span className="text-accent-600">*</span>
           </span>
           <input name="name" required placeholder="ชื่อ – นามสกุล" className={field} />
         </label>
         <label className="grid gap-2">
           <span className={labelText}>
-            เบอร์โทรติดต่อกลับ <span className="text-flame-600">*</span>
+            เบอร์โทรติดต่อกลับ <span className="text-accent-600">*</span>
           </span>
           <input
             name="phone"
@@ -158,7 +158,7 @@ export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
         <button
           type="submit"
           data-cta="form-submit-mail"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
         >
           <Icon.mail />
           ส่งขอใบเสนอราคา

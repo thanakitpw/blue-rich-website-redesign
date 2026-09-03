@@ -111,7 +111,7 @@ export default function EngineeringLanding() {
 
                 <ul className="mt-7 grid gap-2.5">
                   {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[0.95rem] text-brand-50">
+                    <li key={p} className="flex gap-3 text-[1.02rem] text-brand-50">
                       <Check />
                       {p}
                     </li>
@@ -122,7 +122,7 @@ export default function EngineeringLanding() {
                   <a
                     href="#quote"
                     data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[0.95rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
                   >
                     ส่งแบบให้ประเมินฟรี
                     <Icon.arrow />
@@ -130,7 +130,7 @@ export default function EngineeringLanding() {
                   <a
                     href={telHref}
                     data-cta="hero-call"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-brand-500 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-accent-600 active:scale-[0.98]"
                   >
                     <Icon.phone />
                     โทร {site.phones[0]}
@@ -140,14 +140,14 @@ export default function EngineeringLanding() {
                     target="_blank"
                     rel="noreferrer"
                     data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
                     แอดไลน์ @{site.lineId}
                   </a>
                 </div>
 
-                <p className="mt-6 text-[0.82rem] text-brand-200/70">{hero.proof}</p>
+                <p className="mt-6 text-[0.9rem] text-brand-200/70">{hero.proof}</p>
               </div>
 
               <div className="relative">
@@ -177,10 +177,10 @@ export default function EngineeringLanding() {
                   className="rounded-2xl bg-brand-50/60 px-5 py-4 ring-1 ring-inset ring-brand-100"
                 >
                   <Icon.shield className="size-5 text-brand-500" />
-                  <p className="mt-3 font-display text-sm font-semibold text-brand-900">
+                  <p className="mt-3 font-display text-sm font-semibold text-brand-700">
                     {s.label}
                   </p>
-                  <p className="mt-1 text-[0.72rem] leading-snug text-slate-500">{s.note}</p>
+                  <p className="mt-1 text-[0.8rem] leading-snug text-slate-500">{s.note}</p>
                 </li>
               ))}
             </ul>
@@ -196,7 +196,7 @@ export default function EngineeringLanding() {
               {problems.items.map((p, i) => (
                 <Reveal key={p.title} delay={i * 90}>
                   <div className="h-full rounded-3xl bg-white p-7 ring-1 ring-slate-200/80">
-                    <span className="grid size-11 place-items-center rounded-2xl bg-flame-500/10 text-flame-600">
+                    <span className="grid size-11 place-items-center rounded-2xl bg-accent-500/10 text-accent-600">
                       <Icon.flame className="size-5" />
                     </span>
                     <h3 className="mt-5 text-lg">{p.title}</h3>
@@ -304,7 +304,7 @@ export default function EngineeringLanding() {
               <p className="mt-5 text-base leading-relaxed text-brand-100/75">
                 {deliverables.lead}
               </p>
-              <p className="mt-6 rounded-3xl bg-white/[0.06] px-6 py-5 text-[0.92rem] leading-relaxed text-brand-100/70 ring-1 ring-inset ring-white/10">
+              <p className="mt-6 rounded-3xl bg-white/[0.06] px-6 py-5 text-[1rem] leading-relaxed text-brand-100/70 ring-1 ring-inset ring-white/10">
                 {deliverables.note}
               </p>
             </Reveal>
@@ -317,7 +317,7 @@ export default function EngineeringLanding() {
                     className="flex gap-4 rounded-3xl bg-white/[0.05] px-6 py-5 ring-1 ring-inset ring-white/10"
                   >
                     <Icon.doc className="mt-0.5 size-5 shrink-0 text-brand-300" />
-                    <span className="text-[0.95rem] leading-relaxed text-brand-50">{d}</span>
+                    <span className="text-[1.02rem] leading-relaxed text-brand-50">{d}</span>
                   </li>
                 ))}
               </ul>
@@ -344,7 +344,7 @@ export default function EngineeringLanding() {
                       <Icon.doc className="size-5" />
                     </span>
                     <span className="flex-1">
-                      <span className="block text-[0.98rem] font-semibold text-brand-950">
+                      <span className="block text-[1.05rem] font-semibold text-brand-950">
                         {r.label}
                       </span>
                       <span className="mt-0.5 block text-[0.85rem] text-slate-500">{r.note}</span>
@@ -403,11 +403,11 @@ export default function EngineeringLanding() {
 
             <Reveal delay={160}>
               <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-3xl bg-white px-7 py-6 ring-1 ring-slate-200 sm:flex-row">
-                <p className="text-[0.95rem] leading-relaxed text-slate-700">{scope.outro}</p>
+                <p className="text-[1.02rem] leading-relaxed text-slate-700">{scope.outro}</p>
                 <a
                   href={telHref}
                   data-cta="scope-call"
-                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
                 >
                   <Icon.phone />
                   โทรคุยกับวิศวกร
@@ -427,7 +427,7 @@ export default function EngineeringLanding() {
             </div>
 
             <Reveal delay={140}>
-              <p className="mt-10 text-center text-[0.95rem] text-slate-600">
+              <p className="mt-10 text-center text-[1.02rem] text-slate-600">
                 ยังไม่เจอคำตอบที่ต้องการ?{" "}
                 <a
                   href={telHref}

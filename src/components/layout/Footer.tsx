@@ -1,129 +1,158 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Container, Icon } from "@/components/ui";
-import { lineHref, mailHref, mapHref, nav, site, telHref } from "@/data/site";
-import { categories } from "@/data/products";
+import { Button, Container, Icon } from "@/components/ui";
+import { lineChannels, mailHref, mapHref, nav, site, telHref } from "@/data/site";
 
+/** Items 2–5 of the menu carry children; 6–9 are the plain company pages. */
+const sections = nav.filter((i) => i.children);
+const pages = nav.filter((i) => !i.children && i.href !== "/");
+
+/** Concept B's footer: charcoal ground, white logo tile, orange row icons. */
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-brand-950 text-brand-100/70">
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(50rem_26rem_at_10%_0%,var(--color-brand-800),transparent)]"
-      />
-      <div
-        aria-hidden
-        className="absolute -bottom-32 -right-20 size-96 rotate-45 rounded-[26%] border border-white/[0.06]"
-      />
-
-      <Container className="relative">
-        <div className="grid gap-12 py-16 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:py-20">
+    <footer className="mt-2.5 bg-[#12181d] text-[#c6d2db]">
+      <Container>
+        <div className="grid gap-8 py-11 sm:grid-cols-2 lg:grid-cols-[190px_1.3fr_1fr_1fr] lg:gap-8">
           <div>
-            <Image
-              src="/assets/logo.png"
-              alt={site.name}
-              width={180}
-              height={160}
-              className="h-14 w-auto brightness-0 invert"
-            />
-            <p className="mt-5 text-sm leading-relaxed">
-              {site.name}
-              <br />
-              ผู้จำหน่ายสีกันไฟ–สีทนไฟ สีรองพื้นกันสนิม น้ำมันสน ทินเนอร์ และผ้ากันไฟ
-              พร้อมบริการรับรองงานโดยวุฒิวิศวกร
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {["ASTM E-119", "ISO 834", "ISO 9001:2015"].map((s) => (
-                <span
-                  key={s}
-                  className="rounded-full bg-white/[0.06] px-3 py-1.5 text-[0.7rem] font-semibold text-brand-100 ring-1 ring-inset ring-white/10"
-                >
-                  {s}
-                </span>
-              ))}
+            <span className="inline-block rounded-[10px] bg-white p-3">
+              <Image
+                src="/assets/logo-flat.jpg"
+                alt={site.name}
+                width={180}
+                height={160}
+                className="h-11 w-auto"
+              />
+            </span>
+          </div>
+
+          <div>
+            <div className="mb-3 text-[15.5px] font-medium text-white">{site.name}</div>
+            <a
+              href={mapHref}
+              target="_blank"
+              rel="noreferrer"
+              className="mb-3 flex gap-2.5 text-[14px] leading-[1.75] transition hover:text-white"
+            >
+              <Icon.pin className="mt-[5px] size-[15px] shrink-0 text-accent-500" />
+              <span>{site.address}</span>
+            </a>
+            <a href={telHref} className="mb-3 flex gap-2.5 text-[14px] leading-[1.75] transition hover:text-white">
+              <Icon.phone className="mt-[5px] size-[15px] shrink-0 text-accent-500" />
+              <span>
+                <b className="text-[14px] font-semibold text-white">เบอร์ติดต่อ</b>
+                <br />
+                {site.phones.join(" · ")}
+              </span>
+            </a>
+            <a href={mailHref} className="flex gap-2.5 text-[14px] leading-[1.75] transition hover:text-white">
+              <Icon.mail className="mt-[5px] size-[15px] shrink-0 text-accent-500" />
+              <span>
+                <b className="text-[14px] font-semibold text-white">อีเมล</b>
+                <br />
+                {site.email}
+              </span>
+            </a>
+            <div className="mt-3 flex gap-2.5 text-[14px] leading-[1.75]">
+              <Icon.line className="mt-[5px] size-[15px] shrink-0 text-accent-500" />
+              <span>
+                <b className="text-[14px] font-semibold text-white">LINE</b>
+                <br />
+                {lineChannels.map((c, i) => (
+                  <a
+                    key={c.href}
+                    href={c.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="transition hover:text-white"
+                  >
+                    {i > 0 && " · "}
+                    {c.label ?? `ช่องทางที่ ${i + 1}`}
+                  </a>
+                ))}
+              </span>
             </div>
           </div>
 
           <div>
-            <h3 className="font-display text-sm font-semibold tracking-wide text-white">
-              เมนูเว็บไซต์
-            </h3>
-            <ul className="mt-5 space-y-3 text-sm">
-              {nav.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="transition hover:text-white">
+            <div className="mb-3 text-[15.5px] font-medium text-white">สินค้าและบริการ</div>
+            <ul className="text-[14px]">
+              {sections.map((section) => (
+                <li key={section.href} className="mb-2">
+                  <Link href={section.href} className="transition hover:text-accent-500">
+                    {section.label}
+                  </Link>
+                  <ul className="mt-1.5 ml-3 border-l border-white/10 pl-3 text-[13.5px] text-[#93a3af]">
+                    {section.children?.map((child) => (
+                      <li key={child.href} className="mb-1.5">
+                        <Link href={child.href} className="transition hover:text-accent-500">
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <div className="mb-3 text-[15.5px] font-medium text-white">บริษัท</div>
+            <ul className="mb-5 text-[14px]">
+              {pages.map((item) => (
+                <li key={item.href} className="mb-2">
+                  <Link href={item.href} className="transition hover:text-accent-500">
                     {item.label}
                   </Link>
                 </li>
               ))}
+              <li className="mb-2">
+                <Link href="/products" className="transition hover:text-accent-500">
+                  สินค้าทั้งหมด
+                </Link>
+              </li>
             </ul>
-          </div>
 
-          <div>
-            <h3 className="font-display text-sm font-semibold tracking-wide text-white">
-              หมวดหมู่สินค้า
-            </h3>
-            <ul className="mt-5 space-y-3 text-sm">
-              {categories.map((c) => (
-                <li key={c.slug}>
-                  <Link
-                    href={`/products?cat=${c.slug}`}
-                    className="transition hover:text-white"
-                  >
-                    {c.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <Button href="/contact" variant="accent" size="sm">
+              <Icon.doc className="size-[15px]" />
+              ขอใบเสนอราคา
+            </Button>
 
-          <div>
-            <h3 className="font-display text-sm font-semibold tracking-wide text-white">
-              ติดต่อเรา
-            </h3>
-            <ul className="mt-5 space-y-4 text-sm">
-              <li>
-                <a href={mapHref} target="_blank" rel="noreferrer" className="flex gap-3 transition hover:text-white">
-                  <Icon.pin className="mt-0.5 shrink-0 text-brand-400" />
-                  <span>{site.address}</span>
-                </a>
-              </li>
-              <li>
-                <a href={telHref} className="flex gap-3 transition hover:text-white">
-                  <Icon.phone className="mt-0.5 shrink-0 text-brand-400" />
-                  <span>{site.phones.join(", ")}</span>
-                </a>
-              </li>
-              <li>
-                <a href={mailHref} className="flex gap-3 transition hover:text-white">
-                  <Icon.mail className="mt-0.5 shrink-0 text-brand-400" />
-                  <span>{site.email}</span>
-                </a>
-              </li>
-              <li>
+            <div className="mt-3.5 flex gap-2.5">
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook"
+                className="grid size-8 place-items-center rounded-full bg-white/10 text-white transition hover:bg-accent-500"
+              >
+                <Icon.facebook className="size-[15px]" />
+              </a>
+              {lineChannels.map((c) => (
                 <a
-                  href={lineHref}
+                  key={c.href}
+                  href={c.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex gap-3 transition hover:text-white"
+                  aria-label={c.aria}
+                  className="grid size-8 place-items-center rounded-full bg-white/10 text-white transition hover:bg-accent-500"
                 >
-                  <Icon.line className="mt-0.5 shrink-0 text-brand-400" />
-                  <span>LINE ID : {site.lineId}</span>
+                  <Icon.line className="size-[15px]" />
                 </a>
-              </li>
-            </ul>
+              ))}
+            </div>
+
+            <p className="mt-3.5 text-[13.5px] text-[#8a9aa7]">
+              เวลาทำการ
+              <br />
+              {site.hours}
+            </p>
           </div>
         </div>
-
-        <div className="flex flex-col gap-3 border-t border-white/10 py-7 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} {site.name} · สงวนลิขสิทธิ์
-          </p>
-          <p className="text-brand-100/50">
-            เลขที่ผู้เสียภาษี / ข้อมูลบริษัท ติดต่อฝ่ายขาย {site.phones[0]}
-          </p>
-        </div>
       </Container>
+
+      <div className="border-t border-white/[0.09] py-4 text-center text-xs text-[#8a9aa7]">
+        Copyright © {new Date().getFullYear()} {site.nameEn} — All rights reserved.
+      </div>
     </footer>
   );
 }

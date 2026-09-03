@@ -18,13 +18,13 @@ export default function ProjectsPage() {
         eyebrow="Our Works"
         title="ผลงานงานสีกันไฟโครงสร้างเหล็ก"
         description="รวมภาพหน้างานจริงจากโครงการที่เลือกใช้ระบบ Neocoat ทั้งงานทาในโรงประกอบก่อนยกติดตั้ง และงานทาหน้าไซต์หลังประกอบเสร็จ"
-        breadcrumb={[{ label: "หน้าหลัก", href: "/" }, { label: "ผลงาน" }]}
+        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: "ผลงานของเรา" }]}
       />
 
       {/* Stats */}
-      <section className="border-b border-slate-100 bg-white">
+      <section className="border-b border-slate-200 bg-white">
         <Container>
-          <dl className="grid divide-y divide-slate-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+          <dl className="grid divide-y divide-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((s) => (
               <div key={s.label} className="px-2 py-8 text-center">
                 <dt className="font-display text-3xl font-bold text-brand-800 lg:text-4xl">
@@ -38,48 +38,30 @@ export default function ProjectsPage() {
       </section>
 
       {/* Gallery */}
-      <section className="py-16 lg:py-24">
+      <section className="py-[38px] lg:py-[52px]">
         <Container>
-          <div className="grid grid-cols-2 gap-4 [grid-auto-flow:dense] lg:grid-cols-4 lg:gap-5">
+          {/* Even grid at the photography's own 16:9 ratio — the source files are
+              474×264, so the old mixed spans upscaled and cropped them badly. */}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-5">
             {projects.map((p, i) => (
-              <Reveal
-                key={p.image}
-                delay={(i % 4) * 70}
-                className={
-                  p.span === "wide"
-                    ? "col-span-2"
-                    : p.span === "tall"
-                      ? "row-span-2"
-                      : ""
-                }
-              >
-                <figure className="group relative h-full overflow-hidden rounded-3xl bg-slate-200">
-                  <div
-                    className={
-                      p.span === "wide"
-                        ? "aspect-16/10"
-                        : p.span === "tall"
-                          ? "aspect-4/3 lg:aspect-2/3"
-                          : "aspect-4/3"
-                    }
-                  >
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      fill
-                      sizes="(min-width: 1024px) 25vw, 45vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                  </div>
+              <Reveal key={p.image} delay={(i % 4) * 70}>
+                <figure className="group relative aspect-16/9 overflow-hidden rounded-3xl bg-slate-100">
+                  <Image
+                    src={p.image}
+                    alt={p.title}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.08]"
+                  />
                   <div
                     aria-hidden
-                    className="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-brand-950/10 to-transparent opacity-90 transition group-hover:opacity-100"
+                    className="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-brand-950/15 to-transparent opacity-90 transition group-hover:opacity-100"
                   />
-                  <figcaption className="absolute inset-x-0 bottom-0 p-5">
-                    <p className="font-display text-[0.95rem] font-semibold text-white">
-                      {p.title}
+                  <figcaption className="absolute inset-x-0 bottom-0 p-4">
+                    <p className="text-[15px] leading-snug font-semibold text-white">{p.title}</p>
+                    <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-brand-100/75">
+                      {p.scope}
                     </p>
-                    <p className="mt-1 text-xs leading-relaxed text-brand-100/75">{p.scope}</p>
                   </figcaption>
                 </figure>
               </Reveal>

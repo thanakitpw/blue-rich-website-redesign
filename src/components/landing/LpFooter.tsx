@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Icon } from "@/components/ui";
 import { Wrap } from "@/components/landing/kit";
-import { lineHref, mailHref, mapHref, site, standards } from "@/data/site";
+import { lineHref, lineHref2, mailHref, mapHref, site, standards } from "@/data/site";
 
 /**
  * Landing-page footer. Contact details only — no navigation back into the main
@@ -17,7 +17,7 @@ export default function LpFooter({ note }: { note?: string }) {
             <div className="flex items-center gap-3">
               <Image src="/assets/logo.png" alt="" width={160} height={142} className="h-11 w-auto" />
               <span className="leading-tight">
-                <span className="block font-display text-[0.95rem] font-bold text-white">
+                <span className="block font-display text-[1.02rem] font-bold text-white">
                   BLUE RICH
                 </span>
                 <span className="block text-[0.62rem] font-semibold tracking-[0.18em] text-brand-400">
@@ -58,6 +58,15 @@ export default function LpFooter({ note }: { note?: string }) {
                 >
                   <Icon.line className="size-3.5" />
                   LINE : {site.lineId}
+                </a>
+                <a
+                  href={lineHref2}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 transition hover:text-white"
+                >
+                  <Icon.line className="size-3.5" />
+                  LINE ช่องทางที่ 2
                 </a>
               </li>
               <li>

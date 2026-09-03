@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Container, Icon, PageHero } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import ContactForm from "@/components/ContactForm";
-import { lineHref, mailHref, mapEmbed, mapHref, site, telHref } from "@/data/site";
+import { lineHref, lineHref2, mailHref, mapEmbed, mapHref, site, telHref } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "ติดต่อเรา",
@@ -27,6 +27,14 @@ export default function ContactPage() {
       external: true,
     },
     {
+      icon: Icon.line,
+      label: "LINE ช่องทางที่ 2",
+      lines: ["กดเพิ่มเพื่อนได้ทันที"],
+      href: lineHref2,
+      cta: "เปิด LINE",
+      external: true,
+    },
+    {
       icon: Icon.mail,
       label: "อีเมล",
       lines: [site.email],
@@ -46,16 +54,16 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="ติดต่อเรา"
         description="ฝ่ายขายและทีมวิศวกรพร้อมให้คำปรึกษาเรื่องระบบสีกันไฟ ปริมาณที่ต้องใช้ และเอกสารรับรอง โดยไม่มีค่าใช้จ่าย"
-        breadcrumb={[{ label: "หน้าหลัก", href: "/" }, { label: "ติดต่อเรา" }]}
+        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: "ติดต่อเรา" }]}
       />
 
       {/* Channels */}
-      <section className="py-14 lg:py-20">
+      <section className="py-[38px] lg:py-[52px]">
         <Container>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {channels.map((c, i) => (
               <Reveal key={c.label} delay={i * 70}>
-                <div className="flex h-full flex-col rounded-3xl bg-white p-6 ring-1 ring-slate-200/80 transition hover:ring-brand-300">
+                <div className="flex h-full flex-col rounded-3xl bg-white p-6 border border-slate-200 transition hover:border-brand-200">
                   <span className="grid size-11 place-items-center rounded-2xl bg-brand-50 text-brand-600">
                     <c.icon className="size-5" />
                   </span>
@@ -64,7 +72,7 @@ export default function ContactPage() {
                   </p>
                   <div className="mt-1.5 flex-1 space-y-0.5">
                     {c.lines.map((l) => (
-                      <p key={l} className="font-display font-semibold break-words text-brand-900">
+                      <p key={l} className="font-display font-semibold break-words text-brand-700">
                         {l}
                       </p>
                     ))}
@@ -91,9 +99,9 @@ export default function ContactPage() {
         <Container>
           <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
             <Reveal>
-              <div className="rounded-4xl bg-white p-7 ring-1 ring-slate-200 sm:p-10">
+              <div className="rounded-4xl bg-white p-7 border border-slate-200 sm:p-10">
                 <h2 className="text-2xl sm:text-3xl">ส่งรายละเอียดงานให้เราประเมิน</h2>
-                <p className="mt-3 text-[0.95rem] leading-relaxed text-slate-600">
+                <p className="mt-3 text-[1.02rem] leading-relaxed text-slate-600">
                   กรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับภายใน 1 วันทำการ
                   หากมีแบบโครงสร้างหรือ BOQ สามารถแนบไฟล์มาทางอีเมลหรือ LINE ได้เลย
                 </p>
@@ -107,7 +115,7 @@ export default function ContactPage() {
               <div className="sticky top-28 space-y-5">
                 <div className="rounded-4xl bg-brand-950 p-8 text-white">
                   <h2 className="text-xl text-white">ที่อยู่บริษัท</h2>
-                  <p className="mt-4 flex gap-3 text-[0.95rem] leading-relaxed text-brand-100/80">
+                  <p className="mt-4 flex gap-3 text-[1.02rem] leading-relaxed text-brand-100/80">
                     <Icon.pin className="mt-1 size-5 shrink-0 text-brand-400" />
                     {site.address}
                   </p>
@@ -122,7 +130,7 @@ export default function ContactPage() {
                   </a>
                 </div>
 
-                <div className="overflow-hidden rounded-4xl ring-1 ring-slate-200">
+                <div className="overflow-hidden rounded-4xl border border-slate-200">
                   <iframe
                     src={mapEmbed}
                     title={`แผนที่ ${site.name}`}

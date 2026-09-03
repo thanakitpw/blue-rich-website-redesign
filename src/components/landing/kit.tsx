@@ -48,7 +48,7 @@ export function Eyebrow({
   const tones = {
     light: "bg-brand-50 text-brand-700 ring-brand-100",
     dark: "bg-white/10 text-brand-100 ring-white/20",
-    flame: "bg-flame-500/10 text-flame-600 ring-flame-500/20",
+    flame: "bg-accent-500/10 text-accent-600 ring-accent-500/20",
   } as const;
 
   return (
@@ -89,7 +89,7 @@ export function SectionHead({
       </h2>
       {lead && (
         <p
-          className={`mt-5 text-base leading-relaxed sm:text-[1.05rem] ${
+          className={`mt-5 text-base leading-relaxed sm:text-[1.12rem] ${
             dark ? "text-brand-100/75" : "text-slate-600"
           }`}
         >

@@ -39,42 +39,38 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
-      <section className="relative overflow-hidden bg-brand-950 pt-28 pb-16 sm:pt-32 lg:pb-20">
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(56rem_28rem_at_15%_-10%,var(--color-brand-700),transparent_60%)]"
-        />
-        <Container className="relative">
+      <section className="border-b border-slate-200 bg-brand-50">
+        <Container className="py-9 sm:py-12">
           <Breadcrumb
             items={[
-              { label: "หน้าหลัก", href: "/" },
+              { label: "หน้าแรก", href: "/" },
               { label: "บทความ", href: "/news" },
               { label: article.title },
             ]}
           />
-          <div className="mt-7 max-w-3xl">
+          <div className="mt-5 max-w-3xl">
             <div className="flex flex-wrap items-center gap-3 text-sm">
-              <span className="rounded-full bg-brand-500/20 px-3.5 py-1.5 text-xs font-semibold text-brand-200 ring-1 ring-inset ring-brand-400/25">
+              <span className="rounded-full bg-accent-500 px-3 py-1 text-[12px] font-medium text-white">
                 {article.tag}
               </span>
-              <time dateTime={article.date} className="text-brand-200/60">
+              <time dateTime={article.date} className="text-[13.5px] text-slate-500">
                 {article.dateLabel}
               </time>
             </div>
-            <h1 className="mt-5 text-3xl leading-[1.2] text-white sm:text-4xl lg:text-[3rem]">
+            <h1 className="rule-bar mt-4 text-[clamp(23px,3vw,34px)] leading-snug font-semibold">
               {article.title}
             </h1>
-            <p className="mt-5 text-base leading-relaxed text-brand-100/75 sm:text-lg">
+            <p className="mt-4 text-sm leading-relaxed text-slate-500 sm:text-[16px]">
               {article.excerpt}
             </p>
           </div>
         </Container>
       </section>
 
-      <article className="py-14 lg:py-20">
+      <article className="py-[38px] lg:py-[52px]">
         <Container>
           <div className="mx-auto max-w-3xl">
-            <div className="overflow-hidden rounded-4xl shadow-xl shadow-brand-950/10 ring-1 ring-slate-200">
+            <div className="overflow-hidden rounded-4xl shadow-[0_8px_24px_rgba(42,80,104,0.09)] border border-slate-200">
               <Image
                 src={article.image}
                 alt={article.title}
@@ -88,15 +84,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             <div className="mt-10 space-y-6">
               {article.body.map((p, i) => (
-                <p key={i} className="text-[1.05rem] leading-[2] text-slate-600">
+                <p key={i} className="text-[1.12rem] leading-[2] text-slate-600">
                   {p}
                 </p>
               ))}
             </div>
 
-            <div className="mt-12 rounded-4xl bg-brand-50 p-8 ring-1 ring-inset ring-brand-100">
+            <div className="mt-12 rounded-4xl bg-brand-50 p-8 border border-slate-200">
               <h2 className="text-xl">ต้องการคำปรึกษาเรื่องงานสีกันไฟ?</h2>
-              <p className="mt-3 text-[0.95rem] leading-relaxed text-slate-600">
+              <p className="mt-3 text-[1.02rem] leading-relaxed text-slate-600">
                 ทีมวิศวกรของ บลูริช แมททีเรียล โปรดักส์
                 พร้อมช่วยประเมินอัตราการทนไฟที่โครงการของคุณต้องใช้ คำนวณความหนาฟิล์ม
                 และจัดเตรียมเอกสารรับรองให้ครบชุด
@@ -116,7 +112,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         </Container>
       </article>
 
-      <section className="bg-slate-50 py-16 lg:py-24">
+      <section className="bg-slate-50 py-[38px] lg:py-[52px]">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <h2 className="text-2xl sm:text-3xl">บทความอื่นที่น่าสนใจ</h2>

@@ -95,7 +95,7 @@ export default function FourPlusLanding() {
 
                 <ul className="mt-7 grid gap-2.5">
                   {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[0.95rem] text-slate-700">
+                    <li key={p} className="flex gap-3 text-[1.02rem] text-slate-700">
                       <Check />
                       {p}
                     </li>
@@ -106,7 +106,7 @@ export default function FourPlusLanding() {
                   <a
                     href="#quote"
                     data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
                   >
                     แจ้งพื้นที่ ขอราคา
                     <Icon.arrow />
@@ -114,7 +114,7 @@ export default function FourPlusLanding() {
                   <a
                     href="#coverage"
                     data-cta="hero-coverage"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[0.95rem] font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-50 active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-50 active:scale-[0.98]"
                   >
                     ดูตารางคำนวณถัง
                   </a>
@@ -123,14 +123,14 @@ export default function FourPlusLanding() {
                     target="_blank"
                     rel="noreferrer"
                     data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
                     แอดไลน์ @{site.lineId}
                   </a>
                 </div>
 
-                <p className="mt-6 text-[0.82rem] text-slate-500">{hero.proof}</p>
+                <p className="mt-6 text-[0.9rem] text-slate-500">{hero.proof}</p>
               </div>
 
               {/* Three buckets stacked as the system they are sold as. */}
@@ -152,7 +152,7 @@ export default function FourPlusLanding() {
                         className="object-contain p-4"
                       />
                     </div>
-                    <p className="border-t border-slate-100 px-3 py-2.5 text-center text-[0.7rem] font-semibold text-brand-800">
+                    <p className="border-t border-slate-100 px-3 py-2.5 text-center text-[0.78rem] font-semibold text-brand-800">
                       {p.thai}
                     </p>
                   </div>
@@ -200,13 +200,13 @@ export default function FourPlusLanding() {
                         sizes="(min-width: 1024px) 32vw, 92vw"
                         className="object-contain p-6"
                       />
-                      <span className="absolute top-4 left-4 rounded-full bg-brand-600 px-3 py-1 text-[0.7rem] font-semibold text-white">
+                      <span className="absolute top-4 left-4 rounded-full bg-brand-600 px-3 py-1 text-[0.78rem] font-semibold text-white">
                         {p.step}
                       </span>
                     </div>
 
                     <div className="flex flex-1 flex-col p-7">
-                      <p className="text-[0.78rem] font-semibold tracking-wide text-brand-500">
+                      <p className="text-[0.86rem] font-semibold tracking-wide text-brand-500">
                         {p.thai}
                       </p>
                       <h3 className="mt-1.5 text-[1.15rem] leading-snug">{p.name}</h3>
@@ -299,17 +299,17 @@ export default function FourPlusLanding() {
                 <div className="h-full rounded-4xl bg-white/[0.05] p-7 ring-1 ring-inset ring-white/10">
                   <h3 className="text-xl text-white">{p.symptom}</h3>
 
-                  <p className="mt-5 text-xs font-semibold tracking-wide text-flame-400">
+                  <p className="mt-5 text-xs font-semibold tracking-wide text-accent-400">
                     ต้นเหตุ
                   </p>
-                  <p className="mt-2 text-[0.92rem] leading-relaxed text-brand-100/70">
+                  <p className="mt-2 text-[1rem] leading-relaxed text-brand-100/70">
                     {p.cause}
                   </p>
 
                   <p className="mt-5 text-xs font-semibold tracking-wide text-brand-300">
                     วิธีป้องกัน
                   </p>
-                  <p className="mt-2 text-[0.92rem] leading-relaxed text-brand-100/85">{p.fix}</p>
+                  <p className="mt-2 text-[1rem] leading-relaxed text-brand-100/85">{p.fix}</p>
                 </div>
               </Reveal>
             ))}
@@ -365,7 +365,7 @@ export default function FourPlusLanding() {
             </Reveal>
 
             <Reveal delay={170}>
-              <p className="mt-6 rounded-3xl bg-slate-50 px-7 py-5 text-[0.92rem] leading-relaxed text-slate-600 ring-1 ring-inset ring-slate-100">
+              <p className="mt-6 rounded-3xl bg-slate-50 px-7 py-5 text-[1rem] leading-relaxed text-slate-600 ring-1 ring-inset ring-slate-100">
                 {compare.note}
               </p>
             </Reveal>
@@ -385,7 +385,7 @@ export default function FourPlusLanding() {
                 <a
                   href="#quote"
                   data-cta="coverage-quote"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[0.95rem] font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 active:scale-[0.98]"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
                 >
                   ให้ทีมงานคำนวณให้แม่นกว่านี้
                   <Icon.arrow />
@@ -415,7 +415,7 @@ export default function FourPlusLanding() {
                           {row.map((cell, j) => (
                             <td
                               key={j}
-                              className={`px-6 py-4 text-[0.92rem] ${
+                              className={`px-6 py-4 text-[1rem] ${
                                 j === 0
                                   ? "font-medium text-brand-950"
                                   : j === row.length - 1
@@ -432,7 +432,7 @@ export default function FourPlusLanding() {
                   </table>
                 </div>
 
-                <p className="mt-5 rounded-3xl bg-white px-6 py-5 text-[0.88rem] leading-relaxed text-slate-500 ring-1 ring-slate-200">
+                <p className="mt-5 rounded-3xl bg-white px-6 py-5 text-[0.96rem] leading-relaxed text-slate-500 ring-1 ring-slate-200">
                   {coverage.note}
                 </p>
               </Reveal>
@@ -471,7 +471,7 @@ export default function FourPlusLanding() {
             </div>
 
             <Reveal delay={140}>
-              <p className="mt-10 text-center text-[0.95rem] text-slate-600">
+              <p className="mt-10 text-center text-[1.02rem] text-slate-600">
                 ยังไม่เจอคำตอบที่ต้องการ?{" "}
                 <a
                   href={telHref}
