@@ -8,20 +8,8 @@ import LpFooter from "@/components/landing/LpFooter";
 import { Check, DarkBand, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
-import {
-  compare,
-  coverage,
-  faqs,
-  hero,
-  highlights,
-  lineup,
-  navSections,
-  prep,
-  problems,
-  quoteForm,
-  system,
-} from "@/data/four-plus-lp";
 import { bundleFor } from "@/data/site";
+import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo } from "@/lib/cms/content";
 
 /**
@@ -34,25 +22,40 @@ import { getSiteInfo } from "@/lib/cms/content";
  * patchy walls — is caused by skipping the primer, not by the topcoat.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSiteInfo();
+  const [site, { meta }] = await Promise.all([getSiteInfo(), copyFor("four-plus")]);
   return {
-    title: "สีน้ำพลาสติก Four Plus | ทาภายใน ภายนอก รองพื้นปูน อะคริลิก 100%",
-    description:
-      "สีน้ำพลาสติก Four Plus อะคริลิกอิมัลชั่น 100% ครบระบบรองพื้น–ทับหน้า ทาได้ 150 ตร.ม. ต่อถัง ต่อเที่ยว แห้งผิว 30 นาที กันเชื้อราและตะไคร่น้ำ ทนด่างจากผนังปูน แจ้งพื้นที่เพื่อให้ทีมงานคำนวณจำนวนถังให้",
+    title: meta.title,
+    description: meta.description,
+    // noindex on its own — pairing it with a canonical pointing elsewhere sends
+    // conflicting signals. Links out are still followed.
     robots: { index: false, follow: true },
     openGraph: {
       type: "website",
       locale: "th_TH",
       siteName: site.shortName,
-      title: "สีน้ำพลาสติก Four Plus ครบทั้งระบบ รองพื้นปูน · ทาภายใน · ทาภายนอก",
-      description:
-        "อะคริลิกอิมัลชั่น 100% ทาได้ 150 ตร.ม./ถัง/เที่ยว กันเชื้อรา ตะไคร่น้ำ และทนด่างจากผนังปูน",
+      title: meta.ogTitle,
+      description: meta.ogDescription,
       images: ["/assets/products/four-plus-exterior.webp"],
     },
   };
 }
 
 export default async function FourPlusLanding() {
+  /* ข้อความทั้งหน้ามาจาก @/data/four-plus-lp แล้วทับด้วยค่าที่ลูกค้าแก้จากหลังบ้าน
+     ชื่อที่ผูกออกมาตรงกับ export เดิมทุกตัว เนื้อหา JSX ด้านล่างจึงไม่ต้องแก้ */
+  const {
+    compare,
+    coverage,
+    faqs,
+    hero,
+    highlights,
+    lineup,
+    navSections,
+    prep,
+    problems,
+    quoteForm,
+    system,
+  } = await copyFor("four-plus");
   const info = await getSiteInfo();
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 

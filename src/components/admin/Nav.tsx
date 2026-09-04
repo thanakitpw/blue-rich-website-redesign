@@ -17,6 +17,7 @@ const groups: { title: string; items: { href: string; label: string; exact?: boo
       { href: "/admin/projects", label: "ผลงาน" },
       { href: "/admin/services", label: "หน้าบริการรับรอง" },
       { href: "/admin/faqs", label: "คำถามที่พบบ่อย" },
+      { href: "/admin/copy", label: "ข้อความในหน้าเว็บ" },
     ],
   },
   {

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Container, Icon, MoreLink, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CtaBand, FaqList, Section } from "@/components/hub";
-import { deliverables, faqs, scope, timeline } from "@/data/engineering-lp";
+import { copyFor } from "@/lib/cms/copy-pages";
 import { getProjects, getServices, getStats } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
@@ -47,11 +47,10 @@ const onSite = [
 ];
 
 export default async function FireproofingPage() {
-  const [services, projects, stats] = await Promise.all([
-    getServices(),
-    getProjects(),
-    getStats(),
-  ]);
+  /* บล็อกขั้นตอน เอกสาร ขอบเขต และ FAQ ใช้ชุดเดียวกับหน้า /engineering
+     อ่านผ่าน copyFor เหมือนกัน สองหน้าจึงเปลี่ยนตามกันเมื่อลูกค้าแก้ที่เดียว */
+  const [services, projects, stats, { deliverables, faqs, scope, timeline }] =
+    await Promise.all([getServices(), getProjects(), getStats(), copyFor("engineering")]);
   const showcase = projects.slice(0, 4);
 
   return (

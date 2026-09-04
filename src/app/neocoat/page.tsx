@@ -8,26 +8,8 @@ import LpFooter from "@/components/landing/LpFooter";
 import { Check, Wrap } from "@/components/landing/kit";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
-import {
-  advantages,
-  calculation,
-  documents,
-  faqs,
-  formulas,
-  galleryImages,
-  hero,
-  legal,
-  mechanism,
-  process,
-  productSpecs,
-  related,
-  navSections,
-  quoteForm,
-  reviews,
-  risk,
-  system,
-} from "@/data/fire-paint-lp";
 import { bundleFor } from "@/data/site";
+import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /**
@@ -37,11 +19,10 @@ import { getSiteInfo, getStandards } from "@/lib/cms/content";
  * Flip `robots` below if this page is ever meant to rank organically too.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSiteInfo();
+  const [site, { meta }] = await Promise.all([getSiteInfo(), copyFor("neocoat")]);
   return {
-    title: "สีกันไฟโครงสร้างเหล็ก ทนไฟสูงสุด 3 ชม. | ขอใบเสนอราคาฟรี",
-    description:
-      "สีกันไฟ Neocoat Intumescent Paint สำหรับโครงสร้างเหล็ก ผ่าน ASTM E-119 และ ISO 834 พร้อมเอกสารรับรองโดยวุฒิวิศวกร แบบ น.4-5 / น.4-9 ทีมวิศวกรคำนวณความหนาฟิล์มและเสนอราคาให้ฟรีภายใน 1-2 วันทำการ",
+    title: meta.title,
+    description: meta.description,
     // noindex on its own — pairing it with a canonical pointing elsewhere sends
     // conflicting signals. Links out are still followed.
     robots: { index: false, follow: true },
@@ -49,9 +30,8 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "th_TH",
       siteName: site.shortName,
-      title: "สีกันไฟโครงสร้างเหล็ก ทนไฟสูงสุด 3 ชั่วโมง พร้อมเอกสารรับรองวุฒิวิศวกร",
-      description:
-        "ผ่าน ASTM E-119 (จุฬาฯ) และ ISO 834 ครบทั้งระบบตั้งแต่สีรองพื้นกันสนิมจนถึงเอกสารยื่นราชการ ขอใบเสนอราคาฟรี",
+      title: meta.ogTitle,
+      description: meta.ogDescription,
       images: ["/assets/banner-fireproof.jpg"],
     },
   };
@@ -67,6 +47,27 @@ const iconMap = {
 };
 
 export default async function FireRetardantPaintLanding() {
+  /* ข้อความทั้งหน้ามาจาก @/data/fire-paint-lp แล้วทับด้วยค่าที่ลูกค้าแก้จากหลังบ้าน
+     ชื่อที่ผูกออกมาตรงกับ export เดิมทุกตัว เนื้อหา JSX ด้านล่างจึงไม่ต้องแก้ */
+  const {
+    advantages,
+    calculation,
+    documents,
+    faqs,
+    formulas,
+    galleryImages,
+    hero,
+    legal,
+    mechanism,
+    navSections,
+    process,
+    productSpecs,
+    quoteForm,
+    related,
+    reviews,
+    risk,
+    system,
+  } = await copyFor("neocoat");
   const [info, standards] = await Promise.all([getSiteInfo(), getStandards()]);
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 

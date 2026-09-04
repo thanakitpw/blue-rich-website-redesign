@@ -8,21 +8,8 @@ import LpFooter from "@/components/landing/LpFooter";
 import { Check, DarkBand, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
-import {
-  boundary,
-  documents,
-  faqs,
-  gallery,
-  gradeNote,
-  grades,
-  hero,
-  navSections,
-  quoteForm,
-  services,
-  specs,
-  useCases,
-} from "@/data/fire-blanket-lp";
 import { bundleFor } from "@/data/site";
+import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo } from "@/lib/cms/content";
 
 /**
@@ -35,25 +22,41 @@ import { getSiteInfo } from "@/lib/cms/content";
  * rating and a cut size, so those two decisions come first.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSiteInfo();
+  const [site, { meta }] = await Promise.all([getSiteInfo(), copyFor("fire-blanket")]);
   return {
-    title: "ผ้ากันไฟ ผ้ากันสะเก็ดไฟ Fiberglass Cloth | ทน 550–1000°C ตัดตามขนาด",
-    description:
-      "ผ้ากันไฟใยแก้วทอแบบซาติน อบ 2 ครั้ง ทนอุณหภูมิใช้งาน 550°C และ 1000°C มี 4 เกรดให้เลือก บริการตัดเย็บตามขนาด เจาะรูตาไก่ และทำปลายผ้า U shape พร้อมสเปก PDF ให้ดาวน์โหลด ส่งทั่วประเทศ",
+    title: meta.title,
+    description: meta.description,
+    // noindex on its own — pairing it with a canonical pointing elsewhere sends
+    // conflicting signals. Links out are still followed.
     robots: { index: false, follow: true },
     openGraph: {
       type: "website",
       locale: "th_TH",
       siteName: site.shortName,
-      title: "ผ้ากันไฟใยแก้ว ทน 550°C ถึง 1000°C สั่งตัดตามขนาด",
-      description:
-        "ผ้ากันสะเก็ดไฟงานเชื่อม ม่านกั้นความร้อน หุ้มท่อร้อน ตัดเย็บตามขนาดและเจาะรูตาไก่ให้พร้อมแขวน",
+      title: meta.ogTitle,
+      description: meta.ogDescription,
       images: ["/assets/products/fiberglass-cloth-panel-main.webp"],
     },
   };
 }
 
 export default async function FireBlanketLanding() {
+  /* ข้อความทั้งหน้ามาจาก @/data/fire-blanket-lp แล้วทับด้วยค่าที่ลูกค้าแก้จากหลังบ้าน
+     ชื่อที่ผูกออกมาตรงกับ export เดิมทุกตัว เนื้อหา JSX ด้านล่างจึงไม่ต้องแก้ */
+  const {
+    boundary,
+    documents,
+    faqs,
+    gallery,
+    gradeNote,
+    grades,
+    hero,
+    navSections,
+    quoteForm,
+    services,
+    specs,
+    useCases,
+  } = await copyFor("fire-blanket");
   const info = await getSiteInfo();
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 

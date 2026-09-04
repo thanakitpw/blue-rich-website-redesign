@@ -8,21 +8,8 @@ import LpFooter from "@/components/landing/LpFooter";
 import { Check, DarkBand, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
-import {
-  compare,
-  difference,
-  documents,
-  faqs,
-  hero,
-  lineup,
-  navSections,
-  ordering,
-  packs,
-  quickFacts,
-  quoteForm,
-  safety,
-} from "@/data/thinner-lp";
 import { bundleFor } from "@/data/site";
+import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo } from "@/lib/cms/content";
 
 /**
@@ -35,25 +22,41 @@ import { getSiteInfo } from "@/lib/cms/content";
  * traffic here is buying stock off a shelf rather than commissioning a system.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSiteInfo();
+  const [site, { meta }] = await Promise.all([getSiteInfo(), copyFor("thinner")]);
   return {
-    title: "ทินเนอร์ 3A · 2K · น้ำมันสนอินทนิล | ราคาส่ง พร้อมส่งทั่วประเทศ",
-    description:
-      "จำหน่ายทินเนอร์ AAA (3A) อินทนิล ทินเนอร์ 2K Centare และน้ำมันสนเชียงใหม่ ขนาด 9 / 15 / 150 กก. และแกลลอน 3.75 ลิตร ราคาตามจำนวน สต็อกพร้อมส่งทั่วประเทศ แจ้งชนิดและจำนวนเพื่อขอราคาได้ทันที",
+    title: meta.title,
+    description: meta.description,
+    // noindex on its own — pairing it with a canonical pointing elsewhere sends
+    // conflicting signals. Links out are still followed.
     robots: { index: false, follow: true },
     openGraph: {
       type: "website",
       locale: "th_TH",
       siteName: site.shortName,
-      title: "ทินเนอร์ 3A · 2K และน้ำมันสนอินทนิล สั่งยกลัง ราคาส่ง",
-      description:
-        "ตัวทำละลายสำหรับผสมสีน้ำมัน สีรองพื้น สีทับหน้า และสีพ่นอุตสาหกรรม ขนาด 9 / 15 / 150 กก. พร้อมส่งทั่วประเทศ",
+      title: meta.ogTitle,
+      description: meta.ogDescription,
       images: ["/assets/product-thinner.jpg"],
     },
   };
 }
 
 export default async function ThinnerLanding() {
+  /* ข้อความทั้งหน้ามาจาก @/data/thinner-lp แล้วทับด้วยค่าที่ลูกค้าแก้จากหลังบ้าน
+     ชื่อที่ผูกออกมาตรงกับ export เดิมทุกตัว เนื้อหา JSX ด้านล่างจึงไม่ต้องแก้ */
+  const {
+    compare,
+    difference,
+    documents,
+    faqs,
+    hero,
+    lineup,
+    navSections,
+    ordering,
+    packs,
+    quickFacts,
+    quoteForm,
+    safety,
+  } = await copyFor("thinner");
   const info = await getSiteInfo();
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 

@@ -8,19 +8,8 @@ import LpFooter from "@/components/landing/LpFooter";
 import { Check, DarkBand, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
-import {
-  deliverables,
-  faqs,
-  hero,
-  navSections,
-  problems,
-  quoteForm,
-  reports,
-  scope,
-  services,
-  timeline,
-} from "@/data/engineering-lp";
 import { bundleFor } from "@/data/site";
+import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /**
@@ -34,19 +23,19 @@ import { getSiteInfo, getStandards } from "@/lib/cms/content";
  * customer actually walks away with.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSiteInfo();
+  const [site, { meta }] = await Promise.all([getSiteInfo(), copyFor("engineering")]);
   return {
-    title: "รับรองงานสีกันไฟโดยวุฒิวิศวกร | คำนวณ Hp/A · ตรวจหน้างาน · น.4-5 / น.4-9",
-    description:
-      "บริการคำนวณความหนาฟิล์มสีกันไฟตามค่า Hp/A ของหน้าตัดจริง ตรวจวัดความหนาฟิล์มหน้างาน และออกเอกสารรับรองลงนามโดยวุฒิวิศวกรโยธา อ้างอิงผลทดสอบ ASTM E-119 และ ISO 834 ส่งแบบมาให้ประเมินก่อนได้ ไม่มีค่าใช้จ่าย",
+    title: meta.title,
+    description: meta.description,
+    // noindex on its own — pairing it with a canonical pointing elsewhere sends
+    // conflicting signals. Links out are still followed.
     robots: { index: false, follow: true },
     openGraph: {
       type: "website",
       locale: "th_TH",
       siteName: site.shortName,
-      title: "งานรับรองสีกันไฟโครงสร้างเหล็ก โดยวุฒิวิศวกรโยธา",
-      description:
-        "คำนวณความหนาฟิล์มรายหน้าตัด ตรวจวัดหน้างาน และออกเอกสารรับรองที่ยื่นหน่วยงานได้ครบชุด",
+      title: meta.ogTitle,
+      description: meta.ogDescription,
       images: ["/assets/cert-documents.jpg"],
     },
   };
@@ -59,6 +48,20 @@ const iconMap = {
 };
 
 export default async function EngineeringLanding() {
+  /* ข้อความทั้งหน้ามาจาก @/data/engineering-lp แล้วทับด้วยค่าที่ลูกค้าแก้จากหลังบ้าน
+     ชื่อที่ผูกออกมาตรงกับ export เดิมทุกตัว เนื้อหา JSX ด้านล่างจึงไม่ต้องแก้ */
+  const {
+    deliverables,
+    faqs,
+    hero,
+    navSections,
+    problems,
+    quoteForm,
+    reports,
+    scope,
+    services,
+    timeline,
+  } = await copyFor("engineering");
   const [info, standards] = await Promise.all([getSiteInfo(), getStandards()]);
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 
