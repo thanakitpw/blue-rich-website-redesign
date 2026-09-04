@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Button, Container, Icon, PageHero } from "@/components/ui";
 import { CatalogSection } from "@/components/hub";
 import Reveal from "@/components/ui/Reveal";
-import { categories, products } from "@/data/products";
-import { lineHref, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getCategories, getProducts, getSiteInfo } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "สินค้าทั้งหมด",
@@ -17,6 +17,12 @@ export default async function ProductsPage({
   searchParams: Promise<{ cat?: string }>;
 }) {
   const { cat } = await searchParams;
+  const [categories, products, info] = await Promise.all([
+    getCategories(),
+    getProducts(),
+    getSiteInfo(),
+  ]);
+  const { telHref, lineHref } = bundleFor(info, []);
   const active = categories.find((c) => c.slug === cat);
   const list = active ? products.filter((p) => p.category === active.slug) : products;
 

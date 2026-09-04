@@ -5,15 +5,16 @@ import { Button, Container, Icon } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import ProductGallery from "@/components/ProductGallery";
 import { ProductCard } from "@/components/cards";
+import { bundleFor } from "@/data/site";
 import {
-  categories,
+  getCategories,
+  getInstallationSteps,
+  getLegalInfo,
   getProduct,
-  installationSteps,
-  legalInfo,
-  products,
-  relatedProducts,
-} from "@/data/products";
-import { lineHref, mailHref, site, telHref } from "@/data/site";
+  getProducts,
+  getRelatedProducts,
+  getSiteInfo,
+} from "@/lib/cms/content";
 
 /** Restates the guarantees already stated on /fireproofing and the home page. */
 const assurances = [
@@ -34,8 +35,8 @@ const assurances = [
   },
 ];
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getProducts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -44,7 +45,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return { title: "ไม่พบสินค้า" };
   return {
     title: product.name,
@@ -55,11 +56,18 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) notFound();
 
+  const [categories, suggestions, installationSteps, legalInfo, info] = await Promise.all([
+    getCategories(),
+    getRelatedProducts(product),
+    getInstallationSteps(),
+    getLegalInfo(),
+    getSiteInfo(),
+  ]);
+  const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
   const cat = categories.find((c) => c.slug === product.category);
-  const suggestions = relatedProducts(product);
 
   return (
     <>

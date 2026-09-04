@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui";
-import { lineHref, lineHref2, telHref } from "@/data/site";
+import { useSite } from "@/components/SiteProvider";
 
 /**
  * Concept B has a three-button sticky bar on phones (`.mcta`). On larger
@@ -10,6 +10,7 @@ import { lineHref, lineHref2, telHref } from "@/data/site";
  * `sm` up, once the visitor is past the fold.
  */
 export default function FloatingActions() {
+  const { site, telHref, lineHref, lineHref2 } = useSite();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function FloatingActions() {
           href={lineHref}
           target="_blank"
           rel="noreferrer"
-          aria-label="แอดไลน์ @blue999"
+          aria-label={`แอดไลน์ @${site.lineId}`}
           className="inline-flex items-center justify-center gap-1 rounded-full bg-[#06C755] px-1.5 py-2.5 text-[13px] font-medium text-white"
         >
           <Icon.line className="size-4" />
@@ -69,7 +70,7 @@ export default function FloatingActions() {
           href={lineHref}
           target="_blank"
           rel="noreferrer"
-          aria-label="แอดไลน์ @blue999"
+          aria-label={`แอดไลน์ @${site.lineId}`}
           className="relative grid size-12 place-items-center rounded-full bg-[#06C755] text-white shadow-[0_8px_20px_rgba(6,199,85,0.3)] transition hover:scale-105"
         >
           <Icon.line className="size-5" />

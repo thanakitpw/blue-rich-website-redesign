@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Container, PageHero } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { NewsCard } from "@/components/cards";
-import { articles } from "@/data/news";
+import { getArticles } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "บทความและข่าวสาร",
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
     "รวมบทความเรื่องกฎหมายป้องกันอัคคีภัย งานสีกันไฟโครงสร้างเหล็ก และความรู้เรื่องวัสดุก่อสร้าง จากบริษัท บลูริช แมททีเรียล โปรดักส์",
 };
 
-export default function NewsPage() {
-  const [featured, ...rest] = articles;
+export default async function NewsPage() {
+  const [featured, ...rest] = await getArticles();
 
   return (
     <>

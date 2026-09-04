@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui";
-import { lineHref, lineHref2, site, telHref } from "@/data/site";
+import { useSite } from "@/components/SiteProvider";
 
 export type LpSection = { href: string; label: string };
 
@@ -13,6 +13,7 @@ export type LpSection = { href: string; label: string };
  * the in-page jump list, which differs per landing page.
  */
 export default function LpHeader({ sections }: { sections: LpSection[] }) {
+  const { site, telHref, lineHref, lineHref2 } = useSite();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

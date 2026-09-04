@@ -27,7 +27,8 @@ import {
   risk,
   system,
 } from "@/data/fire-paint-lp";
-import { lineHref, mailHref, site, standards, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /**
  * Paid-traffic landing page. Kept out of the (site) route group so it renders
@@ -35,23 +36,26 @@ import { lineHref, mailHref, site, standards, telHref } from "@/data/site";
  * not compete with /products/neocoat-intumescent-paint for the same keywords.
  * Flip `robots` below if this page is ever meant to rank organically too.
  */
-export const metadata: Metadata = {
-  title: "สีกันไฟโครงสร้างเหล็ก ทนไฟสูงสุด 3 ชม. | ขอใบเสนอราคาฟรี",
-  description:
-    "สีกันไฟ Neocoat Intumescent Paint สำหรับโครงสร้างเหล็ก ผ่าน ASTM E-119 และ ISO 834 พร้อมเอกสารรับรองโดยวุฒิวิศวกร แบบ น.4-5 / น.4-9 ทีมวิศวกรคำนวณความหนาฟิล์มและเสนอราคาให้ฟรีภายใน 1-2 วันทำการ",
-  // noindex on its own — pairing it with a canonical pointing elsewhere sends
-  // conflicting signals. Links out are still followed.
-  robots: { index: false, follow: true },
-  openGraph: {
-    type: "website",
-    locale: "th_TH",
-    siteName: site.shortName,
-    title: "สีกันไฟโครงสร้างเหล็ก ทนไฟสูงสุด 3 ชั่วโมง พร้อมเอกสารรับรองวุฒิวิศวกร",
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteInfo();
+  return {
+    title: "สีกันไฟโครงสร้างเหล็ก ทนไฟสูงสุด 3 ชม. | ขอใบเสนอราคาฟรี",
     description:
-      "ผ่าน ASTM E-119 (จุฬาฯ) และ ISO 834 ครบทั้งระบบตั้งแต่สีรองพื้นกันสนิมจนถึงเอกสารยื่นราชการ ขอใบเสนอราคาฟรี",
-    images: ["/assets/banner-fireproof.jpg"],
-  },
-};
+      "สีกันไฟ Neocoat Intumescent Paint สำหรับโครงสร้างเหล็ก ผ่าน ASTM E-119 และ ISO 834 พร้อมเอกสารรับรองโดยวุฒิวิศวกร แบบ น.4-5 / น.4-9 ทีมวิศวกรคำนวณความหนาฟิล์มและเสนอราคาให้ฟรีภายใน 1-2 วันทำการ",
+    // noindex on its own — pairing it with a canonical pointing elsewhere sends
+    // conflicting signals. Links out are still followed.
+    robots: { index: false, follow: true },
+    openGraph: {
+      type: "website",
+      locale: "th_TH",
+      siteName: site.shortName,
+      title: "สีกันไฟโครงสร้างเหล็ก ทนไฟสูงสุด 3 ชั่วโมง พร้อมเอกสารรับรองวุฒิวิศวกร",
+      description:
+        "ผ่าน ASTM E-119 (จุฬาฯ) และ ISO 834 ครบทั้งระบบตั้งแต่สีรองพื้นกันสนิมจนถึงเอกสารยื่นราชการ ขอใบเสนอราคาฟรี",
+      images: ["/assets/banner-fireproof.jpg"],
+    },
+  };
+}
 
 const iconMap = {
   doc: Icon.doc,
@@ -62,7 +66,10 @@ const iconMap = {
   phone: Icon.phone,
 };
 
-export default function FireRetardantPaintLanding() {
+export default async function FireRetardantPaintLanding() {
+  const [info, standards] = await Promise.all([getSiteInfo(), getStandards()]);
+  const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
+
   const jsonLd = [
     {
       "@context": "https://schema.org",

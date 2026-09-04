@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Button, Icon, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CatalogSection, CtaBand, ProductRow, Section } from "@/components/hub";
-import { getProduct } from "@/data/products";
-import { lineHref, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getProduct, getSiteInfo } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "ฮาร์ดแวร์ — ทินเนอร์ น้ำมันสน และผ้ากันไฟ",
@@ -11,10 +12,7 @@ export const metadata: Metadata = {
     "ทินเนอร์ 3A (AAA) อินทนิล, น้ำมันสนเชียงใหม่ อินทนิล, ทินเนอร์ 2K Centare และผ้ากันไฟ Fiberglass Cloth ทน 550–1000°C พร้อมส่งสำหรับงานอุตสาหกรรมและงานโครงการ",
 };
 
-const thinner3a = getProduct("thinner-3a-intanin")!;
-const turpentine = getProduct("turpentine-intanin")!;
-const thinner2k = getProduct("thinner-2k")!;
-const blanket = getProduct("fiberglass-cloth")!;
+
 
 /**
  * Solvent pairing guide. Every row is quoted from the “ตัวทำละลาย” spec of the
@@ -53,7 +51,17 @@ const pairing = [
   },
 ];
 
-export default function HardwarePage() {
+export default async function HardwarePage() {
+  const [thinner3a, turpentine, thinner2k, blanket, info] = await Promise.all([
+    getProduct("thinner-3a-intanin"),
+    getProduct("turpentine-intanin"),
+    getProduct("thinner-2k"),
+    getProduct("fiberglass-cloth"),
+    getSiteInfo(),
+  ]);
+  if (!thinner3a || !turpentine || !thinner2k || !blanket) notFound();
+  const { telHref, lineHref } = bundleFor(info, []);
+
   return (
     <>
       <PageHero

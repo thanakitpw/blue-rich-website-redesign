@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 import "./globals.css";
-import { site } from "@/data/site";
+import { SiteProvider } from "@/components/SiteProvider";
+import { getNav, getSiteInfo } from "@/lib/cms/content";
 
 /* Concept B is set entirely in Prompt — one family for both roles. */
 const display = Prompt({
@@ -18,39 +19,44 @@ const body = Prompt({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.shortName} | สีกันไฟ สีทนไฟ โครงสร้างเหล็ก รับรองโดยวุฒิวิศวกร`,
-    template: `%s | ${site.shortName}`,
-  },
-  description: site.description,
-  keywords: [
-    "สีกันไฟ",
-    "สีทนไฟ",
-    "Intumescent Paint",
-    "Neocoat",
-    "สีรองพื้นกันสนิม",
-    "ผ้ากันไฟ",
-    "น้ำมันสน",
-    "ทินเนอร์",
-    "ASTM E-119",
-    "ISO 834",
-    "วุฒิวิศวกร",
-  ],
-  openGraph: {
-    type: "website",
-    locale: "th_TH",
-    siteName: site.shortName,
-    title: `${site.name} — ${site.tagline}`,
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteInfo();
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: `${site.shortName} | สีกันไฟ สีทนไฟ โครงสร้างเหล็ก รับรองโดยวุฒิวิศวกร`,
+      template: `%s | ${site.shortName}`,
+    },
     description: site.description,
-    images: ["/assets/banner-fireproof.jpg"],
-  },
-  // Icons come from the app/ file convention (favicon.ico, icon.png,
-  // apple-icon.png) — all generated from the Blue Rich logo.
-};
+    keywords: [
+      "สีกันไฟ",
+      "สีทนไฟ",
+      "Intumescent Paint",
+      "Neocoat",
+      "สีรองพื้นกันสนิม",
+      "ผ้ากันไฟ",
+      "น้ำมันสน",
+      "ทินเนอร์",
+      "ASTM E-119",
+      "ISO 834",
+      "วุฒิวิศวกร",
+    ],
+    openGraph: {
+      type: "website",
+      locale: "th_TH",
+      siteName: site.shortName,
+      title: `${site.name} — ${site.tagline}`,
+      description: site.description,
+      images: ["/assets/banner-fireproof.jpg"],
+    },
+    // Icons come from the app/ file convention (favicon.ico, icon.png,
+    // apple-icon.png) — all generated from the Blue Rich logo.
+  };
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const [site, nav] = await Promise.all([getSiteInfo(), getNav()]);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -61,14 +67,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     email: site.email,
     telephone: site.phones,
     image: `${site.url}/assets/logo.png`,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "288/60 ถนนเลียบคลองสอง แขวงบางชัน",
-      addressLocality: "เขตคลองสามวา",
-      addressRegion: "กรุงเทพมหานคร",
-      postalCode: "10510",
-      addressCountry: "TH",
-    },
+    /* ที่อยู่เป็นข้อความบรรทัดเดียวตามที่ลูกค้ากรอกในหลังบ้าน ไม่ได้แตกเป็น
+       PostalAddress รายฟิลด์ เพราะถ้าแตกไว้แล้วลูกค้าแก้ที่อยู่ ข้อมูลสองชุดนี้
+       จะไม่ตรงกันโดยไม่มีใครรู้ — schema.org รับ address เป็น Text อยู่แล้ว */
+    address: site.address,
+    openingHours: site.hours,
   };
 
   return (
@@ -85,7 +88,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          * layout — the landing pages sit outside that group on purpose and
          * render without it.
          */}
-        {children}
+        <SiteProvider site={site} nav={nav}>
+          {children}
+        </SiteProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -6,9 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prebuild": "node scripts/build-image-manifest.mts",
+    "cms:images": "node scripts/build-image-manifest.mts",
+    "cms:seed": "node --env-file=.env.local scripts/cms-seed.mts",
+    "cms:seed-sql": "node scripts/cms-seed-sql.mts > supabase/seed.sql",
+    "cms:verify": "node --env-file=.env.local scripts/cms-verify.mts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.5",
+    "@supabase/supabase-js": "^2.115.0",
     "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4"

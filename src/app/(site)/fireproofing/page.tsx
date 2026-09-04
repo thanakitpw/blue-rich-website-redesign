@@ -4,10 +4,8 @@ import Link from "next/link";
 import { Container, Icon, MoreLink, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CtaBand, FaqList, Section } from "@/components/hub";
-import { services } from "@/data/fireproofing";
 import { deliverables, faqs, scope, timeline } from "@/data/engineering-lp";
-import { projects } from "@/data/projects";
-import { stats } from "@/data/site";
+import { getProjects, getServices, getStats } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "รับรองสีกันไฟ — คำนวณ ควบคุมงาน และรับรองโดยวุฒิวิศวกร",
@@ -48,7 +46,12 @@ const onSite = [
   },
 ];
 
-export default function FireproofingPage() {
+export default async function FireproofingPage() {
+  const [services, projects, stats] = await Promise.all([
+    getServices(),
+    getProjects(),
+    getStats(),
+  ]);
   const showcase = projects.slice(0, 4);
 
   return (

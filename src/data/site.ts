@@ -1,4 +1,32 @@
-export const site = {
+/**
+ * ข้อมูลบริษัทที่แสดงทั่วเว็บ
+ *
+ * ชุดนี้เป็น "ค่าตั้งต้น" — ของจริงที่เว็บใช้มาจาก site_settings.company ใน
+ * Supabase (ดู src/lib/cms/content.ts) ค่าตรงนี้ถูกใช้เมื่อยังไม่ได้ตั้งค่า
+ * Supabase หรือต่อฐานข้อมูลไม่ติด เพื่อไม่ให้ทั้งเว็บหายไป
+ *
+ * ไม่ใช้ `as const` เพราะค่าที่อ่านจากฐานข้อมูลเป็น object ธรรมดา
+ * ทั้งสองทางต้องเข้ากันได้กับ type เดียวกัน
+ */
+export type SiteInfo = {
+  name: string;
+  shortName: string;
+  nameEn: string;
+  tagline: string;
+  description: string;
+  url: string;
+  address: string;
+  addressShort: string;
+  phones: string[];
+  email: string;
+  lineId: string;
+  /** ช่องทาง LINE ที่สอง เป็นลิงก์เชิญที่ไม่มี ID สาธารณะ จึงเก็บทั้ง URL */
+  lineHref2: string;
+  hours: string;
+  mapQuery: string;
+};
+
+export const site: SiteInfo = {
   name: "บริษัท บลูริช แมททีเรียล โปรดักส์ จำกัด",
   shortName: "Blue Rich",
   nameEn: "Blue Rich Material Products Co., Ltd.",
@@ -13,9 +41,10 @@ export const site = {
   email: "bluerich.sale@gmail.com",
   lineId: "blue999",
   hours: "จันทร์ – เสาร์  08:00 – 17:30 น.",
+  lineHref2: "https://line.me/ti/p/rm4kjFGlC0",
   mapQuery:
     "288/60 หมู่บ้านบุราสิริ ปัญญาอินทรา ถนนเลียบคลองสอง แขวงบางชัน เขตคลองสามวา กรุงเทพมหานคร 10510",
-} as const;
+};
 
 /* ------------------------------------------------------------------ nav tree
  *
@@ -142,34 +171,85 @@ export const navRoutes = nav.flatMap((item) => [
   ...(item.children ?? []).map((c) => c.href),
 ]);
 
-/** The two numbers the client wants in the header bar — 099 and 092. */
-export const headerPhones = [site.phones[0], site.phones[3]];
+/* ------------------------------------------------------------ derived links
+ *
+ * รับ SiteInfo เข้ามาแทนที่จะอ่านจากตัวแปร `site` ตรงๆ เพราะข้อมูลบริษัทแก้ได้
+ * จากหลังบ้านแล้ว ลิงก์พวกนี้จึงต้องคำนวณจากค่าที่กำลังใช้จริง ณ ตอนนั้น
+ * ไม่ใช่จากค่าตั้งต้นในไฟล์นี้
+ */
+export const telHrefOf = (s: SiteInfo) => `tel:${(s.phones[0] ?? "").replace(/-/g, "")}`;
+export const lineHrefOf = (s: SiteInfo) => `https://line.me/ti/p/~${s.lineId}`;
+export const mailHrefOf = (s: SiteInfo) => `mailto:${s.email}`;
+export const mapHrefOf = (s: SiteInfo) =>
+  `https://maps.google.com/?q=${encodeURIComponent(s.mapQuery)}`;
+export const mapEmbedOf = (s: SiteInfo) =>
+  `https://maps.google.com/maps?q=${encodeURIComponent(s.mapQuery)}&z=16&output=embed`;
 
-export const telHref = `tel:${site.phones[0].replace(/-/g, "")}`;
-export const lineHref = `https://line.me/ti/p/~${site.lineId}`;
-/* Second LINE channel. It is an invite link with no public ID, so nothing is
-   displayed next to it — only the label. */
-export const lineHref2 = "https://line.me/ti/p/rm4kjFGlC0";
+/** เบอร์สองตัวที่ขึ้นบนแถบหัวเว็บ — ตัวแรกและตัวที่สี่ตามที่ลูกค้าเลือก */
+export const headerPhonesOf = (s: SiteInfo) =>
+  [s.phones[0], s.phones[3] ?? s.phones[1]].filter(Boolean) as string[];
 
-/** Both LINE channels, for the places that list every contact route. */
-export const lineChannels = [
-  { href: lineHref, label: `@${site.lineId}`, aria: `แอดไลน์ @${site.lineId}` },
-  { href: lineHref2, label: null, aria: "แอดไลน์ ช่องทางที่ 2" },
-] as const;
-export const mailHref = `mailto:${site.email}`;
-export const mapHref = `https://maps.google.com/?q=${encodeURIComponent(site.mapQuery)}`;
-export const mapEmbed = `https://maps.google.com/maps?q=${encodeURIComponent(
-  site.mapQuery,
-)}&z=16&output=embed`;
+/** ทั้งสองช่องทาง LINE สำหรับที่ที่ลิสต์ช่องทางติดต่อครบทุกทาง */
+export const lineChannelsOf = (s: SiteInfo) => [
+  { href: lineHrefOf(s), label: `@${s.lineId}`, aria: `แอดไลน์ @${s.lineId}` },
+  { href: s.lineHref2, label: null, aria: "แอดไลน์ ช่องทางที่ 2" },
+];
 
-export const standards = [
+/**
+ * ข้อมูลบริษัท + เมนู + ลิงก์ที่คำนวณจากทั้งสองอย่าง มัดรวมเป็นก้อนเดียว
+ *
+ * client component อ่านก้อนนี้ผ่าน useSite() ส่วน server component เรียก
+ * bundleFor() เองได้ตรงๆ ทั้งสองฝั่งจึงคำนวณลิงก์ด้วยสูตรเดียวกันเสมอ
+ */
+export type SiteBundle = {
+  site: SiteInfo;
+  nav: NavItem[];
+  telHref: string;
+  lineHref: string;
+  lineHref2: string;
+  mailHref: string;
+  mapHref: string;
+  mapEmbed: string;
+  headerPhones: string[];
+  lineChannels: ReturnType<typeof lineChannelsOf>;
+};
+
+export const bundleFor = (s: SiteInfo, navItems: NavItem[]): SiteBundle => ({
+  site: s,
+  nav: navItems,
+  telHref: telHrefOf(s),
+  lineHref: lineHrefOf(s),
+  lineHref2: s.lineHref2,
+  mailHref: mailHrefOf(s),
+  mapHref: mapHrefOf(s),
+  mapEmbed: mapEmbedOf(s),
+  headerPhones: headerPhonesOf(s),
+  lineChannels: lineChannelsOf(s),
+});
+
+/* ค่าตั้งต้นของลิงก์เหล่านี้ คำนวณจาก `site` ด้านบน
+   ใช้ในที่ที่ยังไม่ได้ต่อกับข้อมูลจากหลังบ้าน (เช่น metadata ตอน build) */
+export const telHref = telHrefOf(site);
+export const lineHref = lineHrefOf(site);
+export const lineHref2 = site.lineHref2;
+export const mailHref = mailHrefOf(site);
+export const mapHref = mapHrefOf(site);
+export const mapEmbed = mapEmbedOf(site);
+export const headerPhones = headerPhonesOf(site);
+export const lineChannels = lineChannelsOf(site);
+
+export type Standard = { label: string; note: string };
+
+export const standards: Standard[] = [
   { label: "ASTM E-119", note: "ทดสอบโดยจุฬาลงกรณ์มหาวิทยาลัย" },
   { label: "ISO 834", note: "ทดสอบ ณ ประเทศมาเลเซีย" },
   { label: "กฎกระทรวง พ.ศ. 2567", note: "การออกแบบโครงสร้างอาคาร" },
   { label: "แบบ กสอ. น.4-5 / น.4-9", note: "รับรองโดยวุฒิวิศวกรโยธา" },
 ];
 
-export const stats = [
+export type Stat = { value: string; label: string };
+
+export const stats: Stat[] = [
   { value: "15+", label: "ปีประสบการณ์งานสีกันไฟ" },
   { value: "1000°C", label: "อุณหภูมิสูงสุดของผ้ากันไฟ" },
   { value: "100%", label: "งานรับรองโดยวุฒิวิศวกร" },

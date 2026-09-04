@@ -22,7 +22,8 @@ import {
   quoteForm,
   safety,
 } from "@/data/thinner-lp";
-import { lineHref, mailHref, site, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getSiteInfo } from "@/lib/cms/content";
 
 /**
  * Paid-traffic landing page for the solvent range. Sits outside the (site)
@@ -33,23 +34,29 @@ import { lineHref, mailHref, site, telHref } from "@/data/site";
  * navy engineering hero, this one opens light and product-forward, because the
  * traffic here is buying stock off a shelf rather than commissioning a system.
  */
-export const metadata: Metadata = {
-  title: "ทินเนอร์ 3A · 2K · น้ำมันสนอินทนิล | ราคาส่ง พร้อมส่งทั่วประเทศ",
-  description:
-    "จำหน่ายทินเนอร์ AAA (3A) อินทนิล ทินเนอร์ 2K Centare และน้ำมันสนเชียงใหม่ ขนาด 9 / 15 / 150 กก. และแกลลอน 3.75 ลิตร ราคาตามจำนวน สต็อกพร้อมส่งทั่วประเทศ แจ้งชนิดและจำนวนเพื่อขอราคาได้ทันที",
-  robots: { index: false, follow: true },
-  openGraph: {
-    type: "website",
-    locale: "th_TH",
-    siteName: site.shortName,
-    title: "ทินเนอร์ 3A · 2K และน้ำมันสนอินทนิล สั่งยกลัง ราคาส่ง",
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteInfo();
+  return {
+    title: "ทินเนอร์ 3A · 2K · น้ำมันสนอินทนิล | ราคาส่ง พร้อมส่งทั่วประเทศ",
     description:
-      "ตัวทำละลายสำหรับผสมสีน้ำมัน สีรองพื้น สีทับหน้า และสีพ่นอุตสาหกรรม ขนาด 9 / 15 / 150 กก. พร้อมส่งทั่วประเทศ",
-    images: ["/assets/product-thinner.jpg"],
-  },
-};
+      "จำหน่ายทินเนอร์ AAA (3A) อินทนิล ทินเนอร์ 2K Centare และน้ำมันสนเชียงใหม่ ขนาด 9 / 15 / 150 กก. และแกลลอน 3.75 ลิตร ราคาตามจำนวน สต็อกพร้อมส่งทั่วประเทศ แจ้งชนิดและจำนวนเพื่อขอราคาได้ทันที",
+    robots: { index: false, follow: true },
+    openGraph: {
+      type: "website",
+      locale: "th_TH",
+      siteName: site.shortName,
+      title: "ทินเนอร์ 3A · 2K และน้ำมันสนอินทนิล สั่งยกลัง ราคาส่ง",
+      description:
+        "ตัวทำละลายสำหรับผสมสีน้ำมัน สีรองพื้น สีทับหน้า และสีพ่นอุตสาหกรรม ขนาด 9 / 15 / 150 กก. พร้อมส่งทั่วประเทศ",
+      images: ["/assets/product-thinner.jpg"],
+    },
+  };
+}
 
-export default function ThinnerLanding() {
+export default async function ThinnerLanding() {
+  const info = await getSiteInfo();
+  const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

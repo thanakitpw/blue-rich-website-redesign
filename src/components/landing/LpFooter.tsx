@@ -1,14 +1,17 @@
 import Image from "next/image";
 import { Icon } from "@/components/ui";
 import { Wrap } from "@/components/landing/kit";
-import { lineHref, lineHref2, mailHref, mapHref, site, standards } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /**
  * Landing-page footer. Contact details only — no navigation back into the main
  * site, so paid traffic keeps its one path to a CTA. `note` carries the
  * per-page disclaimer (legal summaries, spec caveats).
  */
-export default function LpFooter({ note }: { note?: string }) {
+export default async function LpFooter({ note }: { note?: string }) {
+  const [info, standards] = await Promise.all([getSiteInfo(), getStandards()]);
+  const { site, mailHref, mapHref, lineHref, lineHref2 } = bundleFor(info, []);
   return (
     <footer className="bg-brand-950 pt-14 pb-28 text-brand-100/70 lg:pb-14">
       <Wrap>

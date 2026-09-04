@@ -223,3 +223,67 @@
     animation: none !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * ระบบหลังบ้าน /admin
+ *
+ * ใช้พาเลตเดียวกับเว็บหน้าบ้าน (brand / slate / accent) แต่แน่นกว่าและเรียบกว่า
+ * เพราะเป็นหน้าจอทำงาน ไม่ใช่หน้าขายของ
+ *
+ * ปุ่มสามแบบเขียนสไตล์ฐานซ้ำกันแทนที่จะ @apply คลาสร่วม เพราะ Tailwind v4
+ * ไม่ให้ @apply อ้างคลาสที่ประกาศเองใน @layer components ด้วยกัน
+ * (ต้องเป็น utility จริงเท่านั้น) — ทางเลือกอีกทางคือ @utility ซึ่งจะทำให้
+ * ปุ่มเหล่านี้กลายเป็น utility ทั่วโปรเจค ทั้งที่ใช้แค่ใต้ /admin
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  .field-label {
+    @apply mb-1.5 block text-[13px] font-medium text-slate-700;
+  }
+
+  .field {
+    @apply block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-[14px]
+           text-slate-900 transition outline-none
+           placeholder:text-slate-400
+           focus:border-accent-400 focus:ring-2 focus:ring-accent-100;
+  }
+
+  textarea.field {
+    @apply leading-relaxed;
+  }
+
+  .btn-solid {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2
+           text-[13.5px] font-medium transition disabled:cursor-not-allowed disabled:opacity-50
+           bg-accent-500 text-white hover:bg-accent-600;
+  }
+
+  .btn-line-admin {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2
+           text-[13.5px] font-medium transition disabled:cursor-not-allowed disabled:opacity-50
+           border border-slate-200 bg-white text-slate-700
+           hover:border-slate-300 hover:text-slate-900;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2
+           text-[13.5px] font-medium transition disabled:cursor-not-allowed disabled:opacity-50
+           border border-red-200 bg-white text-red-600
+           hover:border-red-400 hover:bg-red-50;
+  }
+
+  .card-admin {
+    @apply rounded-xl border border-slate-200 bg-white;
+  }
+
+  .chip-draft {
+    @apply shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800;
+  }
+
+  .chip-live {
+    @apply shrink-0 rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-medium text-emerald-800;
+  }
+
+  .admin-title {
+    @apply text-[21px] font-semibold text-slate-900;
+  }
+}

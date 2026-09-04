@@ -3,9 +3,14 @@ import Image from "next/image";
 import { Button, Icon, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CtaBand, Section } from "@/components/concept";
-import { lineHref, site, standards, stats, telHref } from "@/data/site";
-import { categories } from "@/data/products";
-import { projects } from "@/data/projects";
+import { bundleFor } from "@/data/site";
+import {
+  getCategories,
+  getProjects,
+  getSiteInfo,
+  getStandards,
+  getStats,
+} from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "เกี่ยวกับเรา",
@@ -70,7 +75,15 @@ const values = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [info, standards, stats, categories, projects] = await Promise.all([
+    getSiteInfo(),
+    getStandards(),
+    getStats(),
+    getCategories(),
+    getProjects(),
+  ]);
+  const { site, telHref, lineHref } = bundleFor(info, []);
   const gallery = projects.slice(0, 8);
 
   return (

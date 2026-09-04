@@ -5,7 +5,8 @@ import { CatalogGrid, CatalogSidebar } from "@/components/catalog";
 import { Faq } from "@/components/concept";
 import Reveal from "@/components/ui/Reveal";
 import type { Product } from "@/data/products";
-import { lineHref } from "@/data/site";
+import { lineHrefOf } from "@/data/site";
+import { getSiteInfo } from "@/lib/cms/content";
 
 /* ------------------------------------------------------------- ProductRow */
 
@@ -14,7 +15,7 @@ import { lineHref } from "@/data/site";
  * quick specs on the other. Used by the category hubs where each product
  * deserves more room than the grid card gives it.
  */
-export function ProductRow({
+export async function ProductRow({
   product,
   id,
   eyebrow,
@@ -27,6 +28,7 @@ export function ProductRow({
   flip?: boolean;
   children?: React.ReactNode;
 }) {
+  const lineHref = lineHrefOf(await getSiteInfo());
   return (
     <div id={id} className="scroll-mt-40">
       <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">

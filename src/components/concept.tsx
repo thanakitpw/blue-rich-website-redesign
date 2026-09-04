@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button, Container, Icon } from "@/components/ui";
-import { lineChannels, lineHref, lineHref2, mapHref, site, standards, stats, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getSiteInfo, getStandards, getStats } from "@/lib/cms/content";
 
 /* -------------------------------------------------------------------- Section
  * Concept B's `.sec` (52px band) and `.sec-shell` (the #f6f9fb ground).
@@ -133,7 +134,8 @@ export function ValueBlock({
  * `.trusted` — italic pull-quote over the shell ground, then the chip row.
  */
 
-export function StandardsBand() {
+export async function StandardsBand() {
+  const [site, standards] = await Promise.all([getSiteInfo(), getStandards()]);
   return (
     <div className="text-center">
       <p className="text-[clamp(16px,2vw,21px)] leading-[1.55] font-medium text-brand-700 italic">
@@ -197,7 +199,8 @@ export function WorksGrid({
  * Service stamp, copy and stat row on the right.
  */
 
-export function AboutBand() {
+export async function AboutBand() {
+  const stats = await getStats();
   return (
     <section id="about" className="overflow-x-clip py-[38px] lg:py-[52px]">
       <div className="mx-auto grid w-full max-w-[1180px] items-center gap-7 px-5 lg:grid-cols-[0.92fr_1.08fr] lg:gap-13">
@@ -257,7 +260,8 @@ export function AboutBand() {
  * `.linecta` — accent italic heading, phone list, and the LINE phone mockup.
  */
 
-export function LineCta() {
+export async function LineCta() {
+  const { site, lineHref, lineHref2, mapHref } = bundleFor(await getSiteInfo(), []);
   return (
     <div className="grid items-center gap-7 lg:grid-cols-2 lg:gap-10">
       <div>
@@ -374,13 +378,14 @@ export function Faq({
  * The closing band used at the bottom of the inner pages.
  */
 
-export function CtaBand({
+export async function CtaBand({
   title = "สนใจสั่งซื้อ หรือขอใบเสนอราคา",
   description = "ส่งแบบโครงสร้างหรือรายการ BOQ มาให้ทีมวิศวกรประเมิน เราจะคำนวณปริมาณสี ความหนาฟิล์ม และสรุปราคาให้ภายใน 1–2 วันทำการ",
 }: {
   title?: string;
   description?: string;
 }) {
+  const { site, telHref, lineChannels } = bundleFor(await getSiteInfo(), []);
   return (
     <section className="py-[38px] lg:py-[52px]">
       <Container>

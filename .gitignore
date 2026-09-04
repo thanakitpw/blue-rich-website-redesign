@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# .env.example ต้องขึ้น git เพื่อบอกว่าโปรเจคต้องใช้ตัวแปรอะไรบ้าง
+!.env.example
+
+# ไฟล์ SQL ที่สร้างจาก src/data ด้วย npm run cms:seed-sql — สร้างใหม่ได้เสมอ
+supabase/seed.sql

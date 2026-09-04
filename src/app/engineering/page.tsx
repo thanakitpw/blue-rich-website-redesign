@@ -20,7 +20,8 @@ import {
   services,
   timeline,
 } from "@/data/engineering-lp";
-import { lineHref, mailHref, site, standards, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /**
  * Paid-traffic landing page for the engineering service. Sits outside the (site)
@@ -32,21 +33,24 @@ import { lineHref, mailHref, site, standards, telHref } from "@/data/site";
  * "you send / we deliver" split at every step, followed by the document set the
  * customer actually walks away with.
  */
-export const metadata: Metadata = {
-  title: "รับรองงานสีกันไฟโดยวุฒิวิศวกร | คำนวณ Hp/A · ตรวจหน้างาน · น.4-5 / น.4-9",
-  description:
-    "บริการคำนวณความหนาฟิล์มสีกันไฟตามค่า Hp/A ของหน้าตัดจริง ตรวจวัดความหนาฟิล์มหน้างาน และออกเอกสารรับรองลงนามโดยวุฒิวิศวกรโยธา อ้างอิงผลทดสอบ ASTM E-119 และ ISO 834 ส่งแบบมาให้ประเมินก่อนได้ ไม่มีค่าใช้จ่าย",
-  robots: { index: false, follow: true },
-  openGraph: {
-    type: "website",
-    locale: "th_TH",
-    siteName: site.shortName,
-    title: "งานรับรองสีกันไฟโครงสร้างเหล็ก โดยวุฒิวิศวกรโยธา",
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteInfo();
+  return {
+    title: "รับรองงานสีกันไฟโดยวุฒิวิศวกร | คำนวณ Hp/A · ตรวจหน้างาน · น.4-5 / น.4-9",
     description:
-      "คำนวณความหนาฟิล์มรายหน้าตัด ตรวจวัดหน้างาน และออกเอกสารรับรองที่ยื่นหน่วยงานได้ครบชุด",
-    images: ["/assets/cert-documents.jpg"],
-  },
-};
+      "บริการคำนวณความหนาฟิล์มสีกันไฟตามค่า Hp/A ของหน้าตัดจริง ตรวจวัดความหนาฟิล์มหน้างาน และออกเอกสารรับรองลงนามโดยวุฒิวิศวกรโยธา อ้างอิงผลทดสอบ ASTM E-119 และ ISO 834 ส่งแบบมาให้ประเมินก่อนได้ ไม่มีค่าใช้จ่าย",
+    robots: { index: false, follow: true },
+    openGraph: {
+      type: "website",
+      locale: "th_TH",
+      siteName: site.shortName,
+      title: "งานรับรองสีกันไฟโครงสร้างเหล็ก โดยวุฒิวิศวกรโยธา",
+      description:
+        "คำนวณความหนาฟิล์มรายหน้าตัด ตรวจวัดหน้างาน และออกเอกสารรับรองที่ยื่นหน่วยงานได้ครบชุด",
+      images: ["/assets/cert-documents.jpg"],
+    },
+  };
+}
 
 const iconMap = {
   doc: Icon.doc,
@@ -54,7 +58,10 @@ const iconMap = {
   shield: Icon.shield,
 };
 
-export default function EngineeringLanding() {
+export default async function EngineeringLanding() {
+  const [info, standards] = await Promise.all([getSiteInfo(), getStandards()]);
+  const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
+
   const jsonLd = [
     {
       "@context": "https://schema.org",

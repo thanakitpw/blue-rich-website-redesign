@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { Icon } from "@/components/ui";
 import { ProductCard } from "@/components/cards";
 import type { Product } from "@/data/products";
-import { nav } from "@/data/site";
+import { useSite } from "@/components/SiteProvider";
 
 /* --------------------------------------------------------------- Sidebar
  * Category rail modelled on the reference archive page: every product group
@@ -14,9 +14,10 @@ import { nav } from "@/data/site";
  * listed underneath.
  */
 
-const groups = nav.filter((i) => i.children);
 
 export function CatalogSidebar({ extra }: { extra?: React.ReactNode }) {
+  const { nav } = useSite();
+  const groups = nav.filter((i) => i.children);
   const pathname = usePathname();
   const isActive = (href: string) => {
     const base = href.split("#")[0];

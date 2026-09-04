@@ -1,0 +1,428 @@
+[
+  {
+    "url": "/assets/banner-1.jpg",
+    "filename": "banner-1.jpg",
+    "folder": "assets",
+    "bytes": 509584
+  },
+  {
+    "url": "/assets/banner-2.jpg",
+    "filename": "banner-2.jpg",
+    "folder": "assets",
+    "bytes": 622405
+  },
+  {
+    "url": "/assets/banner-3.jpg",
+    "filename": "banner-3.jpg",
+    "folder": "assets",
+    "bytes": 495074
+  },
+  {
+    "url": "/assets/banner-fireproof.jpg",
+    "filename": "banner-fireproof.jpg",
+    "folder": "assets",
+    "bytes": 358075
+  },
+  {
+    "url": "/assets/cert-documents.jpg",
+    "filename": "cert-documents.jpg",
+    "folder": "assets",
+    "bytes": 306763
+  },
+  {
+    "url": "/assets/faq-home.jpg",
+    "filename": "faq-home.jpg",
+    "folder": "assets",
+    "bytes": 224585
+  },
+  {
+    "url": "/assets/fireproofing-certification.jpg",
+    "filename": "fireproofing-certification.jpg",
+    "folder": "assets",
+    "bytes": 201561
+  },
+  {
+    "url": "/assets/fireproofing-supervision.jpg",
+    "filename": "fireproofing-supervision.jpg",
+    "folder": "assets",
+    "bytes": 219045
+  },
+  {
+    "url": "/assets/hero-engineer-certified.jpg",
+    "filename": "hero-engineer-certified.jpg",
+    "folder": "assets",
+    "bytes": 193276
+  },
+  {
+    "url": "/assets/hero-fire-paint.jpg",
+    "filename": "hero-fire-paint.jpg",
+    "folder": "assets",
+    "bytes": 225910
+  },
+  {
+    "url": "/assets/hero-steel-truss.jpg",
+    "filename": "hero-steel-truss.jpg",
+    "folder": "assets",
+    "bytes": 167798
+  },
+  {
+    "url": "/assets/logo-flat.jpg",
+    "filename": "logo-flat.jpg",
+    "folder": "assets",
+    "bytes": 145666
+  },
+  {
+    "url": "/assets/logo.png",
+    "filename": "logo.png",
+    "folder": "assets",
+    "bytes": 97385
+  },
+  {
+    "url": "/assets/news-house.jpg",
+    "filename": "news-house.jpg",
+    "folder": "assets",
+    "bytes": 328039
+  },
+  {
+    "url": "/assets/news-law.png",
+    "filename": "news-law.png",
+    "folder": "assets",
+    "bytes": 499490
+  },
+  {
+    "url": "/assets/news-painting.jpg",
+    "filename": "news-painting.jpg",
+    "folder": "assets",
+    "bytes": 289888
+  },
+  {
+    "url": "/assets/news-rust.jpg",
+    "filename": "news-rust.jpg",
+    "folder": "assets",
+    "bytes": 701781
+  },
+  {
+    "url": "/assets/news-tools.jpg",
+    "filename": "news-tools.jpg",
+    "folder": "assets",
+    "bytes": 149941
+  },
+  {
+    "url": "/assets/product-fiberglass-silicone.jpg",
+    "filename": "product-fiberglass-silicone.jpg",
+    "folder": "assets",
+    "bytes": 126312
+  },
+  {
+    "url": "/assets/product-fiberglass.jpg",
+    "filename": "product-fiberglass.jpg",
+    "folder": "assets",
+    "bytes": 47715
+  },
+  {
+    "url": "/assets/product-neocoat-intumescent.jpg",
+    "filename": "product-neocoat-intumescent.jpg",
+    "folder": "assets",
+    "bytes": 53885
+  },
+  {
+    "url": "/assets/product-neocoat-primer.jpg",
+    "filename": "product-neocoat-primer.jpg",
+    "folder": "assets",
+    "bytes": 264265
+  },
+  {
+    "url": "/assets/product-silica-silicone.jpg",
+    "filename": "product-silica-silicone.jpg",
+    "folder": "assets",
+    "bytes": 76440
+  },
+  {
+    "url": "/assets/product-silica.jpg",
+    "filename": "product-silica.jpg",
+    "folder": "assets",
+    "bytes": 144813
+  },
+  {
+    "url": "/assets/product-thinner.jpg",
+    "filename": "product-thinner.jpg",
+    "folder": "assets",
+    "bytes": 356101
+  },
+  {
+    "url": "/assets/product-turpentine.jpg",
+    "filename": "product-turpentine.jpg",
+    "folder": "assets",
+    "bytes": 326162
+  },
+  {
+    "url": "/assets/products/cafco-400.png",
+    "filename": "cafco-400.png",
+    "folder": "assets/products",
+    "bytes": 562579
+  },
+  {
+    "url": "/assets/products/fendolite-m2.png",
+    "filename": "fendolite-m2.png",
+    "folder": "assets/products",
+    "bytes": 522840
+  },
+  {
+    "url": "/assets/products/fiberglass-cloth-fringe-detail.webp",
+    "filename": "fiberglass-cloth-fringe-detail.webp",
+    "folder": "assets/products",
+    "bytes": 316952
+  },
+  {
+    "url": "/assets/products/fiberglass-cloth-panel-main.webp",
+    "filename": "fiberglass-cloth-panel-main.webp",
+    "folder": "assets/products",
+    "bytes": 211284
+  },
+  {
+    "url": "/assets/products/fiberglass-cloth-panels-grommet.webp",
+    "filename": "fiberglass-cloth-panels-grommet.webp",
+    "folder": "assets/products",
+    "bytes": 105260
+  },
+  {
+    "url": "/assets/products/fiberglass-cloth-roll-grey.webp",
+    "filename": "fiberglass-cloth-roll-grey.webp",
+    "folder": "assets/products",
+    "bytes": 181538
+  },
+  {
+    "url": "/assets/products/fiberglass-cloth-weave-detail.webp",
+    "filename": "fiberglass-cloth-weave-detail.webp",
+    "folder": "assets/products",
+    "bytes": 167840
+  },
+  {
+    "url": "/assets/products/four-plus-exterior.webp",
+    "filename": "four-plus-exterior.webp",
+    "folder": "assets/products",
+    "bytes": 75050
+  },
+  {
+    "url": "/assets/products/four-plus-masonry-sealer.webp",
+    "filename": "four-plus-masonry-sealer.webp",
+    "folder": "assets/products",
+    "bytes": 76178
+  },
+  {
+    "url": "/assets/products/four-plus-pro-interior.webp",
+    "filename": "four-plus-pro-interior.webp",
+    "folder": "assets/products",
+    "bytes": 75882
+  },
+  {
+    "url": "/assets/products/neocoat-paint-s-promo.webp",
+    "filename": "neocoat-paint-s-promo.webp",
+    "folder": "assets/products",
+    "bytes": 140660
+  },
+  {
+    "url": "/assets/products/neocoat-paint-s.png",
+    "filename": "neocoat-paint-s.png",
+    "folder": "assets/products",
+    "bytes": 174226
+  },
+  {
+    "url": "/assets/products/neocoat-paint-w-promo.webp",
+    "filename": "neocoat-paint-w-promo.webp",
+    "folder": "assets/products",
+    "bytes": 158322
+  },
+  {
+    "url": "/assets/products/neocoat-paint-w-warehouse.webp",
+    "filename": "neocoat-paint-w-warehouse.webp",
+    "folder": "assets/products",
+    "bytes": 156668
+  },
+  {
+    "url": "/assets/products/neocoat-paint-w.png",
+    "filename": "neocoat-paint-w.png",
+    "folder": "assets/products",
+    "bytes": 139606
+  },
+  {
+    "url": "/assets/products/neocoat-primer.png",
+    "filename": "neocoat-primer.png",
+    "folder": "assets/products",
+    "bytes": 157064
+  },
+  {
+    "url": "/assets/products/neogloss-enamel.png",
+    "filename": "neogloss-enamel.png",
+    "folder": "assets/products",
+    "bytes": 148004
+  },
+  {
+    "url": "/assets/products/roof-shield.png",
+    "filename": "roof-shield.png",
+    "folder": "assets/products",
+    "bytes": 122522
+  },
+  {
+    "url": "/assets/products/thinner-2k.jpg",
+    "filename": "thinner-2k.jpg",
+    "folder": "assets/products",
+    "bytes": 213574
+  },
+  {
+    "url": "/assets/products/thinner-3a-intanin.webp",
+    "filename": "thinner-3a-intanin.webp",
+    "folder": "assets/products",
+    "bytes": 79910
+  },
+  {
+    "url": "/assets/products/turpentine-intanin.webp",
+    "filename": "turpentine-intanin.webp",
+    "folder": "assets/products",
+    "bytes": 78078
+  },
+  {
+    "url": "/assets/products/work-steel-beams-painted.webp",
+    "filename": "work-steel-beams-painted.webp",
+    "folder": "assets/products",
+    "bytes": 93196
+  },
+  {
+    "url": "/assets/service-certification.jpg",
+    "filename": "service-certification.jpg",
+    "folder": "assets",
+    "bytes": 173922
+  },
+  {
+    "url": "/assets/service-supervision.jpg",
+    "filename": "service-supervision.jpg",
+    "folder": "assets",
+    "bytes": 157684
+  },
+  {
+    "url": "/assets/spec-fiberglass-silicone.jpg",
+    "filename": "spec-fiberglass-silicone.jpg",
+    "folder": "assets",
+    "bytes": 117891
+  },
+  {
+    "url": "/assets/spec-fiberglass.jpg",
+    "filename": "spec-fiberglass.jpg",
+    "folder": "assets",
+    "bytes": 94281
+  },
+  {
+    "url": "/assets/spec-silica-silicone.jpg",
+    "filename": "spec-silica-silicone.jpg",
+    "folder": "assets",
+    "bytes": 119137
+  },
+  {
+    "url": "/assets/spec-silica.jpg",
+    "filename": "spec-silica.jpg",
+    "folder": "assets",
+    "bytes": 127340
+  },
+  {
+    "url": "/assets/value-steel-structure.jpg",
+    "filename": "value-steel-structure.jpg",
+    "folder": "assets",
+    "bytes": 173291
+  },
+  {
+    "url": "/assets/work-01.jpg",
+    "filename": "work-01.jpg",
+    "folder": "assets",
+    "bytes": 29200
+  },
+  {
+    "url": "/assets/work-02.jpg",
+    "filename": "work-02.jpg",
+    "folder": "assets",
+    "bytes": 42767
+  },
+  {
+    "url": "/assets/work-03.jpg",
+    "filename": "work-03.jpg",
+    "folder": "assets",
+    "bytes": 36458
+  },
+  {
+    "url": "/assets/work-04.jpg",
+    "filename": "work-04.jpg",
+    "folder": "assets",
+    "bytes": 49630
+  },
+  {
+    "url": "/assets/work-05.jpg",
+    "filename": "work-05.jpg",
+    "folder": "assets",
+    "bytes": 27229
+  },
+  {
+    "url": "/assets/work-06.jpg",
+    "filename": "work-06.jpg",
+    "folder": "assets",
+    "bytes": 32308
+  },
+  {
+    "url": "/assets/work-07.jpg",
+    "filename": "work-07.jpg",
+    "folder": "assets",
+    "bytes": 41370
+  },
+  {
+    "url": "/assets/work-08.jpg",
+    "filename": "work-08.jpg",
+    "folder": "assets",
+    "bytes": 27876
+  },
+  {
+    "url": "/assets/work-09.jpg",
+    "filename": "work-09.jpg",
+    "folder": "assets",
+    "bytes": 34483
+  },
+  {
+    "url": "/assets/work-10.jpg",
+    "filename": "work-10.jpg",
+    "folder": "assets",
+    "bytes": 38170
+  },
+  {
+    "url": "/assets/work-11.jpg",
+    "filename": "work-11.jpg",
+    "folder": "assets",
+    "bytes": 36693
+  },
+  {
+    "url": "/assets/work-12.jpg",
+    "filename": "work-12.jpg",
+    "folder": "assets",
+    "bytes": 29908
+  },
+  {
+    "url": "/assets/work-13.jpg",
+    "filename": "work-13.jpg",
+    "folder": "assets",
+    "bytes": 39151
+  },
+  {
+    "url": "/assets/work-14.jpg",
+    "filename": "work-14.jpg",
+    "folder": "assets",
+    "bytes": 33707
+  },
+  {
+    "url": "/assets/work-15.jpg",
+    "filename": "work-15.jpg",
+    "folder": "assets",
+    "bytes": 36399
+  },
+  {
+    "url": "/assets/work-16.jpg",
+    "filename": "work-16.jpg",
+    "folder": "assets",
+    "bytes": 31907
+  }
+]

@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
   turbopack: { root: path.resolve(".") },
   images: {
     formats: ["image/avif", "image/webp"],
+    /* รูปที่ลูกค้าอัปโหลดเองอยู่ใน Supabase Storage ไม่ได้อยู่ใน public/
+       จึงต้องอนุญาตโดเมนนั้นให้ next/image ไปดึงได้ */
+    remotePatterns: [
+      { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
+    ],
   },
 };
 

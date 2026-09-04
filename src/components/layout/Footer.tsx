@@ -1,14 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button, Container, Icon } from "@/components/ui";
-import { lineChannels, mailHref, mapHref, nav, site, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getNav, getSiteInfo } from "@/lib/cms/content";
 
 /** Items 2–5 of the menu carry children; 6–9 are the plain company pages. */
-const sections = nav.filter((i) => i.children);
-const pages = nav.filter((i) => !i.children && i.href !== "/");
+
 
 /** Concept B's footer: charcoal ground, white logo tile, orange row icons. */
-export default function Footer() {
+export default async function Footer() {
+  const [info, navItems] = await Promise.all([getSiteInfo(), getNav()]);
+  const { site, nav, telHref, mailHref, mapHref, lineChannels } = bundleFor(info, navItems);
+  const sections = nav.filter((i) => i.children);
+  const pages = nav.filter((i) => !i.children && i.href !== "/");
+
   return (
     <footer className="mt-2.5 bg-[#12181d] text-[#c6d2db]">
       <Container>

@@ -965,14 +965,5 @@ export const getProduct = (slug: string) => products.find((p) => p.slug === slug
 export const productsByCategory = (slug: string) =>
   products.filter((p) => p.category === slug);
 
-/** Order of the “สินค้าขายดี” row on the home page. */
-export const bestSellers = [
-  "neocoat-intumescent-paint-s",
-  "neocoat-intumescent-paint-w",
-  "neocoat-primer-grey-oxide",
-]
-  .map((slug) => getProduct(slug))
-  .filter((p): p is Product => Boolean(p));
-
 export const relatedProducts = (product: Product) =>
   product.related.map((slug) => getProduct(slug)).filter((p): p is Product => Boolean(p));

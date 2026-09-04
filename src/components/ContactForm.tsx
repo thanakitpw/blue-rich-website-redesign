@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/ui";
-import { site } from "@/data/site";
+import { useSite } from "@/components/SiteProvider";
 
 const topics = [
   "สีกันไฟ – สีทนไฟ",
@@ -22,6 +22,7 @@ const field =
  * service when an inbox integration is available.
  */
 export default function ContactForm() {
+  const { site } = useSite();
   const [sent, setSent] = useState(false);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

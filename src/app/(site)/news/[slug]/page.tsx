@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 import { Breadcrumb, Button, Container, Icon } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { NewsCard } from "@/components/cards";
-import { articles, getArticle } from "@/data/news";
-import { lineHref, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getArticle, getArticles, getSiteInfo } from "@/lib/cms/content";
 
-export function generateStaticParams() {
-  return articles.map((a) => ({ slug: a.slug }));
+export async function generateStaticParams() {
+  return (await getArticles()).map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({
@@ -17,7 +17,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticle(slug);
   if (!article) return { title: "ไม่พบบทความ" };
   return {
     title: article.title,
@@ -32,10 +32,12 @@ export async function generateMetadata({
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const article = getArticle(slug);
+  const article = await getArticle(slug);
   if (!article) notFound();
 
-  const more = articles.filter((a) => a.slug !== article.slug).slice(0, 3);
+  const [all, info] = await Promise.all([getArticles(), getSiteInfo()]);
+  const { telHref, lineHref } = bundleFor(info, []);
+  const more = all.filter((a) => a.slug !== article.slug).slice(0, 3);
 
   return (
     <>

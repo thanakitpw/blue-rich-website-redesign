@@ -22,7 +22,8 @@ import {
   specs,
   useCases,
 } from "@/data/fire-blanket-lp";
-import { lineHref, mailHref, site, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getSiteInfo } from "@/lib/cms/content";
 
 /**
  * Paid-traffic landing page for the fiberglass cloth range. Sits outside the
@@ -33,23 +34,29 @@ import { lineHref, mailHref, site, telHref } from "@/data/site";
  * traffic mostly knows it wants a fire blanket and is choosing a temperature
  * rating and a cut size, so those two decisions come first.
  */
-export const metadata: Metadata = {
-  title: "ผ้ากันไฟ ผ้ากันสะเก็ดไฟ Fiberglass Cloth | ทน 550–1000°C ตัดตามขนาด",
-  description:
-    "ผ้ากันไฟใยแก้วทอแบบซาติน อบ 2 ครั้ง ทนอุณหภูมิใช้งาน 550°C และ 1000°C มี 4 เกรดให้เลือก บริการตัดเย็บตามขนาด เจาะรูตาไก่ และทำปลายผ้า U shape พร้อมสเปก PDF ให้ดาวน์โหลด ส่งทั่วประเทศ",
-  robots: { index: false, follow: true },
-  openGraph: {
-    type: "website",
-    locale: "th_TH",
-    siteName: site.shortName,
-    title: "ผ้ากันไฟใยแก้ว ทน 550°C ถึง 1000°C สั่งตัดตามขนาด",
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteInfo();
+  return {
+    title: "ผ้ากันไฟ ผ้ากันสะเก็ดไฟ Fiberglass Cloth | ทน 550–1000°C ตัดตามขนาด",
     description:
-      "ผ้ากันสะเก็ดไฟงานเชื่อม ม่านกั้นความร้อน หุ้มท่อร้อน ตัดเย็บตามขนาดและเจาะรูตาไก่ให้พร้อมแขวน",
-    images: ["/assets/products/fiberglass-cloth-panel-main.webp"],
-  },
-};
+      "ผ้ากันไฟใยแก้วทอแบบซาติน อบ 2 ครั้ง ทนอุณหภูมิใช้งาน 550°C และ 1000°C มี 4 เกรดให้เลือก บริการตัดเย็บตามขนาด เจาะรูตาไก่ และทำปลายผ้า U shape พร้อมสเปก PDF ให้ดาวน์โหลด ส่งทั่วประเทศ",
+    robots: { index: false, follow: true },
+    openGraph: {
+      type: "website",
+      locale: "th_TH",
+      siteName: site.shortName,
+      title: "ผ้ากันไฟใยแก้ว ทน 550°C ถึง 1000°C สั่งตัดตามขนาด",
+      description:
+        "ผ้ากันสะเก็ดไฟงานเชื่อม ม่านกั้นความร้อน หุ้มท่อร้อน ตัดเย็บตามขนาดและเจาะรูตาไก่ให้พร้อมแขวน",
+      images: ["/assets/products/fiberglass-cloth-panel-main.webp"],
+    },
+  };
+}
 
-export default function FireBlanketLanding() {
+export default async function FireBlanketLanding() {
+  const info = await getSiteInfo();
+  const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
+
   const jsonLd = [
     {
       "@context": "https://schema.org",

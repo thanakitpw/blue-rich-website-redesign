@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui";
-import { lineHref, lineHref2, telHref } from "@/data/site";
+import { useSite } from "@/components/SiteProvider";
 
 /**
  * Bottom action bar for phones, where the sticky header CTA scrolls out of the
@@ -10,6 +10,7 @@ import { lineHref, lineHref2, telHref } from "@/data/site";
  * first screen. Hidden on desktop — the header CTA stays visible there.
  */
 export default function LpStickyCta({ quoteLabel = "ขอใบเสนอราคา" }: { quoteLabel?: string }) {
+  const { telHref, lineHref, lineHref2 } = useSite();
   const [show, setShow] = useState(false);
 
   useEffect(() => {

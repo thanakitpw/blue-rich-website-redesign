@@ -21,7 +21,8 @@ import {
   quoteForm,
   system,
 } from "@/data/four-plus-lp";
-import { lineHref, mailHref, site, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getSiteInfo } from "@/lib/cms/content";
 
 /**
  * Paid-traffic landing page for the Four Plus emulsion range. Sits outside the
@@ -32,23 +33,29 @@ import { lineHref, mailHref, site, telHref } from "@/data/site";
  * products, because the failure this traffic is trying to avoid — peeling and
  * patchy walls — is caused by skipping the primer, not by the topcoat.
  */
-export const metadata: Metadata = {
-  title: "สีน้ำพลาสติก Four Plus | ทาภายใน ภายนอก รองพื้นปูน อะคริลิก 100%",
-  description:
-    "สีน้ำพลาสติก Four Plus อะคริลิกอิมัลชั่น 100% ครบระบบรองพื้น–ทับหน้า ทาได้ 150 ตร.ม. ต่อถัง ต่อเที่ยว แห้งผิว 30 นาที กันเชื้อราและตะไคร่น้ำ ทนด่างจากผนังปูน แจ้งพื้นที่เพื่อให้ทีมงานคำนวณจำนวนถังให้",
-  robots: { index: false, follow: true },
-  openGraph: {
-    type: "website",
-    locale: "th_TH",
-    siteName: site.shortName,
-    title: "สีน้ำพลาสติก Four Plus ครบทั้งระบบ รองพื้นปูน · ทาภายใน · ทาภายนอก",
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteInfo();
+  return {
+    title: "สีน้ำพลาสติก Four Plus | ทาภายใน ภายนอก รองพื้นปูน อะคริลิก 100%",
     description:
-      "อะคริลิกอิมัลชั่น 100% ทาได้ 150 ตร.ม./ถัง/เที่ยว กันเชื้อรา ตะไคร่น้ำ และทนด่างจากผนังปูน",
-    images: ["/assets/products/four-plus-exterior.webp"],
-  },
-};
+      "สีน้ำพลาสติก Four Plus อะคริลิกอิมัลชั่น 100% ครบระบบรองพื้น–ทับหน้า ทาได้ 150 ตร.ม. ต่อถัง ต่อเที่ยว แห้งผิว 30 นาที กันเชื้อราและตะไคร่น้ำ ทนด่างจากผนังปูน แจ้งพื้นที่เพื่อให้ทีมงานคำนวณจำนวนถังให้",
+    robots: { index: false, follow: true },
+    openGraph: {
+      type: "website",
+      locale: "th_TH",
+      siteName: site.shortName,
+      title: "สีน้ำพลาสติก Four Plus ครบทั้งระบบ รองพื้นปูน · ทาภายใน · ทาภายนอก",
+      description:
+        "อะคริลิกอิมัลชั่น 100% ทาได้ 150 ตร.ม./ถัง/เที่ยว กันเชื้อรา ตะไคร่น้ำ และทนด่างจากผนังปูน",
+      images: ["/assets/products/four-plus-exterior.webp"],
+    },
+  };
+}
 
-export default function FourPlusLanding() {
+export default async function FourPlusLanding() {
+  const info = await getSiteInfo();
+  const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

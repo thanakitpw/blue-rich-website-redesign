@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { MoreLink, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CatalogSection, CtaBand, MiniProduct, ProductRow, Section } from "@/components/hub";
-import { getProduct } from "@/data/products";
-import { lineHref } from "@/data/site";
+import { lineHrefOf } from "@/data/site";
+import { getProduct, getSiteInfo } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "สีน้ำ / สีน้ำมัน — รองพื้นกันสนิม ทับหน้าเหล็ก รองพื้นปูน และสีน้ำพลาสติก",
@@ -11,12 +12,7 @@ export const metadata: Metadata = {
     "สีรองพื้นกันสนิมทาเหล็ก Neocoat Primer Grey Oxide, สีน้ำมันทับหน้าเหล็ก Neogloss, สีรองพื้นปูนใหม่-เก่า Four Plus Pro Masonry Sealer และสีน้ำพลาสติกอะคริลิก 100% ทาภายในและภายนอก",
 };
 
-const primer = getProduct("neocoat-primer-grey-oxide")!;
-const topcoat = getProduct("neogloss-enamel")!;
-const masonry = getProduct("four-plus-pro-masonry-sealer")!;
-const exterior = getProduct("four-plus-exterior")!;
-const interior = getProduct("four-plus-pro-interior")!;
-const roofShield = getProduct("roof-shield-ceramic")!;
+
 
 /** Anchor targets mirror the four sub-items in the client's menu sketch. */
 const groups = [
@@ -26,7 +22,23 @@ const groups = [
   { id: "emulsion", label: "สีน้ำพลาสติก", note: "ภายใน–ภายนอก อะคริลิก 100%" },
 ];
 
-export default function PaintPage() {
+export default async function PaintPage() {
+  const [primer, topcoat, masonry, exterior, interior, roofShield, thinner, turpentine, solvent, info] =
+    await Promise.all([
+      getProduct("neocoat-primer-grey-oxide"),
+      getProduct("neogloss-enamel"),
+      getProduct("four-plus-pro-masonry-sealer"),
+      getProduct("four-plus-exterior"),
+      getProduct("four-plus-pro-interior"),
+      getProduct("roof-shield-ceramic"),
+      getProduct("thinner-3a-intanin"),
+      getProduct("turpentine-intanin"),
+      getProduct("neocoat-intumescent-paint-s"),
+      getSiteInfo(),
+    ]);
+  if (!primer || !topcoat || !masonry || !exterior || !interior || !roofShield) notFound();
+  const lineHref = lineHrefOf(info);
+
   return (
     <>
       <PageHero
@@ -145,13 +157,13 @@ export default function PaintPage() {
             <MiniProduct product={roofShield} />
           </Reveal>
           <Reveal delay={60}>
-            <MiniProduct product={getProduct("thinner-3a-intanin")!} />
+            {thinner && <MiniProduct product={thinner} />}
           </Reveal>
           <Reveal delay={120}>
-            <MiniProduct product={getProduct("turpentine-intanin")!} />
+            {turpentine && <MiniProduct product={turpentine} />}
           </Reveal>
           <Reveal delay={180}>
-            <MiniProduct product={getProduct("neocoat-intumescent-paint-s")!} />
+            {solvent && <MiniProduct product={solvent} />}
           </Reveal>
         </div>
 

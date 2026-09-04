@@ -4,12 +4,11 @@ import { notFound } from "next/navigation";
 import { Button, Icon, MoreLink, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CtaBand, FaqList, MiniProduct, Section } from "@/components/hub";
-import { getService, services } from "@/data/fireproofing";
-import { getProduct } from "@/data/products";
-import { telHref } from "@/data/site";
+import { telHrefOf } from "@/data/site";
+import { getProducts, getService, getServices, getSiteInfo } from "@/lib/cms/content";
 
-export function generateStaticParams() {
-  return services.map((s) => ({ slug: s.slug }));
+export async function generateStaticParams() {
+  return (await getServices()).map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -18,7 +17,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const service = getService(slug);
+  const service = await getService(slug);
   if (!service) return {};
   return { title: service.label, description: service.lede };
 }
@@ -29,11 +28,17 @@ export default async function ServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = getService(slug);
+  const service = await getService(slug);
   if (!service) notFound();
 
+  const [products, services, info] = await Promise.all([
+    getProducts(),
+    getServices(),
+    getSiteInfo(),
+  ]);
+  const telHref = telHrefOf(info);
   const related = service.products
-    .map((s) => getProduct(s))
+    .map((slug) => products.find((p) => p.slug === slug))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
   const other = services.filter((s) => s.slug !== service.slug);
 

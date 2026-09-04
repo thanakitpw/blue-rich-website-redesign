@@ -1,9 +1,21 @@
 import type { MetadataRoute } from "next";
-import { products } from "@/data/products";
-import { articles } from "@/data/news";
-import { navRoutes, site } from "@/data/site";
+import { getArticles, getNav, getProducts, getSiteInfo } from "@/lib/cms/content";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [site, nav, products, articles] = await Promise.all([
+    getSiteInfo(),
+    getNav(),
+    getProducts(),
+    getArticles(),
+  ]);
+
+  /* เมนูแก้ได้จากหลังบ้าน sitemap จึงต้องแบนเมนูชุดที่ใช้จริงตอนนั้น
+     ไม่ใช่ navRoutes ที่คำนวณจากค่าตั้งต้นในไฟล์ */
+  const navRoutes = nav.flatMap((item) => [
+    item.href,
+    ...(item.children ?? []).map((c) => c.href),
+  ]);
+
   /* Everything reachable from the main menu, plus the catalogue index. The
    * menu links straight to some product pages — those are de-duplicated
    * against the product loop below. */

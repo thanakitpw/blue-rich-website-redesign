@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Icon, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import {
@@ -8,7 +9,7 @@ import {
   ProductRow,
   Section,
 } from "@/components/hub";
-import { getProduct } from "@/data/products";
+import { getProduct } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "สีกันไฟ Neocoat — สูตรน้ำมันและสูตรน้ำ",
@@ -16,10 +17,7 @@ export const metadata: Metadata = {
     "สีกันไฟ Neocoat Intumescent Paint สำหรับโครงสร้างเหล็ก ทั้งสูตรน้ำมัน (Intumescent Paint-S) และสูตรน้ำ (Intumescent Paint-W) ผ่านการทดสอบ ASTM E-119 และ ISO 834 พร้อมเอกสารรับรองโดยวุฒิวิศวกร",
 };
 
-const solvent = getProduct("neocoat-intumescent-paint-s")!;
-const water = getProduct("neocoat-intumescent-paint-w")!;
-const primer = getProduct("neocoat-primer-grey-oxide")!;
-const topcoat = getProduct("neogloss-enamel")!;
+
 
 /** Side-by-side comparison — every row is quoted from the two product sheets. */
 const compare = [
@@ -42,7 +40,15 @@ const compare = [
   { label: "อายุการจัดเก็บ", s: "1 ปี", w: "1 ปี" },
 ];
 
-export default function FirePaintPage() {
+export default async function FirePaintPage() {
+  const [solvent, water, primer, topcoat] = await Promise.all([
+    getProduct("neocoat-intumescent-paint-s"),
+    getProduct("neocoat-intumescent-paint-w"),
+    getProduct("neocoat-primer-grey-oxide"),
+    getProduct("neogloss-enamel"),
+  ]);
+  if (!solvent || !water || !primer || !topcoat) notFound();
+
   return (
     <>
       <PageHero

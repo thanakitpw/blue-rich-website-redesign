@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button, Container, Icon } from "@/components/ui";
-import { headerPhones, lineHref, lineHref2, nav, site, telHref } from "@/data/site";
+import { useSite } from "@/components/SiteProvider";
+import type { NavItem } from "@/data/site";
 
 /**
  * Concept B's header: a white utility bar that scrolls away, then a sticky
@@ -14,6 +15,7 @@ import { headerPhones, lineHref, lineHref2, nav, site, telHref } from "@/data/si
  * they work for pointer and keyboard without a piece of state per menu.
  */
 export default function Header() {
+  const { site, nav, telHref, lineHref, lineHref2, headerPhones } = useSite();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -30,7 +32,7 @@ export default function Header() {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href.split("#")[0]);
 
-  const isBranchActive = (item: (typeof nav)[number]) =>
+  const isBranchActive = (item: NavItem) =>
     isActive(item.href) || (item.children ?? []).some((c) => isActive(c.href));
 
   return (

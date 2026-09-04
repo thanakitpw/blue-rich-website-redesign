@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Icon } from "@/components/ui";
-import { lineHref, site } from "@/data/site";
+import { useSite } from "@/components/SiteProvider";
 
 export type LpFormField =
   | {
@@ -43,6 +43,7 @@ const labelText = "text-sm font-medium text-slate-700";
  * a thinner enquiry needs pack sizes. Only name and phone are universal.
  */
 export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
+  const { site, lineHref } = useSite();
   const formRef = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState<"idle" | "mail" | "copied" | "copyFailed">("idle");
 

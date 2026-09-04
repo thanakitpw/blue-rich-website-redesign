@@ -2,14 +2,23 @@ import type { Metadata } from "next";
 import { Container, Icon, PageHero } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import ContactForm from "@/components/ContactForm";
-import { lineHref, lineHref2, mailHref, mapEmbed, mapHref, site, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getSiteInfo } from "@/lib/cms/content";
 
-export const metadata: Metadata = {
-  title: "ติดต่อเรา",
-  description: `ติดต่อ ${site.name} โทร ${site.phones.join(", ")} อีเมล ${site.email} LINE ID ${site.lineId}`,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteInfo();
+  return {
+    title: "ติดต่อเรา",
+    description: `ติดต่อ ${site.name} โทร ${site.phones.join(", ")} อีเมล ${site.email} LINE ID ${site.lineId}`,
+  };
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const { site, telHref, lineHref, lineHref2, mailHref, mapHref, mapEmbed } = bundleFor(
+    await getSiteInfo(),
+    [],
+  );
+
   const channels = [
     {
       icon: Icon.phone,

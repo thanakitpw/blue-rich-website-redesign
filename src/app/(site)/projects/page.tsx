@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Button, Container, Icon, PageHero } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
-import { projects } from "@/data/projects";
-import { lineHref, stats, telHref } from "@/data/site";
+import { bundleFor } from "@/data/site";
+import { getProjects, getSiteInfo, getStats } from "@/lib/cms/content";
 
 export const metadata: Metadata = {
   title: "ผลงานของเรา",
@@ -11,7 +11,10 @@ export const metadata: Metadata = {
     "ภาพหน้างานจริงจากโครงการที่ใช้ระบบสีกันไฟ Neocoat Intumescent Paint — โครงสร้างเหล็กโรงงาน โครงหลังคาช่วงกว้าง คานและเสาเหล็กรูปพรรณ",
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const [projects, stats, info] = await Promise.all([getProjects(), getStats(), getSiteInfo()]);
+  const { telHref, lineHref } = bundleFor(info, []);
+
   return (
     <>
       <PageHero
