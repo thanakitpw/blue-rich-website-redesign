@@ -3,23 +3,23 @@ import { Container, PageHero } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { NewsCard } from "@/components/cards";
 import { getArticles } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
-export const metadata: Metadata = {
-  title: "บทความและข่าวสาร",
-  description:
-    "รวมบทความเรื่องกฎหมายป้องกันอัคคีภัย งานสีกันไฟโครงสร้างเหล็ก และความรู้เรื่องวัสดุก่อสร้าง จากบริษัท บลูริช แมททีเรียล โปรดักส์",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { meta } = await copyFor("news");
+  return meta;
+}
 
 export default async function NewsPage() {
-  const [featured, ...rest] = await getArticles();
+  const [[featured, ...rest], { hero }] = await Promise.all([getArticles(), copyFor("news")]);
 
   return (
     <>
       <PageHero
-        eyebrow="Insights"
-        title="บทความและข่าวสาร"
-        description="อัปเดตข้อกำหนดด้านการป้องกันอัคคีภัย มาตรฐานงานสีกันไฟ และความรู้เรื่องวัสดุก่อสร้างที่นำไปใช้ได้จริง"
-        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: "บทความ" }]}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        description={hero.description}
+        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: hero.crumb }]}
       />
 
       <section className="py-[38px] lg:py-[52px]">

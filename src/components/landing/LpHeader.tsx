@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { CmsImage } from "@/components/CmsImage";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui";
 import { useSite } from "@/components/SiteProvider";
@@ -37,7 +37,7 @@ export default function LpHeader({ sections }: { sections: LpSection[] }) {
             scrolled ? "h-16" : "h-[4.5rem] lg:h-[4.75rem]"
           }`}
         >
-          <Image
+          <CmsImage
             src="/assets/logo.png"
             alt={site.name}
             width={160}

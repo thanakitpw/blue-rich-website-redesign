@@ -1,5 +1,5 @@
+import { CmsImage } from "@/components/CmsImage";
 import type { Metadata } from "next";
-import Image from "next/image";
 import LpHeader from "@/components/landing/LpHeader";
 import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
@@ -78,7 +78,7 @@ export default async function FourPlusLanding() {
         <section className="relative overflow-hidden bg-white pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-20">
           <div
             aria-hidden
-            className="absolute inset-x-0 top-0 h-[34rem] bg-gradient-to-b from-brand-100/70 via-brand-50/50 to-white"
+            className="absolute inset-x-0 top-0 h-[34rem] bg-gradient-to-b from-brand-100/70 via-brand-50/50 to-page"
           />
           <div
             aria-hidden
@@ -136,7 +136,7 @@ export default async function FourPlusLanding() {
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
-                    แอดไลน์ @{site.lineId}
+                    แอดไลน์ {site.lineId}
                   </a>
                 </div>
 
@@ -153,7 +153,7 @@ export default async function FourPlusLanding() {
                     }`}
                   >
                     <div className="relative aspect-square bg-slate-50">
-                      <Image
+                      <CmsImage
                         src={p.image}
                         alt={p.alt}
                         fill
@@ -203,7 +203,7 @@ export default async function FourPlusLanding() {
                 <Reveal key={p.name} delay={i * 90}>
                   <div className="flex h-full flex-col overflow-hidden rounded-4xl bg-white ring-1 ring-slate-200/80 transition hover:shadow-[0_28px_56px_-32px_rgba(12,36,56,0.35)] hover:ring-brand-300">
                     <div className="relative aspect-4/3 bg-slate-50">
-                      <Image
+                      <CmsImage
                         src={p.image}
                         alt={p.alt}
                         fill

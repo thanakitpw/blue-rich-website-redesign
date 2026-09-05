@@ -29,7 +29,7 @@
   --color-brand-900: #20404f; /* --navy-950   */
   --color-brand-950: #15242f; /* --ink        */
 
-  --color-slate-50: #eaf2f9; /* --shell, เข้มขึ้นตามที่ลูกค้าขอ */
+  --color-slate-50: #e4eff9; /* --shell, เข้มขึ้นตามที่ลูกค้าขอ */
   --color-slate-100: #eef3f7; /* --line-soft  */
   --color-slate-200: #e3ebf2; /* --line       */
   --color-slate-300: #cddae4;
@@ -52,6 +52,11 @@
   --color-accent-500: #206ca4;
   --color-accent-600: #1a5885;
   --color-accent-700: #154668;
+
+  /* พื้นหลังของทั้งเว็บ — ลูกค้าบอกว่าพื้นขาวล้วนดูโล่งไป เลยไล่เป็นสามชั้น
+     การ์ดสีขาว → พื้นหน้า #eff6fd → แถบสลับ slate-50 → แผงเน้น brand-50
+     สี่ชั้นนี้ต้องเรียงจากอ่อนไปเข้มเสมอ ถ้าจะปรับให้ขยับไปด้วยกันทั้งชุด */
+  --color-page: #eff6fd;
 
   --color-line: #12181d; /* LINE green sits in components; this is the footer ink */
 
@@ -98,7 +103,7 @@
   }
 
   body {
-    @apply bg-white text-slate-600 antialiased;
+    @apply bg-page text-slate-600 antialiased;
     font-family: var(--font-sans);
     /* Concept B body metrics, one step larger */
     font-size: 16px;

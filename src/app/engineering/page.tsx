@@ -1,5 +1,5 @@
+import { CmsImage } from "@/components/CmsImage";
 import type { Metadata } from "next";
-import Image from "next/image";
 import LpHeader from "@/components/landing/LpHeader";
 import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
@@ -153,7 +153,7 @@ export default async function EngineeringLanding() {
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
-                    แอดไลน์ @{site.lineId}
+                    แอดไลน์ {site.lineId}
                   </a>
                 </div>
 
@@ -162,7 +162,7 @@ export default async function EngineeringLanding() {
 
               <div className="relative">
                 <div className="overflow-hidden rounded-4xl shadow-2xl shadow-brand-950/50 ring-1 ring-white/10">
-                  <Image
+                  <CmsImage
                     src="/assets/cert-documents.jpg"
                     alt="เอกสารรับรองงานสีกันไฟโครงสร้างเหล็ก แบบ น.4-5 และ น.4-9 โดยวุฒิวิศวกร"
                     width={1200}

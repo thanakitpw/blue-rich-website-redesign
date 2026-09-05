@@ -25,57 +25,31 @@ export const bestSellerSlugs: string[] = [
   "neocoat-primer-grey-oxide",
   "fiberglass-cloth",
   "thinner-3a-intanin",
-  "roof-shield-ceramic",
 ];
 
-/** การ์ดแปดใบของ Concept B ชี้ไปหน้าหมวดตามโครงสร้างเมนูใหม่ */
+/**
+ * การ์ดแปดใบใต้แบนเนอร์ ลำดับตามที่ลูกค้าสั่ง — สีกันไฟแยกเป็นสองสูตรมาก่อน
+ * ตามด้วยงานวิศวกรสองบริการ แล้วจึงเป็นสินค้ากลุ่มอื่น
+ */
 export const categoryTiles: CategoryTile[] = [
   {
-    href: "/intumescent",
-    short: "Intumescent Paint",
-    name: "สีกันไฟ",
-    description: "Neocoat Intumescent Paint-S · Solvent Base และสูตรน้ำ Low VOC",
+    href: "/products/neocoat-intumescent-paint-s",
+    short: "Intumescent Paint-S",
+    name: "สีกันไฟ สูตรน้ำมัน",
+    description: "Neocoat Solvent Base ทา/พ่นโครงสร้างเหล็ก · ASTM E-119 · ISO 834",
     image: "/assets/products/neocoat-paint-s.png",
   },
   {
-    href: "/paint#steel-primer",
-    short: "Primer & Top Coat",
-    name: "สีรองพื้น / ทับหน้า",
-    description: "Neocoat Primer Grey Oxide · Neogloss สีน้ำมันทาเหล็ก",
-    image: "/assets/products/neocoat-primer.png",
-  },
-  {
-    href: "/products/fiberglass-cloth",
-    short: "Fire Blanket",
-    name: "ผ้ากันไฟ",
-    description: "Fiberglass Cloth ผ้ากันไฟ / กันสะเก็ดไฟ 550–1000°C",
-    image: "/assets/products/fiberglass-cloth-panel-main.webp",
-  },
-  {
-    href: "/hardware",
-    short: "Thinner & Turpentine",
-    name: "ทินเนอร์ / น้ำมันสน",
-    description: "ทินเนอร์ 3A ผสมสี อินทนิล · ทินเนอร์ 2K · น้ำมันสน",
-    image: "/assets/products/thinner-3a-intanin.webp",
-  },
-  {
-    href: "/products/roof-shield-ceramic",
-    short: "Ceramic Coating",
-    name: "เซรามิคสะท้อนร้อน",
-    description: "Roof Shield สีเซรามิคสะท้อนความร้อน ลดอุณหภูมิใต้หลังคา",
-    image: "/assets/products/roof-shield.png",
-  },
-  {
-    href: "/paint#emulsion",
-    short: "Emulsion Paint",
-    name: "สีน้ำพลาสติก",
-    description: "Four Plus ทาภายใน / ภายนอก และสีรองพื้นปูน",
-    image: "/assets/products/four-plus-exterior.webp",
+    href: "/products/neocoat-intumescent-paint-w",
+    short: "Intumescent Paint-W",
+    name: "สีกันไฟ สูตรน้ำ",
+    description: "Neocoat Water Base ค่า VOC ต่ำ ไม่ใช้ทินเนอร์ เหมาะกับ Green Building",
+    image: "/assets/products/neocoat-paint-w.png",
   },
   {
     href: "/fireproofing/certification",
     short: "Engineering Service",
-    name: "วิศวกรรับรองงานสีกันไฟ",
+    name: "วิศวกรรับรองสีกันไฟ",
     description: "จัดทำเอกสาร น.4-5 / น.4-9 รับรองโดยวุฒิวิศวกรโยธา",
     image: "/assets/service-certification.jpg",
     photo: true,
@@ -88,6 +62,57 @@ export const categoryTiles: CategoryTile[] = [
     image: "/assets/service-supervision.jpg",
     photo: true,
   },
+  {
+    href: "/paint#steel-primer",
+    short: "Primer & Top Coat",
+    name: "สีรองพื้น / ทับหน้า",
+    description: "Neocoat Primer Grey Oxide · Neogloss สีน้ำมันทาเหล็ก",
+    image: "/assets/products/neocoat-primer.png",
+  },
+  {
+    href: "/hardware",
+    short: "Thinner & Turpentine",
+    name: "ทินเนอร์ / น้ำมันสน",
+    description: "ทินเนอร์ 3A ผสมสี อินทนิล · ทินเนอร์ 2K · น้ำมันสน",
+    image: "/assets/products/thinner-3a-intanin.webp",
+  },
+  {
+    href: "/products/fiberglass-cloth",
+    short: "Fire Blanket",
+    name: "ผ้ากันไฟ",
+    description: "Fiberglass Cloth ผ้ากันไฟ / กันสะเก็ดไฟ 550–1000°C",
+    image: "/assets/products/fiberglass-cloth-panel-main.webp",
+  },
+  {
+    href: "/paint#emulsion",
+    short: "Emulsion Paint",
+    name: "สีน้ำพลาสติก",
+    description: "Four Plus ทาภายใน / ภายนอก และสีรองพื้นปูน",
+    image: "/assets/products/four-plus-exterior.webp",
+  },
+];
+
+export type ClientLogo = {
+  name: string;
+  /** เว้นว่าง = ช่องที่จองไว้ ยังไม่มีโลโก้ จะขึ้นเป็นกรอบเส้นประ */
+  image: string;
+};
+
+/**
+ * โลโก้ลูกค้าที่โชว์เหนือแถบผลงาน — วางเป็นสองแถว แถวละห้าช่องบนจอใหญ่
+ * เพิ่ม/ลบ/สลับลำดับได้เองที่ /admin/home ช่องที่ยังไม่ใส่รูปจะขึ้นเป็นกรอบเส้นประ
+ */
+export const clients: ClientLogo[] = [
+  { name: "PTT Global Chemical", image: "/assets/clients/ptt-global-chemical.png" },
+  { name: "EGAT (กฟผ.)", image: "/assets/clients/egat.png" },
+  { name: "SCG", image: "/assets/clients/scg.png" },
+  { name: "การรถไฟแห่งประเทศไทย", image: "/assets/clients/srt.png" },
+  { name: "CHANGAN", image: "/assets/clients/changan.png" },
+  { name: "ไทวัสดุ", image: "/assets/clients/thai-watsadu.png" },
+  { name: "Central", image: "/assets/clients/central.png" },
+  { name: "HomePro", image: "/assets/clients/homepro.png" },
+  { name: "BYD", image: "/assets/clients/byd.png" },
+  { name: "BDC", image: "/assets/clients/bdc.jpg" },
 ];
 
 /** เช็คลิสต์ในบล็อกจุดเด่นกลางหน้าแรก */

@@ -16,7 +16,7 @@ import { projects } from "../src/data/projects.ts";
 import { homeFaqs } from "../src/data/faq.ts";
 import { services } from "../src/data/fireproofing.ts";
 import { site, nav, standards, stats } from "../src/data/site.ts";
-import { bestSellerSlugs, categoryTiles, flagshipSlug, valuePoints } from "../src/data/home.ts";
+import { bestSellerSlugs, categoryTiles, clients, flagshipSlug, valuePoints } from "../src/data/home.ts";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -87,7 +87,7 @@ await check("บทความ", "articles", { column: "date_iso", ascending: f
 // ── ค่าตั้งค่าเว็บไซต์ ─────────────────────────────────────────────────────
 const expectedSettings: Record<string, unknown> = {
   company: { ...site }, nav, standards, stats,
-  home_showcase: { flagshipSlug, bestSellerSlugs, categoryTiles, valuePoints },
+  home_showcase: { flagshipSlug, bestSellerSlugs, categoryTiles, valuePoints, clients },
   installation_steps: installationSteps,
   legal_info: legalInfo,
 };

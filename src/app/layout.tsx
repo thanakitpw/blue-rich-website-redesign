@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 import "./globals.css";
 import { SiteProvider } from "@/components/SiteProvider";
+import { ImageOverrideProvider } from "@/components/CmsImage";
+import { PreviewBridge } from "@/components/admin/PreviewBridge";
 import { getNav, getSiteInfo } from "@/lib/cms/content";
+import { getImageOverrides } from "@/lib/cms/images";
+import { inPreview } from "@/lib/cms/copy-pages";
 
 /* Concept B is set entirely in Prompt — one family for both roles. */
 const display = Prompt({
@@ -55,7 +59,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [site, nav] = await Promise.all([getSiteInfo(), getNav()]);
+  const [site, nav, images, preview] = await Promise.all([
+    getSiteInfo(),
+    getNav(),
+    getImageOverrides(),
+    inPreview(),
+  ]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -88,9 +97,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
          * layout — the landing pages sit outside that group on purpose and
          * render without it.
          */}
-        <SiteProvider site={site} nav={nav}>
-          {children}
-        </SiteProvider>
+        <ImageOverrideProvider value={{ overrides: images, preview }}>
+          <SiteProvider site={site} nav={nav}>
+            {children}
+          </SiteProvider>
+        </ImageOverrideProvider>
+        {/* สะพานคุยกับหน้าจอแก้ไข ติดเฉพาะตอนพรีวิว ผู้เข้าชมทั่วไปไม่ได้สคริปต์นี้ */}
+        {preview && <PreviewBridge />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

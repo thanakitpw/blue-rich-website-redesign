@@ -1,5 +1,5 @@
+import { CmsImage } from "@/components/CmsImage";
 import type { Metadata } from "next";
-import Image from "next/image";
 import LpHeader from "@/components/landing/LpHeader";
 import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
@@ -76,7 +76,7 @@ export default async function ThinnerLanding() {
 
       <main>
         {/* ------------------------------------------------------------- Hero */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-brand-50/50 to-white pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-20">
+        <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-brand-50/50 to-page pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-20">
           <div
             aria-hidden
             className="absolute -top-28 -right-24 size-80 rotate-45 rounded-[26%] border border-brand-200/70"
@@ -134,7 +134,7 @@ export default async function ThinnerLanding() {
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
-                    แอดไลน์ @{site.lineId}
+                    แอดไลน์ {site.lineId}
                   </a>
                 </div>
 
@@ -151,7 +151,7 @@ export default async function ThinnerLanding() {
                     }`}
                   >
                     <div className="relative aspect-3/4">
-                      <Image
+                      <CmsImage
                         src={p.image}
                         alt={p.alt}
                         fill
@@ -201,7 +201,7 @@ export default async function ThinnerLanding() {
                 <Reveal key={p.name} delay={i * 90}>
                   <div className="flex h-full flex-col overflow-hidden rounded-4xl bg-white ring-1 ring-slate-200/80 transition hover:shadow-[0_28px_56px_-32px_rgba(12,36,56,0.35)] hover:ring-brand-300">
                     <div className="relative aspect-4/3 bg-slate-50">
-                      <Image
+                      <CmsImage
                         src={p.image}
                         alt={p.alt}
                         fill

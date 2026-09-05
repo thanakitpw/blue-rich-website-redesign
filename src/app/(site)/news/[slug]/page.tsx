@@ -6,6 +6,7 @@ import Reveal from "@/components/ui/Reveal";
 import { NewsCard } from "@/components/cards";
 import { bundleFor } from "@/data/site";
 import { getArticle, getArticles, getSiteInfo } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
 export async function generateStaticParams() {
   return (await getArticles()).map((a) => ({ slug: a.slug }));
@@ -18,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
-  if (!article) return { title: "ไม่พบบทความ" };
+  if (!article) return { title: (await copyFor("article-detail")).notFoundTitle };
   return {
     title: article.title,
     description: article.excerpt,
@@ -34,6 +35,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const article = await getArticle(slug);
   if (!article) notFound();
+  const { breadcrumb: crumbs, headings } = await copyFor("article-detail");
 
   const [all, info] = await Promise.all([getArticles(), getSiteInfo()]);
   const { telHref, lineHref } = bundleFor(info, []);
@@ -45,8 +47,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <Container className="py-9 sm:py-12">
           <Breadcrumb
             items={[
-              { label: "หน้าแรก", href: "/" },
-              { label: "บทความ", href: "/news" },
+              { label: crumbs.home, href: "/" },
+              { label: crumbs.news, href: "/news" },
               { label: article.title },
             ]}
           />
@@ -93,7 +95,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </div>
 
             <div className="mt-12 rounded-4xl bg-brand-50 p-8 border border-slate-200">
-              <h2 className="text-xl">ต้องการคำปรึกษาเรื่องงานสีกันไฟ?</h2>
+              <h2 className="text-xl">{headings.cta}</h2>
               <p className="mt-3 text-[1.02rem] leading-relaxed text-slate-600">
                 ทีมวิศวกรของ บลูริช แมททีเรียล โปรดักส์
                 พร้อมช่วยประเมินอัตราการทนไฟที่โครงการของคุณต้องใช้ คำนวณความหนาฟิล์ม
@@ -117,7 +119,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <section className="bg-slate-50 py-[38px] lg:py-[52px]">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <h2 className="text-2xl sm:text-3xl">บทความอื่นที่น่าสนใจ</h2>
+            <h2 className="text-2xl sm:text-3xl">{headings.related}</h2>
             <Button href="/news" variant="secondary">
               อ่านทั้งหมด
               <Icon.arrow />

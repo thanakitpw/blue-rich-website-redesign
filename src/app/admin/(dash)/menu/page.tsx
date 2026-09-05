@@ -7,15 +7,17 @@ import {
   type Standard,
   type Stat,
 } from "@/data/site";
+import { listMedia } from "@/lib/cms/media";
 import { MenuForm } from "@/components/admin/MenuForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminMenuPage() {
-  const [nav, standards, stats, dirty] = await Promise.all([
+  const [nav, standards, stats, media, dirty] = await Promise.all([
     getSettingDraft<NavItem[]>("nav"),
     getSettingDraft<Standard[]>("standards"),
     getSettingDraft<Stat[]>("stats"),
+    listMedia(),
     dirtySettingKeys(),
   ]);
 
@@ -24,6 +26,7 @@ export default async function AdminMenuPage() {
       nav={nav ?? defaultNav}
       standards={standards ?? defaultStandards}
       stats={stats ?? defaultStats}
+      media={media}
       hasDraft={["nav", "standards", "stats"].some((k) => dirty.has(k))}
     />
   );

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CmsImage } from "@/components/CmsImage";
 import { Icon } from "@/components/ui";
 import { Wrap } from "@/components/landing/kit";
 import { bundleFor } from "@/data/site";
@@ -18,7 +18,7 @@ export default async function LpFooter({ note }: { note?: string }) {
         <div className="grid gap-8 border-t border-white/10 pt-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-3">
-              <Image src="/assets/logo.png" alt="" width={160} height={142} className="h-11 w-auto" />
+              <CmsImage src="/assets/logo.png" alt="" width={160} height={142} className="h-11 w-auto" />
               <span className="leading-tight">
                 <span className="block font-display text-[1.02rem] font-bold text-white">
                   BLUE RICH

@@ -6,6 +6,7 @@ import Reveal from "@/components/ui/Reveal";
 import { CtaBand, FaqList, MiniProduct, Section } from "@/components/hub";
 import { telHrefOf } from "@/data/site";
 import { getProducts, getService, getServices, getSiteInfo } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
 export async function generateStaticParams() {
   return (await getServices()).map((s) => ({ slug: s.slug }));
@@ -30,6 +31,7 @@ export default async function ServicePage({
   const { slug } = await params;
   const service = await getService(slug);
   if (!service) notFound();
+  const copy = await copyFor("service-detail");
 
   const [products, services, info] = await Promise.all([
     getProducts(),
@@ -49,8 +51,8 @@ export default async function ServicePage({
         title={service.label}
         description={service.lede}
         breadcrumb={[
-          { label: "หน้าแรก", href: "/" },
-          { label: "รับรองสีกันไฟ", href: "/fireproofing" },
+          { label: copy.breadcrumb.home, href: "/" },
+          { label: copy.breadcrumb.parent, href: "/fireproofing" },
           { label: service.label },
         ]}
       />
@@ -73,7 +75,7 @@ export default async function ServicePage({
           </Reveal>
 
           <Reveal delay={120}>
-            <SectionHeading eyebrow="ภาพรวม" title={service.title} />
+            <SectionHeading eyebrow={copy.overview.eyebrow} title={service.title} />
             <ul className="mt-8 grid gap-3">
               {service.highlights.map((h) => (
                 <li
@@ -113,9 +115,9 @@ export default async function ServicePage({
       <Section tone="shell">
         <Reveal>
           <SectionHeading
-            eyebrow="รายละเอียดงาน"
-            title="สิ่งที่เกิดขึ้นจริงในแต่ละขั้น"
-            description="ลำดับนี้คือสิ่งที่ทีมงานทำและตรวจในทุกโครงการ ไม่ว่างานจะเล็กหรือใหญ่"
+            eyebrow={copy.detail.eyebrow}
+            title={copy.detail.title}
+            description={copy.detail.description}
           />
         </Reveal>
 
@@ -138,9 +140,9 @@ export default async function ServicePage({
       <Section>
         <Reveal>
           <SectionHeading
-            eyebrow="วัสดุที่เกี่ยวข้อง"
-            title="สินค้าที่ใช้ในงานนี้"
-            action={<MoreLink href="/products">ดูสินค้าทั้งหมด</MoreLink>}
+            eyebrow={copy.products.eyebrow}
+            title={copy.products.title}
+            action={<MoreLink href="/products">{copy.products.moreLabel}</MoreLink>}
           />
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -155,7 +157,11 @@ export default async function ServicePage({
       {/* ----------------------------------------------------------------- FAQ */}
       <Section tone="shell">
         <Reveal>
-          <SectionHeading align="center" eyebrow="คำถามที่พบบ่อย" title={`เรื่องที่ถามบ่อยเกี่ยวกับ${service.label}`} />
+          <SectionHeading
+            align="center"
+            eyebrow={copy.faq.eyebrow}
+            title={`${copy.faq.titlePrefix}${service.label}`}
+          />
         </Reveal>
         <div className="mt-12">
           <FaqList items={service.faq} />
@@ -164,7 +170,7 @@ export default async function ServicePage({
         {other.length > 0 && (
           <Reveal>
             <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
-              <span className="text-sm text-slate-500">บริการอื่นในหมวดนี้ :</span>
+              <span className="text-sm text-slate-500">{copy.otherServices}</span>
               {other.map((o) => (
                 <Button key={o.slug} href={`/fireproofing/${o.slug}`} variant="secondary">
                   {o.label}

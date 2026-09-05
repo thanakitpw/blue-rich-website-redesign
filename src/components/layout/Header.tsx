@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
+import { CmsImage } from "@/components/CmsImage";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Icon } from "@/components/ui";
 import { useSite } from "@/components/SiteProvider";
 import type { NavItem } from "@/data/site";
@@ -19,6 +19,17 @@ export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  /* ทั้งหัวเว็บติดหนึบตามลงมาเวลาเลื่อน พอเลื่อนพ้นช่วงแรกแล้วแถบบนจะบีบตัวลง
+     ให้เตี้ยกว่าเดิม เพราะถ้าคาไว้เท่าเดิมจะกินพื้นที่จอเกินไป
+     จอเล็กแถบบนหุบหายไปเลย เหลือแค่แถวเมนู เพราะจอสูงไม่พอให้แบ่ง */
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   /* Reset the mobile panel when the route changes — done during render, the
    * documented way to reset state in response to a changed value. */
@@ -36,25 +47,40 @@ export default function Header() {
     isActive(item.href) || (item.children ?? []).some((c) => isActive(c.href));
 
   return (
-    <header>
+    <header className="sticky top-0 z-60">
       {/* ---------------------------------------------------- Utility bar */}
-      <div className="border-b border-slate-100 bg-white">
-        <Container className="flex items-center justify-between gap-4 py-3">
+      <div
+        className={`overflow-hidden border-b bg-white transition-all duration-300 ${
+          scrolled
+            ? "max-h-0 border-transparent opacity-0 lg:max-h-[64px] lg:border-slate-100 lg:opacity-100"
+            : "max-h-[160px] border-slate-100 opacity-100"
+        }`}
+      >
+        <Container
+          className={`flex items-center justify-between gap-4 transition-all duration-300 ${
+            scrolled ? "py-3 lg:py-1.5" : "py-3"
+          }`}
+        >
           <Link href="/" className="flex items-center gap-3" aria-label={site.name}>
-            <Image
+            <CmsImage
               src="/assets/logo.png"
               alt=""
               width={160}
               height={142}
               priority
-              className="h-[34px] w-auto sm:h-[42px]"
+              className={`w-auto shrink-0 transition-all duration-300 ${
+                scrolled ? "h-[34px] lg:h-[32px]" : "h-[34px] sm:h-[42px]"
+              }`}
             />
-            <span className="leading-[1.15]">
-              <b className="block text-[14.5px] font-semibold text-brand-700 sm:text-base">
-                บลูริช แมททีเรียล โปรดักส์
+            {/* ชื่อบริษัทดึงจาก "ตั้งค่าเว็บไซต์ → ข้อมูลบริษัท" ไม่ฝังไว้ในโค้ด
+               แก้ที่เดียวแล้วเปลี่ยนพร้อมกันทั้งหัวเว็บ ท้ายเว็บ และข้อมูลที่ส่งให้ Google
+               ชื่อเต็มยาวกว่าชื่อย่อพอสมควร จอเล็กจึงลดขนาดลงและปล่อยให้ตกบรรทัดได้ */}
+            <span className="leading-[1.2]">
+              <b className="block text-[13px] font-semibold text-brand-700 sm:text-[15px] xl:text-base">
+                {site.name}
               </b>
-              <span className="hidden text-[12px] tracking-[0.08em] text-slate-500 uppercase sm:block">
-                Blue Rich Material Products
+              <span className="hidden text-[11.5px] tracking-[0.07em] text-slate-500 uppercase sm:block xl:text-[12px]">
+                {site.nameEn}
               </span>
             </span>
           </Link>
@@ -92,7 +118,9 @@ export default function Header() {
       {/* ------------------------------------------------------- Pill nav */}
       <nav
         aria-label="เมนูหลัก"
-        className="sticky top-0 z-60 border-b border-slate-200 bg-white shadow-[0_1px_0_rgba(42,80,104,0.03)]"
+        className={`border-b border-slate-200 bg-white transition-shadow duration-300 ${
+          scrolled ? "shadow-[0_6px_18px_rgba(42,80,104,0.09)]" : "shadow-[0_1px_0_rgba(42,80,104,0.03)]"
+        }`}
       >
         <Container className="relative flex items-center justify-between gap-5 py-[9px]">
           {/* Mobile toggle */}
@@ -191,7 +219,7 @@ export default function Header() {
               href={lineHref}
               target="_blank"
               rel="noreferrer"
-              aria-label={`แอดไลน์ @${site.lineId}`}
+              aria-label={`แอดไลน์ ${site.lineId}`}
               className="grid size-[30px] place-items-center rounded-full bg-[#06C755] text-white transition hover:brightness-110"
             >
               <Icon.line className="size-4" />
@@ -268,7 +296,7 @@ export default function Header() {
                 </Button>
                 <Button href={lineHref} variant="line">
                   <Icon.line />
-                  แอดไลน์ @{site.lineId}
+                  แอดไลน์ {site.lineId}
                 </Button>
                 <Button href={lineHref2} variant="line">
                   <Icon.line />

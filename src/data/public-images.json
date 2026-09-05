@@ -1,5 +1,11 @@
 [
   {
+    "url": "/assets/about-steel-structure.jpg",
+    "filename": "about-steel-structure.jpg",
+    "folder": "assets",
+    "bytes": 667128
+  },
+  {
     "url": "/assets/banner-1.jpg",
     "filename": "banner-1.jpg",
     "folder": "assets",
@@ -24,10 +30,94 @@
     "bytes": 358075
   },
   {
+    "url": "/assets/banner-walkway.jpg",
+    "filename": "banner-walkway.jpg",
+    "folder": "assets",
+    "bytes": 705745
+  },
+  {
+    "url": "/assets/cert-astm-e119-chula.webp",
+    "filename": "cert-astm-e119-chula.webp",
+    "folder": "assets",
+    "bytes": 91542
+  },
+  {
+    "url": "/assets/cert-astm-e119-tuv.webp",
+    "filename": "cert-astm-e119-tuv.webp",
+    "folder": "assets",
+    "bytes": 47924
+  },
+  {
     "url": "/assets/cert-documents.jpg",
     "filename": "cert-documents.jpg",
     "folder": "assets",
     "bytes": 306763
+  },
+  {
+    "url": "/assets/cert-iso-834-fsrg.webp",
+    "filename": "cert-iso-834-fsrg.webp",
+    "folder": "assets",
+    "bytes": 45040
+  },
+  {
+    "url": "/assets/clients/bdc.jpg",
+    "filename": "bdc.jpg",
+    "folder": "assets/clients",
+    "bytes": 26643
+  },
+  {
+    "url": "/assets/clients/byd.png",
+    "filename": "byd.png",
+    "folder": "assets/clients",
+    "bytes": 9682
+  },
+  {
+    "url": "/assets/clients/central.png",
+    "filename": "central.png",
+    "folder": "assets/clients",
+    "bytes": 19715
+  },
+  {
+    "url": "/assets/clients/changan.png",
+    "filename": "changan.png",
+    "folder": "assets/clients",
+    "bytes": 58410
+  },
+  {
+    "url": "/assets/clients/egat.png",
+    "filename": "egat.png",
+    "folder": "assets/clients",
+    "bytes": 27153
+  },
+  {
+    "url": "/assets/clients/homepro.png",
+    "filename": "homepro.png",
+    "folder": "assets/clients",
+    "bytes": 26852
+  },
+  {
+    "url": "/assets/clients/ptt-global-chemical.png",
+    "filename": "ptt-global-chemical.png",
+    "folder": "assets/clients",
+    "bytes": 29406
+  },
+  {
+    "url": "/assets/clients/scg.png",
+    "filename": "scg.png",
+    "folder": "assets/clients",
+    "bytes": 36018
+  },
+  {
+    "url": "/assets/clients/srt.png",
+    "filename": "srt.png",
+    "folder": "assets/clients",
+    "bytes": 89393
+  },
+  {
+    "url": "/assets/clients/thai-watsadu.png",
+    "filename": "thai-watsadu.png",
+    "folder": "assets/clients",
+    "bytes": 38566
   },
   {
     "url": "/assets/faq-home.jpg",
@@ -64,6 +154,18 @@
     "filename": "hero-steel-truss.jpg",
     "folder": "assets",
     "bytes": 167798
+  },
+  {
+    "url": "/assets/line-qr-1.jpg",
+    "filename": "line-qr-1.jpg",
+    "folder": "assets",
+    "bytes": 23956
+  },
+  {
+    "url": "/assets/line-qr-2.jpg",
+    "filename": "line-qr-2.jpg",
+    "folder": "assets",
+    "bytes": 152872
   },
   {
     "url": "/assets/logo-flat.jpg",
@@ -118,6 +220,18 @@
     "filename": "product-fiberglass.jpg",
     "folder": "assets",
     "bytes": 47715
+  },
+  {
+    "url": "/assets/product-hero-paint-s.jpg",
+    "filename": "product-hero-paint-s.jpg",
+    "folder": "assets",
+    "bytes": 355810
+  },
+  {
+    "url": "/assets/product-hero-paint-w.jpg",
+    "filename": "product-hero-paint-w.jpg",
+    "folder": "assets",
+    "bytes": 392052
   },
   {
     "url": "/assets/product-neocoat-intumescent.jpg",
@@ -276,6 +390,12 @@
     "bytes": 79910
   },
   {
+    "url": "/assets/products/thinner-wash-aaa.webp",
+    "filename": "thinner-wash-aaa.webp",
+    "folder": "assets/products",
+    "bytes": 100178
+  },
+  {
     "url": "/assets/products/turpentine-intanin.webp",
     "filename": "turpentine-intanin.webp",
     "folder": "assets/products",
@@ -291,13 +411,13 @@
     "url": "/assets/service-certification.jpg",
     "filename": "service-certification.jpg",
     "folder": "assets",
-    "bytes": 173922
+    "bytes": 283767
   },
   {
     "url": "/assets/service-supervision.jpg",
     "filename": "service-supervision.jpg",
     "folder": "assets",
-    "bytes": 157684
+    "bytes": 260640
   },
   {
     "url": "/assets/spec-fiberglass-silicone.jpg",

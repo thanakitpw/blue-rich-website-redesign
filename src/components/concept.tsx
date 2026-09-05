@@ -1,6 +1,9 @@
 import Image from "next/image";
+import { CmsImage } from "@/components/CmsImage";
 import Link from "next/link";
 import { Button, Container, Icon } from "@/components/ui";
+import type { ClientLogo } from "@/data/home";
+import type * as HomeCopy from "@/data/pages/home";
 import { bundleFor } from "@/data/site";
 import { getSiteInfo, getStandards, getStats } from "@/lib/cms/content";
 
@@ -35,17 +38,13 @@ export function Section({
  * `.ribbon-box` — four claims on a sky panel with a blue hairline frame.
  */
 
-const ribbonItems = [
-  { icon: Icon.shield, title: "ผ่านมาตรฐานสากล", note: "ASTM E-119 · ISO 834" },
-  { icon: Icon.doc, title: "ถูกต้องตามกฎหมาย", note: "เอกสาร น.4-5 / น.4-9" },
-  { icon: Icon.truck, title: "สินค้าพร้อมส่ง", note: "มีสต็อกในไทย ส่งทั่วประเทศ" },
-  { icon: Icon.users, title: "ทีมงานมืออาชีพ", note: "ดูแลตั้งแต่เลือกสีถึงส่งมอบเอกสาร" },
-];
+/* ไอคอนสี่ใบของริบบิ้น — ข้อความมาจากไฟล์ข้อความหน้าแรก จับคู่กันด้วยลำดับ */
+const ribbonIcons = [Icon.shield, Icon.doc, Icon.truck, Icon.users];
 
-export function Ribbon() {
+export function Ribbon({ items }: { items: { title: string; note: string }[] }) {
   return (
     <div className="grid grid-cols-1 rounded-3xl border-[1.5px] border-brand-200 bg-brand-50 min-[430px]:grid-cols-2 lg:grid-cols-4">
-      {ribbonItems.map((r, i) => (
+      {items.map((r, i) => (
         <div
           key={r.title}
           className={`flex items-center gap-3 px-5 py-[18px] ${
@@ -55,7 +54,10 @@ export function Ribbon() {
           }`}
         >
           <span className="size-[34px] shrink-0 text-brand-500">
-            <r.icon className="size-full" />
+            {(() => {
+              const RibbonIcon = ribbonIcons[i] ?? Icon.shield;
+              return <RibbonIcon className="size-full" />;
+            })()}
           </span>
           <span>
             <b className="block text-[15.5px] leading-[1.4] font-medium text-brand-700">
@@ -118,7 +120,7 @@ export function ValueBlock({
       </div>
 
       <div className="relative aspect-16/10 overflow-hidden rounded-3xl border border-slate-200 bg-brand-800">
-        <Image
+        <CmsImage
           src={image}
           alt=""
           fill
@@ -131,29 +133,96 @@ export function ValueBlock({
 }
 
 /* -------------------------------------------------------------- StandardsBand
- * `.trusted` — italic pull-quote over the shell ground, then the chip row.
+ * คำโปรยตัวเอียง แล้วตามด้วยการ์ดหนึ่งใบต่อหนึ่งมาตรฐาน กดเข้าไปอ่านต่อได้ที่
+ * หน้า /standards โดยกระโดดไปที่บล็อกของมาตรฐานนั้นเลย
  */
 
-export async function StandardsBand() {
+export async function StandardsBand({ quote }: { quote: typeof HomeCopy.standardsQuote }) {
   const [site, standards] = await Promise.all([getSiteInfo(), getStandards()]);
   return (
     <div className="text-center">
       <p className="text-[clamp(16px,2vw,21px)] leading-[1.55] font-medium text-brand-700 italic">
-        “{site.shortName} Material Products
+        “{site.shortName} {quote.line1}
         <br />
-        วัสดุกันไฟที่ผ่านการทดสอบและรับรองตามมาตรฐานที่กฎหมายกำหนด”
+        {quote.line2}”
       </p>
-      <div className="mt-6 flex flex-wrap justify-center gap-3.5">
+
+      {/* สี่ใบพอดีสองแถวบนจอกลาง และแถวเดียวบนจอคอม — ถ้าเพิ่มมาตรฐานอีกใบ
+          ในหลังบ้าน ใบที่ห้าจะไปขึ้นแถวใหม่เอง ไม่ต้องแก้โค้ด */}
+      <div className="mt-7 grid gap-4 text-left sm:grid-cols-2 lg:grid-cols-4">
         {standards.map((s) => (
-          <div
-            key={s.label}
-            className="min-w-[170px] rounded-2xl border border-slate-200 bg-white px-[22px] py-3.5 shadow-[0_2px_10px_rgba(42,80,104,0.04)]"
+          <Link
+            key={s.slug || s.label}
+            href={`/standards#${s.slug}`}
+            className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white transition hover:border-brand-300 hover:shadow-[0_10px_30px_rgba(42,80,104,0.08)]"
           >
-            <b className="block text-[16px] font-semibold text-brand-600">{s.label}</b>
-            <span className="text-xs text-slate-500">{s.note}</span>
-          </div>
+            {/* กรอบ 5:7 — สัดส่วนกระดาษ A4 พอดี เอกสารจึงเต็มการ์ดโดยไม่เหลือขอบขาว
+                การ์ดสูงขึ้นแทนที่จะย่อรูปให้เล็กลง ตามที่ลูกค้าสั่ง
+                ใบที่เป็นรูปถ่ายก็ครอบเต็มกรอบเหมือนกัน แถวจึงยังสูงเท่ากันทุกใบ */}
+            <span className="relative block aspect-5/7 overflow-hidden bg-white">
+              {s.image && (
+                <Image
+                  src={s.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 92vw"
+                  className="object-cover transition-transform duration-[600ms] group-hover:scale-[1.03]"
+                />
+              )}
+            </span>
+            <span className="flex flex-1 flex-col px-5 py-[18px]">
+              <b className="block text-[16px] font-semibold text-brand-600">{s.label}</b>
+              <span className="mt-0.5 block flex-1 text-xs text-slate-500">{s.note}</span>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-accent-500 transition group-hover:gap-2.5">
+                ดูรายละเอียด
+                <Icon.arrow />
+              </span>
+            </span>
+          </Link>
         ))}
       </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------- ClientLogos
+ * โลโก้ลูกค้า สองแถว แถวละห้าช่องบนจอใหญ่ ย่อลงเหลือสามและสองช่องบนจอเล็ก
+ * ช่องที่ยังไม่มีโลโก้ (image ว่าง) ขึ้นเป็นกรอบเส้นประไว้ให้เห็นว่าจองที่ไว้
+ */
+
+export function ClientLogos({ items }: { items: ClientLogo[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
+      {items.map((c, i) =>
+        c.image ? (
+          <div
+            key={c.image}
+            className="group flex flex-col items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-5"
+          >
+            <span className="relative block h-11 w-full sm:h-[52px]">
+              <Image
+                src={c.image}
+                alt={c.name}
+                fill
+                sizes="(min-width: 1024px) 180px, (min-width: 640px) 30vw, 45vw"
+                className="object-contain opacity-80 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+              />
+            </span>
+            <span className="text-center text-[12.5px] leading-tight text-slate-500">{c.name}</span>
+          </div>
+        ) : (
+          <div
+            key={`placeholder-${i}`}
+            className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-300 px-4 py-5"
+            aria-hidden
+          >
+            <span className="block h-11 sm:h-[52px]" />
+            <span className="text-center text-[12.5px] leading-tight text-slate-400">
+              รอโลโก้เพิ่ม
+            </span>
+          </div>
+        ),
+      )}
     </div>
   );
 }
@@ -195,19 +264,19 @@ export function WorksGrid({
 }
 
 /* ------------------------------------------------------------------ AboutBand
- * `.about` — image bleeding off the left edge with the circular One Stop
- * Service stamp, copy and stat row on the right.
+ * `.about` — รูปกินขอบซ้ายออกนอกจอ มีป้ายโลโก้กับชื่อบริษัทวางทับมุมขวาล่าง
+ * ข้อความและแถวตัวเลขอยู่ฝั่งขวา
  */
 
-export async function AboutBand() {
-  const stats = await getStats();
+export async function AboutBand({ copy }: { copy: typeof HomeCopy.aboutBand }) {
+  const [stats, site] = await Promise.all([getStats(), getSiteInfo()]);
   return (
     <section id="about" className="overflow-x-clip py-[38px] lg:py-[52px]">
       <div className="mx-auto grid w-full max-w-[1180px] items-center gap-7 px-5 lg:grid-cols-[0.92fr_1.08fr] lg:gap-13">
         <div className="bleed-left relative aspect-16/9 overflow-hidden rounded-3xl lg:aspect-16/11 lg:rounded-l-none">
-          <Image
-            src="/assets/products/neocoat-paint-w-warehouse.webp"
-            alt="คลังสินค้า Blue Rich Material Products"
+          <CmsImage
+            src="/assets/about-steel-structure.jpg"
+            alt={copy.imageAlt}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
@@ -216,27 +285,51 @@ export async function AboutBand() {
             aria-hidden
             className="absolute inset-0 bg-gradient-to-r from-brand-800/55 to-brand-800/10"
           />
-          <span className="absolute right-[22px] bottom-[22px] z-2 grid size-[120px] place-items-center rounded-full bg-gradient-to-br from-accent-500 to-brand-500 shadow-[0_10px_26px_rgba(32,64,79,0.35)]">
-            <span className="grid size-[98px] place-content-center rounded-full bg-white p-1.5 text-center leading-[1.1]">
-              <b className="block text-3xl font-bold text-brand-700">1</b>
-              <span className="mt-px block text-[9.5px] font-semibold tracking-[0.07em] text-accent-500 uppercase">
-                One Stop Service
+
+          {/* เฟดสีขาวสองชั้น ไล่ขึ้นจากขอบล่างและเข้ามาจากขอบขวา
+              ทำให้ป้ายไม่ได้ลอยทับรูปดิบๆ แต่ค่อยๆ โผล่ออกมาจากตัวรูป
+              พอพื้นหลังใต้ป้ายสว่างขึ้นแล้ว ขอบป้ายจึงแทบไม่มีเส้นตัดให้เห็น */}
+          <span
+            aria-hidden
+            className="absolute inset-0 bg-[linear-gradient(to_top,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.36)_16%,rgba(255,255,255,0.08)_30%,rgba(255,255,255,0)_44%)]"
+          />
+          <span
+            aria-hidden
+            className="absolute inset-0 bg-[linear-gradient(to_left,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.22)_24%,rgba(255,255,255,0)_50%)]"
+          />
+
+          {/* ป้ายชื่อบริษัท — ชื่อดึงจาก "ตั้งค่าเว็บไซต์ → ข้อมูลบริษัท" ที่เดียวกับหัวเว็บ
+              โลโก้ใส่ alt ว่างเพราะชื่อบริษัทเป็นตัวหนังสืออยู่ข้างๆ แล้ว
+              ถ้าใส่ alt ซ้ำ โปรแกรมอ่านหน้าจอจะอ่านชื่อบริษัทสองรอบ
+              จำกัดความกว้างไว้ไม่ให้ล้นกรอบรูปตอนจอแคบ ชื่อยาวก็ตกบรรทัดเอง */}
+          <span className="absolute right-3.5 bottom-3.5 z-2 flex max-w-[calc(100%-1.75rem)] items-center gap-3 rounded-2xl bg-white/80 px-4 py-3 shadow-[0_8px_30px_-8px_rgba(32,64,79,0.38)] ring-1 ring-white/70 ring-inset backdrop-blur-md sm:right-5 sm:bottom-5 sm:gap-4 sm:px-5 sm:py-4">
+            <CmsImage
+              src="/assets/logo.png"
+              alt=""
+              width={160}
+              height={142}
+              className="h-9 w-auto shrink-0 drop-shadow-[0_1px_5px_rgba(32,64,79,0.16)] sm:h-11 lg:h-[50px]"
+            />
+            <span aria-hidden className="h-8 w-px shrink-0 bg-brand-900/12 sm:h-10 lg:h-11" />
+            <span className="min-w-0">
+              <b className="font-display block text-[13px] leading-[1.3] font-semibold tracking-[0.005em] text-brand-800 sm:text-[16px] lg:text-[18px]">
+                {site.name}
+              </b>
+              <span className="mt-[3px] block text-[8.5px] leading-[1.45] font-medium tracking-[0.16em] text-brand-500 uppercase sm:mt-1 sm:text-[10px] sm:tracking-[0.2em] lg:text-[11px]">
+                {site.nameEn}
               </span>
             </span>
           </span>
         </div>
 
         <div>
-          <div className="eyebrow-en text-[14px] text-brand-200">Blue Rich Material Products</div>
+          <div className="eyebrow-en text-[14px] text-brand-200">{copy.eyebrow}</div>
           <h2 className="text-[clamp(22px,2.6vw,30px)] font-bold tracking-[0.02em] italic">
-            BY <em className="text-accent-500 italic">BLUE RICH</em>
+            {copy.titlePrefix} <em className="text-accent-500 italic">{copy.titleAccent}</em>
           </h2>
-          <p className="my-3 max-w-[640px] text-sm text-slate-500">
-            จำหน่ายวัสดุป้องกันอัคคีภัยครบวงจร ทั้งสีกันไฟ Neocoat Intumescent Paint
-            สีรองพื้นกันสนิม ผ้ากันไฟ ทินเนอร์และน้ำมันสน
-            พร้อมบริการจัดทำเอกสารรับรองงานสีกันไฟโดยวุฒิวิศวกรโยธา
-            ตามกฎกระทรวงกำหนดการออกแบบโครงสร้างอาคาร พ.ศ. 2567 — ดูแลตั้งแต่เลือกระบบสี
-            คำนวณความหนาฟิล์ม จนถึงส่งมอบเอกสารให้ผ่านการตรวจ
+          {/* ชื่อบริษัทดึงจากหลังบ้าน ถ้าลูกค้าแก้ชื่อจดทะเบียน ย่อหน้านี้เปลี่ยนตาม */}
+          <p className="my-4 max-w-[640px] text-[1.15rem] leading-[1.85] text-slate-500">
+            {site.name} {copy.body}
           </p>
           <div className="mb-[22px] flex flex-wrap gap-x-6 gap-y-3">
             {stats.map((s) => (
@@ -247,7 +340,7 @@ export async function AboutBand() {
             ))}
           </div>
           <Button href="/about" variant="ghost">
-            เกี่ยวกับเรา
+            {copy.moreLabel}
             <Icon.arrow />
           </Button>
         </div>
@@ -260,28 +353,35 @@ export async function AboutBand() {
  * `.linecta` — accent italic heading, phone list, and the LINE phone mockup.
  */
 
-export async function LineCta() {
+export async function LineCta({ copy }: { copy: typeof HomeCopy.lineCta }) {
   const { site, lineHref, lineHref2, mapHref } = bundleFor(await getSiteInfo(), []);
   return (
     <div className="grid items-center gap-7 lg:grid-cols-2 lg:gap-10">
       <div>
         <div className="flex items-center gap-3.5">
           <h2 className="text-[clamp(22px,2.6vw,30px)] font-bold text-accent-500 italic">
-            สนใจสั่งซื้อ
+            {copy.title}
           </h2>
           <span className="h-0.5 max-w-[110px] flex-1 bg-accent-500/50" />
         </div>
         <p className="mt-1 mb-5 text-[15.5px] text-slate-500">
-          หรือสอบถามรายละเอียดเพิ่มเติม ทีมงานยินดีช่วยเลือกระบบสีให้ตรงกับอัตราการทนไฟที่โครงการต้องการ
+          {copy.description}
         </p>
 
-        <Button href={lineHref} variant="line">
-          <Icon.line className="size-[18px]" />
-          เพิ่มเพื่อนทาง LINE · @{site.lineId}
-        </Button>
+        {/* ปุ่มไลน์ทั้งสองช่องทางอยู่ฝั่งซ้ายรวมกัน ฝั่งขวาเหลือแต่ QR ให้สแกน */}
+        <div className="flex flex-wrap gap-2.5">
+          <Button href={lineHref} variant="line">
+            <Icon.line className="size-[18px]" />
+            {copy.addFriendPrefix} {site.lineId}
+          </Button>
+          <Button href={lineHref2} variant="line">
+            <Icon.line className="size-[18px]" />
+            {copy.addFriend2}
+          </Button>
+        </div>
 
         <div className="mt-4.5 flex flex-col gap-2.5">
-          {site.phones.slice(0, 2).map((phone) => (
+          {site.phones.slice(0, 3).map((phone) => (
             <a
               key={phone}
               href={`tel:${phone.replace(/-/g, "")}`}
@@ -306,24 +406,39 @@ export async function LineCta() {
         </a>
       </div>
 
-      {/* phone mockup */}
-      <div className="w-[230px] justify-self-center rounded-[32px] bg-[#12181d] p-2.5 shadow-[0_18px_40px_rgba(32,64,79,0.24)]">
-        <div className="relative overflow-hidden rounded-3xl bg-white px-[18px] pt-[22px] pb-[26px] text-center">
+      {/* มือถือจำลอง — QR สองช่องทางเรียงบนลงล่างเต็มความกว้างจอ ได้ขนาดใหญ่กว่า
+          วางคู่กันเกือบเท่าตัว กดได้ด้วยสำหรับคนที่เปิดจากมือถือ ซึ่งสแกนจอตัวเองไม่ได้
+          ใส่ unoptimized เพราะ QR ต้องคมเป๊ะทุกช่อง ถ้าปล่อยให้ระบบบีบเป็น AVIF
+          ขอบช่องจะเบลอจนกล้องบางรุ่นอ่านไม่ออก ไฟล์เล็กอยู่แล้วจึงไม่ต้องบีบ */}
+      <div className="w-[216px] justify-self-center rounded-[32px] bg-[#12181d] p-2.5 shadow-[0_18px_40px_rgba(32,64,79,0.24)] sm:w-[238px] lg:w-[252px]">
+        <div className="relative overflow-hidden rounded-3xl bg-white px-[18px] pt-[22px] pb-[22px] text-center">
           <span className="absolute top-0 left-1/2 h-4 w-[74px] -translate-x-1/2 rounded-b-xl bg-[#12181d]" />
-          <div className="mt-3.5 text-[18px] font-semibold text-[#06C755]">แอดไลน์เลย</div>
-          <div className="mx-auto mt-3.5 mb-2.5 grid size-[62px] place-items-center rounded-[18px] bg-[#06C755]">
-            <Icon.line className="size-[34px] text-white" />
+          <div className="mt-3.5 text-[17px] font-semibold text-[#06C755]">{copy.qrTitle}</div>
+          <p className="mt-0.5 text-[12.5px] leading-snug text-slate-500">{copy.qrNote}</p>
+
+          <div className="mt-4 flex flex-col gap-4">
+            {[
+              { href: lineHref, src: "/assets/line-qr-1.jpg", label: site.lineId, alt: copy.qr1Alt },
+              { href: lineHref2, src: "/assets/line-qr-2.jpg", label: copy.qr2Label, alt: copy.qr2Alt },
+            ].map((qr) => (
+              <a key={qr.src} href={qr.href} target="_blank" rel="noreferrer" className="group block">
+                <span className="relative block aspect-square overflow-hidden rounded-2xl border border-slate-200 transition group-hover:border-[#06C755]/70">
+                  <CmsImage
+                    src={qr.src}
+                    alt={qr.alt}
+                    fill
+                    sizes="260px"
+                    unoptimized
+                    className="object-contain p-1.5"
+                  />
+                </span>
+                <span className="mt-2 flex items-center justify-center gap-1.5 text-[13.5px] font-semibold text-brand-700 transition group-hover:text-[#06C755]">
+                  <Icon.line className="size-4 shrink-0 text-[#06C755]" />
+                  {qr.label}
+                </span>
+              </a>
+            ))}
           </div>
-          <div className="text-[22px] font-bold tracking-[0.02em] text-brand-700">
-            @{site.lineId}
-          </div>
-          <div className="mt-0.5 text-xs text-slate-500">LINE Official Account</div>
-          <Button href={lineHref} variant="line" size="sm" className="mt-3.5 w-full">
-            เพิ่มเพื่อน @{site.lineId}
-          </Button>
-          <Button href={lineHref2} variant="line" size="sm" className="mt-2 w-full">
-            เพิ่มเพื่อน ช่องทางที่ 2
-          </Button>
         </div>
       </div>
     </div>
@@ -385,7 +500,7 @@ export async function CtaBand({
   title?: string;
   description?: string;
 }) {
-  const { site, telHref, lineChannels } = bundleFor(await getSiteInfo(), []);
+  const { site, lineChannels } = bundleFor(await getSiteInfo(), []);
   return (
     <section className="py-[38px] lg:py-[52px]">
       <Container>
@@ -397,21 +512,29 @@ export async function CtaBand({
           <div className="relative mx-auto max-w-2xl">
             <h2 className="text-[clamp(21px,2.6vw,30px)] leading-snug text-white">{title}</h2>
             <p className="mt-3.5 text-sm leading-relaxed text-brand-100/75">{description}</p>
+            {/* สองแถว — เบอร์โทรแถวบน ไลน์แถวล่าง แยกช่องทางให้อ่านง่ายกว่าเรียงยาวแถวเดียว
+                เบอร์ที่ขึ้นคือสองเบอร์แรกในลิสต์ ชุดเดียวกับปุ่มโทรลอยมุมขวาล่าง
+                อยากเปลี่ยนว่าเบอร์ไหนขึ้นก็ย้ายลำดับที่ ตั้งค่าเว็บไซต์ → ข้อมูลบริษัท */}
             <div className="mt-7 flex flex-wrap justify-center gap-2.5">
-              <Button href={telHref} variant="accent" size="lg">
-                <Icon.phone />
-                โทร {site.phones[0]}
-              </Button>
+              {site.phones.slice(0, 2).map((phone) => (
+                <Button
+                  key={phone}
+                  href={`tel:${phone.replace(/-/g, "")}`}
+                  variant="accent"
+                  size="lg"
+                >
+                  <Icon.phone />
+                  โทร {phone}
+                </Button>
+              ))}
+            </div>
+            <div className="mt-2.5 flex flex-wrap justify-center gap-2.5">
               {lineChannels.map((c, i) => (
                 <Button key={c.href} href={c.href} variant="line" size="lg">
                   <Icon.line />
                   {c.label ? `แอดไลน์ ${c.label}` : `แอดไลน์ ช่องทางที่ ${i + 1}`}
                 </Button>
               ))}
-              <Button href="/contact" variant="outline" size="lg">
-                ส่งข้อความถึงเรา
-                <Icon.arrow />
-              </Button>
             </div>
           </div>
         </div>

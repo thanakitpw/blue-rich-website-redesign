@@ -23,7 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((path) => !path.includes("#") && !path.startsWith("/products/"))
     .map((path) => (path === "/" ? "" : path));
 
-  const staticRoutes = Array.from(new Set([...menuRoutes, "/products"]));
+  /* /standards ไม่ได้อยู่ในเมนู แต่ลิงก์มาจากการ์ดมาตรฐานหน้าแรก */
+  const staticRoutes = Array.from(new Set([...menuRoutes, "/products", "/standards"]));
 
   return [
     ...staticRoutes.map((path) => ({

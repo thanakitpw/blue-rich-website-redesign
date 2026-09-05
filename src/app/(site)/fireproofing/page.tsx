@@ -7,68 +7,54 @@ import { CtaBand, FaqList, Section } from "@/components/hub";
 import { copyFor } from "@/lib/cms/copy-pages";
 import { getProjects, getServices, getStats } from "@/lib/cms/content";
 
-export const metadata: Metadata = {
-  title: "รับรองสีกันไฟ — คำนวณ ควบคุมงาน และรับรองโดยวุฒิวิศวกร",
-  description:
-    "บริการรับรองงานสีกันไฟโครงสร้างเหล็ก ตั้งแต่คำนวณความหนาฟิล์มตามค่า Hp/A ควบคุมงานหน้างาน จนถึงออกเอกสารรับรองลงนามโดยวุฒิวิศวกรโยธา แบบ น.4-5 และ น.4-9",
-};
-
-/**
- * The hands-on application work the contracting service covers. Every line is
- * quoted from the Neocoat product sheets in `products.ts` — surface prep, the
- * primer requirement, the roller/brush vs airless trade-off and the film
- * thickness range are all stated there.
- */
-const onSite = [
-  {
-    title: "เตรียมผิวก่อนเริ่มทาทุกครั้ง",
-    body: "ตรวจสอบผิวเหล็กว่าปราศจากคราบน้ำมัน จารบี สนิม คราบเกลือ ฝุ่นละออง และสิ่งสกปรกอื่น ๆ ที่อาจส่งผลกระทบต่อการยึดเกาะของสี ขั้นตอนนี้เป็นสาเหตุอันดับหนึ่งของงานสีกันไฟที่หลุดล่อนภายหลัง",
-  },
-  {
-    title: "รองพื้นกันสนิมก่อนสีกันไฟ",
-    body: "โครงสร้างต้องทาสีรองพื้นกันสนิมก่อนทาสีกันไฟทุกครั้ง และต้องเป็นสีรองพื้นที่ได้รับอนุมัติจากผู้ผลิต Neocoat เพื่อป้องกันการหลุดล่อนและปฏิกิริยาเคมีที่ไม่พึงประสงค์ระหว่างชั้นสี",
-  },
-  {
-    title: "ลูกกลิ้ง–แปรง หรือเครื่องพ่นไร้อากาศ",
-    body: "ลูกกลิ้งและแปรงทำงานได้ง่าย ไม่ต้องใช้อุปกรณ์และความชำนาญ ค่าการสูญเสียต่ำ ส่วนเครื่องพ่นสูญญากาศ (Airless Spray) ใช้คนงานน้อย ทำงานได้ไว แต่ผู้ใช้ต้องมีความชำนาญและมีค่าการสูญเสียสูง",
-  },
-  {
-    title: "คุมความหนาฟิล์มให้ตรงกับที่คำนวณ",
-    body: "ความหนาชั้นสีกันไฟอยู่ในช่วง 500–3,500 ไมครอน ขึ้นอยู่กับอัตราการทนไฟที่ต้องการและค่า Hp/A ของหน้าตัดเหล็ก ทีมวิศวกรกำหนดจำนวนเที่ยวและตรวจวัดระหว่างทำงาน",
-  },
-  {
-    title: "ปิดด้วยสีทับหน้า",
-    body: "ฟิล์มของสีทับหน้าจะช่วยป้องกันไม่ให้น้ำฝนหรือความชื้นสัมผัสสีกันไฟโดยตรง ซึ่งจะทำให้สีกันไฟบวมและร่อน ทั้งยังช่วยให้เช็ดล้างทำความสะอาดได้ง่ายขึ้น",
-  },
-  {
-    title: "ทำได้ทั้งในโรงประกอบและหน้าไซต์",
-    body: "งานในโรงประกอบคุมสภาพแวดล้อมได้ดีกว่าและไม่ติดสภาพอากาศ ส่วนงานหน้าไซต์เหมาะกับชิ้นส่วนที่ติดตั้งไปแล้วหรือรอยต่อที่เกิดหลังประกอบ",
-  },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const { meta } = await copyFor("fireproofing");
+  return meta;
+}
 
 export default async function FireproofingPage() {
   /* บล็อกขั้นตอน เอกสาร ขอบเขต และ FAQ ใช้ชุดเดียวกับหน้า /engineering
      อ่านผ่าน copyFor เหมือนกัน สองหน้าจึงเปลี่ยนตามกันเมื่อลูกค้าแก้ที่เดียว */
-  const [services, projects, stats, { deliverables, faqs, scope, timeline }] =
-    await Promise.all([getServices(), getProjects(), getStats(), copyFor("engineering")]);
+  const [
+    services,
+    projects,
+    stats,
+    { deliverables, faqs, scope, timeline },
+    {
+      hero,
+      servicesBlock,
+      onSiteBlock,
+      onSite,
+      timelineLabels,
+      projectsBlock,
+      faqBlock,
+      cta,
+    },
+  ] = await Promise.all([
+    getServices(),
+    getProjects(),
+    getStats(),
+    copyFor("engineering"),
+    copyFor("fireproofing"),
+  ]);
   const showcase = projects.slice(0, 4);
 
   return (
     <>
       <PageHero
-        eyebrow="บริการวิศวกรรม"
-        title="รับรองสีกันไฟ"
-        description="ดูแลงานสีกันไฟโครงสร้างเหล็กครบวงจร — คำนวณความหนาฟิล์มตามหน้าตัดจริง เข้าควบคุมงานหน้างาน และปิดท้ายด้วยเอกสารรับรองลงนามโดยวุฒิวิศวกรโยธาที่ยื่นหน่วยงานได้"
-        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: "รับรองสีกันไฟ" }]}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        description={hero.description}
+        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: hero.crumb }]}
       />
 
       {/* ------------------------------------------------- Two service lines */}
       <Section>
         <Reveal>
           <SectionHeading
-            eyebrow="ขอบเขตบริการ"
-            title="สองงานหลักที่เรารับ"
-            description="แยกจ้างเป็นงาน ๆ ได้ ไม่จำเป็นต้องใช้ครบทั้งสองอย่าง"
+            eyebrow={servicesBlock.eyebrow}
+            title={servicesBlock.title}
+            description={servicesBlock.description}
           />
         </Reveal>
 
@@ -107,7 +93,7 @@ export default async function FireproofingPage() {
                     ))}
                   </ul>
                   <span className="mt-7 inline-flex items-center gap-2 font-semibold text-brand-700">
-                    ดูรายละเอียดบริการ
+                    {servicesBlock.moreLabel}
                     <Icon.arrow className="transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </div>
@@ -121,9 +107,9 @@ export default async function FireproofingPage() {
       <Section tone="shell" id="onsite">
         <Reveal>
           <SectionHeading
-            eyebrow="งานหน้างาน"
-            title="งานทาและพ่นสีกันไฟที่เรารับเหมาให้ด้วยได้"
-            description="รับเหมาทาพร้อมวัสดุ หรือรับจ้างทาอย่างเดียวก็ได้ ทุกงานมีทีมวิศวกรกำหนดระบบสีและเข้าตรวจระหว่างทำ"
+            eyebrow={onSiteBlock.eyebrow}
+            title={onSiteBlock.title}
+            description={onSiteBlock.description}
           />
         </Reveal>
 
@@ -157,11 +143,11 @@ export default async function FireproofingPage() {
                 </span>
                 <h3 className="mt-2 text-lg leading-snug">{s.title}</h3>
                 <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                  <span className="font-semibold text-brand-700">คุณส่งให้เรา · </span>
+                  <span className="font-semibold text-brand-700">{timelineLabels.youPrefix}</span>
                   {s.you}
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  <span className="font-semibold text-brand-700">เราส่งกลับ · </span>
+                  <span className="font-semibold text-brand-700">{timelineLabels.usPrefix}</span>
                   {s.us}
                 </p>
               </li>
@@ -274,9 +260,9 @@ export default async function FireproofingPage() {
       <Section tone="shell">
         <Reveal>
           <SectionHeading
-            eyebrow="ผลงานของเรา"
-            title="ภาพหน้างานจริงจากโครงการที่ใช้ระบบ Neocoat"
-            action={<MoreLink href="/projects">ดูผลงานทั้งหมด</MoreLink>}
+            eyebrow={projectsBlock.eyebrow}
+            title={projectsBlock.title}
+            action={<MoreLink href="/projects">{projectsBlock.moreLabel}</MoreLink>}
           />
         </Reveal>
         <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -304,17 +290,14 @@ export default async function FireproofingPage() {
       {/* ----------------------------------------------------------------- FAQ */}
       <Section id="faq">
         <Reveal>
-          <SectionHeading align="center" eyebrow="คำถามที่พบบ่อย" title="เรื่องที่ลูกค้าถามก่อนตัดสินใจ" />
+          <SectionHeading align="center" eyebrow={faqBlock.eyebrow} title={faqBlock.title} />
         </Reveal>
         <div className="mt-12">
           <FaqList items={faqs} />
         </div>
       </Section>
 
-      <CtaBand
-        title="ส่งแบบมาให้ประเมินก่อนได้ ไม่มีค่าใช้จ่าย"
-        description="ทีมวิศวกรจะทบทวนแบบเบื้องต้น แจ้งกลับว่าขอบเขตงานควรเป็นอย่างไร และต้องใช้เอกสารอะไรบ้าง ภายใน 1–2 วันทำการ"
-      />
+      <CtaBand title={cta.title} description={cta.description} />
     </>
   );
 }

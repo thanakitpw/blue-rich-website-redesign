@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS=--max-http-header-size=65536 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_OPTIONS=--max-http-header-size=65536 next start",
     "lint": "eslint",
     "prebuild": "node scripts/build-image-manifest.mts",
     "cms:images": "node scripts/build-image-manifest.mts",

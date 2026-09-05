@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { publicClient } from "@/lib/supabase/public";
 import type { Category, Product, Step } from "@/data/products";
-import type { CategoryTile } from "@/data/home";
+import type { CategoryTile, ClientLogo } from "@/data/home";
 import type { Article } from "@/data/news";
 import type { Project } from "@/data/projects";
 import type { Faq } from "@/data/faq";
@@ -13,6 +13,7 @@ export type HomeShowcase = {
   bestSellerSlugs: string[];
   categoryTiles: CategoryTile[];
   valuePoints: string[];
+  clients: ClientLogo[];
 };
 
 export type LegalInfo = {
@@ -156,6 +157,7 @@ export const getHomeShowcase = cache(async (): Promise<HomeShowcase> => {
     bestSellerSlugs: v?.bestSellerSlugs ?? d.bestSellerSlugs,
     categoryTiles: v?.categoryTiles ?? d.categoryTiles,
     valuePoints: v?.valuePoints ?? d.valuePoints,
+    clients: v?.clients ?? d.clients,
   };
 });
 

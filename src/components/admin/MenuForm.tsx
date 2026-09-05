@@ -3,8 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { NavItem, Standard, Stat } from "@/data/site";
+import type { MediaItem } from "@/lib/cms/media";
 import { publishSetting, saveSetting } from "@/app/admin/(dash)/settings/actions";
-import { move, RowTools } from "./Editors";
+import { move, RowTools, TextListEditor } from "./Editors";
+import { ImageField } from "./ImageField";
 import { SaveBar } from "./SaveBar";
 import { Field, Fieldset } from "./FormBits";
 import type { ActionResult } from "@/lib/cms/actions";
@@ -18,11 +20,13 @@ export function MenuForm({
   nav: navValue,
   standards: standardsValue,
   stats: statsValue,
+  media,
   hasDraft,
 }: {
   nav: NavItem[];
   standards: Standard[];
   stats: Stat[];
+  media: MediaItem[];
   hasDraft: boolean;
 }) {
   const router = useRouter();
@@ -120,25 +124,59 @@ export function MenuForm({
         </Fieldset>
 
         <Fieldset title="มาตรฐานที่อ้างอิง">
-          <Field label="" hint="แสดงในแถบมาตรฐานหน้าแรก หน้าเกี่ยวกับเรา และส่วนท้ายของหน้า landing">
-            <div className="space-y-2">
-              {standards.map((s, i) => (
-                <div key={i} className="flex items-start gap-2">
-                  <input value={s.label} onChange={(e) => setStandards(standards.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)))} placeholder="ASTM E-119" className="field w-1/3 font-medium" />
-                  <input value={s.note} onChange={(e) => setStandards(standards.map((x, j) => (j === i ? { ...x, note: e.target.value } : x)))} placeholder="ทดสอบโดยจุฬาลงกรณ์มหาวิทยาลัย" className="field flex-1" />
-                  <RowTools
-                    index={i}
-                    total={standards.length}
-                    onMove={(a, b) => setStandards(move(standards, a, b))}
-                    onRemove={(idx) => setStandards(standards.filter((_, j) => j !== idx))}
-                  />
+          <p className="text-[12px] leading-relaxed text-slate-500">
+            การ์ดสามใบบนหน้าแรก และหนึ่งบล็อกต่อหนึ่งมาตรฐานในหน้า{" "}
+            <span className="font-mono">/standards</span> — “รหัส” คือชื่อ anchor
+            ที่การ์ดหน้าแรกลิงก์เข้าไป ใช้ตัวอักษรอังกฤษพิมพ์เล็กกับขีดกลางเท่านั้น
+          </p>
+          <div className="space-y-3">
+            {standards.map((s, i) => {
+              const setStd = (v: Standard) =>
+                setStandards(standards.map((x, j) => (i === j ? v : x)));
+              return (
+                <div key={i} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <div className="flex items-start gap-2">
+                    <div className="min-w-0 flex-1 space-y-2.5">
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <input value={s.label} onChange={(e) => setStd({ ...s, label: e.target.value })} placeholder="ASTM E-119" className="field font-medium" />
+                        <input value={s.slug} onChange={(e) => setStd({ ...s, slug: e.target.value })} placeholder="astm-e119" className="field font-mono text-[13px]" />
+                      </div>
+                      <input value={s.note} onChange={(e) => setStd({ ...s, note: e.target.value })} placeholder="ทดสอบโดยจุฬาลงกรณ์มหาวิทยาลัย" className="field" />
+                      <ImageField value={s.image} media={media} onChange={(v) => setStd({ ...s, image: v })} />
+                      <div className="grid gap-2 sm:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+                        <input value={s.eyebrow} onChange={(e) => setStd({ ...s, eyebrow: e.target.value })} placeholder="Fire Test Standard" className="field" />
+                        <input value={s.title} onChange={(e) => setStd({ ...s, title: e.target.value })} placeholder="หัวข้อในหน้ามาตรฐาน" className="field font-medium" />
+                      </div>
+                      <Field label="เนื้อหา" hint="หนึ่งช่อง = หนึ่งย่อหน้า">
+                        <TextListEditor value={s.body} onChange={(v) => setStd({ ...s, body: v })} rows={4} addLabel="+ เพิ่มย่อหน้า" />
+                      </Field>
+                      <Field label="รายการติ๊กถูก">
+                        <TextListEditor value={s.points} onChange={(v) => setStd({ ...s, points: v })} rows={2} />
+                      </Field>
+                    </div>
+                    <RowTools
+                      index={i}
+                      total={standards.length}
+                      onMove={(a, b) => setStandards(move(standards, a, b))}
+                      onRemove={(idx) => setStandards(standards.filter((_, j) => j !== idx))}
+                    />
+                  </div>
                 </div>
-              ))}
-              <button type="button" onClick={() => setStandards([...standards, { label: "", note: "" }])} className="btn-line-admin">
-                + เพิ่มมาตรฐาน
-              </button>
-            </div>
-          </Field>
+              );
+            })}
+            <button
+              type="button"
+              onClick={() =>
+                setStandards([
+                  ...standards,
+                  { slug: "", label: "", note: "", image: "", eyebrow: "", title: "", body: [], points: [] },
+                ])
+              }
+              className="btn-line-admin"
+            >
+              + เพิ่มมาตรฐาน
+            </button>
+          </div>
         </Fieldset>
 
         <Fieldset title="ตัวเลขที่โชว์">

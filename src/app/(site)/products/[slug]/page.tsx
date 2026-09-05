@@ -5,6 +5,12 @@ import { Button, Container, Icon } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import ProductGallery from "@/components/ProductGallery";
 import { ProductCard } from "@/components/cards";
+import {
+  PRODUCT_HERO,
+  ProductAssurance,
+  ProductBanner,
+  ProductQuote,
+} from "@/components/product/ProductHero";
 import { bundleFor } from "@/data/site";
 import {
   getCategories,
@@ -15,25 +21,10 @@ import {
   getRelatedProducts,
   getSiteInfo,
 } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
-/** Restates the guarantees already stated on /fireproofing and the home page. */
-const assurances = [
-  {
-    icon: Icon.doc,
-    title: "เอกสารรับรองครบชุด",
-    note: "ออกเอกสารรับรองงานสีกันไฟโดยวุฒิวิศวกรโยธา ตามแบบ น.4-5 และ น.4-9",
-  },
-  {
-    icon: Icon.shield,
-    title: "ผ่านการทดสอบจริง",
-    note: "ASTM E-119 และ ISO 834 มีรายงานผลทดสอบให้ตรวจสอบก่อนสั่งซื้อ",
-  },
-  {
-    icon: Icon.truck,
-    title: "มีสต็อก ส่งทั่วประเทศ",
-    note: "มีสินค้าสำหรับงานโครงการ จัดส่งตรงถึงหน้างาน",
-  },
-];
+/* ไอคอนของแถบการันตี — ข้อความย้ายไป @/data/pages/product-detail แล้ว */
+const assuranceIcons = [Icon.doc, Icon.shield, Icon.truck];
 
 export async function generateStaticParams() {
   return (await getProducts()).map((p) => ({ slug: p.slug }));
@@ -46,7 +37,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
-  if (!product) return { title: "ไม่พบสินค้า" };
+  if (!product) return { title: (await copyFor("product-detail")).notFoundTitle };
   return {
     title: product.name,
     description: product.tagline,
@@ -58,6 +49,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) notFound();
+  const { assurances, headings, homeLabel } = await copyFor("product-detail");
 
   const [categories, suggestions, installationSteps, legalInfo, info] = await Promise.all([
     getCategories(),
@@ -69,176 +61,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
   const cat = categories.find((c) => c.slug === product.category);
 
-  return (
+  /* ส่วนรายละเอียดท้ายหน้า ใช้ร่วมกันทั้งสองเลย์เอาต์ ประกาศไว้ตรงนี้ครั้งเดียว
+     จะได้ไม่ต้องเขียนซ้ำสองชุดแล้วหลุดแก้ที่เดียวเวลามีการเปลี่ยนแปลง */
+  const details = (
     <>
-      {/* --------------------------------------------------------- Breadcrumb */}
-      <div className="border-b border-slate-200 bg-white py-3.5">
-        <Container>
-          <nav aria-label="breadcrumb">
-            <ol className="flex flex-wrap items-center gap-2 text-[14px] text-slate-500">
-              <li>
-                <Link href="/" aria-label="หน้าแรก" className="grid size-6 place-items-center text-brand-600 transition hover:text-accent-600">
-                  <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M3 10.5 12 3l9 7.5" />
-                    <path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" />
-                  </svg>
-                </Link>
-              </li>
-              <li aria-hidden className="text-slate-300">›</li>
-              <li>
-                <Link href="/products" className="transition hover:text-brand-600">
-                  สินค้าทั้งหมด
-                </Link>
-              </li>
-              {cat && (
-                <>
-                  <li aria-hidden className="text-slate-300">›</li>
-                  <li>
-                    <Link
-                      href={`/products?cat=${cat.slug}`}
-                      className="transition hover:text-brand-600"
-                    >
-                      {cat.name}
-                    </Link>
-                  </li>
-                </>
-              )}
-              <li aria-hidden className="text-slate-300">›</li>
-              <li className="font-medium text-brand-600">{product.name}</li>
-            </ol>
-          </nav>
-        </Container>
-      </div>
-
-      {/* ----------------------------------------------------------- Overview */}
-      <section className="py-8 lg:py-12">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[1.02fr_1fr] lg:gap-14">
-            <ProductGallery images={product.gallery} alt={product.name} />
-
-            <div>
-              <h1 className="text-[clamp(25px,3.2vw,36px)] leading-[1.25] font-bold text-brand-600">
-                {product.name}
-              </h1>
-              {cat && (
-                <p className="mt-2 text-[14px] text-slate-500">
-                  หมวดสินค้า :{" "}
-                  <Link
-                    href={`/products?cat=${cat.slug}`}
-                    className="font-medium text-brand-700 underline underline-offset-4"
-                  >
-                    {cat.name}
-                  </Link>
-                  <span className="mx-2 text-slate-300">|</span>
-                  {cat.short}
-                </p>
-              )}
-
-              {product.badges.length > 0 && (
-                <p className="mt-3 text-[16px] font-semibold text-brand-700">
-                  {product.badges.join(" · ")}
-                </p>
-              )}
-
-              <hr className="my-5 border-slate-200" />
-
-              <p className="text-[16px] leading-[1.85] text-slate-600">{product.tagline}</p>
-
-              <ul className="mt-4 space-y-2">
-                {product.quickSpecs.map((sp, i) => (
-                  <li key={sp.label} className="flex gap-2.5 text-[15.5px] leading-[1.7]">
-                    <span
-                      aria-hidden
-                      className={`mt-[9px] size-1.5 shrink-0 rounded-full ${
-                        i < 2 ? "bg-accent-500" : "bg-slate-300"
-                      }`}
-                    />
-                    <span className={i < 2 ? "text-brand-700" : "text-slate-600"}>
-                      {sp.label}{" "}
-                      <b className="font-semibold text-brand-700">{sp.value}</b>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <hr className="my-5 border-slate-200" />
-
-              {/* Price slot — Blue Rich quotes per project, so the headline spec
-                  sits here instead of a number, with the enquiry CTA below. */}
-              <p className="text-[clamp(22px,2.6vw,28px)] leading-tight font-bold text-brand-600">
-                สอบถามราคา
-              </p>
-              <p className="mt-1 text-[14px] text-slate-500">
-                ราคาขึ้นกับปริมาณและขอบเขตงาน · แจ้งพื้นที่หน้างานให้ทีมงานประเมินได้
-              </p>
-
-              <div className="mt-5 flex flex-wrap gap-2.5">
-                <Button href={lineHref} variant="line" size="lg">
-                  <Icon.line className="size-[18px]" />
-                  สั่งซื้อสินค้าผ่าน LINE
-                </Button>
-                <Button href={telHref} size="lg">
-                  <Icon.phone />
-                  โทร {site.phones[0]}
-                </Button>
-                <Button href={mailHref} variant="ghost" size="lg">
-                  <Icon.mail />
-                  ส่งอีเมล
-                </Button>
-              </div>
-
-              {/* Assurance panel */}
-              <ul className="mt-6 space-y-4 rounded-3xl border border-slate-200 p-6">
-                {assurances.map((a) => (
-                  <li key={a.title} className="flex gap-3.5">
-                    <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-brand-50 text-brand-600">
-                      <a.icon className="size-5" />
-                    </span>
-                    <span>
-                      <b className="block text-[16px] font-semibold text-brand-700">{a.title}</b>
-                      <span className="text-[14px] leading-relaxed text-slate-500">{a.note}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {product.downloads && product.downloads.length > 0 && (
-                <div className="mt-4 rounded-3xl border border-slate-200 p-6">
-                  <p className="eyebrow-en text-[12px] tracking-[0.07em] text-accent-500">
-                    เอกสารดาวน์โหลด
-                  </p>
-                  <div className="mt-3.5 grid gap-2.5 sm:grid-cols-2">
-                    {product.downloads.map((d) => (
-                      <a
-                        key={d.href}
-                        href={d.href}
-                        target="_blank"
-                        rel="noopener"
-                        className="flex items-start gap-2.5 rounded-xl border border-slate-200 px-3.5 py-3 text-[14px] font-medium text-brand-700 transition hover:border-brand-200 hover:bg-brand-50"
-                      >
-                        <Icon.doc className="mt-0.5 size-4 shrink-0 text-accent-500" />
-                        {d.label}
-                      </a>
-                    ))}
-                  </div>
-                  {product.downloadNote && (
-                    <p className="mt-3.5 text-[13px] leading-relaxed text-slate-400">
-                      {product.downloadNote}
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </Container>
-      </section>
-
       {/* Details + specs */}
       <section className="py-[38px] lg:py-[52px]">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
             <Reveal>
-              <h2 className="text-2xl sm:text-3xl">เกี่ยวกับสินค้า</h2>
+              <h2 className="text-2xl sm:text-3xl">{headings.about}</h2>
               <div className="mt-6 space-y-5">
                 {product.description.map((p, i) => (
                   <p key={i} className="text-[1.08rem] leading-[1.9] text-slate-600">
@@ -284,7 +116,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <Reveal delay={120}>
               <div className="overflow-hidden rounded-3xl border border-slate-200">
                 <div className="bg-brand-900 px-6 py-4">
-                  <h2 className="text-lg text-white">สเปกเทคนิค</h2>
+                  <h2 className="text-lg text-white">{headings.specs}</h2>
                 </div>
                 <dl className="divide-y divide-slate-200">
                   {product.specs.map((s) => (
@@ -370,7 +202,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <section className="bg-slate-50 py-[38px] lg:py-[52px]">
           <Container>
             <Reveal>
-              <h2 className="text-2xl sm:text-3xl">การติดตั้ง (Installation)</h2>
+              <h2 className="text-2xl sm:text-3xl">{headings.installation}</h2>
             </Reveal>
             <div className="mt-10 grid gap-5 sm:grid-cols-2">
               {installationSteps.map((s, i) => (
@@ -427,7 +259,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <section className="pb-16 lg:pb-24">
           <Container>
             <Reveal>
-              <h2 className="text-2xl sm:text-3xl">คำถามที่พบบ่อย</h2>
+              <h2 className="text-2xl sm:text-3xl">{headings.faq}</h2>
             </Reveal>
             <div className="mt-8 grid max-w-3xl gap-4">
               {product.faq.map((f, i) => (
@@ -459,7 +291,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className="bg-slate-50 py-[38px] lg:py-[52px]">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <h2 className="text-2xl sm:text-3xl">สินค้าที่เกี่ยวข้อง</h2>
+            <h2 className="text-2xl sm:text-3xl">{headings.related}</h2>
             <Button href="/products" variant="secondary">
               ดูสินค้าทั้งหมด
               <Icon.arrow />
@@ -474,6 +306,204 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </div>
         </Container>
       </section>
+    </>
+  );
+
+  /* สินค้าสองตัวที่ลูกค้าขอเลย์เอาต์แบนเนอร์ใหญ่ ที่เหลือใช้เลย์เอาต์เดิม
+     รายชื่ออยู่ใน PRODUCT_HERO — เพิ่มสินค้าตัวอื่นเข้าลิสต์ได้ทันทีถ้าอยากใช้แบบเดียวกัน */
+  const hero = PRODUCT_HERO[product.slug];
+  const links = { telHref, lineHref, mailHref, phone: site.phones[0] ?? "" };
+
+  if (hero) {
+    return (
+      <>
+        <ProductBanner product={product} cat={cat} hero={hero} homeLabel={homeLabel} />
+        <ProductQuote links={links} />
+        <ProductAssurance
+          product={product}
+          assurances={assurances}
+          assuranceIcons={assuranceIcons}
+        />
+        {details}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {/* --------------------------------------------------------- Breadcrumb */}
+      <div className="border-b border-slate-200 bg-white py-3.5">
+        <Container>
+          <nav aria-label="breadcrumb">
+            <ol className="flex flex-wrap items-center gap-2 text-[14px] text-slate-500">
+              <li>
+                <Link href="/" aria-label={homeLabel} className="grid size-6 place-items-center text-brand-600 transition hover:text-accent-600">
+                  <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M3 10.5 12 3l9 7.5" />
+                    <path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" />
+                  </svg>
+                </Link>
+              </li>
+              <li aria-hidden className="text-slate-300">›</li>
+              <li>
+                <Link href="/products" className="transition hover:text-brand-600">
+                  สินค้าทั้งหมด
+                </Link>
+              </li>
+              {cat && (
+                <>
+                  <li aria-hidden className="text-slate-300">›</li>
+                  <li>
+                    <Link
+                      href={`/products?cat=${cat.slug}`}
+                      className="transition hover:text-brand-600"
+                    >
+                      {cat.name}
+                    </Link>
+                  </li>
+                </>
+              )}
+              <li aria-hidden className="text-slate-300">›</li>
+              <li className="font-medium text-brand-600">{product.name}</li>
+            </ol>
+          </nav>
+        </Container>
+      </div>
+
+      {/* ----------------------------------------------------------- Overview */}
+      <section className="py-8 lg:py-12">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[1.02fr_1fr] lg:gap-14">
+            <ProductGallery images={product.gallery} alt={product.name} />
+
+            <div>
+              <h1 className="text-[clamp(25px,3.2vw,36px)] leading-[1.25] font-bold text-brand-600">
+                {product.name}
+              </h1>
+              {cat && (
+                <p className="mt-2 text-[14px] text-slate-500">
+                  หมวดสินค้า :{" "}
+                  <Link
+                    href={`/products?cat=${cat.slug}`}
+                    className="font-medium text-brand-700 underline underline-offset-4"
+                  >
+                    {cat.name}
+                  </Link>
+                  <span className="mx-2 text-slate-300">|</span>
+                  {cat.short}
+                </p>
+              )}
+
+              {product.badges.length > 0 && (
+                <p className="mt-3 text-[16px] font-semibold text-brand-700">
+                  {product.badges.join(" · ")}
+                </p>
+              )}
+
+              <hr className="my-5 border-slate-200" />
+
+              <p className="text-[16px] leading-[1.85] text-slate-600">{product.tagline}</p>
+
+              <ul className="mt-4 space-y-2">
+                {product.quickSpecs.map((sp, i) => (
+                  <li key={sp.label} className="flex gap-2.5 text-[15.5px] leading-[1.7]">
+                    <span
+                      aria-hidden
+                      className={`mt-[9px] size-1.5 shrink-0 rounded-full ${
+                        i < 2 ? "bg-accent-500" : "bg-slate-300"
+                      }`}
+                    />
+                    <span className={i < 2 ? "text-brand-700" : "text-slate-600"}>
+                      {sp.label}{" "}
+                      <b className="font-semibold text-brand-700">{sp.value}</b>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* เอกสารดาวน์โหลด — ย้ายขึ้นมาไว้ใต้สเปคย่อตามที่ลูกค้าสั่ง
+                  ผ้ากันไฟมีสี่รุ่นที่ต่างกันแค่อุณหภูมิกับความหนา คนซื้อต้องเทียบ
+                  สเปคก่อนถึงจะรู้ว่าต้องโหลดใบไหน วางไว้ท้ายหน้าจึงพลาดง่าย
+                  หนึ่งปุ่มหนึ่งบรรทัด ชื่อรุ่นยาวจะได้ไม่ตกบรรทัดกลางคำ */}
+              {product.downloads && product.downloads.length > 0 && (
+                <div className="mt-6 rounded-3xl border border-brand-200 bg-brand-50 p-5 sm:p-6">
+                  <p className="flex items-center gap-2 text-[15.5px] font-semibold text-brand-700">
+                    <Icon.doc className="size-[18px] text-accent-500" />
+                    เอกสารดาวน์โหลด
+                  </p>
+                  <div className="mt-3.5 flex flex-col gap-2">
+                    {product.downloads.map((d) => (
+                      <a
+                        key={d.href}
+                        href={d.href}
+                        target="_blank"
+                        rel="noopener"
+                        className="group flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-[14.5px] leading-snug font-medium text-brand-700 transition hover:border-brand-300 hover:shadow-[0_6px_18px_-8px_rgba(32,64,79,0.35)]"
+                      >
+                        <Icon.doc className="size-[18px] shrink-0 text-accent-500" />
+                        <span className="flex-1">{d.label}</span>
+                        <Icon.arrow className="size-4 shrink-0 rotate-90 text-slate-400 transition group-hover:translate-y-0.5 group-hover:text-accent-500" />
+                      </a>
+                    ))}
+                  </div>
+                  {product.downloadNote && (
+                    <p className="mt-3.5 text-[13px] leading-relaxed text-slate-500">
+                      {product.downloadNote}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              <hr className="my-5 border-slate-200" />
+
+              {/* Price slot — Blue Rich quotes per project, so the headline spec
+                  sits here instead of a number, with the enquiry CTA below. */}
+              <p className="text-[clamp(22px,2.6vw,28px)] leading-tight font-bold text-brand-600">
+                สอบถามราคา
+              </p>
+              <p className="mt-1 text-[14px] text-slate-500">
+                ราคาขึ้นกับปริมาณและขอบเขตงาน · แจ้งพื้นที่หน้างานให้ทีมงานประเมินได้
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                <Button href={lineHref} variant="line" size="lg">
+                  <Icon.line className="size-[18px]" />
+                  สั่งซื้อสินค้าผ่าน LINE
+                </Button>
+                <Button href={telHref} size="lg">
+                  <Icon.phone />
+                  โทร {site.phones[0]}
+                </Button>
+                <Button href={mailHref} variant="ghost" size="lg">
+                  <Icon.mail />
+                  ส่งอีเมล
+                </Button>
+              </div>
+
+              {/* Assurance panel */}
+              <ul className="mt-6 space-y-4 rounded-3xl border border-slate-200 p-6">
+                {assurances.map((a, i) => {
+                  const AssuranceIcon = assuranceIcons[i] ?? Icon.doc;
+                  return (
+                  <li key={a.title} className="flex gap-3.5">
+                    <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+                      <AssuranceIcon className="size-5" />
+                    </span>
+                    <span>
+                      <b className="block text-[16px] font-semibold text-brand-700">{a.title}</b>
+                      <span className="text-[14px] leading-relaxed text-slate-500">{a.note}</span>
+                    </span>
+                  </li>
+                  );
+                })}
+              </ul>
+
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {details}
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { CategoryTile } from "@/data/home";
+import type { CategoryTile, ClientLogo } from "@/data/home";
 import type { Step } from "@/data/products";
 import type { HomeShowcase, LegalInfo } from "@/lib/cms/content";
 import type { MediaItem } from "@/lib/cms/media";
@@ -163,6 +163,45 @@ export function HomeForm({
               className="btn-line-admin"
             >
               + เพิ่มการ์ด
+            </button>
+          </div>
+        </Fieldset>
+
+        <Fieldset title="โลโก้ลูกค้า">
+          <p className="text-[12px] leading-relaxed text-slate-500">
+            แถบเหนือ “ผลงานที่ผ่านมาของเรา” — จอใหญ่เรียงแถวละ 5 ช่อง
+            ช่องที่ยังไม่ใส่รูปจะขึ้นเป็นกรอบเส้นประว่า “รอโลโก้เพิ่ม”
+          </p>
+          <div className="space-y-2">
+            {s.clients.map((c, i) => {
+              const setClient = (v: ClientLogo) =>
+                setS({ ...s, clients: s.clients.map((x, j) => (i === j ? v : x)) });
+              return (
+                <div key={i} className="flex items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <div className="min-w-0 flex-1 space-y-2.5">
+                    <input
+                      value={c.name}
+                      onChange={(e) => setClient({ ...c, name: e.target.value })}
+                      placeholder="ชื่อแบรนด์ที่แสดงใต้โลโก้"
+                      className="field font-medium"
+                    />
+                    <ImageField value={c.image} media={media} onChange={(v) => setClient({ ...c, image: v })} />
+                  </div>
+                  <RowTools
+                    index={i}
+                    total={s.clients.length}
+                    onMove={(a, b) => setS({ ...s, clients: move(s.clients, a, b) })}
+                    onRemove={(idx) => setS({ ...s, clients: s.clients.filter((_, j) => j !== idx) })}
+                  />
+                </div>
+              );
+            })}
+            <button
+              type="button"
+              onClick={() => setS({ ...s, clients: [...s.clients, { name: "", image: "" }] })}
+              className="btn-line-admin"
+            >
+              + เพิ่มโลโก้
             </button>
           </div>
         </Fieldset>

@@ -1,189 +1,89 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { CmsImage } from "@/components/CmsImage";
 import { Button, Icon, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CtaBand, Section } from "@/components/concept";
 import { bundleFor } from "@/data/site";
-import {
-  getCategories,
-  getProjects,
-  getSiteInfo,
-  getStandards,
-  getStats,
-} from "@/lib/cms/content";
+import { getCategories, getProjects, getSiteInfo, getStats } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
-export const metadata: Metadata = {
-  title: "เกี่ยวกับเรา",
-  description:
-    "บริษัท บลูริช แมททีเรียล โปรดักส์ จำกัด ผู้จำหน่ายสีกันไฟ สีทนไฟ สีรองพื้นกันสนิม ทินเนอร์ น้ำมันสน และผ้ากันไฟ ดำเนินธุรกิจตามหลักวิศวกรรมที่ถูกต้อง",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { meta } = await copyFor("about");
+  return meta;
+}
 
 /**
  * Layout follows the reference the client gave (energyreform-solar.com/about-us):
- * centred intro statement with certification badges → numbered five-step process
- * flow → company overview with stats → values → standards → project gallery →
- * product scope → closing CTA.
+ * centred intro statement → company overview with stats → values →
+ * project gallery → product scope → closing CTA.
+ *
+ * แถบชิปมาตรฐานกับบล็อกขั้นตอนการทำงาน 5 ขั้นถูกถอดออกตามที่ลูกค้าสั่ง
+ * มาตรฐานทั้งสามยังอ่านได้ที่หน้า /standards ซึ่งลงรายละเอียดมากกว่า
  *
  * The reference opens with the company's founding date and registered capital.
  * Blue Rich has not supplied those figures, so that block states what the
  * business does instead — nothing about incorporation is invented here.
  */
 
-const process = [
-  {
-    title: "ส่งแบบและปรึกษา",
-    text: "ส่งแบบโครงสร้างหรือ BOQ ให้ทีมวิศวกรประเมินอัตราการทนไฟที่กฎหมายกำหนด",
-  },
-  {
-    title: "คำนวณและเสนอราคา",
-    text: "คำนวณความหนาฟิล์มแห้งตามค่า Hp/A ของแต่ละหน้าตัด พร้อมสรุปปริมาณสีและราคา",
-  },
-  {
-    title: "ส่งของ / ลงหน้างาน",
-    text: "จัดส่งสินค้าถึงหน้างาน หรือให้ทีมช่างเข้าดำเนินงานตามระบบสีที่กำหนดไว้",
-  },
-  {
-    title: "ควบคุมคุณภาพ",
-    text: "ตรวจการเตรียมผิวและวัดความหนาฟิล์มด้วยเครื่องวัดเป็นระยะ พร้อมบันทึกผล",
-  },
-  {
-    title: "ตรวจรับและรับรอง",
-    text: "สรุปผลตรวจและออกเอกสารรับรองลงนามโดยวุฒิวิศวกรโยธาให้ครบชุด",
-  },
-];
-
-const values = [
-  {
-    icon: Icon.shield,
-    title: "ยึดหลักวิศวกรรมที่ถูกต้อง",
-    text: "ดำเนินธุรกิจตามมาตรฐานงานวิศวกรรม ไม่แนะนำระบบที่ต่ำกว่าที่กฎหมายกำหนดเพียงเพื่อลดราคา",
-  },
-  {
-    icon: Icon.users,
-    title: "ให้คำปรึกษาตามวัตถุประสงค์งาน",
-    text: "ออกแบบและเลือกระบบสีให้สอดคล้องกับลักษณะอาคาร งบประมาณ และเป้าหมายของโครงการ",
-  },
-  {
-    icon: Icon.doc,
-    title: "ซื่อสัตย์และรับผิดชอบ",
-    text: "ให้ข้อมูลผลิตภัณฑ์ตรงตามจริง มีผลทดสอบและเอกสารรับรองให้ตรวจสอบได้ทุกโครงการ",
-  },
-  {
-    icon: Icon.truck,
-    title: "ดูแลทั้งก่อนและหลังการขาย",
-    text: "ทีมงานผู้เชี่ยวชาญพร้อมให้บริการตั้งแต่ช่วงเสนอราคา ระหว่างหน้างาน จนถึงหลังส่งมอบ",
-  },
-];
+/* ไอคอนของบล็อก "สิ่งที่เรายึดถือ" — ข้อความย้ายไป @/data/pages/about แล้ว
+   จับคู่กันด้วยลำดับ ถ้าเพิ่มข้อในไฟล์ข้อมูลก็เพิ่มไอคอนตรงนี้ให้ครบด้วย */
+const valueIcons = [Icon.shield, Icon.users, Icon.doc, Icon.truck];
 
 export default async function AboutPage() {
-  const [info, standards, stats, categories, projects] = await Promise.all([
+  const [
+    info,
+    stats,
+    categories,
+    projects,
+    { hero, intro, overview, valuesBlock, values, gallery: galleryCopy, scope },
+  ] = await Promise.all([
     getSiteInfo(),
-    getStandards(),
     getStats(),
     getCategories(),
     getProjects(),
+    copyFor("about"),
   ]);
-  const { site, telHref, lineHref } = bundleFor(info, []);
+  const { site } = bundleFor(info, []);
   const gallery = projects.slice(0, 8);
 
   return (
     <>
       <PageHero
-        eyebrow="About Us"
-        title="เกี่ยวกับเรา"
-        description="ผู้จำหน่ายสีกันไฟสูตรน้ำมันและสูตรน้ำ สีน้ำมัน สีรองพื้น ทินเนอร์ และน้ำมันสน สำหรับงานบ้านพักอาศัย อาคารพาณิชย์ และโรงงานอุตสาหกรรม"
-        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: "เกี่ยวกับเรา" }]}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        description={hero.description}
+        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: hero.crumb }]}
       />
 
       {/* ------------------------------------------------------ Intro statement */}
       <Section>
         <Reveal>
           <div className="mx-auto max-w-4xl text-center">
-            <span className="eyebrow-en block text-[14px] text-accent-500">
-              Blue Rich Material Products
-            </span>
+            <span className="eyebrow-en block text-[14px] text-accent-500">{intro.eyebrow}</span>
             <h2 className="mt-2 text-[clamp(23px,3vw,34px)] leading-[1.35]">
-              ผู้จำหน่ายวัสดุป้องกันอัคคีภัยครบวงจร
-              <br className="hidden sm:block" /> พร้อมงานรับรองโดยวุฒิวิศวกรโยธา
+              {intro.title1}
+              <br className="hidden sm:block" /> {intro.title2}
             </h2>
             <p className="mx-auto mt-5 max-w-3xl text-[16px] leading-[1.9] text-slate-600">
-              {site.name} ดำเนินธุรกิจจำหน่ายสีกันไฟสูตรน้ำมันและสูตรน้ำ สีน้ำมัน สีรองพื้น
-              ทินเนอร์ และน้ำมันสน ให้บริการโดยวิศวกรรับรองงาน
-              สำหรับงานก่อสร้างหลากหลายประเภท ทั้งบ้านพักอาศัย อาคารพาณิชย์
-              และโรงงานอุตสาหกรรม
+              {site.name} {intro.body}
             </p>
           </div>
         </Reveal>
-
-        <Reveal delay={120}>
-          <div className="mt-9 flex flex-wrap justify-center gap-3.5">
-            {standards.map((s) => (
-              <div
-                key={s.label}
-                className="min-w-[180px] rounded-2xl border border-slate-200 bg-white px-[22px] py-3.5 text-center shadow-[0_2px_10px_rgba(42,80,104,0.04)]"
-              >
-                <b className="block text-[16px] font-semibold text-brand-600">{s.label}</b>
-                <span className="text-[13px] text-slate-500">{s.note}</span>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-      </Section>
-
-      {/* -------------------------------------------------------- Process flow */}
-      <Section tone="shell">
-        <Reveal>
-          <SectionHeading
-            align="center"
-            eyebrow="How we work"
-            title="ขั้นตอนการทำงาน 5 ขั้น"
-            description="ทุกโครงการเดินตามลำดับเดียวกัน ตั้งแต่วันที่ส่งแบบจนถึงวันที่ได้เอกสารเซ็นแล้ว"
-          />
-        </Reveal>
-
-        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-3">
-          {process.map((p, i) => (
-            <Reveal key={p.title} delay={i * 80}>
-              <li className="relative flex h-full flex-col items-center rounded-3xl border border-slate-200 bg-white px-5 pt-9 pb-7 text-center">
-                <span className="absolute -top-5 grid size-10 place-items-center rounded-full bg-brand-600 text-[17px] font-bold text-white">
-                  {i + 1}
-                </span>
-                <h3 className="text-[17px] leading-snug">{p.title}</h3>
-                <p className="mt-2.5 text-[14.5px] leading-relaxed text-slate-500">{p.text}</p>
-                {i < process.length - 1 && (
-                  <span
-                    aria-hidden
-                    className="absolute top-1/2 -right-3 hidden size-6 place-items-center rounded-full bg-brand-200 text-brand-700 lg:grid"
-                  >
-                    <Icon.arrow className="size-3.5" />
-                  </span>
-                )}
-              </li>
-            </Reveal>
-          ))}
-        </ol>
       </Section>
 
       {/* ------------------------------------------------------ Company overview */}
-      <Section>
+      <Section tone="shell">
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           <Reveal>
             <SectionHeading
-              eyebrow="เราคือใคร"
-              title="วัสดุงานป้องกันไฟ ที่มาพร้อมความรับผิดชอบทางวิศวกรรม"
+              eyebrow={overview.eyebrow}
+              title={overview.title}
             />
             <div className="mt-6 space-y-5 text-[16px] leading-[1.9] text-slate-600">
-              <p>
-                ขอบเขตผลิตภัณฑ์ของเราครอบคลุมตั้งแต่สีรองพื้น สีทับหน้าเหล็ก ทินเนอร์
-                น้ำมันสน ไปจนถึงสีเซรามิคกันความร้อน
-                จึงสามารถออกแบบระบบสีทั้งระบบให้กับโครงการได้ในที่เดียว
-              </p>
-              <p>
-                เราให้ความสำคัญกับการดำเนินธุรกิจตามมาตรฐานงานวิศวกรรมที่ถูกต้อง
-                ให้คำปรึกษาด้านการออกแบบที่สอดคล้องกับวัตถุประสงค์ของงาน
-                เน้นความซื่อสัตย์ในการทำธุรกิจ รับผิดชอบต่อลูกค้า
-                และให้บริการทั้งก่อนและหลังการขายโดยทีมงานผู้เชี่ยวชาญ
-              </p>
+              {overview.body.map((t) => (
+                <p key={t}>{t}</p>
+              ))}
             </div>
 
             <dl className="mt-8 grid grid-cols-3 gap-x-6 gap-y-5 border-t border-slate-200 pt-7">
@@ -197,33 +97,51 @@ export default async function AboutPage() {
 
             <div className="mt-8 flex flex-wrap gap-2.5">
               <Button href="/products" size="lg">
-                ดูสินค้าของเรา
+                {overview.productsLabel}
                 <Icon.arrow />
               </Button>
               <Button href="/projects" variant="ghost" size="lg">
-                ดูผลงานที่ผ่านมา
+                {overview.projectsLabel}
               </Button>
             </div>
           </Reveal>
 
           <Reveal delay={120}>
+            {/* ชุดเดียวกับบล็อก "BY BLUE RICH" หน้าแรก — เฟดขาวสองชั้นไล่ขึ้นจากขอบล่าง
+                และเข้ามาจากขอบขวา ป้ายจึงค่อยๆ โผล่ออกมาจากรูปแทนที่จะแปะทับ
+                ชื่อบริษัทดึงจาก "ตั้งค่าเว็บไซต์ → ข้อมูลบริษัท" ที่เดียวกับหัวเว็บ
+                โลโก้ใส่ alt ว่างเพราะชื่อเป็นตัวหนังสืออยู่ข้างๆ แล้ว ใส่ซ้ำจะถูกอ่านสองรอบ */}
             <div className="relative aspect-4/3 overflow-hidden rounded-4xl border border-slate-200">
-              <Image
-                src="/assets/products/neocoat-paint-w-warehouse.webp"
-                alt="คลังสินค้า Blue Rich Material Products"
+              <CmsImage
+                src="/assets/about-steel-structure.jpg"
+                alt={overview.imageAlt}
                 fill
                 sizes="(min-width: 1024px) 46vw, 92vw"
                 className="object-cover"
               />
               <span
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-brand-900/45 to-transparent"
+                className="absolute inset-0 bg-[linear-gradient(to_top,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.36)_16%,rgba(255,255,255,0.08)_30%,rgba(255,255,255,0)_44%)]"
               />
-              <span className="absolute right-5 bottom-5 grid size-[110px] place-items-center rounded-full bg-gradient-to-br from-accent-500 to-brand-500 shadow-[0_10px_26px_rgba(32,64,79,0.35)]">
-                <span className="grid size-[90px] place-content-center rounded-full bg-white p-1.5 text-center leading-[1.1]">
-                  <b className="block text-3xl font-bold text-brand-700">1</b>
-                  <span className="mt-px block text-[9.5px] font-semibold tracking-[0.07em] text-accent-500 uppercase">
-                    One Stop Service
+              <span
+                aria-hidden
+                className="absolute inset-0 bg-[linear-gradient(to_left,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0.22)_24%,rgba(255,255,255,0)_50%)]"
+              />
+              <span className="absolute right-3.5 bottom-3.5 flex max-w-[calc(100%-1.75rem)] items-center gap-3 rounded-2xl bg-white/80 px-4 py-3 shadow-[0_8px_30px_-8px_rgba(32,64,79,0.38)] ring-1 ring-white/70 ring-inset backdrop-blur-md sm:right-5 sm:bottom-5 sm:gap-4 sm:px-5 sm:py-4">
+                <CmsImage
+                  src="/assets/logo.png"
+                  alt=""
+                  width={160}
+                  height={142}
+                  className="h-9 w-auto shrink-0 drop-shadow-[0_1px_5px_rgba(32,64,79,0.16)] sm:h-11 lg:h-[50px]"
+                />
+                <span aria-hidden className="h-8 w-px shrink-0 bg-brand-900/12 sm:h-10 lg:h-11" />
+                <span className="min-w-0">
+                  <b className="font-display block text-[13px] leading-[1.3] font-semibold tracking-[0.005em] text-brand-800 sm:text-[16px] lg:text-[18px]">
+                    {site.name}
+                  </b>
+                  <span className="mt-[3px] block text-[8.5px] leading-[1.45] font-medium tracking-[0.16em] text-brand-500 uppercase sm:mt-1 sm:text-[10px] sm:tracking-[0.2em] lg:text-[11px]">
+                    {site.nameEn}
                   </span>
                 </span>
               </span>
@@ -233,37 +151,40 @@ export default async function AboutPage() {
       </Section>
 
       {/* -------------------------------------------------------------- Values */}
-      <Section tone="shell">
+      <Section>
         <Reveal>
           <SectionHeading
             align="center"
-            eyebrow="แนวทางการทำงาน"
-            title="สิ่งที่เรายึดถือในทุกโครงการ"
+            eyebrow={valuesBlock.eyebrow}
+            title={valuesBlock.title}
           />
         </Reveal>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {values.map((v, i) => (
+          {values.map((v, i) => {
+            const ValueIcon = valueIcons[i] ?? Icon.shield;
+            return (
             <Reveal key={v.title} delay={i * 80}>
               <div className="h-full rounded-3xl border border-slate-200 bg-white p-7">
                 <span className="grid size-12 place-items-center rounded-2xl bg-brand-50 text-brand-600">
-                  <v.icon />
+                  <ValueIcon />
                 </span>
                 <h3 className="mt-5 text-[18px]">{v.title}</h3>
                 <p className="mt-3 text-[14.5px] leading-relaxed text-slate-500">{v.text}</p>
               </div>
             </Reveal>
-          ))}
+            );
+          })}
         </div>
       </Section>
 
       {/* ------------------------------------------------------------- Gallery */}
-      <Section>
+      <Section tone="shell">
         <Reveal>
           <SectionHeading
-            title="ภาพหน้างานจริงจากโครงการของเรา"
+            title={galleryCopy.title}
             action={
               <Button href="/projects" variant="ghost" size="sm">
-                ผลงานทั้งหมด
+                {galleryCopy.moreLabel}
                 <Icon.arrow />
               </Button>
             }
@@ -290,12 +211,12 @@ export default async function AboutPage() {
       </Section>
 
       {/* -------------------------------------------------------- Product scope */}
-      <Section tone="shell">
+      <Section>
         <Reveal>
           <SectionHeading
             align="center"
-            eyebrow="ขอบเขตผลิตภัณฑ์"
-            title="ครบทุกวัสดุที่โครงการเหล็กต้องใช้"
+            eyebrow={scope.eyebrow}
+            title={scope.title}
           />
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -313,25 +234,6 @@ export default async function AboutPage() {
             </Reveal>
           ))}
         </div>
-
-        <Reveal delay={200}>
-          <div className="mt-11 flex flex-col items-center gap-5 text-center">
-            <p className="max-w-2xl text-slate-600">
-              เรามั่นใจว่าผลิตภัณฑ์ของเราจะตอบโจทย์ความต้องการของลูกค้าได้อย่างครอบคลุมในทุกลักษณะงาน
-              หากมีข้อสงสัย ทีมงานยินดีให้คำปรึกษาโดยไม่มีค่าใช้จ่าย
-            </p>
-            <div className="flex flex-wrap justify-center gap-2.5">
-              <Button href={telHref} size="lg">
-                <Icon.phone />
-                โทร {site.phones[0]}
-              </Button>
-              <Button href={lineHref} size="lg" variant="line">
-                <Icon.line />
-                แอดไลน์ @{site.lineId}
-              </Button>
-            </div>
-          </div>
-        </Reveal>
       </Section>
 
       <CtaBand />

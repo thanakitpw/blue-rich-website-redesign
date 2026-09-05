@@ -1,5 +1,5 @@
+import { CmsImage } from "@/components/CmsImage";
 import type { Metadata } from "next";
-import Image from "next/image";
 import LpHeader from "@/components/landing/LpHeader";
 import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
@@ -154,7 +154,7 @@ export default async function FireBlanketLanding() {
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
-                    แอดไลน์ @{site.lineId}
+                    แอดไลน์ {site.lineId}
                   </a>
                 </div>
 
@@ -163,7 +163,7 @@ export default async function FireBlanketLanding() {
 
               <div className="relative">
                 <div className="overflow-hidden rounded-4xl bg-white shadow-2xl shadow-brand-950/50 ring-1 ring-white/10">
-                  <Image
+                  <CmsImage
                     src="/assets/products/fiberglass-cloth-panel-main.webp"
                     alt="ผ้ากันไฟใยแก้วสีทอง ผืนขนาด 1×1 เมตร เย็บริมและเจาะรูตาไก่ 4 มุม"
                     width={1100}
@@ -206,7 +206,7 @@ export default async function FireBlanketLanding() {
                 <Reveal key={g.doc} delay={i * 80}>
                   <div className="flex h-full flex-col overflow-hidden rounded-4xl bg-white ring-1 ring-slate-200/80 transition hover:shadow-[0_28px_56px_-32px_rgba(12,36,56,0.35)] hover:ring-brand-300">
                     <div className="relative aspect-4/3 bg-slate-100">
-                      <Image
+                      <CmsImage
                         src={g.image}
                         alt={g.alt}
                         fill
@@ -275,7 +275,7 @@ export default async function FireBlanketLanding() {
                 >
                   <figure className="group h-full overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200/80">
                     <div className="relative aspect-4/3">
-                      <Image
+                      <CmsImage
                         src={g.src}
                         alt={g.alt}
                         fill

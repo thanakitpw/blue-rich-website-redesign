@@ -4,66 +4,58 @@ import Reveal from "@/components/ui/Reveal";
 import ContactForm from "@/components/ContactForm";
 import { bundleFor } from "@/data/site";
 import { getSiteInfo } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSiteInfo();
+  const [site, { meta }] = await Promise.all([getSiteInfo(), copyFor("contact")]);
   return {
-    title: "ติดต่อเรา",
+    title: meta.title,
     description: `ติดต่อ ${site.name} โทร ${site.phones.join(", ")} อีเมล ${site.email} LINE ID ${site.lineId}`,
   };
 }
 
 export default async function ContactPage() {
-  const { site, telHref, lineHref, lineHref2, mailHref, mapHref, mapEmbed } = bundleFor(
-    await getSiteInfo(),
-    [],
-  );
+  const [info, copy] = await Promise.all([getSiteInfo(), copyFor("contact")]);
+  const { hero, channels: labels, form, address } = copy;
+  const { site, telHref, lineHref, lineHref2, mailHref, mapHref, mapEmbed } = bundleFor(info, []);
 
-  const channels = [
-    {
-      icon: Icon.phone,
-      label: "โทรศัพท์",
-      lines: site.phones,
-      href: telHref,
-      cta: "โทรออก",
-    },
+  /* ป้ายกำกับมาจากไฟล์ข้อความ ส่วนตัวข้อมูลจริงมาจาก "ข้อมูลบริษัท" ในหลังบ้าน */
+  const channels: {
+    icon: (typeof Icon)["phone"];
+    label: string;
+    lines: string[];
+    href?: string;
+    cta?: string;
+    external?: boolean;
+  }[] = [
+    { icon: Icon.phone, label: labels[0].label, lines: site.phones, href: telHref, cta: labels[0].cta },
     {
       icon: Icon.line,
-      label: "LINE",
-      lines: [`ID : ${site.lineId}`],
+      label: labels[1].label,
+      lines: [`${labels[1].idPrefix} ${site.lineId}`],
       href: lineHref,
-      cta: "เปิด LINE",
+      cta: labels[1].cta,
       external: true,
     },
     {
       icon: Icon.line,
-      label: "LINE ช่องทางที่ 2",
-      lines: ["กดเพิ่มเพื่อนได้ทันที"],
+      label: labels[2].label,
+      lines: [labels[2].line ?? ""],
       href: lineHref2,
-      cta: "เปิด LINE",
+      cta: labels[2].cta,
       external: true,
     },
-    {
-      icon: Icon.mail,
-      label: "อีเมล",
-      lines: [site.email],
-      href: mailHref,
-      cta: "ส่งอีเมล",
-    },
-    {
-      icon: Icon.clock,
-      label: "เวลาทำการ",
-      lines: [site.hours],
-    },
+    { icon: Icon.mail, label: labels[3].label, lines: [site.email], href: mailHref, cta: labels[3].cta },
+    { icon: Icon.clock, label: labels[4].label, lines: [site.hours] },
   ];
 
   return (
     <>
       <PageHero
-        eyebrow="Contact"
-        title="ติดต่อเรา"
-        description="ฝ่ายขายและทีมวิศวกรพร้อมให้คำปรึกษาเรื่องระบบสีกันไฟ ปริมาณที่ต้องใช้ และเอกสารรับรอง โดยไม่มีค่าใช้จ่าย"
-        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: "ติดต่อเรา" }]}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        description={hero.description}
+        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: hero.crumb }]}
       />
 
       {/* Channels */}
@@ -109,10 +101,9 @@ export default async function ContactPage() {
           <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
             <Reveal>
               <div className="rounded-4xl bg-white p-7 border border-slate-200 sm:p-10">
-                <h2 className="text-2xl sm:text-3xl">ส่งรายละเอียดงานให้เราประเมิน</h2>
+                <h2 className="text-2xl sm:text-3xl">{form.title}</h2>
                 <p className="mt-3 text-[1.02rem] leading-relaxed text-slate-600">
-                  กรอกข้อมูลด้านล่าง ทีมงานจะติดต่อกลับภายใน 1 วันทำการ
-                  หากมีแบบโครงสร้างหรือ BOQ สามารถแนบไฟล์มาทางอีเมลหรือ LINE ได้เลย
+                  {form.description}
                 </p>
                 <div className="mt-8">
                   <ContactForm />
@@ -123,7 +114,7 @@ export default async function ContactPage() {
             <Reveal delay={120}>
               <div className="sticky top-28 space-y-5">
                 <div className="rounded-4xl bg-brand-950 p-8 text-white">
-                  <h2 className="text-xl text-white">ที่อยู่บริษัท</h2>
+                  <h2 className="text-xl text-white">{address.title}</h2>
                   <p className="mt-4 flex gap-3 text-[1.02rem] leading-relaxed text-brand-100/80">
                     <Icon.pin className="mt-1 size-5 shrink-0 text-brand-400" />
                     {site.address}
@@ -134,7 +125,7 @@ export default async function ContactPage() {
                     rel="noreferrer"
                     className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 transition hover:bg-white/20"
                   >
-                    เปิดใน Google Maps
+                    {address.mapLabel}
                     <Icon.arrow />
                   </a>
                 </div>
@@ -142,7 +133,7 @@ export default async function ContactPage() {
                 <div className="overflow-hidden rounded-4xl border border-slate-200">
                   <iframe
                     src={mapEmbed}
-                    title={`แผนที่ ${site.name}`}
+                    title={`${address.mapTitlePrefix} ${site.name}`}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     className="h-[22rem] w-full border-0"

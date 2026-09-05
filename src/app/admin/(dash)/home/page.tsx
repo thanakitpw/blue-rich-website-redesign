@@ -5,6 +5,7 @@ import type { Step } from "@/data/products";
 import {
   bestSellerSlugs,
   categoryTiles,
+  clients,
   flagshipSlug,
   valuePoints,
 } from "@/data/home";
@@ -25,7 +26,7 @@ export default async function AdminHomePage() {
 
   return (
     <HomeForm
-      showcase={showcase ?? { flagshipSlug, bestSellerSlugs, categoryTiles, valuePoints }}
+      showcase={showcase ?? { flagshipSlug, bestSellerSlugs, categoryTiles, valuePoints, clients }}
       installationSteps={steps ?? installationSteps}
       legalInfo={legal ?? legalInfo}
       media={media}

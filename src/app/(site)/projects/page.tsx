@@ -4,24 +4,29 @@ import { Button, Container, Icon, PageHero } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { bundleFor } from "@/data/site";
 import { getProjects, getSiteInfo, getStats } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
-export const metadata: Metadata = {
-  title: "ผลงานของเรา",
-  description:
-    "ภาพหน้างานจริงจากโครงการที่ใช้ระบบสีกันไฟ Neocoat Intumescent Paint — โครงสร้างเหล็กโรงงาน โครงหลังคาช่วงกว้าง คานและเสาเหล็กรูปพรรณ",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { meta } = await copyFor("projects");
+  return meta;
+}
 
 export default async function ProjectsPage() {
-  const [projects, stats, info] = await Promise.all([getProjects(), getStats(), getSiteInfo()]);
+  const [projects, stats, info, { hero, cta }] = await Promise.all([
+    getProjects(),
+    getStats(),
+    getSiteInfo(),
+    copyFor("projects"),
+  ]);
   const { telHref, lineHref } = bundleFor(info, []);
 
   return (
     <>
       <PageHero
-        eyebrow="Our Works"
-        title="ผลงานงานสีกันไฟโครงสร้างเหล็ก"
-        description="รวมภาพหน้างานจริงจากโครงการที่เลือกใช้ระบบ Neocoat ทั้งงานทาในโรงประกอบก่อนยกติดตั้ง และงานทาหน้าไซต์หลังประกอบเสร็จ"
-        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: "ผลงานของเรา" }]}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        description={hero.description}
+        breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: hero.crumb }]}
       />
 
       {/* Stats */}
@@ -84,22 +89,17 @@ export default async function ProjectsPage() {
               />
               <div className="relative flex flex-col items-start gap-7 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-xl">
-                  <h2 className="text-2xl leading-tight text-white sm:text-3xl">
-                    อยากให้โครงการของคุณอยู่ในหน้านี้?
-                  </h2>
-                  <p className="mt-4 text-brand-100/75">
-                    ส่งแบบและขอบเขตงานมาให้ทีมวิศวกรประเมิน เราสรุปปริมาณสี ราคา
-                    และรายการเอกสารรับรองให้ครบภายใน 1–2 วันทำการ
-                  </p>
+                  <h2 className="text-2xl leading-tight text-white sm:text-3xl">{cta.title}</h2>
+                  <p className="mt-4 text-brand-100/75">{cta.description}</p>
                 </div>
                 <div className="flex shrink-0 flex-wrap gap-3">
                   <Button href={telHref} size="lg" variant="secondary">
                     <Icon.phone />
-                    ขอใบเสนอราคา
+                    {cta.callLabel}
                   </Button>
                   <Button href={lineHref} size="lg" variant="line">
                     <Icon.line />
-                    ปรึกษาผ่าน LINE
+                    {cta.lineLabel}
                   </Button>
                 </div>
               </div>

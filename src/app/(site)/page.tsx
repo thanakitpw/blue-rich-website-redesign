@@ -1,10 +1,11 @@
-import Image from "next/image";
+import { CmsImage } from "@/components/CmsImage";
 import Hero from "@/components/home/Hero";
 import Reveal from "@/components/ui/Reveal";
 import { Button, Icon, MoreLink, SectionHeading } from "@/components/ui";
-import { CategoryCard, FeatureCard, MoreCard, NewsCard, ProductCard } from "@/components/cards";
+import { CategoryCard, NewsCard } from "@/components/cards";
 import {
   AboutBand,
+  ClientLogos,
   Faq,
   LineCta,
   Section,
@@ -12,81 +13,45 @@ import {
   ValueBlock,
   WorksGrid,
 } from "@/components/concept";
-import {
-  getArticles,
-  getCategories,
-  getHomeFaqs,
-  getHomeShowcase,
-  getProduct,
-  getProducts,
-  getProjects,
-} from "@/lib/cms/content";
+import { getArticles, getHomeFaqs, getHomeShowcase, getProjects } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
 /**
  * Home page — section order and component styling ported from the approved
  * Concept B mock-up at `public/concept-b/index.html`:
  *
- *   hero slider + duo + trust ribbon → best sellers → categories →
- *   value block → standards → works → about band → LINE CTA →
- *   articles → FAQ
+ *   hero slider + duo + trust ribbon → categories → value block →
+ *   standards → works → about band → LINE CTA → articles → FAQ
+ *
+ * แถบ "สินค้าขายดี" ถูกถอดออกตามที่ลูกค้าขอ — ค่าที่เคยคุมแถบนี้
+ * (สินค้าเรือธง / สินค้าในการ์ดเล็ก) ยังอยู่ใน site_settings.home_showcase
  *
  * The eight category tiles now point at the client's new menu structure
  * instead of at query-string filters.
  */
 
 export default async function HomePage() {
-  const [showcaseCfg, products, categories, articles, projects, homeFaqs] = await Promise.all([
+  const [showcaseCfg, articles, projects, homeFaqs, c] = await Promise.all([
     getHomeShowcase(),
-    getProducts(),
-    getCategories(),
     getArticles(),
     getProjects(),
     getHomeFaqs(),
+    copyFor("home"),
   ]);
 
-  const flagship = await getProduct(showcaseCfg.flagshipSlug);
-  const bestSellers = showcaseCfg.bestSellerSlugs
-    .map((slug) => products.find((p) => p.slug === slug))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p));
   const latest = articles.slice(0, 3);
   const showcase = projects.slice(0, 8);
 
   return (
     <>
-      <Hero />
-
-      {/* ------------------------------------------------------ Best sellers */}
-      <Section id="products">
-        <Reveal>
-          <SectionHeading
-            title="สินค้าขายดี"
-            action={<MoreLink href="/products">ดูสินค้าทั้งหมด</MoreLink>}
-          />
-        </Reveal>
-
-        <div className="mt-[26px] grid gap-[26px] lg:grid-cols-[330px_1fr]">
-          <Reveal>
-            {flagship && <FeatureCard product={flagship} />}
-          </Reveal>
-          <div className="grid grid-cols-2 gap-[18px] lg:grid-cols-3">
-            {bestSellers.map((p, i) => (
-              <Reveal key={p.slug} delay={i * 60}>
-                <ProductCard product={p} />
-              </Reveal>
-            ))}
-            <Reveal delay={bestSellers.length * 60}>
-              <MoreCard note={`${products.length} รายการ · ${categories.length} หมวดหมู่`} />
-            </Reveal>
-          </div>
-        </div>
-      </Section>
+      <Hero copy={c.hero} ribbon={c.ribbon} />
 
       {/* -------------------------------------------------------- Categories */}
       <Section id="categories" tone="shell">
         <Reveal>
           <SectionHeading
-            title="เลือกสินค้าตามลักษณะงาน"
-            action={<MoreLink href="/products">ดูสินค้าทั้งหมด</MoreLink>}
+            title={c.sections.categories}
+            action={<MoreLink href="/products">{c.sections.categoriesMore}</MoreLink>}
           />
         </Reveal>
         <div className="mt-[26px] grid grid-cols-2 gap-[18px] lg:grid-cols-4">
@@ -101,23 +66,39 @@ export default async function HomePage() {
       {/* -------------------------------------------------------- Value block */}
       <Section id="certify">
         <Reveal>
-          <ValueBlock points={showcaseCfg.valuePoints} />
+          <ValueBlock
+            points={showcaseCfg.valuePoints}
+            lead1={c.valueBlock.lead1}
+            lead2Plain={c.valueBlock.lead2Plain}
+            lead2Accent={c.valueBlock.lead2Accent}
+            note={c.valueBlock.note}
+          />
         </Reveal>
       </Section>
 
       {/* ---------------------------------------------------------- Standards */}
       <Section tone="shell">
         <Reveal>
-          <StandardsBand />
+          <StandardsBand quote={c.standardsQuote} />
         </Reveal>
       </Section>
 
+      {/* ------------------------------------------------------------ Clients */}
+      <Section id="clients">
+        <Reveal>
+          <SectionHeading eyebrow={c.sections.clientsEyebrow} title={c.sections.clients} />
+        </Reveal>
+        <div className="mt-[26px]">
+          <ClientLogos items={showcaseCfg.clients} />
+        </div>
+      </Section>
+
       {/* -------------------------------------------------------------- Works */}
-      <Section id="works">
+      <Section id="works" tone="shell">
         <Reveal>
           <SectionHeading
-            title="ผลงานที่ผ่านมาของเรา"
-            action={<MoreLink href="/projects">ผลงานทั้งหมด</MoreLink>}
+            title={c.sections.works}
+            action={<MoreLink href="/projects">{c.sections.worksMore}</MoreLink>}
           />
         </Reveal>
         <div className="mt-[26px]">
@@ -126,19 +107,19 @@ export default async function HomePage() {
       </Section>
 
       {/* -------------------------------------------------------------- About */}
-      <AboutBand />
+      <AboutBand copy={c.aboutBand} />
 
       {/* ------------------------------------------------------------ Contact */}
       <Section id="contact">
-        <LineCta />
+        <LineCta copy={c.lineCta} />
       </Section>
 
       {/* ----------------------------------------------------------- Articles */}
       <Section id="articles" tone="shell">
         <Reveal>
           <SectionHeading
-            title="บทความสาระน่ารู้"
-            action={<MoreLink href="/news">บทความทั้งหมด</MoreLink>}
+            title={c.sections.articles}
+            action={<MoreLink href="/news">{c.sections.articlesMore}</MoreLink>}
           />
         </Reveal>
         <div className="mt-[26px] grid gap-[22px] md:grid-cols-3">
@@ -154,12 +135,12 @@ export default async function HomePage() {
       <Section>
         <div className="grid items-start gap-9 lg:grid-cols-[0.85fr_1.15fr]">
           <Reveal>
-            <div className="text-sm text-slate-500">รวบรวม</div>
-            <h2 className="mb-[18px] text-[clamp(21px,2.4vw,28px)]">คำถามที่พบบ่อย?</h2>
+            <div className="text-sm text-slate-500">{c.faqBlock.eyebrow}</div>
+            <h2 className="mb-[18px] text-[clamp(21px,2.4vw,28px)]">{c.faqBlock.title}</h2>
             <div className="relative aspect-4/3 overflow-hidden rounded-3xl">
-              <Image
+              <CmsImage
                 src="/assets/faq-home.jpg"
-                alt="งานทาสีกันไฟโครงสร้างเหล็ก"
+                alt={c.faqBlock.imageAlt}
                 fill
                 sizes="(min-width: 1024px) 40vw, 92vw"
                 className="object-cover"
@@ -168,10 +149,10 @@ export default async function HomePage() {
             <div className="mt-5 flex flex-wrap gap-2.5">
               <Button href="/contact" variant="accent">
                 <Icon.doc className="size-4" />
-                ขอใบเสนอราคา
+                {c.faqBlock.quoteLabel}
               </Button>
               <Button href="/products" variant="ghost">
-                ดูสินค้าทั้งหมด
+                {c.faqBlock.productsLabel}
                 <Icon.arrow />
               </Button>
             </div>

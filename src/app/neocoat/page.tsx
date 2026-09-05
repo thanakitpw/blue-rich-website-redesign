@@ -1,5 +1,5 @@
+import { CmsImage } from "@/components/CmsImage";
 import type { Metadata } from "next";
-import Image from "next/image";
 import LpHeader from "@/components/landing/LpHeader";
 import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
@@ -170,7 +170,7 @@ export default async function FireRetardantPaintLanding() {
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
                   >
                     <Icon.line />
-                    แอดไลน์ @{site.lineId}
+                    แอดไลน์ {site.lineId}
                   </a>
                 </div>
 
@@ -179,7 +179,7 @@ export default async function FireRetardantPaintLanding() {
 
               <div className="relative">
                 <div className="overflow-hidden rounded-4xl shadow-2xl shadow-brand-950/50 ring-1 ring-white/10">
-                  <Image
+                  <CmsImage
                     src="/assets/banner-fireproof.jpg"
                     alt="งานสีกันไฟเคลือบผิวโครงสร้างเหล็ก Fire Proof Steel Structure"
                     width={1200}
@@ -192,7 +192,7 @@ export default async function FireRetardantPaintLanding() {
 
                 <div className="absolute -bottom-5 -left-3 hidden rounded-3xl bg-white p-4 shadow-2xl shadow-brand-950/30 sm:block">
                   <div className="flex items-center gap-3.5">
-                    <Image
+                    <CmsImage
                       src="/assets/product-neocoat-intumescent.jpg"
                       alt=""
                       width={80}
@@ -406,7 +406,7 @@ export default async function FireRetardantPaintLanding() {
             <div className="mt-12 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
               <Reveal>
                 <div className="overflow-hidden rounded-4xl bg-white shadow-xl shadow-brand-950/10 ring-1 ring-slate-200">
-                  <Image
+                  <CmsImage
                     src="/assets/product-neocoat-intumescent.jpg"
                     alt="สีกันไฟ สีทนไฟ Neocoat Intumescent Paint สำหรับโครงสร้างเหล็ก"
                     width={900}
@@ -559,7 +559,7 @@ export default async function FireRetardantPaintLanding() {
             <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
               <Reveal>
                 <div className="overflow-hidden rounded-4xl shadow-2xl shadow-brand-950/15 ring-1 ring-slate-200">
-                  <Image
+                  <CmsImage
                     src="/assets/cert-documents.jpg"
                     alt="เอกสารรับรองงานสีกันไฟโครงสร้างเหล็กโดยวุฒิวิศวกร"
                     width={1200}
@@ -708,7 +708,7 @@ export default async function FireRetardantPaintLanding() {
                 <Reveal key={g.src} delay={i * 60}>
                   <figure className="group overflow-hidden rounded-2xl bg-slate-200">
                     <div className="relative aspect-4/3">
-                      <Image
+                      <CmsImage
                         src={g.src}
                         alt={g.alt}
                         fill
@@ -783,7 +783,7 @@ export default async function FireRetardantPaintLanding() {
                 <Reveal key={r.name} delay={i * 80}>
                   <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200/80">
                     <div className="relative aspect-4/3 bg-slate-100">
-                      <Image
+                      <CmsImage
                         src={r.image}
                         alt={r.name}
                         fill

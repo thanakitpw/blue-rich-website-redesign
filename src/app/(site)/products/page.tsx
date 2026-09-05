@@ -4,12 +4,12 @@ import { CatalogSection } from "@/components/hub";
 import Reveal from "@/components/ui/Reveal";
 import { bundleFor } from "@/data/site";
 import { getCategories, getProducts, getSiteInfo } from "@/lib/cms/content";
+import { copyFor } from "@/lib/cms/copy-pages";
 
-export const metadata: Metadata = {
-  title: "สินค้าทั้งหมด",
-  description:
-    "สีกันไฟ Neocoat Intumescent Paint สูตรน้ำมันและสูตรน้ำ, สีรองพื้น/ทับหน้า, ผ้ากันไฟ Fiberglass Cloth, สีเซรามิคสะท้อนความร้อน Roof Shield, ทินเนอร์/น้ำมันสน และสีน้ำพลาสติก Four Plus",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { meta } = await copyFor("products");
+  return meta;
+}
 
 export default async function ProductsPage({
   searchParams,
@@ -17,10 +17,11 @@ export default async function ProductsPage({
   searchParams: Promise<{ cat?: string }>;
 }) {
   const { cat } = await searchParams;
-  const [categories, products, info] = await Promise.all([
+  const [categories, products, info, { hero, cta }] = await Promise.all([
     getCategories(),
     getProducts(),
     getSiteInfo(),
+    copyFor("products"),
   ]);
   const { telHref, lineHref } = bundleFor(info, []);
   const active = categories.find((c) => c.slug === cat);
@@ -29,18 +30,14 @@ export default async function ProductsPage({
   return (
     <>
       <PageHero
-        eyebrow="Products"
-        title={active ? active.name : "สินค้าทั้งหมด"}
-        description={
-          active
-            ? active.description
-            : "สินค้าสีกันไฟ & วัสดุกันไฟ รับรองโดยวุฒิวิศวกรโยธา — ครบระบบตั้งแต่สีรองพื้น สีกันไฟ สีทับหน้า ผ้ากันไฟ ไปจนถึงสีน้ำพลาสติกและตัวทำละลาย"
-        }
+        eyebrow={hero.eyebrow}
+        title={active ? active.name : hero.title}
+        description={active ? active.description : hero.description}
         breadcrumb={[
           { label: "หน้าแรก", href: "/" },
           ...(active
-            ? [{ label: "สินค้า", href: "/products" }, { label: active.name }]
-            : [{ label: "สินค้าทั้งหมด" }]),
+            ? [{ label: hero.crumbParent, href: "/products" }, { label: active.name }]
+            : [{ label: hero.crumb }]),
         ]}
       />
 
@@ -50,21 +47,16 @@ export default async function ProductsPage({
         <Container>
           <Reveal>
             <div className="flex flex-col items-center gap-5 rounded-4xl border border-brand-200 bg-brand-50 px-7 py-11 text-center sm:px-12">
-              <h2 className="max-w-xl text-2xl sm:text-3xl">
-                ไม่แน่ใจว่าโครงการของคุณต้องใช้ระบบสีแบบไหน?
-              </h2>
-              <p className="max-w-xl text-slate-600">
-                ส่งแบบโครงสร้างหรือรายการ BOQ มาให้ทีมวิศวกรของเราประเมินอัตราการทนไฟ
-                ความหนาฟิล์ม และปริมาณสีที่ต้องใช้ได้ฟรี
-              </p>
+              <h2 className="max-w-xl text-2xl sm:text-3xl">{cta.title}</h2>
+              <p className="max-w-xl text-slate-600">{cta.description}</p>
               <div className="flex flex-wrap justify-center gap-2.5">
                 <Button href={telHref} size="lg">
                   <Icon.phone />
-                  ขอใบเสนอราคา
+                  {cta.callLabel}
                 </Button>
                 <Button href={lineHref} variant="line" size="lg">
                   <Icon.line />
-                  ปรึกษาผ่าน LINE
+                  {cta.lineLabel}
                 </Button>
               </div>
             </div>

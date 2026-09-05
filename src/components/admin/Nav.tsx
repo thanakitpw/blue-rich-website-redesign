@@ -3,31 +3,23 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const groups: { title: string; items: { href: string; label: string; exact?: boolean }[] }[] = [
+/**
+ * เมนูหลังบ้าน — ตั้งใจให้สั้นแค่หกอย่างตามที่ลูกค้าขอ
+ *
+ * หน้าจอที่เคยอยู่ในเมนูไม่ได้หายไปไหน แต่ถูกยุบไปเป็นแท็บอยู่ใต้หัวข้อที่มัน
+ * เป็นเจ้าของ (ดู SectionTabs) — `match` คือรายการเส้นทางที่ยังต้องทำให้เมนู
+ * ข้อนี้ติดไฟอยู่ ไม่งั้นกดเข้าแท็บแล้วเมนูซ้ายจะดูเหมือนไม่ได้เลือกอะไรเลย
+ */
+const items: { href: string; label: string; exact?: boolean; match?: string[] }[] = [
+  { href: "/admin", label: "แดชบอร์ด", exact: true },
+  { href: "/admin/products", label: "สินค้า", match: ["/admin/categories"] },
+  { href: "/admin/articles", label: "บทความ" },
+  { href: "/admin/copy", label: "ข้อความในหน้าเว็บ" },
+  { href: "/admin/media", label: "คลังรูป" },
   {
-    title: "ภาพรวม",
-    items: [{ href: "/admin", label: "แดชบอร์ด", exact: true }],
-  },
-  {
-    title: "เนื้อหา",
-    items: [
-      { href: "/admin/products", label: "สินค้า" },
-      { href: "/admin/categories", label: "หมวดหมู่สินค้า" },
-      { href: "/admin/articles", label: "บทความ" },
-      { href: "/admin/projects", label: "ผลงาน" },
-      { href: "/admin/services", label: "หน้าบริการรับรอง" },
-      { href: "/admin/faqs", label: "คำถามที่พบบ่อย" },
-      { href: "/admin/copy", label: "ข้อความในหน้าเว็บ" },
-    ],
-  },
-  {
-    title: "ทั้งเว็บไซต์",
-    items: [
-      { href: "/admin/settings", label: "ข้อมูลบริษัท" },
-      { href: "/admin/menu", label: "เมนูและมาตรฐาน" },
-      { href: "/admin/home", label: "หน้าแรก" },
-      { href: "/admin/media", label: "คลังรูป" },
-    ],
+    href: "/admin/settings",
+    label: "ตั้งค่าเว็บไซต์",
+    match: ["/admin/menu", "/admin/home", "/admin/projects", "/admin/faqs", "/admin/services"],
   },
 ];
 
@@ -35,33 +27,26 @@ export function Nav() {
   const path = usePathname();
 
   return (
-    <nav className="flex-1 space-y-5 overflow-y-auto p-3">
-      {groups.map((g) => (
-        <div key={g.title}>
-          <p className="px-3 pb-1.5 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
-            {g.title}
-          </p>
-          <div className="space-y-0.5">
-            {g.items.map((n) => {
-              const active = n.exact ? path === n.href : path.startsWith(n.href);
-              return (
-                <Link
-                  key={n.href}
-                  href={n.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`block rounded-lg px-3 py-2 text-[13.5px] transition ${
-                    active
-                      ? "bg-brand-50 font-medium text-brand-700"
-                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-                  }`}
-                >
-                  {n.label}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+    <nav className="flex-1 space-y-1 overflow-y-auto p-3">
+      {items.map((n) => {
+        const active = n.exact
+          ? path === n.href
+          : [n.href, ...(n.match ?? [])].some((p) => path.startsWith(p));
+        return (
+          <Link
+            key={n.href}
+            href={n.href}
+            aria-current={active ? "page" : undefined}
+            className={`block rounded-lg px-3 py-2 text-[13.5px] transition ${
+              active
+                ? "bg-brand-50 font-medium text-brand-700"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+            }`}
+          >
+            {n.label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

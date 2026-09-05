@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CmsImage } from "@/components/CmsImage";
 import Link from "next/link";
 import { Button, Container, Icon } from "@/components/ui";
 import { bundleFor } from "@/data/site";
@@ -20,7 +20,7 @@ export default async function Footer() {
         <div className="grid gap-8 py-11 sm:grid-cols-2 lg:grid-cols-[190px_1.3fr_1fr_1fr] lg:gap-8">
           <div>
             <span className="inline-block rounded-[10px] bg-white p-3">
-              <Image
+              <CmsImage
                 src="/assets/logo-flat.jpg"
                 alt={site.name}
                 width={180}

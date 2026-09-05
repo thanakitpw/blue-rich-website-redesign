@@ -39,6 +39,22 @@ const STRUCTURAL_KEYS = new Set([
 const looksStructural = (v: string) =>
   v.startsWith("/") || v.startsWith("#") || v.startsWith("http") || v.startsWith("mailto:");
 
+/**
+ * U+2062 INVISIBLE TIMES — อักขระที่ไม่กินที่และไม่ถูกแสดงผล
+ *
+ * ใช้เฉพาะตอนพรีวิวในหลังบ้าน ห่อข้อความไว้เป็น ⁢กุญแจ⁢ข้อความ⁢ เพื่อให้สคริปต์
+ * ฝั่งหลังบ้านรู้ว่าตัวหนังสือชิ้นไหนคือกุญแจไหน แล้วถอดเครื่องหมายทิ้งก่อนแสดง
+ * ผู้เข้าชมทั่วไปไม่เคยได้รับเครื่องหมายนี้ เพราะหน้าที่เสิร์ฟให้เป็นฉบับเผยแพร่
+ */
+export const MARK = "\u2062";
+export const markCopy = (key: string, text: string) => `${MARK}${key}${MARK}${text}${MARK}`;
+
+/** ข้อความชิ้นนี้ให้คนแก้ได้ไหม — ใช้กติกาเดียวกันทั้งตอนเก็บและตอนติดเครื่องหมาย */
+export const isEditableCopy = (path: string, value: string) => {
+  const key = path.slice(path.lastIndexOf(".") + 1);
+  return !STRUCTURAL_KEYS.has(key) && !looksStructural(value) && Boolean(value.trim());
+};
+
 export type CopyEntry = { path: string; value: string };
 
 /**
@@ -49,8 +65,7 @@ export type CopyEntry = { path: string; value: string };
  */
 export function collectCopy(node: unknown, prefix = ""): CopyEntry[] {
   if (typeof node === "string") {
-    const key = prefix.slice(prefix.lastIndexOf(".") + 1);
-    if (STRUCTURAL_KEYS.has(key) || looksStructural(node) || !node.trim()) return [];
+    if (!isEditableCopy(prefix, node)) return [];
     return [{ path: prefix, value: node }];
   }
 
@@ -77,17 +92,24 @@ export type Override = { value: string; hash: string | null };
  * ถ้านักพัฒนาแก้ข้อความในโค้ดไปแล้ว ค่าที่ลูกค้าเคยแก้จะถูกข้าม แล้วแสดงค่าจากโค้ดแทน
  * — ปลอดภัยกว่าปล่อยให้ข้อความเก่าทับข้อความที่เพิ่งแก้โดยไม่มีใครรู้
  */
-export function applyCopy<T>(node: T, overrides: Map<string, Override>, prefix = ""): T {
+export function applyCopy<T>(
+  node: T,
+  overrides: Map<string, Override>,
+  prefix = "",
+  /* true เฉพาะตอนพรีวิวในหลังบ้าน — ห่อทุกข้อความที่แก้ได้ด้วยเครื่องหมายมองไม่เห็น
+     เพื่อให้หน้าจอแก้ไขชี้ได้ว่าตัวหนังสือชิ้นไหนผูกกับกุญแจไหน */
+  mark = false,
+): T {
   if (typeof node === "string") {
     const hit = overrides.get(prefix);
-    if (!hit) return node;
-    if (hit.hash && hit.hash !== hashText(node)) return node;
-    return hit.value as unknown as T;
+    const value = hit && (!hit.hash || hit.hash === hashText(node)) ? hit.value : node;
+    if (!mark || !isEditableCopy(prefix, node)) return value as unknown as T;
+    return markCopy(prefix, value) as unknown as T;
   }
 
   if (Array.isArray(node)) {
     return node.map((item, i) =>
-      applyCopy(item, overrides, prefix ? `${prefix}.${i}` : String(i)),
+      applyCopy(item, overrides, prefix ? `${prefix}.${i}` : String(i), mark),
     ) as unknown as T;
   }
 
@@ -95,7 +117,7 @@ export function applyCopy<T>(node: T, overrides: Map<string, Override>, prefix =
     return Object.fromEntries(
       Object.entries(node).map(([k, v]) => [
         k,
-        applyCopy(v, overrides, prefix ? `${prefix}.${k}` : k),
+        applyCopy(v, overrides, prefix ? `${prefix}.${k}` : k, mark),
       ]),
     ) as T;
   }
