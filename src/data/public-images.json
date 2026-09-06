@@ -408,10 +408,22 @@
     "bytes": 93196
   },
   {
+    "url": "/assets/service-certification-docs.webp",
+    "filename": "service-certification-docs.webp",
+    "folder": "assets",
+    "bytes": 174010
+  },
+  {
     "url": "/assets/service-certification.jpg",
     "filename": "service-certification.jpg",
     "folder": "assets",
     "bytes": 283767
+  },
+  {
+    "url": "/assets/service-supervision-docs.webp",
+    "filename": "service-supervision-docs.webp",
+    "folder": "assets",
+    "bytes": 132350
   },
   {
     "url": "/assets/service-supervision.jpg",

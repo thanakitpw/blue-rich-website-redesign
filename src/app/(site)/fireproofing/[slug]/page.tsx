@@ -62,7 +62,7 @@ export default async function ServicePage({
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <div className="overflow-hidden rounded-4xl bg-brand-50 shadow-[0_10px_28px_rgba(42,80,104,0.10)] border border-slate-200">
-              <div className="relative aspect-4/3">
+              <div className="relative aspect-square">
                 <Image
                   src={service.image}
                   alt={service.label}

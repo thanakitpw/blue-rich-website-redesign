@@ -65,7 +65,7 @@ export default async function FireproofingPage() {
                 href={`/fireproofing/${s.slug}`}
                 className="group flex h-full flex-col overflow-hidden rounded-4xl bg-white border border-slate-200 transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-[0_28px_56px_-30px_rgba(12,39,64,0.45)]"
               >
-                <div className="relative aspect-16/9 overflow-hidden bg-brand-50">
+                <div className="relative aspect-square overflow-hidden bg-brand-50">
                   <Image
                     src={s.image}
                     alt=""
