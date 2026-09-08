@@ -46,7 +46,7 @@ export default function LpHeader({ sections }: { sections: LpSection[] }) {
             className={`w-auto transition-all duration-300 ${scrolled ? "h-9" : "h-10 lg:h-11"}`}
           />
           <span className="hidden leading-tight sm:block">
-            <span className="block font-display text-[1.02rem] font-bold text-brand-700">
+            <span className="block font-display text-[0.95rem] font-bold whitespace-nowrap text-brand-700 2xl:text-[1.02rem]">
               BLUE RICH
             </span>
             <span className="block text-[0.62rem] font-semibold tracking-[0.18em] text-brand-500">
@@ -55,12 +55,14 @@ export default function LpHeader({ sections }: { sections: LpSection[] }) {
           </span>
         </div>
 
-        <nav className="hidden items-center gap-1 xl:flex">
+        {/* บีบระยะที่ xl แล้วค่อยคลายที่ 2xl — ที่ 1280px พื้นที่พอดีเป๊ะ
+            whitespace-nowrap กันชื่อเมนูตัดกลางคำเวลาพื้นที่ไม่พอ */}
+        <nav className="hidden items-center gap-0.5 xl:flex 2xl:gap-1">
           {sections.map((s) => (
             <a
               key={s.href}
               href={s.href}
-              className="rounded-full px-3.5 py-2 text-[0.9rem] font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
+              className="rounded-full px-2.5 py-2 text-[0.85rem] font-medium whitespace-nowrap text-slate-600 transition hover:bg-brand-50 hover:text-brand-700 2xl:px-3.5 2xl:text-[0.9rem]"
             >
               {s.label}
             </a>
@@ -73,7 +75,7 @@ export default function LpHeader({ sections }: { sections: LpSection[] }) {
             target="_blank"
             rel="noreferrer"
             data-cta="header-line"
-            className="hidden items-center gap-2 rounded-full bg-[#06C755] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98] sm:inline-flex"
+            className="hidden items-center gap-2 rounded-full bg-[#06C755] px-4 py-2.5 text-[0.82rem] font-semibold whitespace-nowrap text-white shadow-lg shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98] sm:inline-flex 2xl:px-5 2xl:text-sm"
           >
             <Icon.line />
             แอดไลน์
@@ -83,7 +85,7 @@ export default function LpHeader({ sections }: { sections: LpSection[] }) {
             target="_blank"
             rel="noreferrer"
             data-cta="header-line"
-            className="hidden items-center gap-2 rounded-full bg-[#06C755] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98] sm:inline-flex"
+            className="hidden items-center gap-2 rounded-full bg-[#06C755] px-4 py-2.5 text-[0.82rem] font-semibold whitespace-nowrap text-white shadow-lg shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98] sm:inline-flex 2xl:px-5 2xl:text-sm"
           >
             <Icon.line />
             แอดไลน์ 2
@@ -91,7 +93,7 @@ export default function LpHeader({ sections }: { sections: LpSection[] }) {
           <a
             href={telHref}
             data-cta="header-call"
-            className="inline-flex items-center gap-2 rounded-full bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-700 px-4 py-2.5 text-[0.82rem] font-semibold whitespace-nowrap text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98] 2xl:px-5 2xl:text-sm"
           >
             <Icon.phone />
             <span className="hidden sm:inline">โทร {site.phones[0]}</span>
