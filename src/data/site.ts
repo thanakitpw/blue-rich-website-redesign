@@ -98,7 +98,7 @@ export const nav: NavItem[] = [
       {
         href: "/fireproofing/certification",
         label: "วิศวกรรับรองสีกันไฟ",
-        note: "คำนวณ ตรวจหน้างาน และเซ็นเอกสารโดยวุฒิวิศวกรโยธา",
+        note: "เซ็นเอกสารโดยวุฒิวิศวกรโยธา",
       },
       {
         href: "/fireproofing/supervision",
@@ -147,7 +147,7 @@ export const nav: NavItem[] = [
            หัวข้อในหน้าฮาร์ดแวร์ยังอยู่เหมือนเดิม แค่ไม่ได้เป็นปลายทางของเมนูแล้ว */
         href: "/products/thinner-wash-aaa",
         label: "ทินเนอร์ล้าง",
-        note: "แกลลอน 1.9 กก. ผสมสีและล้างอุปกรณ์",
+        note: "ล้างอุปกรณ์",
       },
       {
         href: "/products/turpentine-intanin",

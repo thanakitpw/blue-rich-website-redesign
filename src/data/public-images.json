@@ -594,9 +594,21 @@
     "bytes": 108122
   },
   {
+    "url": "/assets/work-site-erection.webp",
+    "filename": "work-site-erection.webp",
+    "folder": "assets",
+    "bytes": 148948
+  },
+  {
     "url": "/assets/work-truss-lift.webp",
     "filename": "work-truss-lift.webp",
     "folder": "assets",
     "bytes": 123272
+  },
+  {
+    "url": "/assets/work-tubular-truss.webp",
+    "filename": "work-tubular-truss.webp",
+    "folder": "assets",
+    "bytes": 181108
   }
 ]

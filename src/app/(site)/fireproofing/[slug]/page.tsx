@@ -136,6 +136,43 @@ export default async function ServicePage({
         </div>
       </Section>
 
+      {/* ------------------------------------------------------- Document detail */}
+      {service.sections && service.sections.length > 0 && (
+        <Section>
+          <Reveal>
+            {/* คอลัมน์แคบกว่าปกติ เพราะเป็นเนื้อหาอ่านยาว ไม่ใช่การ์ด */}
+            <div className="mx-auto max-w-[46rem]">
+              {service.sections.map((sec, i) => (
+                <div key={sec.title ?? i} className={i > 0 ? "mt-10" : ""}>
+                  {sec.title && <h2 className="text-2xl sm:text-3xl">{sec.title}</h2>}
+
+                  {sec.body?.map((t) => (
+                    <p key={t} className="mt-4 leading-[1.9] text-slate-600">
+                      {t}
+                    </p>
+                  ))}
+
+                  {sec.items && (
+                    <ul className="mt-5 grid gap-3">
+                      {sec.items.map((it) => (
+                        <li key={it} className="flex gap-3 leading-[1.8] text-slate-600">
+                          <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-brand-400" />
+                          {it}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {sec.note && (
+                    <p className="mt-5 leading-[1.9] text-slate-600">{sec.note}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </Section>
+      )}
+
       {/* ------------------------------------------------------------ Materials */}
       <Section>
         <Reveal>

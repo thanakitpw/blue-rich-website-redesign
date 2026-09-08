@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Button, Container, Icon, PageHero } from "@/components/ui";
+import { Button, Container, Icon, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { bundleFor } from "@/data/site";
 import WorksGallery from "@/components/WorksGallery";
-import { getProjects, getSiteInfo } from "@/lib/cms/content";
+import { ClientLogos, Section } from "@/components/concept";
+import { getHomeShowcase, getProjects, getSiteInfo } from "@/lib/cms/content";
 import { copyFor } from "@/lib/cms/copy-pages";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -13,10 +14,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ProjectsPage() {
   /* แถบตัวเลขสถิติถูกถอดออกตามที่ลูกค้าสั่ง ชุด stats ยังใช้ที่ /about และ /fireproofing */
-  const [projects, info, { hero, cta }] = await Promise.all([
+  const [projects, showcase, info, { hero, cta }, home] = await Promise.all([
     getProjects(),
+    getHomeShowcase(),
     getSiteInfo(),
     copyFor("projects"),
+    copyFor("home"),
   ]);
   const { telHref, lineHref } = bundleFor(info, []);
 
@@ -37,6 +40,17 @@ export default async function ProjectsPage() {
           <WorksGallery items={projects} />
         </Container>
       </section>
+
+      {/* --------------------------------------------------------- Clients
+           ใช้โลโก้และหัวข้อชุดเดียวกับหน้าแรก ลูกค้าแก้ที่เดียวเปลี่ยนทั้งสองหน้า */}
+      <Section id="clients" tone="shell">
+        <Reveal>
+          <SectionHeading eyebrow={home.sections.clientsEyebrow} title={home.sections.clients} />
+        </Reveal>
+        <div className="mt-[26px]">
+          <ClientLogos items={showcase.clients} />
+        </div>
+      </Section>
 
       {/* CTA */}
       <section className="pb-20 lg:pb-28">
