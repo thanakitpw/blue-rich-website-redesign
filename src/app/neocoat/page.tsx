@@ -13,19 +13,18 @@ import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /**
- * Paid-traffic landing page. Kept out of the (site) route group so it renders
- * without the main navigation, and out of the sitemap + search index so it does
- * not compete with /products/neocoat-intumescent-paint for the same keywords.
- * Flip `robots` below if this page is ever meant to rank organically too.
+ * Landing page. Kept out of the (site) route group so it renders without the
+ * main navigation, but it is indexed and sits in the sitemap — it is the page
+ * meant to rank for "สีกันไฟโครงสร้างเหล็ก", so the two Neocoat product pages
+ * stay on the narrower model keywords and this one carries the category term.
  */
 export async function generateMetadata(): Promise<Metadata> {
   const [site, { meta }] = await Promise.all([getSiteInfo(), copyFor("neocoat")]);
   return {
     title: meta.title,
     description: meta.description,
-    // noindex on its own — pairing it with a canonical pointing elsewhere sends
-    // conflicting signals. Links out are still followed.
-    robots: { index: false, follow: true },
+    // หน้านี้ติดอันดับเองได้ canonical จึงชี้กลับหาตัวเอง ไม่ใช่หน้าสินค้า
+    alternates: { canonical: "/neocoat" },
     openGraph: {
       type: "website",
       locale: "th_TH",
@@ -64,6 +63,7 @@ export default async function FireRetardantPaintLanding() {
     productSpecs,
     quoteForm,
     related,
+    reports,
     reviews,
     risk,
     system,
@@ -79,7 +79,7 @@ export default async function FireRetardantPaintLanding() {
       sku: "A014",
       category: "สีกันไฟโครงสร้างเหล็ก",
       description:
-        "สีกันไฟชนิดพองตัวสำหรับโครงสร้างเหล็ก ทนไฟสูงสุด 3 ชั่วโมง ผ่านการทดสอบ ASTM E-119 และ ISO 834 พร้อมเอกสารรับรองโดยวุฒิวิศวกรโยธา",
+        "สีกันไฟสำหรับโครงสร้างเหล็ก ทนไฟสูงสุด 3 ชั่วโมง ผ่านการทดสอบ ASTM E-119 และ ISO 834 พร้อมเอกสารรับรองโดยวุฒิวิศวกรโยธา",
       image: `${site.url}/assets/product-neocoat-intumescent.jpg`,
       brand: { "@type": "Brand", name: "Neocoat" },
       offers: {
@@ -602,6 +602,59 @@ export default async function FireRetardantPaintLanding() {
                 </ul>
               </Reveal>
             </div>
+          </Wrap>
+        </section>
+
+        {/* ----------------------------------------------------------- Reports */}
+        <section id="reports" className="bg-slate-50 py-20 lg:py-24">
+          <Wrap>
+            <div className="mx-auto max-w-3xl text-center">
+              <span className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3.5 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-inset ring-brand-100">
+                <span className="size-1.5 rounded-full bg-current" />
+                {reports.eyebrow}
+              </span>
+              <h2 className="mt-4 text-3xl leading-[1.25] sm:text-4xl lg:text-[2.6rem]">
+                {reports.title}
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-[1.12rem]">
+                {reports.lead}
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-4 sm:grid-cols-2">
+              {reports.items.map((r, i) => (
+                <Reveal key={r.href} delay={i * 70}>
+                  <a
+                    href={r.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-cta={`report-${i}`}
+                    className="flex h-full items-start gap-5 rounded-3xl bg-white p-6 ring-1 ring-slate-200 transition hover:ring-brand-300"
+                  >
+                    <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-600 text-white">
+                      <Icon.doc className="size-5" />
+                    </span>
+                    <span className="flex-1">
+                      <span className="block text-[1.05rem] font-semibold text-brand-950">
+                        {r.label}
+                      </span>
+                      <span className="mt-1 block text-[0.85rem] leading-relaxed text-slate-500">
+                        {r.note}
+                      </span>
+                      {/* ขนาดไฟล์และจำนวนหน้า — บอกล่วงหน้าว่ากดแล้วจะโหลดอะไรมา */}
+                      <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-brand-50 px-2.5 py-1 text-[0.72rem] font-semibold text-brand-700">
+                        {r.meta}
+                      </span>
+                    </span>
+                    <Icon.arrow className="mt-4 size-4 shrink-0 text-brand-500" />
+                  </a>
+                </Reveal>
+              ))}
+            </div>
+
+            <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-amber-50 px-6 py-5 text-[0.95rem] leading-relaxed text-amber-900 ring-1 ring-inset ring-amber-200">
+              {reports.note}
+            </p>
           </Wrap>
         </section>
 

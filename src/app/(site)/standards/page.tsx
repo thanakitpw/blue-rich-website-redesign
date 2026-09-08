@@ -32,10 +32,10 @@ export default async function StandardsPage() {
 
   return (
     <>
+      {/* ไม่ส่ง description — ลูกค้าขอตัดย่อหน้าเกริ่นใต้หัวข้อออก (ดู data/pages/standards.ts) */}
       <PageHero
         eyebrow={hero.eyebrow}
         title={hero.title}
-        description={hero.description}
         breadcrumb={[{ label: "หน้าแรก", href: "/" }, { label: hero.crumb }]}
       />
 

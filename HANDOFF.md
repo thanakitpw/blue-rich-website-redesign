@@ -249,12 +249,13 @@ URL อยู่ระดับ root ไม่มี prefix — ตรงกั�
 | `/news` | `src/app/(site)/news/page.tsx` | Static | |
 | `/news/[slug]` | `src/app/(site)/news/[slug]/page.tsx` | SSG × 7 | |
 | `/contact` | `src/app/(site)/contact/page.tsx` | Static | ฟอร์ม + แผนที่ |
-| `/neocoat` | `src/app/neocoat/page.tsx` | Static | **Landing page** — noindex |
-| `/thinner` | `src/app/thinner/page.tsx` | Static | **Landing page** — noindex |
-| `/engineering` | `src/app/engineering/page.tsx` | Static | **Landing page** — noindex |
-| `/four-plus` | `src/app/four-plus/page.tsx` | Static | **Landing page** — noindex |
-| `/fire-blanket` | `src/app/fire-blanket/page.tsx` | Static | **Landing page** — noindex |
-| `/sitemap.xml` | `src/app/sitemap.ts` | Static | สร้างจาก data |
+| `/neocoat` | `src/app/neocoat/page.tsx` | Static | **Landing page** — index + อยู่ใน sitemap |
+| `/thinner` | `src/app/thinner/page.tsx` | Static | **Landing page** — index + อยู่ใน sitemap |
+| `/engineering` | `src/app/engineering/page.tsx` | Static | **Landing page** — index + อยู่ใน sitemap |
+| `/four-plus` | `src/app/four-plus/page.tsx` | Static | **Landing page** — index + อยู่ใน sitemap |
+| `/fire-blanket` | `src/app/fire-blanket/page.tsx` | Static | **Landing page** — index + อยู่ใน sitemap |
+| `/sitemap.xml` | `src/app/sitemap.ts` | Static | สร้างจาก data + หน้า landing ทั้ง 5 |
+| `/robots.txt` | `src/app/robots.ts` | Static | **ใหม่** — กัน `/admin`, `/api/`, `/concept-*` + ชี้ sitemap |
 | 404 | `src/app/not-found.tsx` | Static | |
 
 ### Section ในหน้าแรก (ตามลำดับ — ตาม Concept B)
@@ -298,6 +299,21 @@ URL อยู่ระดับ root ไม่มี prefix — ตรงกั�
 | ทุกหน้าใช้เลย์เอาต์เดียวกัน | แต่ละหน้ามี **ลูกเล่นเฉพาะตัว** (ดูตารางล่าง) |
 
 ข้อความทั้งหมด **เขียนขึ้นใหม่** ไม่ได้ก๊อปจาก Infinite — ทั้งเพื่อความต่างและเพื่อเลี่ยง duplicate content
+
+### การทำ index (อัปเดตรอบล่าสุด)
+
+เดิมทั้ง 5 หน้าตั้ง `robots: { index: false }` และไม่อยู่ใน sitemap เพราะตั้งใจให้เป็นหน้ายิงแอดอย่างเดียว
+ลูกค้าขอให้**เปิดให้ติดอันดับ**เหมือนของ Infinite จึงเปลี่ยนเป็น
+
+- ถอด `robots` ออก แล้วใส่ `alternates.canonical` ชี้กลับหาตัวเอง
+- ใส่ทั้ง 5 route ใน `sitemap.ts` ที่ priority `0.9` (สูงกว่าหน้าทั่วไปที่ `0.8`)
+- เพิ่ม `src/app/robots.ts` — เดิมเว็บไม่มี robots.txt เลย บอตจึงคลาน `/concept-b|c|d`
+  ซึ่งเป็น HTML ดีไซน์ต้นแบบใน `public/` ที่เนื้อหาซ้ำกับหน้าจริงได้
+
+**จุดที่ต้องเฝ้าดู** — คำค้นอาจชนกันเองระหว่าง LP กับหน้าในเมนู แบ่งไว้ดังนี้
+`/neocoat` เอาคำระดับหมวด (สีกันไฟโครงสร้างเหล็ก) · `/products/neocoat-*` เอาคำรายรุ่น ·
+`/intumescent` เป็นหน้าหมวดในเมนู ถ้า 3 เดือนแล้ว Search Console ขึ้นว่าแย่งกันเอง
+ให้เลือกหน้าเดียวเป็นตัวหลักต่อคำค้น แล้ว canonical ที่เหลือมาหาหน้านั้น
 
 ### ลูกเล่นเฉพาะของแต่ละหน้า
 
@@ -476,6 +492,10 @@ src/components/
 | `/fire-blanket` → การจับคู่เกรดผ้ากับรูป | จับคู่จากภาพจริง (ทอง 2 เกรด / เคลือบซิลิโคนเทา / ซิลิก้าแดง) | ⚠️ ทั้ง 2 เกรดสีทองใช้รูปผ้าทองคนละใบแต่เป็นผ้าชุดเดียวกัน — ถ้าลูกค้ามีรูปแยกรายเกรดจะดีกว่า |
 | ทุกหน้า LP | "เสนอราคาภายใน 1–2 วันทำการ" / "ภายใน 1 วันทำการ" | ❗ แต่งเอง (ต่อจากที่เคยระบุไว้ในตารางนี้) |
 | `standards` → ISO 9001:2015 | เป็นใบรับรองของ **โรงงานผู้ผลิต (UNIQUE Products)** ที่เห็นบนฉลากถัง ไม่ใช่ของ Blue Rich — ผมระบุกำกับว่า "ระบบบริหารคุณภาพโรงงานผู้ผลิต" | ⚠️ ตรวจถ้อยคำอีกครั้ง |
+| `/engineering` → ฐานกฎหมายใต้การ์ดบริการ + เช็กลิสต์เอกสารขออนุญาต 7 ข้อ | **ใหม่** — ดึงเนื้อหามาจากหน้า `/engineering` ของ Infinite (กฎกระทรวงฉบับที่ 48 / 60, กฎกระทรวง พ.ศ. 2567, รายการเอกสาร กนอ.) | ❗ **สำคัญ** ต้องให้วุฒิวิศวกรของลูกค้ายืนยันว่าอ้างฉบับถูกต้องก่อน publish |
+| `น.4-5 / น.4-9` → ตัวย่อหน่วยงาน | เดิมเขียน **"แบบ กสอ."** แก้เป็น **"แบบ กนอ."** ตามที่หน้าของ Infinite ใช้ (กนอ. = การนิคมอุตสาหกรรมฯ ซึ่งเป็นผู้ออกใบอนุญาตก่อสร้างในนิคม ส่วน กสอ. = กรมส่งเสริมอุตสาหกรรม ไม่ได้ออกใบอนุญาตอาคาร) | ⚠️ แก้เฉพาะใน `engineering-lp.ts` — **`src/data/site.ts` → `standards[nor-4-5-4-9]` ยังเขียน "กสอ." อยู่** รอลูกค้ายืนยันก่อนแก้ให้ตรงกันทั้งเว็บ |
+| `/four-plus` → อัตราการทาได้ | เว็บเราใช้ **150 ตร.ม./ถัง/เที่ยว** ตาม `products.ts` แต่หน้าของ Infinite ระบุเป็นช่วง **120–150** | ⚠️ ยังไม่แก้ เพราะจะไปขัดกับหน้าสินค้าทั้งเว็บ — ขอให้ลูกค้าเช็ก TDS ว่าเลขไหนถูก ถ้าเป็นช่วง ต้องแก้ทั้ง `products.ts`, `four-plus-lp.ts` และตารางคำนวณจำนวนถัง (ควรคิดจาก 120 เพื่อไม่ให้ลูกค้าสั่งขาด) |
+| ผลทดสอบ → ISO 9001:2015 ฉบับ PDF | Infinite มีไฟล์ให้โหลดที่ `/docs/iso-9001-2015-certificate.pdf` แต่ `public/docs/` ของเรา**ยังไม่มีไฟล์นี้** | ⚠️ ขอไฟล์จากลูกค้า (เป็นใบรับรองของโรงงานผู้ผลิต) แล้วเพิ่มใน `reports.items` ของ `/neocoat` และ `/engineering` |
 
 ---
 

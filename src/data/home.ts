@@ -44,13 +44,13 @@ export const categoryTiles: CategoryTile[] = [
     short: "Intumescent Paint-W",
     name: "สีกันไฟ สูตรน้ำ",
     description: "Neocoat Water Base ค่า VOC ต่ำ ไม่ใช้ทินเนอร์ เหมาะกับ Green Building",
-    image: "/assets/products/neocoat-paint-w.png",
+    image: "/assets/products/neocoat-paint-w.webp",
   },
   {
     href: "/fireproofing/certification",
     short: "Engineering Service",
     name: "วิศวกรรับรองสีกันไฟ",
-    description: "จัดทำเอกสาร น.4-5 / น.4-9 รับรองโดยวุฒิวิศวกรโยธา",
+    description: "รับรองโดยวุฒิวิศวกรโยธา",
     image: "/assets/service-certification.jpg",
     photo: true,
   },
@@ -58,14 +58,14 @@ export const categoryTiles: CategoryTile[] = [
     href: "/fireproofing/supervision",
     short: "Site Supervision",
     name: "วิศวกรควบคุมสีกันไฟ",
-    description: "ตรวจหน้างาน วัดความหนาฟิล์ม และบันทึกผลเป็นหลักฐาน",
+    description: "ตรวจหน้างาน วัดความหนาฟิล์ม บันทึกผล และจัดทำเอกสาร น.4-5 / น.4-9",
     image: "/assets/service-supervision.jpg",
     photo: true,
   },
   {
     href: "/paint#steel-primer",
     short: "Primer & Top Coat",
-    name: "สีรองพื้น / ทับหน้า",
+    name: "สีรองพื้น / ทับหน้า ทาเหล็ก",
     description: "Neocoat Primer Grey Oxide · Neogloss สีน้ำมันทาเหล็ก",
     image: "/assets/products/neocoat-primer.png",
   },
@@ -74,7 +74,7 @@ export const categoryTiles: CategoryTile[] = [
     short: "Thinner & Turpentine",
     name: "ทินเนอร์ / น้ำมันสน",
     description: "ทินเนอร์ 3A ผสมสี อินทนิล · ทินเนอร์ 2K · น้ำมันสน",
-    image: "/assets/products/thinner-3a-intanin.webp",
+    image: "/assets/products/thinner-turpentine-intanin.webp",
   },
   {
     href: "/products/fiberglass-cloth",
@@ -117,8 +117,8 @@ export const clients: ClientLogo[] = [
 
 /** เช็คลิสต์ในบล็อกจุดเด่นกลางหน้าแรก */
 export const valuePoints: string[] = [
-  "ฟิล์มสีขยายตัวเป็นฉนวนเมื่อโดนความร้อน",
-  "คำนวณความหนาฟิล์มตามค่า Section Factor รายชิ้น",
+  "ฟิล์มสีเป็นฉนวนเมื่อโดนความร้อน",
+  "ความหนาฟิล์มสี 500-2000 ไมครอน โดยประมาณ",
   "ตรวจวัดความหนาฟิล์มทั้งขณะเปียกและเมื่อแห้ง",
   "ปิดงานด้วยเอกสารรับรองจากวุฒิวิศวกรโยธา",
 ];

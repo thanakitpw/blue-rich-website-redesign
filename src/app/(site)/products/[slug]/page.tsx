@@ -24,7 +24,6 @@ import {
 import { copyFor } from "@/lib/cms/copy-pages";
 
 /* ไอคอนของแถบการันตี — ข้อความย้ายไป @/data/pages/product-detail แล้ว */
-const assuranceIcons = [Icon.doc, Icon.shield, Icon.truck];
 
 export async function generateStaticParams() {
   return (await getProducts()).map((p) => ({ slug: p.slug }));
@@ -49,7 +48,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) notFound();
-  const { assurances, headings, homeLabel } = await copyFor("product-detail");
+  const { headings, homeLabel } = await copyFor("product-detail");
 
   const [categories, suggestions, installationSteps, legalInfo, info] = await Promise.all([
     getCategories(),
@@ -319,11 +318,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <>
         <ProductBanner product={product} cat={cat} hero={hero} homeLabel={homeLabel} />
         <ProductQuote links={links} />
-        <ProductAssurance
-          product={product}
-          assurances={assurances}
-          assuranceIcons={assuranceIcons}
-        />
+        <ProductAssurance product={product} />
         {details}
       </>
     );
@@ -480,23 +475,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 </Button>
               </div>
 
-              {/* Assurance panel */}
-              <ul className="mt-6 space-y-4 rounded-3xl border border-slate-200 p-6">
-                {assurances.map((a, i) => {
-                  const AssuranceIcon = assuranceIcons[i] ?? Icon.doc;
-                  return (
-                  <li key={a.title} className="flex gap-3.5">
-                    <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-brand-50 text-brand-600">
-                      <AssuranceIcon className="size-5" />
-                    </span>
-                    <span>
-                      <b className="block text-[16px] font-semibold text-brand-700">{a.title}</b>
-                      <span className="text-[14px] leading-relaxed text-slate-500">{a.note}</span>
-                    </span>
-                  </li>
-                  );
-                })}
-              </ul>
 
             </div>
           </div>

@@ -23,14 +23,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((path) => !path.includes("#") && !path.startsWith("/products/"))
     .map((path) => (path === "/" ? "" : path));
 
-  /* /standards ไม่ได้อยู่ในเมนู แต่ลิงก์มาจากการ์ดมาตรฐานหน้าแรก */
-  const staticRoutes = Array.from(new Set([...menuRoutes, "/products", "/standards"]));
+  /* หน้าที่ไม่ได้อยู่ในเมนูแล้ว แต่ยังต้องอยู่ใน sitemap
+       /standards    — ลิงก์มาจากการ์ดมาตรฐานหน้าแรก
+       /intumescent  — หน้าหมวดสีกันไฟ ถูกถอดออกจากเมนูตอนยกสองสูตรขึ้นเป็นเมนูหลัก
+                       ยังลิงก์จากการ์ดหน้าแรกและหน้า /paint */
+  const staticRoutes = Array.from(
+    new Set([...menuRoutes, "/products", "/standards", "/intumescent"]),
+  );
+
+  /* หน้า landing อยู่นอกเมนู (ตั้งใจไม่ให้มีทางออกจากหน้า) แต่เป็นหน้าที่ตั้งใจ
+     ให้ติดอันดับด้วยคำค้นระดับหมวด จึงต้องอยู่ใน sitemap และให้น้ำหนักสูงกว่า
+     หน้าทั่วไป — คำค้นรายรุ่นยังเป็นของหน้าสินค้าเหมือนเดิม */
+  const landingRoutes = ["/neocoat", "/engineering", "/four-plus", "/thinner", "/fire-blanket"];
 
   return [
     ...staticRoutes.map((path) => ({
       url: `${site.url}${path}`,
       changeFrequency: "monthly" as const,
       priority: path === "" ? 1 : 0.8,
+    })),
+    ...landingRoutes.map((path) => ({
+      url: `${site.url}${path}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
     })),
     ...products.map((p) => ({
       url: `${site.url}/products/${p.slug}`,

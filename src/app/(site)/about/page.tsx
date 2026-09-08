@@ -5,7 +5,7 @@ import { Button, Icon, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CtaBand, Section } from "@/components/concept";
 import { bundleFor } from "@/data/site";
-import { getCategories, getProjects, getSiteInfo, getStats } from "@/lib/cms/content";
+import { getCategories, getProjects, getSiteInfo } from "@/lib/cms/content";
 import { copyFor } from "@/lib/cms/copy-pages";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /**
  * Layout follows the reference the client gave (energyreform-solar.com/about-us):
- * centred intro statement → company overview with stats → values →
+ * centred intro statement → company overview → values →
  * project gallery → product scope → closing CTA.
  *
  * แถบชิปมาตรฐานกับบล็อกขั้นตอนการทำงาน 5 ขั้นถูกถอดออกตามที่ลูกค้าสั่ง
@@ -33,13 +33,11 @@ const valueIcons = [Icon.shield, Icon.users, Icon.doc, Icon.truck];
 export default async function AboutPage() {
   const [
     info,
-    stats,
     categories,
     projects,
     { hero, intro, overview, valuesBlock, values, gallery: galleryCopy, scope },
   ] = await Promise.all([
     getSiteInfo(),
-    getStats(),
     getCategories(),
     getProjects(),
     copyFor("about"),
@@ -85,15 +83,6 @@ export default async function AboutPage() {
                 <p key={t}>{t}</p>
               ))}
             </div>
-
-            <dl className="mt-8 grid grid-cols-3 gap-x-6 gap-y-5 border-t border-slate-200 pt-7">
-              {stats.map((s) => (
-                <div key={s.label}>
-                  <dt className="text-2xl leading-[1.1] font-bold text-brand-600">{s.value}</dt>
-                  <dd className="mt-1 text-[13.5px] text-slate-500">{s.label}</dd>
-                </div>
-              ))}
-            </dl>
 
             <div className="mt-8 flex flex-wrap gap-2.5">
               <Button href="/products" size="lg">

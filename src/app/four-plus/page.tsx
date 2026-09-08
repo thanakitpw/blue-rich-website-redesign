@@ -13,9 +13,10 @@ import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo } from "@/lib/cms/content";
 
 /**
- * Paid-traffic landing page for the Four Plus emulsion range. Sits outside the
- * (site) route group so it renders without the main navigation, and noindex so
- * it does not compete with /products/four-plus-* for the same keywords.
+ * Landing page for the Four Plus emulsion range. Sits outside the (site) route
+ * group so it renders without the main navigation, but it is indexed and sits in
+ * the sitemap — it carries the range keyword ("สีน้ำพลาสติก Four Plus") while
+ * /products/four-plus-* keep the individual product terms.
  *
  * The page is built around the three-coat system rather than three separate
  * products, because the failure this traffic is trying to avoid — peeling and
@@ -26,9 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: meta.title,
     description: meta.description,
-    // noindex on its own — pairing it with a canonical pointing elsewhere sends
-    // conflicting signals. Links out are still followed.
-    robots: { index: false, follow: true },
+    // หน้านี้ติดอันดับเองได้ canonical จึงชี้กลับหาตัวเอง ไม่ใช่หน้าสินค้า
+    alternates: { canonical: "/four-plus" },
     openGraph: {
       type: "website",
       locale: "th_TH",

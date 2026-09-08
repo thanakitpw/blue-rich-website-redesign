@@ -13,9 +13,10 @@ import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo } from "@/lib/cms/content";
 
 /**
- * Paid-traffic landing page for the fiberglass cloth range. Sits outside the
- * (site) route group so it renders without the main navigation, and noindex so
- * it does not compete with /products/fiberglass-cloth for the same keywords.
+ * Landing page for the fiberglass cloth range. Sits outside the (site) route
+ * group so it renders without the main navigation, but it is indexed and sits in
+ * the sitemap — it carries the grade-picker keywords ("ผ้ากันไฟ 550/1000°C")
+ * while /products/fiberglass-cloth keeps the catalogue entry.
  *
  * Structured around the grade picker rather than a single product pitch: this
  * traffic mostly knows it wants a fire blanket and is choosing a temperature
@@ -26,9 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: meta.title,
     description: meta.description,
-    // noindex on its own — pairing it with a canonical pointing elsewhere sends
-    // conflicting signals. Links out are still followed.
-    robots: { index: false, follow: true },
+    // หน้านี้ติดอันดับเองได้ canonical จึงชี้กลับหาตัวเอง ไม่ใช่หน้าสินค้า
+    alternates: { canonical: "/fire-blanket" },
     openGraph: {
       type: "website",
       locale: "th_TH",
@@ -453,7 +453,7 @@ export default async function FireBlanketLanding() {
                     target="_blank"
                     rel="noreferrer"
                     data-cta={`documents-${i}`}
-                    className="flex items-center gap-5 rounded-3xl bg-white p-6 ring-1 ring-slate-200 transition hover:ring-brand-300"
+                    className="flex items-start gap-5 rounded-3xl bg-white p-6 ring-1 ring-slate-200 transition hover:ring-brand-300"
                   >
                     <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-600 text-white">
                       <Icon.doc className="size-5" />
@@ -462,11 +462,15 @@ export default async function FireBlanketLanding() {
                       <span className="block text-[1.05rem] font-semibold text-brand-950">
                         {g.name} {g.temp}
                       </span>
-                      <span className="mt-0.5 block text-[0.85rem] text-slate-500">
-                        {g.thickness} · ไฟล์ PDF จากผู้ผลิต
+                      <span className="mt-1 block text-[0.85rem] leading-relaxed text-slate-500">
+                        {g.thickness} · สเปกจากผู้ผลิต
+                      </span>
+                      {/* ขนาดไฟล์และจำนวนหน้า — บอกล่วงหน้าว่ากดแล้วจะโหลดอะไรมา */}
+                      <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-brand-50 px-2.5 py-1 text-[0.72rem] font-semibold text-brand-700">
+                        {g.docMeta}
                       </span>
                     </span>
-                    <Icon.arrow className="size-4 shrink-0 text-brand-500" />
+                    <Icon.arrow className="mt-4 size-4 shrink-0 text-brand-500" />
                   </a>
                 </Reveal>
               ))}

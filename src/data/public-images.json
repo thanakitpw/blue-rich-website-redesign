@@ -330,6 +330,12 @@
     "bytes": 75882
   },
   {
+    "url": "/assets/products/neocoat-paint-s-cutout.webp",
+    "filename": "neocoat-paint-s-cutout.webp",
+    "folder": "assets/products",
+    "bytes": 24088
+  },
+  {
     "url": "/assets/products/neocoat-paint-s-promo.webp",
     "filename": "neocoat-paint-s-promo.webp",
     "folder": "assets/products",
@@ -360,6 +366,12 @@
     "bytes": 139606
   },
   {
+    "url": "/assets/products/neocoat-paint-w.webp",
+    "filename": "neocoat-paint-w.webp",
+    "folder": "assets/products",
+    "bytes": 39520
+  },
+  {
     "url": "/assets/products/neocoat-primer.png",
     "filename": "neocoat-primer.png",
     "folder": "assets/products",
@@ -388,6 +400,12 @@
     "filename": "thinner-3a-intanin.webp",
     "folder": "assets/products",
     "bytes": 79910
+  },
+  {
+    "url": "/assets/products/thinner-turpentine-intanin.webp",
+    "filename": "thinner-turpentine-intanin.webp",
+    "folder": "assets/products",
+    "bytes": 146242
   },
   {
     "url": "/assets/products/thinner-wash-aaa.webp",
@@ -556,5 +574,29 @@
     "filename": "work-16.jpg",
     "folder": "assets",
     "bytes": 31907
+  },
+  {
+    "url": "/assets/work-beams-shop.webp",
+    "filename": "work-beams-shop.webp",
+    "folder": "assets",
+    "bytes": 88200
+  },
+  {
+    "url": "/assets/work-dft-gauge.webp",
+    "filename": "work-dft-gauge.webp",
+    "folder": "assets",
+    "bytes": 51344
+  },
+  {
+    "url": "/assets/work-interior-factory.webp",
+    "filename": "work-interior-factory.webp",
+    "folder": "assets",
+    "bytes": 108122
+  },
+  {
+    "url": "/assets/work-truss-lift.webp",
+    "filename": "work-truss-lift.webp",
+    "folder": "assets",
+    "bytes": 123272
   }
 ]

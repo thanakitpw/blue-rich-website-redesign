@@ -5,7 +5,7 @@ import { Container, Icon, MoreLink, PageHero, SectionHeading } from "@/component
 import Reveal from "@/components/ui/Reveal";
 import { CtaBand, FaqList, Section } from "@/components/hub";
 import { copyFor } from "@/lib/cms/copy-pages";
-import { getProjects, getServices, getStats } from "@/lib/cms/content";
+import { getProjects, getServices } from "@/lib/cms/content";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { meta } = await copyFor("fireproofing");
@@ -18,7 +18,6 @@ export default async function FireproofingPage() {
   const [
     services,
     projects,
-    stats,
     { deliverables, faqs, scope, timeline },
     {
       hero,
@@ -33,7 +32,6 @@ export default async function FireproofingPage() {
   ] = await Promise.all([
     getServices(),
     getProjects(),
-    getStats(),
     copyFor("engineering"),
     copyFor("fireproofing"),
   ]);
@@ -171,14 +169,6 @@ export default async function FireproofingPage() {
                 title={deliverables.title}
                 description={deliverables.lead}
               />
-              <dl className="mt-10 grid grid-cols-3 gap-px overflow-hidden rounded-3xl bg-white/10 ring-1 ring-white/10">
-                {stats.map((s) => (
-                  <div key={s.label} className="bg-brand-950/80 p-5 text-center">
-                    <dt className="font-display text-2xl font-bold text-white">{s.value}</dt>
-                    <dd className="mt-1 text-[0.86rem] text-brand-100/60">{s.label}</dd>
-                  </div>
-                ))}
-              </dl>
             </Reveal>
 
             <Reveal delay={120}>

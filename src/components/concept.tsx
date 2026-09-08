@@ -5,7 +5,7 @@ import { Button, Container, Icon } from "@/components/ui";
 import type { ClientLogo } from "@/data/home";
 import type * as HomeCopy from "@/data/pages/home";
 import { bundleFor } from "@/data/site";
-import { getSiteInfo, getStandards, getStats } from "@/lib/cms/content";
+import { getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /* -------------------------------------------------------------------- Section
  * Concept B's `.sec` (52px band) and `.sec-shell` (the #f6f9fb ground).
@@ -47,7 +47,7 @@ export function Ribbon({ items }: { items: { title: string; note: string }[] }) 
       {items.map((r, i) => (
         <div
           key={r.title}
-          className={`flex items-center gap-3 px-5 py-[18px] ${
+          className={`flex items-center gap-3 px-4 py-[18px] ${
             i > 0 ? "border-t border-brand-200/60 lg:border-t-0 lg:border-l" : ""
           } ${i === 1 ? "min-[430px]:border-t-0 min-[430px]:border-l lg:border-t-0" : ""} ${
             i === 3 ? "min-[430px]:border-l" : ""
@@ -63,7 +63,9 @@ export function Ribbon({ items }: { items: { title: string; note: string }[] }) 
             <b className="block text-[15.5px] leading-[1.4] font-medium text-brand-700">
               {r.title}
             </b>
-            <span className="text-[13.5px] text-slate-500">{r.note}</span>
+            {/* 12px + px-4 ที่การ์ด เพื่อให้บรรทัดที่ยาวสุด ("ASTM E-119 · ISO 834 · TÜV SÜD")
+                จบในบรรทัดเดียวที่จอ 4 คอลัมน์ ถ้าเพิ่มมาตรฐานอีกต้องลดขนาดอีกหรือขึ้นบรรทัดใหม่ */}
+            <span className="text-[12px] leading-[1.45] text-slate-500">{r.note}</span>
           </span>
         </div>
       ))}
@@ -227,49 +229,13 @@ export function ClientLogos({ items }: { items: ClientLogo[] }) {
   );
 }
 
-/* ------------------------------------------------------------------ WorksGrid
- * A plain, even grid rather than a masonry. The project photography is only
- * 474×264, so a masonry with double-width tiles upscaled it and looked soft.
- * Every tile is now one column at 16:9 — the source's own ratio — which means
- * no crop and no upscale at any breakpoint.
- */
-
-export function WorksGrid({
-  items,
-}: {
-  items: { image: string; title: string; scope?: string }[];
-}) {
-  return (
-    <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
-      {items.map((p) => (
-        <Link
-          key={p.image}
-          href="/projects"
-          className="group relative aspect-16/9 overflow-hidden rounded-2xl bg-slate-100"
-        >
-          <Image
-            src={p.image}
-            alt={p.title}
-            fill
-            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-          />
-          <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-900/90 to-transparent px-3 pt-8 pb-2.5 text-[13px] leading-snug font-medium text-white opacity-0 transition group-hover:opacity-100">
-            {p.title}
-          </span>
-        </Link>
-      ))}
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ AboutBand
  * `.about` — รูปกินขอบซ้ายออกนอกจอ มีป้ายโลโก้กับชื่อบริษัทวางทับมุมขวาล่าง
  * ข้อความและแถวตัวเลขอยู่ฝั่งขวา
  */
 
 export async function AboutBand({ copy }: { copy: typeof HomeCopy.aboutBand }) {
-  const [stats, site] = await Promise.all([getStats(), getSiteInfo()]);
+  const site = await getSiteInfo();
   return (
     <section id="about" className="overflow-x-clip py-[38px] lg:py-[52px]">
       <div className="mx-auto grid w-full max-w-[1180px] items-center gap-7 px-5 lg:grid-cols-[0.92fr_1.08fr] lg:gap-13">
@@ -331,14 +297,9 @@ export async function AboutBand({ copy }: { copy: typeof HomeCopy.aboutBand }) {
           <p className="my-4 max-w-[640px] text-[1.15rem] leading-[1.85] text-slate-500">
             {site.name} {copy.body}
           </p>
-          <div className="mb-[22px] flex flex-wrap gap-x-6 gap-y-3">
-            {stats.map((s) => (
-              <div key={s.label}>
-                <b className="block text-2xl leading-[1.1] font-bold text-brand-600">{s.value}</b>
-                <span className="text-[13.5px] text-slate-500">{s.label}</span>
-              </div>
-            ))}
-          </div>
+          {/* ลูกค้าขอตัดแถวตัวเลข (15+ / 1000°C / 100%) ออกจากบล็อกนี้
+              ชุด stats ยังใช้อยู่ที่หน้า /about และ /fireproofing จึงไม่ได้ลบข้อมูลทิ้ง */}
+          <div className="mb-[22px]" />
           <Button href="/about" variant="ghost">
             {copy.moreLabel}
             <Icon.arrow />

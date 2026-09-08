@@ -122,16 +122,8 @@ export default async function Footer() {
               ขอใบเสนอราคา
             </Button>
 
+            {/* ลูกค้าขอตัด Facebook ออก เหลือ LINE สองช่องทาง */}
             <div className="mt-3.5 flex gap-2.5">
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Facebook"
-                className="grid size-8 place-items-center rounded-full bg-white/10 text-white transition hover:bg-accent-500"
-              >
-                <Icon.facebook className="size-[15px]" />
-              </a>
               {lineChannels.map((c) => (
                 <a
                   key={c.href}

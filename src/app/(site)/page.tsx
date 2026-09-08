@@ -1,5 +1,6 @@
 import { CmsImage } from "@/components/CmsImage";
 import Hero from "@/components/home/Hero";
+import WorksGallery from "@/components/WorksGallery";
 import Reveal from "@/components/ui/Reveal";
 import { Button, Icon, MoreLink, SectionHeading } from "@/components/ui";
 import { CategoryCard, NewsCard } from "@/components/cards";
@@ -11,7 +12,6 @@ import {
   Section,
   StandardsBand,
   ValueBlock,
-  WorksGrid,
 } from "@/components/concept";
 import { getArticles, getHomeFaqs, getHomeShowcase, getProjects } from "@/lib/cms/content";
 import { copyFor } from "@/lib/cms/copy-pages";
@@ -40,6 +40,8 @@ export default async function HomePage() {
   ]);
 
   const latest = articles.slice(0, 3);
+  /* หน้าแรกกับหน้า /projects ใช้ชุดเดียวกัน ตอนนี้มี 7 ใบ ช่องที่แปดเว้นไว้
+     ถ้าลูกค้าเพิ่มผลงานใบที่ 8 จากหลังบ้าน จะขึ้นทั้งสองหน้าเองโดยไม่ต้องแก้โค้ด */
   const showcase = projects.slice(0, 8);
 
   return (
@@ -102,7 +104,7 @@ export default async function HomePage() {
           />
         </Reveal>
         <div className="mt-[26px]">
-          <WorksGrid items={showcase} />
+          <WorksGallery items={showcase} />
         </div>
       </Section>
 

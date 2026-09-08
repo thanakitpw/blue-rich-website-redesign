@@ -70,8 +70,17 @@ export function MenuForm({
             {nav.map((item, i) => (
               <div key={i} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
                 <div className="mb-2 flex items-start gap-2">
-                  <input value={item.label} onChange={(e) => setItem(i, { ...item, label: e.target.value })} placeholder="ชื่อเมนู" className="field w-2/5 font-medium" />
-                  <input value={item.href} onChange={(e) => setItem(i, { ...item, href: e.target.value })} placeholder="/path" className="field flex-1 font-mono text-[13px]" />
+                  <div className="min-w-0 flex-1 space-y-1.5">
+                    <div className="flex gap-2">
+                      <input value={item.label} onChange={(e) => setItem(i, { ...item, label: e.target.value })} placeholder="ชื่อเมนู" className="field w-2/5 font-medium" />
+                      <input value={item.href} onChange={(e) => setItem(i, { ...item, href: e.target.value })} placeholder="/path" className="field flex-1 font-mono text-[13px]" />
+                    </div>
+                    {/* เมนูหลักที่ไม่มีเมนูย่อยใส่บรรทัดที่สองได้ เช่นชื่อรุ่นภาษาอังกฤษ
+                        เมนูที่มีเมนูย่อยไม่ต้อง เพราะ dropdown มีที่อธิบายอยู่แล้ว */}
+                    {(item.children ?? []).length === 0 && (
+                      <input value={item.note ?? ""} onChange={(e) => setItem(i, { ...item, note: e.target.value || undefined })} placeholder="บรรทัดที่สองใต้ชื่อเมนู (เว้นว่างได้)" className="field" />
+                    )}
+                  </div>
                   <RowTools
                     index={i}
                     total={nav.length}

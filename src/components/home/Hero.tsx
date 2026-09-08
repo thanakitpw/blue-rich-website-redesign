@@ -40,7 +40,9 @@ export default function Hero({
   }, [paused]);
 
   return (
-    <header className="pt-6 lg:pt-[34px]">
+    /* pb เว้นช่องใต้ริบบิ้นก่อนถึง section พื้นฟ้า (tone="shell") ที่ตามมา
+       ไม่งั้นพื้นฟ้าจะเริ่มชนขอบล่างการ์ดริบบิ้นพอดีจนดูติดกัน */
+    <header className="pt-6 pb-[30px] lg:pt-[34px] lg:pb-[44px]">
       <Container>
         {/* -------------------------------------------------------- slider */}
         <div

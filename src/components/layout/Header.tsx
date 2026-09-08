@@ -145,21 +145,39 @@ export default function Header() {
             เมนู
           </button>
 
-          {/* Desktop pills */}
-          <ul className="hidden items-center gap-1 lg:flex">
+          {/* Desktop pills — 10 ปุ่มหลังยกสองสูตรสีกันไฟขึ้นมา บีบระยะที่ช่วง lg
+              ให้พอดีแถวเดียว แล้วค่อยคลายกลับที่ xl ซึ่งมีที่ว่างพอ */}
+          <ul className="hidden items-center gap-0.5 lg:flex xl:gap-1">
             {nav.map((item) => {
               const active = isBranchActive(item);
               return (
                 <li key={item.href} className="group relative">
                   <Link
                     href={item.href}
-                    className={`flex items-center gap-1 rounded-full px-3 py-2 text-[14.5px] whitespace-nowrap transition xl:px-3.5 xl:text-sm ${
+                    className={`flex items-center gap-1 rounded-full px-2.5 text-[14.5px] whitespace-nowrap transition xl:px-3.5 xl:text-sm ${
+                      item.note ? "py-1" : "py-2"
+                    } ${
                       active
                         ? "bg-brand-600 font-medium text-white"
                         : "text-brand-800 hover:bg-brand-50 hover:text-brand-600"
                     }`}
                   >
-                    {item.label}
+                    {/* เมนูที่มี note ขึ้นสองบรรทัด — ชื่อไทยบน ชื่อรุ่นภาษาอังกฤษล่าง
+                        บีบ py ลงเพื่อให้ปุ่มสูงใกล้เคียงปุ่มบรรทัดเดียวข้าง ๆ */}
+                    {item.note ? (
+                      <span className="flex flex-col leading-tight">
+                        {item.label}
+                        <span
+                          className={`text-[10.5px] font-normal tracking-tight ${
+                            active ? "text-white/75" : "text-slate-400"
+                          }`}
+                        >
+                          {item.note}
+                        </span>
+                      </span>
+                    ) : (
+                      item.label
+                    )}
                     {item.children && (
                       <Icon.chevronDown className="size-3.5 opacity-70 transition-transform duration-200 group-hover:rotate-180" />
                     )}
@@ -204,17 +222,8 @@ export default function Header() {
             })}
           </ul>
 
-          {/* Social */}
+          {/* Social — ลูกค้าขอตัด Facebook ออก เหลือ LINE สองช่องทาง */}
           <div className="flex gap-2">
-            <a
-              href="https://www.facebook.com/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Facebook"
-              className="grid size-[30px] place-items-center rounded-full bg-[#1877f2] text-white transition hover:brightness-110"
-            >
-              <Icon.facebook className="size-4" />
-            </a>
             <a
               href={lineHref}
               target="_blank"
@@ -251,6 +260,15 @@ export default function Header() {
                         }`}
                       >
                         {item.label}
+                        {item.note && (
+                          <span
+                            className={`mt-0.5 block text-[12px] leading-snug ${
+                              isBranchActive(item) ? "text-white/75" : "text-slate-500"
+                            }`}
+                          >
+                            {item.note}
+                          </span>
+                        )}
                       </Link>
                       {item.children && (
                         <button
@@ -277,9 +295,15 @@ export default function Header() {
                           <li key={child.href}>
                             <Link
                               href={child.href}
-                              className="block rounded-[8px] px-3 py-2 text-[14.5px] text-brand-700 transition hover:bg-white"
+                              className="block rounded-[8px] px-3 py-2 text-brand-700 transition hover:bg-white"
                             >
-                              {child.label}
+                              <span className="block text-[14.5px]">{child.label}</span>
+                              {/* คำอธิบายบรรทัดล่าง — เดิมมีเฉพาะเมนูจอใหญ่ */}
+                              {child.note && (
+                                <span className="mt-0.5 block text-[12.5px] leading-snug text-slate-500">
+                                  {child.note}
+                                </span>
+                              )}
                             </Link>
                           </li>
                         ))}

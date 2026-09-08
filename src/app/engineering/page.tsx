@@ -13,9 +13,10 @@ import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /**
- * Paid-traffic landing page for the engineering service. Sits outside the (site)
- * route group so it renders without the main navigation, and noindex so it does
- * not compete with the organic pages for the same keywords.
+ * Landing page for the engineering service. Sits outside the (site) route group
+ * so it renders without the main navigation, but it is indexed and sits in the
+ * sitemap — it is the only page on the site that covers the certification
+ * service end to end, so nothing else competes with it.
  *
  * The other landing pages sell a product and are laid out as card grids; this
  * one sells a process, so the spine of the page is a vertical timeline with a
@@ -27,9 +28,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: meta.title,
     description: meta.description,
-    // noindex on its own — pairing it with a canonical pointing elsewhere sends
-    // conflicting signals. Links out are still followed.
-    robots: { index: false, follow: true },
+    // หน้านี้ติดอันดับเองได้ canonical จึงชี้กลับหาตัวเอง ไม่ใช่หน้าสินค้า
+    alternates: { canonical: "/engineering" },
     openGraph: {
       type: "website",
       locale: "th_TH",
@@ -55,6 +55,7 @@ export default async function EngineeringLanding() {
     faqs,
     hero,
     navSections,
+    permit,
     problems,
     quoteForm,
     reports,
@@ -248,6 +249,11 @@ export default async function EngineeringLanding() {
                           </li>
                         ))}
                       </ul>
+
+                      {/* ฐานกฎหมายของบริการนั้น ๆ — ฝ่ายจัดซื้อใช้เช็กว่าตรงกับที่ผู้ตรวจขอ */}
+                      <p className="mt-6 border-t border-slate-100 pt-4 text-[0.82rem] leading-relaxed text-slate-500">
+                        {s.legal}
+                      </p>
                     </div>
                   </Reveal>
                 );
@@ -335,6 +341,30 @@ export default async function EngineeringLanding() {
           </div>
         </DarkBand>
 
+        {/* ------------------------------------------------------------ Permit */}
+        <section id="permit" className="bg-slate-50 py-20 lg:py-24">
+          <Wrap>
+            <SectionHead eyebrow={permit.eyebrow} title={permit.title} lead={permit.lead} />
+
+            <ol className="mx-auto mt-12 grid max-w-4xl gap-3">
+              {permit.items.map((item, i) => (
+                <Reveal key={item} delay={i * 50}>
+                  <li className="flex gap-4 rounded-2xl bg-brand-50/70 px-5 py-4 ring-1 ring-inset ring-brand-100">
+                    <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-600 text-[0.78rem] font-semibold text-white">
+                      {i + 1}
+                    </span>
+                    <span className="text-[0.98rem] leading-relaxed text-slate-700">{item}</span>
+                  </li>
+                </Reveal>
+              ))}
+            </ol>
+
+            <p className="mx-auto mt-8 max-w-3xl text-center text-[0.95rem] leading-relaxed text-slate-500">
+              {permit.note}
+            </p>
+          </Wrap>
+        </section>
+
         {/* ----------------------------------------------------------- Reports */}
         <section id="reports" className="py-20 lg:py-24">
           <Wrap>
@@ -348,7 +378,7 @@ export default async function EngineeringLanding() {
                     target="_blank"
                     rel="noreferrer"
                     data-cta={`report-${i}`}
-                    className="flex items-center gap-5 rounded-3xl bg-white p-6 ring-1 ring-slate-200 transition hover:ring-brand-300"
+                    className="flex items-start gap-5 rounded-3xl bg-white p-6 ring-1 ring-slate-200 transition hover:ring-brand-300"
                   >
                     <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-600 text-white">
                       <Icon.doc className="size-5" />
@@ -357,13 +387,23 @@ export default async function EngineeringLanding() {
                       <span className="block text-[1.05rem] font-semibold text-brand-950">
                         {r.label}
                       </span>
-                      <span className="mt-0.5 block text-[0.85rem] text-slate-500">{r.note}</span>
+                      <span className="mt-1 block text-[0.85rem] leading-relaxed text-slate-500">
+                        {r.note}
+                      </span>
+                      {/* ขนาดไฟล์และจำนวนหน้า — บอกล่วงหน้าว่ากดแล้วจะโหลดอะไรมา */}
+                      <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-brand-50 px-2.5 py-1 text-[0.72rem] font-semibold text-brand-700">
+                        {r.meta}
+                      </span>
                     </span>
-                    <Icon.arrow className="size-4 shrink-0 text-brand-500" />
+                    <Icon.arrow className="mt-4 size-4 shrink-0 text-brand-500" />
                   </a>
                 </Reveal>
               ))}
             </div>
+
+            <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-amber-50 px-6 py-5 text-[0.95rem] leading-relaxed text-amber-900 ring-1 ring-inset ring-amber-200">
+              {reports.note}
+            </p>
           </Wrap>
         </section>
 

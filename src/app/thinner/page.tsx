@@ -13,9 +13,10 @@ import { copyFor } from "@/lib/cms/copy-pages";
 import { getSiteInfo } from "@/lib/cms/content";
 
 /**
- * Paid-traffic landing page for the solvent range. Sits outside the (site)
- * route group so it renders without the main navigation, and noindex so it does
- * not compete with /products/thinner-3a-intanin for the same keywords.
+ * Landing page for the solvent range. Sits outside the (site) route group so it
+ * renders without the main navigation, but it is indexed and sits in the
+ * sitemap — it carries the range keyword ("ทินเนอร์ · น้ำมันสน") while
+ * /products/thinner-3a-intanin keeps the single-product term.
  *
  * Visually the counterpart to /neocoat: that page opens on a
  * navy engineering hero, this one opens light and product-forward, because the
@@ -26,9 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: meta.title,
     description: meta.description,
-    // noindex on its own — pairing it with a canonical pointing elsewhere sends
-    // conflicting signals. Links out are still followed.
-    robots: { index: false, follow: true },
+    // หน้านี้ติดอันดับเองได้ canonical จึงชี้กลับหาตัวเอง ไม่ใช่หน้าสินค้า
+    alternates: { canonical: "/thinner" },
     openGraph: {
       type: "website",
       locale: "th_TH",
@@ -462,7 +462,7 @@ export default async function ThinnerLanding() {
                         target="_blank"
                         rel="noreferrer"
                         data-cta="doc-download"
-                        className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-slate-200 transition hover:ring-brand-300"
+                        className="flex items-start gap-4 rounded-3xl bg-white p-5 ring-1 ring-slate-200 transition hover:ring-brand-300"
                       >
                         <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-600 text-white">
                           <Icon.doc className="size-5" />
@@ -471,11 +471,15 @@ export default async function ThinnerLanding() {
                           <span className="block text-[1.02rem] font-semibold text-brand-950">
                             {d.label}
                           </span>
-                          <span className="mt-0.5 block text-[0.85rem] text-slate-500">
+                          <span className="mt-1 block text-[0.85rem] leading-relaxed text-slate-500">
                             {d.note}
                           </span>
+                          {/* ขนาดไฟล์และจำนวนหน้า — บอกล่วงหน้าว่ากดแล้วจะโหลดอะไรมา */}
+                          <span className="mt-2 inline-flex items-center gap-2 rounded-full bg-brand-50 px-2.5 py-1 text-[0.72rem] font-semibold text-brand-700">
+                            {d.meta}
+                          </span>
                         </span>
-                        <Icon.arrow className="size-4 shrink-0 text-brand-500" />
+                        <Icon.arrow className="mt-3.5 size-4 shrink-0 text-brand-500" />
                       </a>
                     </li>
                   ))}
