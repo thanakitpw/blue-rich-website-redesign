@@ -12,9 +12,13 @@ import { useState } from "react";
 export default function ProductGallery({
   images,
   alt,
+  imageKeys,
 }: {
   images: string[];
   alt: string;
+  /** เฉพาะตอนพรีวิวในหลังบ้าน — กุญแจของแต่ละรูป (gallery.0, gallery.1 …) ติดเป็น
+      data-cms-image ให้ PreviewBridge รู้ว่ากดรูปไหน และเปลี่ยนรูปสดตามฟอร์มได้ */
+  imageKeys?: string[];
 }) {
   const [active, setActive] = useState(0);
   const many = images.length > 1;
@@ -31,6 +35,7 @@ export default function ProductGallery({
           priority
           sizes="(min-width: 1024px) 46vw, 92vw"
           className="object-contain p-6 mix-blend-multiply sm:p-10"
+          data-cms-image={imageKeys?.[active]}
         />
 
         {many && (
@@ -74,7 +79,14 @@ export default function ProductGallery({
                   : "border border-slate-200 opacity-75 hover:border-brand-200 hover:opacity-100"
               }`}
             >
-              <Image src={src} alt="" fill sizes="84px" className="object-contain p-1.5 mix-blend-multiply" />
+              <Image
+                src={src}
+                alt=""
+                fill
+                sizes="84px"
+                className="object-contain p-1.5 mix-blend-multiply"
+                data-cms-image={imageKeys?.[i]}
+              />
             </button>
           ))}
         </div>

@@ -291,4 +291,12 @@
   .admin-title {
     @apply text-[21px] font-semibold text-slate-900;
   }
+
+  /* ช่องที่ถูกชี้จากพรีวิว (คลิกข้อความบนหน้าเว็บ) — ดู ProductForm.focusField */
+  .field[data-cms-active] {
+    @apply border-accent-400 ring-2 ring-accent-100;
+  }
+  [data-cms-active]:not(.field) {
+    @apply rounded-lg ring-2 ring-accent-200 ring-offset-2;
+  }
 }

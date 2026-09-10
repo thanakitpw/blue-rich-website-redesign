@@ -16,12 +16,12 @@ import {
   getCategories,
   getInstallationSteps,
   getLegalInfo,
-  getProduct,
   getProducts,
   getRelatedProducts,
   getSiteInfo,
 } from "@/lib/cms/content";
-import { copyFor } from "@/lib/cms/copy-pages";
+import { copyFor, inPreview } from "@/lib/cms/copy-pages";
+import { getProductForPage } from "@/lib/cms/product-preview";
 
 /* ไอคอนของแถบการันตี — ข้อความย้ายไป @/data/pages/product-detail แล้ว */
 
@@ -35,7 +35,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const product = await getProductForPage(slug);
   if (!product) return { title: (await copyFor("product-detail")).notFoundTitle };
   return {
     title: product.name,
@@ -46,8 +46,10 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  /* ตอนพรีวิวในหลังบ้านได้ฉบับร่างพร้อมเครื่องหมายให้คลิกแก้ได้ (ดู product-preview.ts) */
+  const product = await getProductForPage(slug);
   if (!product) notFound();
+  const preview = await inPreview();
   const { headings, homeLabel } = await copyFor("product-detail");
 
   const [categories, suggestions, installationSteps, legalInfo, info] = await Promise.all([
@@ -369,7 +371,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className="py-8 lg:py-12">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[1.02fr_1fr] lg:gap-14">
-            <ProductGallery images={product.gallery} alt={product.name} />
+            <ProductGallery
+              images={product.gallery}
+              alt={product.name}
+              /* ให้คลิกรูปในพรีวิวแล้วเด้งไปช่องแกลเลอรีในฟอร์มสินค้าได้ */
+              imageKeys={preview ? product.gallery.map((_, i) => `gallery.${i}`) : undefined}
+            />
 
             <div>
               <h1 className="text-[clamp(25px,3.2vw,36px)] leading-[1.25] font-bold text-brand-600">

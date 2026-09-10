@@ -4,6 +4,16 @@ import type { Download, Faq, InfoList, SpecRow, SpecTable } from "@/data/product
 import type { MediaItem } from "@/lib/cms/media";
 import { ImageField } from "./ImageField";
 
+/**
+ * `name` ของทุก editor คือกุญแจต้นทางสำหรับหน้าจอแก้ไขแบบเห็นหน้าเว็บ
+ *
+ * ช่องกรอกแต่ละช่องจะติด data-cms-key เป็นเส้นทางเต็ม เช่น specs.1.value หรือ
+ * faq.0.a — ตรงกับกุญแจที่หน้าพรีวิวห่อข้อความไว้ (ดู lib/cms/product-preview.ts)
+ * ฟอร์มที่ไม่ได้ส่ง name มาก็ทำงานเหมือนเดิม ไม่มีอะไรเปลี่ยน
+ */
+const keyOf = (name: string | undefined, ...parts: (string | number)[]) =>
+  name ? [name, ...parts].join(".") : undefined;
+
 /* ───────────────────────── ปุ่มจัดลำดับ/ลบ ที่ใช้ร่วมกัน ─────────────────── */
 
 export function RowTools({
@@ -59,6 +69,7 @@ export function TextListEditor({
   addLabel = "+ เพิ่มข้อ",
   rows = 3,
   placeholder,
+  name,
 }: {
   value: string[];
   onChange: (next: string[]) => void;
@@ -66,6 +77,7 @@ export function TextListEditor({
   addLabel?: string;
   rows?: number;
   placeholder?: string;
+  name?: string;
 }) {
   const l = useList(value, onChange);
   return (
@@ -75,9 +87,9 @@ export function TextListEditor({
         {value.map((item, i) => (
           <div key={i} className="flex items-start gap-2">
             {rows === 1 ? (
-              <input value={item} placeholder={placeholder} onChange={(e) => l.set(i, e.target.value)} className="field flex-1" />
+              <input value={item} placeholder={placeholder} onChange={(e) => l.set(i, e.target.value)} className="field flex-1" data-cms-key={keyOf(name, i)} />
             ) : (
-              <textarea rows={rows} value={item} placeholder={placeholder} onChange={(e) => l.set(i, e.target.value)} className="field flex-1" />
+              <textarea rows={rows} value={item} placeholder={placeholder} onChange={(e) => l.set(i, e.target.value)} className="field flex-1" data-cms-key={keyOf(name, i)} />
             )}
             <RowTools {...l.tools(i)} />
           </div>
@@ -95,11 +107,13 @@ export function SpecEditor({
   onChange,
   label,
   addLabel = "+ เพิ่มแถว",
+  name,
 }: {
   value: SpecRow[];
   onChange: (next: SpecRow[]) => void;
   label?: string;
   addLabel?: string;
+  name?: string;
 }) {
   const l = useList(value, onChange);
   return (
@@ -108,8 +122,8 @@ export function SpecEditor({
       <div className="space-y-2">
         {value.map((s, i) => (
           <div key={i} className="flex items-start gap-2">
-            <input value={s.label} onChange={(e) => l.set(i, { ...s, label: e.target.value })} placeholder="หัวข้อ เช่น ความหนาฟิล์มแห้ง" className="field w-1/3" />
-            <input value={s.value} onChange={(e) => l.set(i, { ...s, value: e.target.value })} placeholder="ค่า เช่น 500 ไมครอน" className="field flex-1" />
+            <input value={s.label} onChange={(e) => l.set(i, { ...s, label: e.target.value })} placeholder="หัวข้อ เช่น ความหนาฟิล์มแห้ง" className="field w-1/3" data-cms-key={keyOf(name, i, "label")} />
+            <input value={s.value} onChange={(e) => l.set(i, { ...s, value: e.target.value })} placeholder="ค่า เช่น 500 ไมครอน" className="field flex-1" data-cms-key={keyOf(name, i, "value")} />
             <RowTools {...l.tools(i)} />
           </div>
         ))}
@@ -121,17 +135,25 @@ export function SpecEditor({
 
 /* ───────────────────────── คำถาม–คำตอบ ────────────────────────────────── */
 
-export function FaqEditor({ value, onChange }: { value: Faq[]; onChange: (next: Faq[]) => void }) {
+export function FaqEditor({
+  value,
+  onChange,
+  name,
+}: {
+  value: Faq[];
+  onChange: (next: Faq[]) => void;
+  name?: string;
+}) {
   const l = useList(value, onChange);
   return (
     <div className="space-y-3">
       {value.map((f, i) => (
         <div key={i} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
           <div className="mb-2 flex items-start gap-2">
-            <input value={f.q} onChange={(e) => l.set(i, { ...f, q: e.target.value })} placeholder="คำถาม" className="field flex-1 font-medium" />
+            <input value={f.q} onChange={(e) => l.set(i, { ...f, q: e.target.value })} placeholder="คำถาม" className="field flex-1 font-medium" data-cms-key={keyOf(name, i, "q")} />
             <RowTools {...l.tools(i)} />
           </div>
-          <textarea rows={4} value={f.a} onChange={(e) => l.set(i, { ...f, a: e.target.value })} placeholder="คำตอบ" className="field" />
+          <textarea rows={4} value={f.a} onChange={(e) => l.set(i, { ...f, a: e.target.value })} placeholder="คำตอบ" className="field" data-cms-key={keyOf(name, i, "a")} />
         </div>
       ))}
       <button type="button" onClick={() => l.add({ q: "", a: "" })} className="btn-line-admin">+ เพิ่มคำถาม</button>
@@ -144,9 +166,11 @@ export function FaqEditor({ value, onChange }: { value: Faq[]; onChange: (next: 
 export function BlockEditor({
   value,
   onChange,
+  name,
 }: {
   value: { title: string; body: string }[];
   onChange: (next: { title: string; body: string }[]) => void;
+  name?: string;
 }) {
   const l = useList(value, onChange);
   return (
@@ -154,10 +178,10 @@ export function BlockEditor({
       {value.map((b, i) => (
         <div key={i} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
           <div className="mb-2 flex items-start gap-2">
-            <input value={b.title} onChange={(e) => l.set(i, { ...b, title: e.target.value })} placeholder="หัวข้อ" className="field flex-1 font-medium" />
+            <input value={b.title} onChange={(e) => l.set(i, { ...b, title: e.target.value })} placeholder="หัวข้อ" className="field flex-1 font-medium" data-cms-key={keyOf(name, i, "title")} />
             <RowTools {...l.tools(i)} />
           </div>
-          <textarea rows={4} value={b.body} onChange={(e) => l.set(i, { ...b, body: e.target.value })} placeholder="เนื้อความ" className="field" />
+          <textarea rows={4} value={b.body} onChange={(e) => l.set(i, { ...b, body: e.target.value })} placeholder="เนื้อความ" className="field" data-cms-key={keyOf(name, i, "body")} />
         </div>
       ))}
       <button type="button" onClick={() => l.add({ title: "", body: "" })} className="btn-line-admin">+ เพิ่มบล็อก</button>
@@ -167,13 +191,21 @@ export function BlockEditor({
 
 /* ───────────────────────── เอกสารดาวน์โหลด ───────────────────────────── */
 
-export function DownloadEditor({ value, onChange }: { value: Download[]; onChange: (next: Download[]) => void }) {
+export function DownloadEditor({
+  value,
+  onChange,
+  name,
+}: {
+  value: Download[];
+  onChange: (next: Download[]) => void;
+  name?: string;
+}) {
   const l = useList(value, onChange);
   return (
     <div className="space-y-2">
       {value.map((d, i) => (
         <div key={i} className="flex items-start gap-2">
-          <input value={d.label} onChange={(e) => l.set(i, { ...d, label: e.target.value })} placeholder="ชื่อเอกสาร" className="field w-2/5" />
+          <input value={d.label} onChange={(e) => l.set(i, { ...d, label: e.target.value })} placeholder="ชื่อเอกสาร" className="field w-2/5" data-cms-key={keyOf(name, i, "label")} />
           <input value={d.href} onChange={(e) => l.set(i, { ...d, href: e.target.value })} placeholder="/docs/ไฟล์.pdf" className="field flex-1 font-mono text-[13px]" />
           <RowTools {...l.tools(i)} />
         </div>
@@ -188,17 +220,25 @@ export function DownloadEditor({ value, onChange }: { value: Download[]; onChang
 
 /* ───────────────────────── รายการหัวข้อ + ข้อย่อย ────────────────────── */
 
-export function InfoListEditor({ value, onChange }: { value: InfoList[]; onChange: (next: InfoList[]) => void }) {
+export function InfoListEditor({
+  value,
+  onChange,
+  name,
+}: {
+  value: InfoList[];
+  onChange: (next: InfoList[]) => void;
+  name?: string;
+}) {
   const l = useList(value, onChange);
   return (
     <div className="space-y-3">
       {value.map((list, i) => (
         <div key={i} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
           <div className="mb-2 flex items-start gap-2">
-            <input value={list.title} onChange={(e) => l.set(i, { ...list, title: e.target.value })} placeholder="หัวข้อรายการ" className="field flex-1 font-medium" />
+            <input value={list.title} onChange={(e) => l.set(i, { ...list, title: e.target.value })} placeholder="หัวข้อรายการ" className="field flex-1 font-medium" data-cms-key={keyOf(name, i, "title")} />
             <RowTools {...l.tools(i)} />
           </div>
-          <TextListEditor value={list.items} onChange={(items) => l.set(i, { ...list, items })} rows={3} />
+          <TextListEditor value={list.items} onChange={(items) => l.set(i, { ...list, items })} rows={3} name={keyOf(name, i, "items")} />
         </div>
       ))}
       <button type="button" onClick={() => l.add({ title: "", items: [""] })} className="btn-line-admin">+ เพิ่มรายการ</button>
@@ -212,16 +252,18 @@ export function GalleryEditor({
   value,
   media,
   onChange,
+  name,
 }: {
   value: string[];
   media: MediaItem[];
   onChange: (next: string[]) => void;
+  name?: string;
 }) {
   const l = useList(value, onChange);
   return (
     <div className="space-y-3">
       {value.map((url, i) => (
-        <div key={i} className="flex items-end gap-2">
+        <div key={i} className="flex items-end gap-2" data-cms-key={keyOf(name, i)}>
           <div className="min-w-0 flex-1">
             <ImageField label={`รูปที่ ${i + 1}`} value={url} media={media} onChange={(v) => l.set(i, v)} />
           </div>
@@ -238,9 +280,11 @@ export function GalleryEditor({
 export function SpecTableEditor({
   value,
   onChange,
+  name,
 }: {
   value: SpecTable | null;
   onChange: (next: SpecTable | null) => void;
+  name?: string;
 }) {
   if (!value) {
     return (
@@ -273,7 +317,7 @@ export function SpecTableEditor({
   return (
     <div className="space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
       <div className="flex items-start gap-2">
-        <input value={value.title} onChange={(e) => onChange({ ...value, title: e.target.value })} placeholder="ชื่อตาราง" className="field flex-1 font-medium" />
+        <input value={value.title} onChange={(e) => onChange({ ...value, title: e.target.value })} placeholder="ชื่อตาราง" className="field flex-1 font-medium" data-cms-key={keyOf(name, "title")} />
         <button type="button" onClick={() => onChange(null)} className="btn-danger shrink-0">ลบตาราง</button>
       </div>
 
@@ -283,7 +327,7 @@ export function SpecTableEditor({
             <tr>
               {value.columns.map((c, i) => (
                 <th key={i} className="align-top">
-                  <input value={c} onChange={(e) => setCol(i, e.target.value)} placeholder={`คอลัมน์ ${i + 1}`} className="field min-w-[9rem] font-medium" />
+                  <input value={c} onChange={(e) => setCol(i, e.target.value)} placeholder={`คอลัมน์ ${i + 1}`} className="field min-w-[9rem] font-medium" data-cms-key={keyOf(name, "columns", i)} />
                   <button type="button" onClick={() => removeColumn(i)} className="mt-1 text-[11px] text-slate-500 hover:text-red-600">ลบคอลัมน์</button>
                 </th>
               ))}
@@ -297,7 +341,7 @@ export function SpecTableEditor({
               <tr key={r}>
                 {row.map((cell, c) => (
                   <td key={c}>
-                    <input value={cell} onChange={(e) => setCell(r, c, e.target.value)} className="field min-w-[9rem]" />
+                    <input value={cell} onChange={(e) => setCell(r, c, e.target.value)} className="field min-w-[9rem]" data-cms-key={keyOf(name, "rows", r, c)} />
                   </td>
                 ))}
                 <td className="whitespace-nowrap">
@@ -320,7 +364,7 @@ export function SpecTableEditor({
         </button>
       </div>
 
-      <input value={value.note ?? ""} onChange={(e) => onChange({ ...value, note: e.target.value || undefined })} placeholder="หมายเหตุใต้ตาราง (ไม่บังคับ)" className="field" />
+      <input value={value.note ?? ""} onChange={(e) => onChange({ ...value, note: e.target.value || undefined })} placeholder="หมายเหตุใต้ตาราง (ไม่บังคับ)" className="field" data-cms-key={keyOf(name, "note")} />
     </div>
   );
 }
