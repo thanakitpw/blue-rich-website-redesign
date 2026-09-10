@@ -1,11 +1,11 @@
-import { CmsImage } from "@/components/CmsImage";
 import type { Metadata } from "next";
 import LpHeader from "@/components/landing/LpHeader";
 import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
 import LpFaq from "@/components/landing/LpFaq";
 import LpFooter from "@/components/landing/LpFooter";
-import { Check, DarkBand, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
+import { Band, Check, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
+import LpHero from "@/components/landing/LpHero";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
 import { bundleFor } from "@/data/site";
@@ -94,89 +94,17 @@ export default async function EngineeringLanding() {
 
       <main>
         {/* ------------------------------------------------------------- Hero */}
-        <section className="relative overflow-hidden bg-brand-950 pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-24">
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(58rem_30rem_at_10%_-8%,var(--color-brand-700),transparent),radial-gradient(42rem_26rem_at_96%_30%,var(--color-brand-800),transparent)]"
-          />
-          <div
-            aria-hidden
-            className="absolute -top-24 right-[-6rem] size-72 rotate-45 rounded-[28%] border border-white/10"
-          />
-
-          <Wrap className="relative">
-            <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-              <div>
-                <Eyebrow tone="dark">{hero.eyebrow}</Eyebrow>
-
-                <h1 className="mt-5 text-[2.1rem] leading-[1.18] text-white sm:text-5xl lg:text-[3.2rem]">
-                  {hero.title}
-                  <span className="mt-2 block bg-gradient-to-br from-brand-200 via-brand-100 to-white bg-clip-text text-transparent">
-                    {hero.titleAccent}
-                  </span>
-                </h1>
-
-                <p className="mt-5 max-w-xl text-base leading-relaxed text-brand-100/80 sm:text-[1.06rem]">
-                  {hero.description}
-                </p>
-
-                <ul className="mt-7 grid gap-2.5">
-                  {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[1.02rem] text-brand-50">
-                      <Check />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <a
-                    href="#quote"
-                    data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
-                  >
-                    ส่งแบบให้ประเมินฟรี
-                    <Icon.arrow />
-                  </a>
-                  <a
-                    href={telHref}
-                    data-cta="hero-call"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-accent-600 active:scale-[0.98]"
-                  >
-                    <Icon.phone />
-                    โทร {site.phones[0]}
-                  </a>
-                  <a
-                    href={lineHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
-                  >
-                    <Icon.line />
-                    แอดไลน์ {site.lineId}
-                  </a>
-                </div>
-
-                <p className="mt-6 text-[0.9rem] text-brand-200/70">{hero.proof}</p>
-              </div>
-
-              <div className="relative">
-                <div className="overflow-hidden rounded-4xl shadow-2xl shadow-brand-950/50 ring-1 ring-white/10">
-                  <CmsImage
-                    src="/assets/cert-documents.jpg"
-                    alt="เอกสารรับรองงานสีกันไฟโครงสร้างเหล็ก แบบ น.4-5 และ น.4-9 โดยวุฒิวิศวกร"
-                    width={1200}
-                    height={1200}
-                    priority
-                    sizes="(min-width: 1024px) 45vw, 92vw"
-                    className="h-auto w-full"
-                  />
-                </div>
-              </div>
-            </div>
-          </Wrap>
-        </section>
+        {/* หน้าบริการ ไม่มีถังสีให้วาง ป้ายบนแบนเนอร์ใช้มาตรฐานที่รับรอง */}
+        <LpHero
+          hero={hero}
+          banner="/assets/hero-engineer-certified.jpg"
+          badges={standards.map((s) => s.label)}
+          quoteLabel="ส่งแบบให้ประเมินฟรี"
+          telHref={telHref}
+          lineHref={lineHref}
+          phone={site.phones[0]}
+          lineId={site.lineId}
+        />
 
         {/* --------------------------------------------------- Standards grid */}
         <section className="border-b border-slate-100 bg-white py-10">
@@ -310,17 +238,17 @@ export default async function EngineeringLanding() {
         </section>
 
         {/* ------------------------------------------------------ Deliverables */}
-        <DarkBand id="deliverables" glow="left">
+        <Band id="deliverables" glow="left">
           <div className="grid items-start gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <Reveal>
-              <Eyebrow tone="dark">{deliverables.eyebrow}</Eyebrow>
-              <h2 className="mt-4 text-3xl leading-[1.25] text-white sm:text-4xl lg:text-[2.5rem]">
+              <Eyebrow tone="band">{deliverables.eyebrow}</Eyebrow>
+              <h2 className="mt-4 text-3xl leading-[1.25] text-brand-900 sm:text-4xl lg:text-[2.5rem]">
                 {deliverables.title}
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-100/75">
+              <p className="mt-5 text-base leading-relaxed text-slate-600">
                 {deliverables.lead}
               </p>
-              <p className="mt-6 rounded-3xl bg-white/[0.06] px-6 py-5 text-[1rem] leading-relaxed text-brand-100/70 ring-1 ring-inset ring-white/10">
+              <p className="mt-6 rounded-3xl bg-white px-6 py-5 text-[1rem] leading-relaxed text-slate-600 ring-1 ring-inset ring-brand-100">
                 {deliverables.note}
               </p>
             </Reveal>
@@ -330,16 +258,16 @@ export default async function EngineeringLanding() {
                 {deliverables.items.map((d) => (
                   <li
                     key={d}
-                    className="flex gap-4 rounded-3xl bg-white/[0.05] px-6 py-5 ring-1 ring-inset ring-white/10"
+                    className="flex gap-4 rounded-3xl bg-white px-6 py-5 ring-1 ring-inset ring-brand-100"
                   >
-                    <Icon.doc className="mt-0.5 size-5 shrink-0 text-brand-300" />
-                    <span className="text-[1.02rem] leading-relaxed text-brand-50">{d}</span>
+                    <Icon.doc className="mt-0.5 size-5 shrink-0 text-brand-600" />
+                    <span className="text-[1.02rem] leading-relaxed text-brand-900">{d}</span>
                   </li>
                 ))}
               </ul>
             </Reveal>
           </div>
-        </DarkBand>
+        </Band>
 
         {/* ------------------------------------------------------------ Permit */}
         <section id="permit" className="bg-slate-50 py-20 lg:py-24">
@@ -492,18 +420,18 @@ export default async function EngineeringLanding() {
         </section>
 
         {/* -------------------------------------------------------------- Quote */}
-        <DarkBand id="quote" glow="center">
+        <Band id="quote" glow="center">
           <div
             aria-hidden
-            className="absolute -bottom-24 -left-16 size-72 rotate-45 rounded-[26%] border border-white/10"
+            className="absolute -bottom-24 -left-16 size-72 rotate-45 rounded-[26%] border border-brand-200/60"
           />
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
             <div>
-              <Eyebrow tone="dark">ส่งแบบให้ประเมิน</Eyebrow>
-              <h2 className="mt-4 text-3xl leading-[1.2] text-white sm:text-4xl lg:text-[2.6rem]">
+              <Eyebrow tone="band">ส่งแบบให้ประเมิน</Eyebrow>
+              <h2 className="mt-4 text-3xl leading-[1.2] text-brand-900 sm:text-4xl lg:text-[2.6rem]">
                 ส่งแบบมาให้วิศวกรดูก่อน ไม่มีค่าใช้จ่าย
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-100/75">
+              <p className="mt-5 text-base leading-relaxed text-slate-600">
                 กรอกเท่าที่มีข้อมูลก็พอ ถ้ายังไม่รู้ว่าอาคารต้องทนไฟกี่ชั่วโมง
                 หรือยังไม่มีแบบครบ โทรคุยกันก่อนได้ เราจะบอกว่าต้องเตรียมอะไรบ้าง
               </p>
@@ -512,14 +440,14 @@ export default async function EngineeringLanding() {
                 <a
                   href={telHref}
                   data-cta="quote-call"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.phone className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">โทรหาทีมวิศวกร</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">โทรหาทีมวิศวกร</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.phones.join(" · ")}
                     </span>
                   </span>
@@ -530,14 +458,14 @@ export default async function EngineeringLanding() {
                   target="_blank"
                   rel="noreferrer"
                   data-cta="quote-line"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
                   <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[#06C755]/20 text-[#06C755]">
                     <Icon.line className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">ส่งแบบทางแชท</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">ส่งแบบทางแชท</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       LINE ID : {site.lineId}
                     </span>
                   </span>
@@ -546,26 +474,26 @@ export default async function EngineeringLanding() {
                 <a
                   href={mailHref}
                   data-cta="quote-mail"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.mail className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">ส่งไฟล์แบบทางอีเมล</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">ส่งไฟล์แบบทางอีเมล</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.email}
                     </span>
                   </span>
                 </a>
 
-                <div className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                <div className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.clock className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">เวลาทำการ</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">เวลาทำการ</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.hours}
                     </span>
                   </span>
@@ -573,7 +501,7 @@ export default async function EngineeringLanding() {
               </div>
             </div>
 
-            <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-950/40 sm:p-8">
+            <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-900/10 sm:p-8">
               <h3 className="text-xl">กรอกข้อมูลโครงการ</h3>
               <p className="mt-2 text-sm text-slate-500">ฟรี ไม่มีค่าใช้จ่าย และไม่มีข้อผูกมัด</p>
               <div className="mt-6">
@@ -581,7 +509,7 @@ export default async function EngineeringLanding() {
               </div>
             </div>
           </div>
-        </DarkBand>
+        </Band>
       </main>
 
       <LpFooter note="เอกสารผลทดสอบในหน้านี้เป็นผลทดสอบของผลิตภัณฑ์ ไม่ใช่เอกสารรับรองรายโครงการ ข้อกำหนดทางกฎหมายกรุณายืนยันกับผู้ออกแบบอาคารและเจ้าพนักงานท้องถิ่นของโครงการอีกครั้ง" />

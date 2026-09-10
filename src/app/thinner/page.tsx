@@ -5,12 +5,14 @@ import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
 import LpFaq from "@/components/landing/LpFaq";
 import LpFooter from "@/components/landing/LpFooter";
-import { Check, DarkBand, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
+import { Band, Check, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
+import LpHero from "@/components/landing/LpHero";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
 import { bundleFor } from "@/data/site";
 import { copyFor } from "@/lib/cms/copy-pages";
-import { getSiteInfo } from "@/lib/cms/content";
+import { getProducts, getSiteInfo } from "@/lib/cms/content";
+import { badgesFor } from "@/data/products";
 
 /**
  * Landing page for the solvent range. Sits outside the (site) route group so it
@@ -57,7 +59,7 @@ export default async function ThinnerLanding() {
     quoteForm,
     safety,
   } = await copyFor("thinner");
-  const info = await getSiteInfo();
+  const [info, products] = await Promise.all([getSiteInfo(), getProducts()]);
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 
   const jsonLd = {
@@ -76,99 +78,18 @@ export default async function ThinnerLanding() {
 
       <main>
         {/* ------------------------------------------------------------- Hero */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-brand-50/50 to-page pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-20">
-          <div
-            aria-hidden
-            className="absolute -top-28 -right-24 size-80 rotate-45 rounded-[26%] border border-brand-200/70"
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-32 -left-20 size-72 rotate-45 rounded-[26%] bg-brand-100/40"
-          />
-
-          <Wrap className="relative">
-            <div className="grid items-center gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12">
-              <div>
-                <Eyebrow>{hero.eyebrow}</Eyebrow>
-
-                <h1 className="mt-5 text-[2.1rem] leading-[1.18] sm:text-5xl lg:text-[3.15rem]">
-                  {hero.title}
-                  <span className="mt-2 block text-gradient-brand">{hero.titleAccent}</span>
-                </h1>
-
-                <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-[1.06rem]">
-                  {hero.description}
-                </p>
-
-                <ul className="mt-7 grid gap-2.5">
-                  {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[1.02rem] text-slate-700">
-                      <Check />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <a
-                    href="#quote"
-                    data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
-                  >
-                    ขอราคาตามจำนวน
-                    <Icon.arrow />
-                  </a>
-                  <a
-                    href={telHref}
-                    data-cta="hero-call"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-50 active:scale-[0.98]"
-                  >
-                    <Icon.phone />
-                    โทร {site.phones[0]}
-                  </a>
-                  <a
-                    href={lineHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
-                  >
-                    <Icon.line />
-                    แอดไลน์ {site.lineId}
-                  </a>
-                </div>
-
-                <p className="mt-6 text-[0.9rem] text-slate-500">{hero.proof}</p>
-              </div>
-
-              {/* Product trio rather than one banner — the range is the pitch. */}
-              <div className="grid grid-cols-3 items-end gap-3 sm:gap-4">
-                {lineup.map((p, i) => (
-                  <div
-                    key={p.name}
-                    className={`overflow-hidden rounded-3xl bg-white shadow-xl shadow-brand-900/10 ring-1 ring-slate-200/80 ${
-                      i === 1 ? "sm:-mb-6" : ""
-                    }`}
-                  >
-                    <div className="relative aspect-3/4">
-                      <CmsImage
-                        src={p.image}
-                        alt={p.alt}
-                        fill
-                        priority={i === 0}
-                        sizes="(min-width: 1024px) 15vw, 30vw"
-                        className="object-contain p-3"
-                      />
-                    </div>
-                    <p className="border-t border-slate-100 px-3 py-2.5 text-center text-[0.78rem] font-semibold text-brand-800">
-                      {p.tag}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Wrap>
-        </section>
+        {/* รูปลอยเป็นถังทินเนอร์กับน้ำมันสนคู่กัน เพราะหน้านี้ขายทั้งสองอย่าง */}
+        <LpHero
+          hero={hero}
+          banner="/assets/news-tools.jpg"
+          cutout="/assets/products/thinner-turpentine-intanin.webp"
+          badges={badgesFor(products, ["thinner-3a-intanin", "turpentine-intanin"])}
+          quoteLabel="ขอราคาตามจำนวน"
+          telHref={telHref}
+          lineHref={lineHref}
+          phone={site.phones[0]}
+          lineId={site.lineId}
+        />
 
         {/* ------------------------------------------------------- Quick facts */}
         <section className="border-y border-slate-100 bg-white py-7">
@@ -326,9 +247,9 @@ export default async function ThinnerLanding() {
         </section>
 
         {/* -------------------------------------------------------- Difference */}
-        <DarkBand glow="right">
+        <Band glow="right">
           <SectionHead
-            tone="dark"
+            tone="band"
             eyebrow={difference.eyebrow}
             title={difference.title}
             lead={difference.lead}
@@ -337,10 +258,10 @@ export default async function ThinnerLanding() {
           <div className="mt-14 grid gap-5 md:grid-cols-2">
             {difference.columns.map((c, i) => (
               <Reveal key={c.name} delay={i * 100}>
-                <div className="h-full rounded-4xl bg-white/[0.05] p-8 ring-1 ring-inset ring-white/10">
+                <div className="h-full rounded-4xl bg-white p-8 ring-1 ring-inset ring-brand-100">
                   <div className="flex items-baseline gap-3">
-                    <h3 className="text-2xl text-white">{c.name}</h3>
-                    <span className="rounded-full bg-brand-500/20 px-3 py-1 text-[0.78rem] font-semibold text-brand-200">
+                    <h3 className="text-2xl text-brand-900">{c.name}</h3>
+                    <span className="rounded-full bg-brand-100 px-3 py-1 text-[0.78rem] font-semibold text-brand-700">
                       {c.caption}
                     </span>
                   </div>
@@ -348,7 +269,7 @@ export default async function ThinnerLanding() {
                     {c.points.map((p) => (
                       <li
                         key={p}
-                        className="flex gap-3 text-[0.93rem] leading-relaxed text-brand-100/80"
+                        className="flex gap-3 text-[0.93rem] leading-relaxed text-slate-600"
                       >
                         <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brand-400" />
                         {p}
@@ -361,11 +282,11 @@ export default async function ThinnerLanding() {
           </div>
 
           <Reveal delay={200}>
-            <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-white/[0.06] px-7 py-6 text-center text-[1.02rem] leading-relaxed text-brand-100/80 ring-1 ring-inset ring-white/10">
+            <p className="mx-auto mt-10 max-w-3xl rounded-3xl bg-white px-7 py-6 text-center text-[1.02rem] leading-relaxed text-slate-600 ring-1 ring-inset ring-brand-100">
               {difference.outro}
             </p>
           </Reveal>
-        </DarkBand>
+        </Band>
 
         {/* --------------------------------------------------- Sizes + ordering */}
         <section id="sizes" className="py-20 lg:py-24">
@@ -514,18 +435,18 @@ export default async function ThinnerLanding() {
         </section>
 
         {/* -------------------------------------------------------------- Quote */}
-        <DarkBand id="quote" glow="center">
+        <Band id="quote" glow="center">
           <div
             aria-hidden
-            className="absolute -bottom-24 -left-16 size-72 rotate-45 rounded-[26%] border border-white/10"
+            className="absolute -bottom-24 -left-16 size-72 rotate-45 rounded-[26%] border border-brand-200/60"
           />
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
             <div>
-              <Eyebrow tone="dark">ขอใบเสนอราคา</Eyebrow>
-              <h2 className="mt-4 text-3xl leading-[1.2] text-white sm:text-4xl lg:text-[2.6rem]">
+              <Eyebrow tone="band">ขอใบเสนอราคา</Eyebrow>
+              <h2 className="mt-4 text-3xl leading-[1.2] text-brand-900 sm:text-4xl lg:text-[2.6rem]">
                 แจ้งชนิดและจำนวน ให้ฝ่ายขายเสนอราคาให้
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-100/75">
+              <p className="mt-5 text-base leading-relaxed text-slate-600">
                 ราคาต่อหน่วยขึ้นกับจำนวนที่สั่งและจังหวัดปลายทาง กรอกเท่าที่รู้ก็พอ
                 ที่เหลือฝ่ายขายจะโทรกลับไปคุยกับคุณเอง
               </p>
@@ -534,14 +455,14 @@ export default async function ThinnerLanding() {
                 <a
                   href={telHref}
                   data-cta="quote-call"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.phone className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">โทรหาฝ่ายขาย</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">โทรหาฝ่ายขาย</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.phones.join(" · ")}
                     </span>
                   </span>
@@ -552,14 +473,14 @@ export default async function ThinnerLanding() {
                   target="_blank"
                   rel="noreferrer"
                   data-cta="quote-line"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
                   <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[#06C755]/20 text-[#06C755]">
                     <Icon.line className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">แชทกับทีมงาน</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">แชทกับทีมงาน</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       LINE ID : {site.lineId}
                     </span>
                   </span>
@@ -568,26 +489,26 @@ export default async function ThinnerLanding() {
                 <a
                   href={mailHref}
                   data-cta="quote-mail"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.mail className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">ส่งรายการทางอีเมล</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">ส่งรายการทางอีเมล</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.email}
                     </span>
                   </span>
                 </a>
 
-                <div className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                <div className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.clock className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">เวลาทำการ</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">เวลาทำการ</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.hours}
                     </span>
                   </span>
@@ -595,7 +516,7 @@ export default async function ThinnerLanding() {
               </div>
             </div>
 
-            <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-950/40 sm:p-8">
+            <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-900/10 sm:p-8">
               <h3 className="text-xl">กรอกรายการที่ต้องการ</h3>
               <p className="mt-2 text-sm text-slate-500">ฟรี ไม่มีค่าใช้จ่าย และไม่มีข้อผูกมัด</p>
               <div className="mt-6">
@@ -603,7 +524,7 @@ export default async function ThinnerLanding() {
               </div>
             </div>
           </div>
-        </DarkBand>
+        </Band>
       </main>
 
       <LpFooter note="ราคาและสต็อกเปลี่ยนแปลงได้ กรุณายืนยันกับฝ่ายขายก่อนสั่งซื้อทุกครั้ง" />

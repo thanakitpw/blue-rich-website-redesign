@@ -945,3 +945,12 @@ export const productsByCategory = (slug: string) =>
 
 export const relatedProducts = (product: Product) =>
   product.related.map((slug) => getProduct(slug)).filter((p): p is Product => Boolean(p));
+
+/**
+ * ป้ายบนแบนเนอร์ของหน้าแลนดิ้ง — รวม badges ของสินค้าที่หน้านั้นขาย ไม่ซ้ำ
+ * ใช้ตัวเดียวกับป้ายบนแบนเนอร์หน้าสินค้า ลูกค้าแก้ที่สินค้าในหลังบ้านแล้วเปลี่ยนทั้งคู่
+ */
+export const badgesFor = (all: Product[], slugs: string[]) =>
+  Array.from(
+    new Set(slugs.flatMap((slug) => all.find((p) => p.slug === slug)?.badges ?? [])),
+  );

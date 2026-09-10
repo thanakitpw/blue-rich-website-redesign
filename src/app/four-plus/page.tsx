@@ -5,12 +5,14 @@ import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
 import LpFaq from "@/components/landing/LpFaq";
 import LpFooter from "@/components/landing/LpFooter";
-import { Check, DarkBand, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
+import { Band, Check, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
+import LpHero from "@/components/landing/LpHero";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
 import { bundleFor } from "@/data/site";
 import { copyFor } from "@/lib/cms/copy-pages";
-import { getSiteInfo } from "@/lib/cms/content";
+import { getProducts, getSiteInfo } from "@/lib/cms/content";
+import { badgesFor } from "@/data/products";
 
 /**
  * Landing page for the Four Plus emulsion range. Sits outside the (site) route
@@ -56,7 +58,7 @@ export default async function FourPlusLanding() {
     quoteForm,
     system,
   } = await copyFor("four-plus");
-  const info = await getSiteInfo();
+  const [info, products] = await Promise.all([getSiteInfo(), getProducts()]);
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 
   const jsonLd = {
@@ -75,102 +77,19 @@ export default async function FourPlusLanding() {
 
       <main>
         {/* ------------------------------------------------------------- Hero */}
-        <section className="relative overflow-hidden bg-white pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-20">
-          <div
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-[34rem] bg-gradient-to-b from-brand-100/70 via-brand-50/50 to-page"
-          />
-          <div
-            aria-hidden
-            className="absolute top-16 -left-28 size-80 rotate-45 rounded-[26%] bg-white/70"
-          />
-          <div
-            aria-hidden
-            className="absolute -top-20 right-[-5rem] size-72 rotate-45 rounded-[26%] border border-brand-200/70"
-          />
-
-          <Wrap className="relative">
-            <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-              <div>
-                <Eyebrow>{hero.eyebrow}</Eyebrow>
-
-                <h1 className="mt-5 text-[2.1rem] leading-[1.18] sm:text-5xl lg:text-[3.15rem]">
-                  {hero.title}
-                  <span className="mt-2 block text-gradient-brand">{hero.titleAccent}</span>
-                </h1>
-
-                <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-[1.06rem]">
-                  {hero.description}
-                </p>
-
-                <ul className="mt-7 grid gap-2.5">
-                  {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[1.02rem] text-slate-700">
-                      <Check />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <a
-                    href="#quote"
-                    data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
-                  >
-                    แจ้งพื้นที่ ขอราคา
-                    <Icon.arrow />
-                  </a>
-                  <a
-                    href="#coverage"
-                    data-cta="hero-coverage"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 ring-1 ring-brand-200 transition hover:bg-brand-50 active:scale-[0.98]"
-                  >
-                    ดูตารางคำนวณถัง
-                  </a>
-                  <a
-                    href={lineHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
-                  >
-                    <Icon.line />
-                    แอดไลน์ {site.lineId}
-                  </a>
-                </div>
-
-                <p className="mt-6 text-[0.9rem] text-slate-500">{hero.proof}</p>
-              </div>
-
-              {/* Three buckets stacked as the system they are sold as. */}
-              <div className="grid gap-3 sm:grid-cols-3 lg:gap-4">
-                {lineup.map((p, i) => (
-                  <div
-                    key={p.name}
-                    className={`overflow-hidden rounded-3xl bg-white shadow-xl shadow-brand-900/10 ring-1 ring-slate-200/80 ${
-                      i === 0 ? "sm:mt-8" : i === 2 ? "sm:mt-4" : ""
-                    }`}
-                  >
-                    <div className="relative aspect-square bg-slate-50">
-                      <CmsImage
-                        src={p.image}
-                        alt={p.alt}
-                        fill
-                        priority={i === 1}
-                        sizes="(min-width: 1024px) 15vw, 30vw"
-                        className="object-contain p-4"
-                      />
-                    </div>
-                    <p className="border-t border-slate-100 px-3 py-2.5 text-center text-[0.78rem] font-semibold text-brand-800">
-                      {p.thai}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Wrap>
-        </section>
+        {/* ปุ่มที่สองพาไปตารางคำนวณถังแทนปุ่มโทร ตามหน้าเดิม */}
+        <LpHero
+          hero={hero}
+          banner="/assets/news-painting.jpg"
+          cutout="/assets/products/four-plus-exterior.webp"
+          badges={badgesFor(products, ["four-plus-exterior"])}
+          quoteLabel="แจ้งพื้นที่ ขอราคา"
+          secondary={{ href: "#coverage", label: "ดูตารางคำนวณถัง", cta: "hero-coverage" }}
+          telHref={telHref}
+          lineHref={lineHref}
+          phone={site.phones[0]}
+          lineId={site.lineId}
+        />
 
         {/* ------------------------------------------------------- Highlights */}
         <section className="border-y border-slate-100 bg-white py-7">
@@ -295,9 +214,9 @@ export default async function FourPlusLanding() {
         </section>
 
         {/* ---------------------------------------------------------- Problems */}
-        <DarkBand glow="right">
+        <Band glow="right">
           <SectionHead
-            tone="dark"
+            tone="band"
             eyebrow={problems.eyebrow}
             title={problems.title}
             lead={problems.lead}
@@ -306,25 +225,25 @@ export default async function FourPlusLanding() {
           <div className="mt-14 grid gap-5 lg:grid-cols-3">
             {problems.items.map((p, i) => (
               <Reveal key={p.symptom} delay={i * 90}>
-                <div className="h-full rounded-4xl bg-white/[0.05] p-7 ring-1 ring-inset ring-white/10">
-                  <h3 className="text-xl text-white">{p.symptom}</h3>
+                <div className="h-full rounded-4xl bg-white p-7 ring-1 ring-inset ring-brand-100">
+                  <h3 className="text-xl text-brand-900">{p.symptom}</h3>
 
-                  <p className="mt-5 text-xs font-semibold tracking-wide text-accent-400">
+                  <p className="mt-5 text-xs font-semibold tracking-wide text-accent-600">
                     ต้นเหตุ
                   </p>
-                  <p className="mt-2 text-[1rem] leading-relaxed text-brand-100/70">
+                  <p className="mt-2 text-[1rem] leading-relaxed text-slate-600">
                     {p.cause}
                   </p>
 
-                  <p className="mt-5 text-xs font-semibold tracking-wide text-brand-300">
+                  <p className="mt-5 text-xs font-semibold tracking-wide text-brand-600">
                     วิธีป้องกัน
                   </p>
-                  <p className="mt-2 text-[1rem] leading-relaxed text-brand-100/85">{p.fix}</p>
+                  <p className="mt-2 text-[1rem] leading-relaxed text-slate-600">{p.fix}</p>
                 </div>
               </Reveal>
             ))}
           </div>
-        </DarkBand>
+        </Band>
 
         {/* ------------------------------------------------------- Spec compare */}
         <section id="spec" className="py-20 lg:py-24">
@@ -496,18 +415,18 @@ export default async function FourPlusLanding() {
         </section>
 
         {/* -------------------------------------------------------------- Quote */}
-        <DarkBand id="quote" glow="center">
+        <Band id="quote" glow="center">
           <div
             aria-hidden
-            className="absolute -bottom-24 -left-16 size-72 rotate-45 rounded-[26%] border border-white/10"
+            className="absolute -bottom-24 -left-16 size-72 rotate-45 rounded-[26%] border border-brand-200/60"
           />
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
             <div>
-              <Eyebrow tone="dark">ขอใบเสนอราคา</Eyebrow>
-              <h2 className="mt-4 text-3xl leading-[1.2] text-white sm:text-4xl lg:text-[2.6rem]">
+              <Eyebrow tone="band">ขอใบเสนอราคา</Eyebrow>
+              <h2 className="mt-4 text-3xl leading-[1.2] text-brand-900 sm:text-4xl lg:text-[2.6rem]">
                 แจ้งพื้นที่ ตร.ม. ให้ทีมงานคำนวณจำนวนถังให้
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-100/75">
+              <p className="mt-5 text-base leading-relaxed text-slate-600">
                 บอกพื้นที่ผนังกับสภาพผนังมา เราจะคำนวณจำนวนถังทั้งรองพื้นและทับหน้า
                 พร้อมเสนอราคาโครงการกลับไปให้
               </p>
@@ -516,14 +435,14 @@ export default async function FourPlusLanding() {
                 <a
                   href={telHref}
                   data-cta="quote-call"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.phone className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">โทรหาฝ่ายขาย</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">โทรหาฝ่ายขาย</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.phones.join(" · ")}
                     </span>
                   </span>
@@ -534,14 +453,14 @@ export default async function FourPlusLanding() {
                   target="_blank"
                   rel="noreferrer"
                   data-cta="quote-line"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
                   <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[#06C755]/20 text-[#06C755]">
                     <Icon.line className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">ส่งรูปผนังหรือแบบทางแชท</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">ส่งรูปผนังหรือแบบทางแชท</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       LINE ID : {site.lineId}
                     </span>
                   </span>
@@ -550,26 +469,26 @@ export default async function FourPlusLanding() {
                 <a
                   href={mailHref}
                   data-cta="quote-mail"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.mail className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">ส่งรายการทางอีเมล</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">ส่งรายการทางอีเมล</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.email}
                     </span>
                   </span>
                 </a>
 
-                <div className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                <div className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.clock className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">เวลาทำการ</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">เวลาทำการ</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.hours}
                     </span>
                   </span>
@@ -577,7 +496,7 @@ export default async function FourPlusLanding() {
               </div>
             </div>
 
-            <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-950/40 sm:p-8">
+            <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-900/10 sm:p-8">
               <h3 className="text-xl">กรอกข้อมูลหน้างาน</h3>
               <p className="mt-2 text-sm text-slate-500">ฟรี ไม่มีค่าใช้จ่าย และไม่มีข้อผูกมัด</p>
               <div className="mt-6">
@@ -585,7 +504,7 @@ export default async function FourPlusLanding() {
               </div>
             </div>
           </div>
-        </DarkBand>
+        </Band>
       </main>
 
       <LpFooter note="อัตราการทาและเวลาแห้งเป็นค่าที่วัดในสภาวะมาตรฐาน ผลจริงขึ้นกับสภาพผนังและอากาศหน้างาน" />

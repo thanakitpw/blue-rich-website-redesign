@@ -6,11 +6,13 @@ import LpQuoteForm from "@/components/landing/LpQuoteForm";
 import LpFaq from "@/components/landing/LpFaq";
 import LpFooter from "@/components/landing/LpFooter";
 import { Check, Wrap } from "@/components/landing/kit";
+import LpHero from "@/components/landing/LpHero";
+import { PRODUCT_HERO } from "@/components/product/ProductHero";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
 import { bundleFor } from "@/data/site";
 import { copyFor } from "@/lib/cms/copy-pages";
-import { getSiteInfo, getStandards } from "@/lib/cms/content";
+import { getProducts, getSiteInfo, getStandards } from "@/lib/cms/content";
 
 /**
  * Landing page. Kept out of the (site) route group so it renders without the
@@ -19,7 +21,10 @@ import { getSiteInfo, getStandards } from "@/lib/cms/content";
  * stay on the narrower model keywords and this one carries the category term.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const [site, { meta }] = await Promise.all([getSiteInfo(), copyFor("neocoat")]);
+  const [site, { meta }] = await Promise.all([
+    getSiteInfo(),
+    copyFor("neocoat"),
+  ]);
   return {
     title: meta.title,
     description: meta.description,
@@ -68,7 +73,15 @@ export default async function FireRetardantPaintLanding() {
     risk,
     system,
   } = await copyFor("neocoat");
-  const [info, standards] = await Promise.all([getSiteInfo(), getStandards()]);
+  const [info, standards, products] = await Promise.all([
+    getSiteInfo(),
+    getStandards(),
+    getProducts(),
+  ]);
+  /* รูปปกจากสินค้าจริง — ถ้า slug ไม่ตรงกับสินค้าไหน (เช่นสินค้าถูกลบ) การ์ดจะไม่มีรูป
+     แต่ไม่พัง */
+  const coverOf = (slug: string) =>
+    products.find((p) => p.slug === slug)?.image;
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 
   const jsonLd = [
@@ -107,137 +120,43 @@ export default async function FireRetardantPaintLanding() {
 
       <main>
         {/* ------------------------------------------------------------- Hero */}
-        <section className="relative overflow-hidden bg-brand-950 pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-24">
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(60rem_32rem_at_12%_-10%,var(--color-brand-700),transparent),radial-gradient(44rem_26rem_at_100%_20%,var(--color-brand-800),transparent)]"
-          />
-          <div
-            aria-hidden
-            className="absolute -top-24 right-[-6rem] size-72 rotate-45 rounded-[28%] border border-white/10"
-          />
-
-          <Wrap className="relative">
-            <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-brand-100 ring-1 ring-inset ring-white/20">
-                  <Icon.flame className="size-4 text-accent-400" />
-                  {hero.eyebrow}
-                </span>
-
-                <h1 className="mt-5 text-[2.1rem] leading-[1.18] text-white sm:text-5xl lg:text-[3.3rem]">
-                  {hero.title}
-                  <span className="mt-2 block bg-gradient-to-br from-brand-200 via-brand-100 to-white bg-clip-text text-transparent">
-                    {hero.titleAccent}
-                  </span>
-                </h1>
-
-                <p className="mt-5 max-w-xl text-base leading-relaxed text-brand-100/80 sm:text-[1.06rem]">
-                  {hero.description}
-                </p>
-
-                <ul className="mt-7 grid gap-2.5">
-                  {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[1.02rem] text-brand-50">
-                      <Check />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <a
-                    href="#quote"
-                    data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
-                  >
-                    ขอใบเสนอราคาฟรี
-                    <Icon.arrow />
-                  </a>
-                  <a
-                    href={telHref}
-                    data-cta="hero-call"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-accent-600 active:scale-[0.98]"
-                  >
-                    <Icon.phone />
-                    โทร {site.phones[0]}
-                  </a>
-                  <a
-                    href={lineHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
-                  >
-                    <Icon.line />
-                    แอดไลน์ {site.lineId}
-                  </a>
-                </div>
-
-                <p className="mt-6 text-[0.9rem] text-brand-200/70">{hero.proof}</p>
-              </div>
-
-              <div className="relative">
-                <div className="overflow-hidden rounded-4xl shadow-2xl shadow-brand-950/50 ring-1 ring-white/10">
-                  <CmsImage
-                    src="/assets/banner-fireproof.jpg"
-                    alt="งานสีกันไฟเคลือบผิวโครงสร้างเหล็ก Fire Proof Steel Structure"
-                    width={1200}
-                    height={1200}
-                    priority
-                    sizes="(min-width: 1024px) 45vw, 92vw"
-                    className="h-auto w-full"
-                  />
-                </div>
-
-                <div className="absolute -bottom-5 -left-3 hidden rounded-3xl bg-white p-4 shadow-2xl shadow-brand-950/30 sm:block">
-                  <div className="flex items-center gap-3.5">
-                    <CmsImage
-                      src="/assets/product-neocoat-intumescent.jpg"
-                      alt=""
-                      width={80}
-                      height={120}
-                      className="h-14 w-auto"
-                    />
-                    <div>
-                      <p className="font-display text-sm font-semibold text-brand-700">
-                        Solvent &amp; Water Base
-                      </p>
-                      <p className="text-xs text-slate-500">เฉดสีขาว และสีเทา · รหัส A014</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Wrap>
-        </section>
+        {/* รูปแบนเนอร์กับถังสีใช้ไฟล์เดียวกับหน้าสินค้าสูตรน้ำมัน จะได้แก้ที่เดียว */}
+        <LpHero
+          hero={hero}
+          banner={PRODUCT_HERO["neocoat-intumescent-paint-s"].banner}
+          cutout={PRODUCT_HERO["neocoat-intumescent-paint-s"].cutout}
+          badges={standards.map((s) => s.label)}
+          quoteLabel="ขอใบเสนอราคาฟรี"
+          telHref={telHref}
+          lineHref={lineHref}
+          phone={site.phones[0]}
+          lineId={site.lineId}
+        />
 
         {/* -------------------------------------------------- Standards strip */}
+        {/* แถวนิ่ง ไม่วิ่ง (ลูกค้าขอ) — มีแค่ 4 ป้าย จอใหญ่เรียงแถวเดียวกึ่งกลาง
+            จอเล็กตัดขึ้นบรรทัดใหม่ 2 คอลัมน์ ไม่ต้องเลื่อนแนวนอน */}
         <section className="border-b border-slate-100 bg-white py-6">
-          <div className="mask-fade-x overflow-hidden">
-            <div className="flex w-max animate-marquee gap-4">
-              {[0, 1].map((dup) => (
-                <div key={dup} className="flex shrink-0 gap-4" aria-hidden={dup === 1}>
-                  {standards.map((s) => (
-                    <div
-                      key={s.label}
-                      className="flex items-center gap-3 rounded-2xl bg-brand-50/70 px-5 py-3 ring-1 ring-inset ring-brand-100"
-                    >
-                      <Icon.shield className="size-5 shrink-0 text-brand-500" />
-                      <span>
-                        <span className="block font-display text-sm font-semibold text-brand-700">
-                          {s.label}
-                        </span>
-                        <span className="block text-[0.78rem] whitespace-nowrap text-slate-500">
-                          {s.note}
-                        </span>
-                      </span>
-                    </div>
-                  ))}
-                </div>
+          <Wrap>
+            <ul className="grid gap-3 sm:grid-cols-2 lg:flex lg:flex-wrap lg:justify-center lg:gap-4">
+              {standards.map((s) => (
+                <li
+                  key={s.label}
+                  className="flex items-center gap-3 rounded-2xl bg-brand-50/70 px-5 py-3 ring-1 ring-inset ring-brand-100"
+                >
+                  <Icon.shield className="size-5 shrink-0 text-brand-500" />
+                  <span>
+                    <span className="block font-display text-sm font-semibold text-brand-700">
+                      {s.label}
+                    </span>
+                    <span className="block text-[0.78rem] text-slate-500">
+                      {s.note}
+                    </span>
+                  </span>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </Wrap>
         </section>
 
         {/* -------------------------------------------------------- Why / risk */}
@@ -263,8 +182,12 @@ export default async function FireRetardantPaintLanding() {
                     <p className="font-display text-4xl font-bold text-accent-600 lg:text-[2.75rem]">
                       {f.value}
                     </p>
-                    <p className="mt-3 font-display font-semibold text-brand-950">{f.label}</p>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-500">{f.note}</p>
+                    <p className="mt-3 font-display font-semibold text-brand-950">
+                      {f.label}
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                      {f.note}
+                    </p>
                   </div>
                 </Reveal>
               ))}
@@ -279,21 +202,21 @@ export default async function FireRetardantPaintLanding() {
         </section>
 
         {/* --------------------------------------------------------- Mechanism */}
-        <section className="relative overflow-hidden bg-brand-950 py-20 lg:py-24">
+        <section className="relative overflow-hidden bg-brand-50 py-20 lg:py-24">
           <div
             aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(56rem_28rem_at_80%_0%,var(--color-brand-800),transparent_65%)]"
+            className="absolute inset-0 bg-[radial-gradient(56rem_28rem_at_80%_0%,rgba(255,255,255,0.75),transparent_65%)]"
           />
           <Wrap className="relative">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-brand-100 ring-1 ring-inset ring-white/20">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-inset ring-brand-100">
                 <span className="size-1.5 rounded-full bg-current" />
                 {mechanism.eyebrow}
               </span>
-              <h2 className="mt-4 text-3xl leading-[1.25] text-white sm:text-4xl lg:text-[2.6rem]">
+              <h2 className="mt-4 text-3xl leading-[1.25] text-brand-900 sm:text-4xl lg:text-[2.6rem]">
                 {mechanism.title}
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-100/75 sm:text-[1.12rem]">
+              <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-[1.12rem]">
                 {mechanism.description}
               </p>
             </Reveal>
@@ -301,15 +224,19 @@ export default async function FireRetardantPaintLanding() {
             <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {mechanism.steps.map((s, i) => (
                 <Reveal key={s.step} delay={i * 90}>
-                  <li className="relative h-full rounded-3xl bg-white/[0.05] p-7 ring-1 ring-inset ring-white/10">
-                    <span className="font-display text-4xl font-bold text-brand-500/40">
+                  <li className="relative h-full rounded-3xl bg-white p-7 ring-1 ring-inset ring-brand-100">
+                    <span className="font-display text-4xl font-bold text-brand-300">
                       {s.step}
                     </span>
-                    <span className="mt-3 inline-flex rounded-full bg-accent-500/15 px-3 py-1 text-[0.78rem] font-semibold text-accent-400">
+                    <span className="mt-3 inline-flex rounded-full bg-accent-500/15 px-3 py-1 text-[0.78rem] font-semibold text-accent-600">
                       {s.temp}
                     </span>
-                    <h3 className="mt-3 text-[1.12rem] text-white">{s.title}</h3>
-                    <p className="mt-2.5 text-sm leading-relaxed text-brand-100/65">{s.text}</p>
+                    <h3 className="mt-3 text-[1.12rem] text-brand-900">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-relaxed text-slate-600">
+                      {s.text}
+                    </p>
                   </li>
                 </Reveal>
               ))}
@@ -328,7 +255,9 @@ export default async function FireRetardantPaintLanding() {
               <h2 className="mt-4 text-3xl leading-[1.25] sm:text-4xl lg:text-[2.6rem]">
                 {legal.title}
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-slate-600">{legal.description}</p>
+              <p className="mt-5 text-base leading-relaxed text-slate-600">
+                {legal.description}
+              </p>
             </Reveal>
 
             <Reveal delay={120}>
@@ -371,7 +300,9 @@ export default async function FireRetardantPaintLanding() {
 
             <Reveal delay={180}>
               <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-3xl bg-brand-50/70 px-7 py-6 ring-1 ring-inset ring-brand-100 sm:flex-row">
-                <p className="text-[1.02rem] leading-relaxed text-slate-700">{legal.note}</p>
+                <p className="text-[1.02rem] leading-relaxed text-slate-700">
+                  {legal.note}
+                </p>
                 <a
                   href="#quote"
                   data-cta="legal-quote"
@@ -445,7 +376,10 @@ export default async function FireRetardantPaintLanding() {
                     </div>
                     <ul className="mt-5 grid gap-2.5">
                       {f.points.map((p) => (
-                        <li key={p} className="flex gap-3 text-[0.93rem] text-slate-600">
+                        <li
+                          key={p}
+                          className="flex gap-3 text-[0.93rem] text-slate-600"
+                        >
                           <Check />
                           {p}
                         </li>
@@ -514,12 +448,14 @@ export default async function FireRetardantPaintLanding() {
                   {calculation.description}
                 </p>
 
-                <div className="mt-8 rounded-3xl bg-brand-950 p-7 text-brand-100/85">
-                  <p className="text-[1.02rem] leading-relaxed">{calculation.cta}</p>
+                <div className="mt-8 rounded-3xl bg-brand-50 p-7 text-brand-900 ring-1 ring-inset ring-brand-100">
+                  <p className="text-[1.02rem] leading-relaxed">
+                    {calculation.cta}
+                  </p>
                   <a
                     href="#quote"
                     data-cta="calc-quote"
-                    className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-800 transition hover:bg-brand-50 active:scale-[0.98]"
+                    className="mt-6 inline-flex items-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-accent-600 active:scale-[0.98]"
                   >
                     ส่งรายการเหล็กให้คำนวณฟรี
                     <Icon.arrow />
@@ -659,23 +595,23 @@ export default async function FireRetardantPaintLanding() {
         </section>
 
         {/* --------------------------------------------------------- Advantages */}
-        <section className="relative overflow-hidden bg-brand-950 py-20 lg:py-24">
+        <section className="relative overflow-hidden bg-brand-50 py-20 lg:py-24">
           <div
             aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(56rem_28rem_at_20%_0%,var(--color-brand-800),transparent_65%)]"
+            className="absolute inset-0 bg-[radial-gradient(56rem_28rem_at_20%_0%,rgba(255,255,255,0.75),transparent_65%)]"
           />
           <Wrap className="relative">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-brand-100 ring-1 ring-inset ring-white/20">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-inset ring-brand-100">
                 <span className="size-1.5 rounded-full bg-current" />
                 ทำไมต้องซื้อกับ Blue Rich
               </span>
-              <h2 className="mt-4 text-3xl leading-[1.25] text-white sm:text-4xl lg:text-[2.6rem]">
+              <h2 className="mt-4 text-3xl leading-[1.25] text-brand-900 sm:text-4xl lg:text-[2.6rem]">
                 ขายสีอย่างเดียวใครก็ทำได้ แต่งานต้องผ่านการตรวจรับด้วย
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-100/75">
-                เราดูแลตั้งแต่การอ่านแบบ คำนวณความหนา เลือกระบบสี ควบคุมคุณภาพหน้างาน
-                จนถึงเอกสารรับรองที่ยื่นหน่วยงานได้จริง
+              <p className="mt-5 text-base leading-relaxed text-slate-600">
+                เราดูแลตั้งแต่การอ่านแบบ คำนวณความหนา เลือกระบบสี
+                ควบคุมคุณภาพหน้างาน จนถึงเอกสารรับรองที่ยื่นหน่วยงานได้จริง
               </p>
             </Reveal>
 
@@ -684,12 +620,14 @@ export default async function FireRetardantPaintLanding() {
                 const IconComp = iconMap[a.icon];
                 return (
                   <Reveal key={a.title} delay={i * 80}>
-                    <div className="h-full rounded-3xl bg-white/[0.04] p-7 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.07]">
-                      <span className="grid size-12 place-items-center rounded-2xl bg-brand-500/15 text-brand-300">
+                    <div className="h-full rounded-3xl bg-white p-7 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100">
+                      <span className="grid size-12 place-items-center rounded-2xl bg-brand-100 text-brand-600">
                         <IconComp className="size-6" />
                       </span>
-                      <h3 className="mt-5 text-lg text-white">{a.title}</h3>
-                      <p className="mt-3 text-sm leading-relaxed text-brand-100/65">{a.text}</p>
+                      <h3 className="mt-5 text-lg text-brand-900">{a.title}</h3>
+                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                        {a.text}
+                      </p>
                     </div>
                   </Reveal>
                 );
@@ -719,7 +657,9 @@ export default async function FireRetardantPaintLanding() {
                       {p.step}
                     </span>
                     <h3 className="mt-3 text-lg">{p.title}</h3>
-                    <p className="mt-2.5 text-sm leading-relaxed text-slate-500">{p.text}</p>
+                    <p className="mt-2.5 text-sm leading-relaxed text-slate-500">
+                      {p.text}
+                    </p>
                     <p className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand-50 px-3.5 py-1.5 text-[0.75rem] font-semibold text-brand-700">
                       <Icon.clock className="size-3.5" />
                       {p.duration}
@@ -805,7 +745,9 @@ export default async function FireRetardantPaintLanding() {
                         <span className="block font-display font-semibold text-brand-700">
                           {r.name}
                         </span>
-                        <span className="block text-xs text-slate-500">{r.role}</span>
+                        <span className="block text-xs text-slate-500">
+                          {r.role}
+                        </span>
                       </span>
                     </figcaption>
                   </figure>
@@ -827,33 +769,43 @@ export default async function FireRetardantPaintLanding() {
                 วัสดุอื่นที่งานโครงสร้างเหล็กต้องใช้ เรามีครบ
               </h2>
               <p className="mt-5 text-base leading-relaxed text-slate-600">
-                สั่งพร้อมกันในใบเดียว ส่งพร้อมกันรอบเดียว ไม่ต้องเสียเวลาหาหลายเจ้า
+                สั่งพร้อมกันในใบเดียว ส่งพร้อมกันรอบเดียว
+                ไม่ต้องเสียเวลาหาหลายเจ้า
               </p>
             </Reveal>
 
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {related.map((r, i) => (
-                <Reveal key={r.name} delay={i * 80}>
-                  <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200/80">
-                    <div className="relative aspect-4/3 bg-slate-100">
-                      <CmsImage
-                        src={r.image}
-                        alt={r.name}
-                        fill
-                        sizes="(min-width: 1024px) 25vw, 45vw"
-                        className="object-cover"
-                      />
+              {related.map((r, i) => {
+                const cover = coverOf(r.slug);
+                return (
+                  <Reveal key={r.name} delay={i * 80}>
+                    <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200/80">
+                      {/* โชว์ทั้งใบแบบการ์ดสินค้า (object-contain) เพราะรูปปกบางใบเป็นถังตั้ง
+                          ถ้า cover จะโดนตัดหัวท้าย */}
+                      <div className="relative aspect-4/3 bg-white">
+                        {cover && (
+                          <CmsImage
+                            src={cover}
+                            alt={r.name}
+                            fill
+                            sizes="(min-width: 1024px) 25vw, 45vw"
+                            className="object-contain p-5 mix-blend-multiply"
+                          />
+                        )}
+                      </div>
+                      <div className="flex flex-1 flex-col p-6">
+                        <span className="text-[0.78rem] font-semibold tracking-wide text-brand-500">
+                          {r.role}
+                        </span>
+                        <h3 className="mt-1.5 text-[1.12rem]">{r.name}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                          {r.text}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex flex-1 flex-col p-6">
-                      <span className="text-[0.78rem] font-semibold tracking-wide text-brand-500">
-                        {r.role}
-                      </span>
-                      <h3 className="mt-1.5 text-[1.12rem]">{r.name}</h3>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-500">{r.text}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
+                  </Reveal>
+                );
+              })}
             </div>
           </Wrap>
         </section>
@@ -891,42 +843,48 @@ export default async function FireRetardantPaintLanding() {
         </section>
 
         {/* -------------------------------------------------------------- Quote */}
-        <section id="quote" className="relative overflow-hidden bg-brand-950 py-20 lg:py-24">
+        <section
+          id="quote"
+          className="relative overflow-hidden bg-brand-50 py-20 lg:py-24"
+        >
           <div
             aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(50rem_26rem_at_50%_0%,var(--color-brand-800),transparent_70%)]"
+            className="absolute inset-0 bg-[radial-gradient(50rem_26rem_at_50%_0%,rgba(255,255,255,0.75),transparent_70%)]"
           />
           <div
             aria-hidden
-            className="absolute -bottom-24 -left-16 size-72 rotate-45 rounded-[26%] border border-white/10"
+            className="absolute -bottom-24 -left-16 size-72 rotate-45 rounded-[26%] border border-brand-200/60"
           />
           <Wrap className="relative">
             <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
               <div>
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-brand-100 ring-1 ring-inset ring-white/20">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-inset ring-brand-100">
                   <span className="size-1.5 rounded-full bg-current" />
                   ขอใบเสนอราคา
                 </span>
-                <h2 className="mt-4 text-3xl leading-[1.2] text-white sm:text-4xl lg:text-[2.6rem]">
+                <h2 className="mt-4 text-3xl leading-[1.2] text-brand-900 sm:text-4xl lg:text-[2.6rem]">
                   ส่งแบบมาวันนี้ ได้ราคาพร้อมรายการคำนวณภายใน 1–2 วันทำการ
                 </h2>
-                <p className="mt-5 text-base leading-relaxed text-brand-100/75">
-                  กรอกข้อมูลเท่าที่มี ไม่ต้องครบก็ได้ ทีมวิศวกรจะโทรกลับไปคุยรายละเอียดกับคุณเอง
-                  หรือถ้าสะดวกคุยเลย โทรหรือแอดไลน์หาเราได้ทันที
+                <p className="mt-5 text-base leading-relaxed text-slate-600">
+                  กรอกข้อมูลเท่าที่มี ไม่ต้องครบก็ได้
+                  ทีมวิศวกรจะโทรกลับไปคุยรายละเอียดกับคุณเอง หรือถ้าสะดวกคุยเลย
+                  โทรหรือแอดไลน์หาเราได้ทันที
                 </p>
 
                 <div className="mt-9 grid gap-3">
                   <a
                     href={telHref}
                     data-cta="quote-call"
-                    className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                    className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                   >
-                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                       <Icon.phone className="size-5" />
                     </span>
                     <span>
-                      <span className="block text-xs text-brand-200/70">โทรหาฝ่ายขาย</span>
-                      <span className="block font-display font-semibold text-white">
+                      <span className="block text-xs text-slate-500">
+                        โทรหาฝ่ายขาย
+                      </span>
+                      <span className="block font-display font-semibold text-brand-900">
                         {site.phones.join(" · ")}
                       </span>
                     </span>
@@ -937,14 +895,16 @@ export default async function FireRetardantPaintLanding() {
                     target="_blank"
                     rel="noreferrer"
                     data-cta="quote-line"
-                    className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                    className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                   >
                     <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[#06C755]/20 text-[#06C755]">
                       <Icon.line className="size-5" />
                     </span>
                     <span>
-                      <span className="block text-xs text-brand-200/70">แชทกับทีมงาน</span>
-                      <span className="block font-display font-semibold text-white">
+                      <span className="block text-xs text-slate-500">
+                        แชทกับทีมงาน
+                      </span>
+                      <span className="block font-display font-semibold text-brand-900">
                         LINE ID : {site.lineId}
                       </span>
                     </span>
@@ -953,26 +913,30 @@ export default async function FireRetardantPaintLanding() {
                   <a
                     href={mailHref}
                     data-cta="quote-mail"
-                    className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                    className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                   >
-                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                       <Icon.mail className="size-5" />
                     </span>
                     <span>
-                      <span className="block text-xs text-brand-200/70">ส่งแบบทางอีเมล</span>
-                      <span className="block font-display font-semibold text-white">
+                      <span className="block text-xs text-slate-500">
+                        ส่งแบบทางอีเมล
+                      </span>
+                      <span className="block font-display font-semibold text-brand-900">
                         {site.email}
                       </span>
                     </span>
                   </a>
 
-                  <div className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <div className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                       <Icon.clock className="size-5" />
                     </span>
                     <span>
-                      <span className="block text-xs text-brand-200/70">เวลาทำการ</span>
-                      <span className="block font-display font-semibold text-white">
+                      <span className="block text-xs text-slate-500">
+                        เวลาทำการ
+                      </span>
+                      <span className="block font-display font-semibold text-brand-900">
                         {site.hours}
                       </span>
                     </span>
@@ -980,7 +944,7 @@ export default async function FireRetardantPaintLanding() {
                 </div>
               </div>
 
-              <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-950/40 sm:p-8">
+              <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-900/10 sm:p-8">
                 <h3 className="text-xl">กรอกข้อมูลเพื่อรับใบเสนอราคา</h3>
                 <p className="mt-2 text-sm text-slate-500">
                   ฟรี ไม่มีค่าใช้จ่าย และไม่มีข้อผูกมัด

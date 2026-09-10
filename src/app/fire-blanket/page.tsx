@@ -5,12 +5,14 @@ import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
 import LpFaq from "@/components/landing/LpFaq";
 import LpFooter from "@/components/landing/LpFooter";
-import { Check, DarkBand, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
+import { Band, Check, Eyebrow, SectionHead, Wrap } from "@/components/landing/kit";
+import LpHero from "@/components/landing/LpHero";
 import Reveal from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui";
 import { bundleFor } from "@/data/site";
 import { copyFor } from "@/lib/cms/copy-pages";
-import { getSiteInfo } from "@/lib/cms/content";
+import { getProducts, getSiteInfo } from "@/lib/cms/content";
+import { badgesFor } from "@/data/products";
 
 /**
  * Landing page for the fiberglass cloth range. Sits outside the (site) route
@@ -57,7 +59,7 @@ export default async function FireBlanketLanding() {
     specs,
     useCases,
   } = await copyFor("fire-blanket");
-  const info = await getSiteInfo();
+  const [info, products] = await Promise.all([getSiteInfo(), getProducts()]);
   const { site, telHref, lineHref, mailHref } = bundleFor(info, []);
 
   const jsonLd = [
@@ -94,103 +96,17 @@ export default async function FireBlanketLanding() {
 
       <main>
         {/* ------------------------------------------------------------- Hero */}
-        <section className="relative overflow-hidden bg-brand-950 pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-24">
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(58rem_30rem_at_88%_-5%,var(--color-brand-700),transparent),radial-gradient(40rem_24rem_at_0%_40%,var(--color-brand-800),transparent)]"
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-28 left-1/3 size-72 rotate-45 rounded-[28%] border border-white/10"
-          />
-
-          <Wrap className="relative">
-            <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
-              <div>
-                <Eyebrow tone="dark">{hero.eyebrow}</Eyebrow>
-
-                <h1 className="mt-5 text-[2.1rem] leading-[1.18] text-white sm:text-5xl lg:text-[3.2rem]">
-                  {hero.title}
-                  <span className="mt-2 block bg-gradient-to-br from-accent-400 via-brand-200 to-white bg-clip-text text-transparent">
-                    {hero.titleAccent}
-                  </span>
-                </h1>
-
-                <p className="mt-5 max-w-xl text-base leading-relaxed text-brand-100/80 sm:text-[1.06rem]">
-                  {hero.description}
-                </p>
-
-                <ul className="mt-7 grid gap-2.5">
-                  {hero.points.map((p) => (
-                    <li key={p} className="flex gap-3 text-[1.02rem] text-brand-50">
-                      <Check />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <a
-                    href="#quote"
-                    data-cta="hero-quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[1.02rem] font-semibold text-brand-800 shadow-xl shadow-brand-950/30 transition hover:bg-brand-50 active:scale-[0.98]"
-                  >
-                    แจ้งขนาดเพื่อขอราคา
-                    <Icon.arrow />
-                  </a>
-                  <a
-                    href={telHref}
-                    data-cta="hero-call"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-brand-950/30 transition hover:bg-accent-600 active:scale-[0.98]"
-                  >
-                    <Icon.phone />
-                    โทร {site.phones[0]}
-                  </a>
-                  <a
-                    href={lineHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-cta="hero-line"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#06C755] px-7 py-3.5 text-[1.02rem] font-semibold text-white shadow-xl shadow-[#06C755]/25 transition hover:bg-[#05b34c] active:scale-[0.98]"
-                  >
-                    <Icon.line />
-                    แอดไลน์ {site.lineId}
-                  </a>
-                </div>
-
-                <p className="mt-6 text-[0.9rem] text-brand-200/70">{hero.proof}</p>
-              </div>
-
-              <div className="relative">
-                <div className="overflow-hidden rounded-4xl bg-white shadow-2xl shadow-brand-950/50 ring-1 ring-white/10">
-                  <CmsImage
-                    src="/assets/products/fiberglass-cloth-panel-main.webp"
-                    alt="ผ้ากันไฟใยแก้วสีทอง ผืนขนาด 1×1 เมตร เย็บริมและเจาะรูตาไก่ 4 มุม"
-                    width={1100}
-                    height={1100}
-                    priority
-                    sizes="(min-width: 1024px) 48vw, 92vw"
-                    className="h-auto w-full"
-                  />
-                </div>
-
-                <div className="absolute -bottom-5 -left-3 hidden rounded-3xl bg-white p-4 shadow-2xl shadow-brand-950/30 sm:block">
-                  <div className="flex items-center gap-4">
-                    <span className="grid size-12 place-items-center rounded-2xl bg-accent-500/10 text-accent-600">
-                      <Icon.flame className="size-6" />
-                    </span>
-                    <div>
-                      <p className="font-display text-sm font-semibold text-brand-700">
-                        550°C และ 1000°C
-                      </p>
-                      <p className="text-xs text-slate-500">ทอแบบซาติน · อบ 2 ครั้ง</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Wrap>
-        </section>
+        {/* ใช้รูปเนื้อผ้าเป็นแบนเนอร์ไปก่อนจนกว่าจะได้รูปหน้างานจริง ผ้าไม่มีไฟล์ตัดพื้นจึงไม่มีรูปลอยมุมซ้าย */}
+        <LpHero
+          hero={hero}
+          banner="/assets/products/fiberglass-cloth-weave-detail.webp"
+          badges={badgesFor(products, ["fiberglass-cloth"])}
+          quoteLabel="แจ้งขนาดเพื่อขอราคา"
+          telHref={telHref}
+          lineHref={lineHref}
+          phone={site.phones[0]}
+          lineId={site.lineId}
+        />
 
         {/* ------------------------------------------------------------ Grades */}
         <section id="grades" className="py-20 lg:py-24">
@@ -377,9 +293,9 @@ export default async function FireBlanketLanding() {
         </section>
 
         {/* ---------------------------------------------------------- Boundary */}
-        <DarkBand glow="left">
+        <Band glow="left">
           <SectionHead
-            tone="dark"
+            tone="band"
             eyebrow={boundary.eyebrow}
             title={boundary.title}
             lead={boundary.lead}
@@ -391,21 +307,21 @@ export default async function FireBlanketLanding() {
                 <div
                   className={`h-full rounded-4xl p-8 ring-1 ring-inset ${
                     c.tone === "yes"
-                      ? "bg-white/[0.06] ring-white/10"
+                      ? "bg-white ring-brand-100"
                       : "bg-accent-500/[0.08] ring-accent-500/25"
                   }`}
                 >
-                  <h3 className="text-2xl text-white">{c.name}</h3>
+                  <h3 className="text-2xl text-brand-900">{c.name}</h3>
                   <ul className="mt-6 grid gap-3">
                     {c.points.map((p) => (
                       <li
                         key={p}
-                        className="flex gap-3 text-[0.93rem] leading-relaxed text-brand-100/80"
+                        className="flex gap-3 text-[0.93rem] leading-relaxed text-slate-600"
                       >
                         {c.tone === "yes" ? (
                           <Check />
                         ) : (
-                          <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-accent-500/20 text-accent-400">
+                          <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-accent-500/20 text-accent-600">
                             <svg viewBox="0 0 20 20" className="size-3" fill="none" aria-hidden>
                               <path
                                 d="M6 6l8 8M14 6l-8 8"
@@ -426,19 +342,19 @@ export default async function FireBlanketLanding() {
           </div>
 
           <Reveal delay={200}>
-            <div className="mx-auto mt-10 flex max-w-3xl flex-col items-center justify-between gap-4 rounded-3xl bg-white/[0.06] px-7 py-6 ring-1 ring-inset ring-white/10 sm:flex-row">
-              <p className="text-[1.02rem] leading-relaxed text-brand-100/80">{boundary.outro}</p>
+            <div className="mx-auto mt-10 flex max-w-3xl flex-col items-center justify-between gap-4 rounded-3xl bg-white px-7 py-6 ring-1 ring-inset ring-brand-100 sm:flex-row">
+              <p className="text-[1.02rem] leading-relaxed text-slate-600">{boundary.outro}</p>
               <a
                 href={telHref}
                 data-cta="boundary-call"
-                className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-800 transition hover:bg-brand-50 active:scale-[0.98]"
+                className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-800 transition hover:bg-brand-100 active:scale-[0.98]"
               >
                 <Icon.phone />
                 ปรึกษาทีมงาน
               </a>
             </div>
           </Reveal>
-        </DarkBand>
+        </Band>
 
         {/* --------------------------------------------------------- Documents */}
         <section id="documents" className="py-20 lg:py-24">
@@ -503,18 +419,18 @@ export default async function FireBlanketLanding() {
         </section>
 
         {/* -------------------------------------------------------------- Quote */}
-        <DarkBand id="quote" glow="center">
+        <Band id="quote" glow="center">
           <div
             aria-hidden
-            className="absolute -bottom-24 -right-16 size-72 rotate-45 rounded-[26%] border border-white/10"
+            className="absolute -bottom-24 -right-16 size-72 rotate-45 rounded-[26%] border border-brand-200/60"
           />
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
             <div>
-              <Eyebrow tone="dark">ขอใบเสนอราคา</Eyebrow>
-              <h2 className="mt-4 text-3xl leading-[1.2] text-white sm:text-4xl lg:text-[2.6rem]">
+              <Eyebrow tone="band">ขอใบเสนอราคา</Eyebrow>
+              <h2 className="mt-4 text-3xl leading-[1.2] text-brand-900 sm:text-4xl lg:text-[2.6rem]">
                 แจ้งขนาดและจำนวน ให้ฝ่ายขายคิดราคาให้
               </h2>
-              <p className="mt-5 text-base leading-relaxed text-brand-100/75">
+              <p className="mt-5 text-base leading-relaxed text-slate-600">
                 ราคารวมค่าตัดเย็บและค่าเจาะตาไก่มาให้ในใบเดียว ไม่แน่ใจเรื่องเกรด
                 บอกลักษณะงานมา ทีมงานเลือกให้ได้
               </p>
@@ -523,14 +439,14 @@ export default async function FireBlanketLanding() {
                 <a
                   href={telHref}
                   data-cta="quote-call"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.phone className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">โทรหาฝ่ายขาย</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">โทรหาฝ่ายขาย</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.phones.join(" · ")}
                     </span>
                   </span>
@@ -541,14 +457,14 @@ export default async function FireBlanketLanding() {
                   target="_blank"
                   rel="noreferrer"
                   data-cta="quote-line"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
                   <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[#06C755]/20 text-[#06C755]">
                     <Icon.line className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">ส่งแบบ/รูปหน้างานทางแชท</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">ส่งแบบ/รูปหน้างานทางแชท</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       LINE ID : {site.lineId}
                     </span>
                   </span>
@@ -557,26 +473,26 @@ export default async function FireBlanketLanding() {
                 <a
                   href={mailHref}
                   data-cta="quote-mail"
-                  className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10 transition hover:bg-white/[0.1]"
+                  className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100 transition hover:bg-brand-100"
                 >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.mail className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">ส่งรายการทางอีเมล</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">ส่งรายการทางอีเมล</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.email}
                     </span>
                   </span>
                 </a>
 
-                <div className="flex items-center gap-4 rounded-3xl bg-white/[0.06] p-5 ring-1 ring-inset ring-white/10">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-500/20 text-brand-200">
+                <div className="flex items-center gap-4 rounded-3xl bg-white p-5 ring-1 ring-inset ring-brand-100">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
                     <Icon.clock className="size-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-brand-200/70">เวลาทำการ</span>
-                    <span className="block font-display font-semibold text-white">
+                    <span className="block text-xs text-slate-500">เวลาทำการ</span>
+                    <span className="block font-display font-semibold text-brand-900">
                       {site.hours}
                     </span>
                   </span>
@@ -584,7 +500,7 @@ export default async function FireBlanketLanding() {
               </div>
             </div>
 
-            <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-950/40 sm:p-8">
+            <div className="rounded-4xl bg-white p-6 shadow-2xl shadow-brand-900/10 sm:p-8">
               <h3 className="text-xl">กรอกขนาดและจำนวนที่ต้องการ</h3>
               <p className="mt-2 text-sm text-slate-500">ฟรี ไม่มีค่าใช้จ่าย และไม่มีข้อผูกมัด</p>
               <div className="mt-6">
@@ -592,7 +508,7 @@ export default async function FireBlanketLanding() {
               </div>
             </div>
           </div>
-        </DarkBand>
+        </Band>
       </main>
 
       <LpFooter note="อุณหภูมิใช้งานที่ระบุเป็นค่าของเส้นด้ายตามเอกสารผู้ผลิต ไม่ใช่อัตราการทนไฟของโครงสร้างอาคาร" />

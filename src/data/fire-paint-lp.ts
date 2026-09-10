@@ -423,29 +423,31 @@ export const reviews = [
 
 /* ------------------------------------------------------- Related items */
 
+/* รูปการ์ดดึงจากรูปปกของสินค้าตาม slug (ลูกค้าขอให้ตรงกับหน้าสินค้า) — เปลี่ยนรูป
+   ที่สินค้าในหลังบ้านแล้วการ์ดตรงนี้เปลี่ยนตาม ชื่อ/บทบาท/คำอธิบายยังเป็นของหน้านี้ */
 export const related = [
   {
+    slug: "neocoat-primer-grey-oxide",
     name: "Neocoat Primer 3000",
     role: "สีรองพื้นกันสนิม",
-    image: "/assets/product-neocoat-primer.jpg",
     text: "รองพื้นก่อนเข้าระบบสีกันไฟ มีเฉดแดงและเทา",
   },
   {
+    slug: "thinner-3a-intanin",
     name: "ทินเนอร์อินทนิล AAA",
     role: "ตัวทำละลาย",
-    image: "/assets/product-thinner.jpg",
     text: "ผสมสีรองพื้น สีน้ำมัน สีโซลเวนต์ และอีพ็อกซี่",
   },
   {
+    slug: "turpentine-intanin",
     name: "น้ำมันสนอินทนิล",
     role: "น้ำมันสน 100%",
-    image: "/assets/product-turpentine.jpg",
     text: "น้ำมันสนเชียงใหม่แท้ บรรจุแกลลอนใหญ่",
   },
   {
+    slug: "fiberglass-cloth",
     name: "ผ้ากันไฟซิลิก้า",
     role: "ผ้ากันไฟ",
-    image: "/assets/product-silica-silicone.jpg",
     text: "ทนอุณหภูมิสูงสุด 1000°C สำหรับงานเชื่อมและฉนวน",
   },
 ];

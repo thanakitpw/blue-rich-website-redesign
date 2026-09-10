@@ -37,17 +37,18 @@ export function Check({ className = "" }: { className?: string }) {
   );
 }
 
-/** Pill label above a section heading. `tone` follows the section background. */
+/** Pill label above a section heading. `tone` follows the section background:
+    `light` on white, `band` on the sky-blue Band (white pill so it does not vanish). */
 export function Eyebrow({
   tone = "light",
   children,
 }: {
-  tone?: "light" | "dark" | "flame";
+  tone?: "light" | "band" | "flame";
   children: ReactNode;
 }) {
   const tones = {
     light: "bg-brand-50 text-brand-700 ring-brand-100",
-    dark: "bg-white/10 text-brand-100 ring-white/20",
+    band: "bg-white text-brand-700 ring-brand-100",
     flame: "bg-accent-500/10 text-accent-600 ring-accent-500/20",
   } as const;
 
@@ -72,36 +73,28 @@ export function SectionHead({
   eyebrow: string;
   title: ReactNode;
   lead?: string;
-  tone?: "light" | "dark";
+  tone?: "light" | "band";
   className?: string;
 }) {
-  const dark = tone === "dark";
-
   return (
     <div className={`mx-auto max-w-3xl text-center ${className}`}>
-      <Eyebrow tone={dark ? "dark" : "light"}>{eyebrow}</Eyebrow>
-      <h2
-        className={`mt-4 text-3xl leading-[1.25] sm:text-4xl lg:text-[2.6rem] ${
-          dark ? "text-white" : ""
-        }`}
-      >
-        {title}
-      </h2>
+      <Eyebrow tone={tone}>{eyebrow}</Eyebrow>
+      <h2 className="mt-4 text-3xl leading-[1.25] sm:text-4xl lg:text-[2.6rem]">{title}</h2>
       {lead && (
-        <p
-          className={`mt-5 text-base leading-relaxed sm:text-[1.12rem] ${
-            dark ? "text-brand-100/75" : "text-slate-600"
-          }`}
-        >
-          {lead}
-        </p>
+        <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-[1.12rem]">{lead}</p>
       )}
     </div>
   );
 }
 
-/** Full-bleed navy band with the brand's radial wash and diamond outline. */
-export function DarkBand({
+/**
+ * Full-bleed sky-blue band with a soft white radial wash.
+ *
+ * เดิมเป็นแถบน้ำเงินเข้ม (navy) ตัวหนังสือขาว — ลูกค้าขอให้ทุกหน้าแลนดิ้งเลิกใช้
+ * พื้นมืด จึงเปลี่ยนเป็นฟ้าอ่อนโทนเดียวกับ bg-brand-50 ที่ใช้ทั่วเว็บ การ์ดข้างใน
+ * เป็นขาวทึบแทนขาวโปร่ง ตัวหนังสือกลับมาเป็นสีปกติของเว็บ
+ */
+export function Band({
   id,
   glow = "left",
   className = "",
@@ -113,15 +106,15 @@ export function DarkBand({
   children: ReactNode;
 }) {
   const glows = {
-    left: "bg-[radial-gradient(56rem_28rem_at_20%_0%,var(--color-brand-800),transparent_65%)]",
-    right: "bg-[radial-gradient(56rem_28rem_at_80%_0%,var(--color-brand-800),transparent_65%)]",
-    center: "bg-[radial-gradient(50rem_26rem_at_50%_0%,var(--color-brand-800),transparent_70%)]",
+    left: "bg-[radial-gradient(56rem_28rem_at_20%_0%,rgba(255,255,255,0.75),transparent_65%)]",
+    right: "bg-[radial-gradient(56rem_28rem_at_80%_0%,rgba(255,255,255,0.75),transparent_65%)]",
+    center: "bg-[radial-gradient(50rem_26rem_at_50%_0%,rgba(255,255,255,0.75),transparent_70%)]",
   } as const;
 
   return (
     <section
       id={id}
-      className={`relative overflow-hidden bg-brand-950 py-20 lg:py-24 ${className}`}
+      className={`relative overflow-hidden bg-brand-50 py-20 lg:py-24 ${className}`}
     >
       <div aria-hidden className={`absolute inset-0 ${glows[glow]}`} />
       <Wrap className="relative">{children}</Wrap>
