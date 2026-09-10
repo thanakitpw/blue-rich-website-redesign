@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useActionState, useMemo, useRef, useState } from "react";
 import { Icon } from "@/components/ui";
 import { useSite } from "@/components/SiteProvider";
+import { sendEnquiry, type EnquirySpec, type EnquiryState } from "@/lib/enquiry/actions";
 
 export type LpFormField =
   | {
@@ -33,11 +34,26 @@ const field =
 
 const labelText = "text-sm font-medium text-slate-700";
 
+const initialState: EnquiryState = { status: "idle" };
+
+/** ช่องของหน้านี้ในรูปที่ server action ใช้เรียงเนื้อเมล — ชื่อกับเบอร์นำหน้าเสมอ */
+function specFor(config: LpQuoteFormConfig): EnquirySpec {
+  return {
+    subject: config.subject,
+    topicField: config.topicField,
+    source: "หน้าแลนดิ้ง",
+    fields: [
+      { name: "name", label: "ชื่อผู้ติดต่อ" },
+      { name: "phone", label: "เบอร์โทร" },
+      ...config.fields.map((f) => ({ name: f.name, label: f.label, multiline: f.kind === "textarea" })),
+    ],
+  };
+}
+
 /**
- * No inbox integration exists yet, so the enquiry is composed client-side and
- * handed to the visitor's mail app — or copied to the clipboard for LINE, which
- * converts far better with Thai B2B traffic. Replace `compose`'s two consumers
- * with a server action once a CRM or form endpoint is available.
+ * ปุ่มเมลส่งผ่าน server action เข้าอีเมลทีมขายโดยตรง (ดู src/lib/enquiry)
+ * ปุ่ม LINE ยังประกอบข้อความฝั่ง client แล้วคัดลอกให้วางในแชท — ทราฟฟิก B2B
+ * ไทยปิดการขายทางไลน์ได้ดีกว่ามาก จึงเก็บทางนี้ไว้คู่กัน
  *
  * The field list is per landing page: a fire-paint enquiry needs a fire rating,
  * a thinner enquiry needs pack sizes. Only name and phone are universal.
@@ -45,7 +61,13 @@ const labelText = "text-sm font-medium text-slate-700";
 export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
   const { site, lineHref } = useSite();
   const formRef = useRef<HTMLFormElement>(null);
-  const [status, setStatus] = useState<"idle" | "mail" | "copied" | "copyFailed">("idle");
+
+  const action = useMemo(() => sendEnquiry.bind(null, specFor(config)), [config]);
+  const [state, formAction, pending] = useActionState(action, initialState);
+
+  const [lineStatus, setLineStatus] = useState<"idle" | "copied" | "copyFailed">("idle");
+  /* กล่องสถานะมีกล่องเดียว โชว์ผลของปุ่มที่กดล่าสุด */
+  const [lastUsed, setLastUsed] = useState<"mail" | "line">("mail");
 
   function compose(form: HTMLFormElement) {
     const data = new FormData(form);
@@ -55,27 +77,13 @@ export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
       f.kind === "textarea" ? `\n${f.label}:\n${get(f.name) || "-"}` : `${f.label}: ${get(f.name) || "-"}`,
     );
 
-    return {
-      name: get("name"),
-      topic: config.topicField ? get(config.topicField) : "",
-      body: [
-        `[${config.subject} — จากหน้าแลนดิ้ง]`,
-        "",
-        `ชื่อผู้ติดต่อ: ${get("name")}`,
-        `เบอร์โทร: ${get("phone")}`,
-        ...lines,
-      ].join("\n"),
-    };
-  }
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const { name, topic, body } = compose(e.currentTarget);
-    const subject = [`[${config.subject}]`, topic, "—", name].filter(Boolean).join(" ");
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    setStatus("mail");
+    return [
+      `[${config.subject} — จากหน้าแลนดิ้ง]`,
+      "",
+      `ชื่อผู้ติดต่อ: ${get("name")}`,
+      `เบอร์โทร: ${get("phone")}`,
+      ...lines,
+    ].join("\n");
   }
 
   async function handleLine() {
@@ -85,18 +93,26 @@ export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
     // Same required-field rules as the mail path — don't send a blank enquiry.
     if (!form.reportValidity()) return;
 
-    const { body } = compose(form);
+    setLastUsed("line");
     try {
-      await navigator.clipboard.writeText(body);
-      setStatus("copied");
+      await navigator.clipboard.writeText(compose(form));
+      setLineStatus("copied");
     } catch {
-      setStatus("copyFailed");
+      setLineStatus("copyFailed");
     }
     window.open(lineHref, "_blank", "noopener");
   }
 
+  const showMail = lastUsed === "mail" && state.status !== "idle";
+  const showLine = lastUsed === "line" && lineStatus !== "idle";
+
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="grid gap-4">
+    <form
+      ref={formRef}
+      action={formAction}
+      onSubmit={() => setLastUsed("mail")}
+      className="grid gap-4"
+    >
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2">
           <span className={labelText}>
@@ -155,14 +171,18 @@ export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
         })}
       </div>
 
+      {/* ช่องดักบอต — คนจริงมองไม่เห็น เซิร์ฟเวอร์ทิ้งฟอร์มที่ช่องนี้มีค่า */}
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+
       <div className="mt-2 grid gap-3 sm:grid-cols-2">
         <button
           type="submit"
+          disabled={pending}
           data-cta="form-submit-mail"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98] disabled:cursor-wait disabled:opacity-60"
         >
           <Icon.mail />
-          ส่งขอใบเสนอราคา
+          {pending ? "กำลังส่ง…" : "ส่งขอใบเสนอราคา"}
         </button>
         <button
           type="button"
@@ -180,24 +200,34 @@ export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
           `ข้อมูลที่กรอกใช้สำหรับติดต่อกลับและจัดทำใบเสนอราคาเท่านั้น ทีมงานจะติดต่อกลับภายใน 1–2 วันทำการ หรือโทรหาเราได้โดยตรงที่ ${site.phones[0]}`}
       </p>
 
-      {status !== "idle" && (
+      {showMail && state.status === "sent" && (
         <p
           role="status"
           className="rounded-2xl bg-brand-50 px-5 py-4 text-sm leading-relaxed text-brand-800 ring-1 ring-inset ring-brand-100"
         >
-          {status === "mail" && (
-            <>
-              เปิดโปรแกรมอีเมลให้แล้ว หากไม่มีหน้าต่างขึ้นมา กรุณาส่งมาที่{" "}
-              <a href={`mailto:${site.email}`} className="font-semibold underline">
-                {site.email}
-              </a>{" "}
-              หรือโทร {site.phones[0]}
-            </>
-          )}
-          {status === "copied" && (
+          ได้รับคำขอใบเสนอราคาแล้ว ขอบคุณครับ ทีมงานจะติดต่อกลับภายใน 1–2 วันทำการ หากเร่งด่วนโทร{" "}
+          {site.phones[0]}
+        </p>
+      )}
+
+      {showMail && state.status === "error" && (
+        <p
+          role="alert"
+          className="rounded-2xl bg-amber-50 px-5 py-4 text-sm leading-relaxed text-amber-900 ring-1 ring-inset ring-amber-100"
+        >
+          {state.message} กรุณาโทร {site.phones[0]} หรือกด &ldquo;ส่งทาง LINE แทน&rdquo;
+        </p>
+      )}
+
+      {showLine && (
+        <p
+          role="status"
+          className="rounded-2xl bg-brand-50 px-5 py-4 text-sm leading-relaxed text-brand-800 ring-1 ring-inset ring-brand-100"
+        >
+          {lineStatus === "copied" && (
             <>คัดลอกรายละเอียดงานไว้ให้แล้ว เปิดแชท LINE ขึ้นมาแล้ววางข้อความส่งได้เลย</>
           )}
-          {status === "copyFailed" && (
+          {lineStatus === "copyFailed" && (
             <>
               เปิดแชท LINE ให้แล้ว แต่คัดลอกข้อความอัตโนมัติไม่สำเร็จ
               รบกวนพิมพ์รายละเอียดงานในแชท หรือโทรหาเราที่ {site.phones[0]}

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState } from "react";
 import { Icon } from "@/components/ui";
 import { useSite } from "@/components/SiteProvider";
+import { sendEnquiry, type EnquirySpec, type EnquiryState } from "@/lib/enquiry/actions";
 
 const topics = [
   "สีกันไฟ – สีทนไฟ",
@@ -13,43 +14,37 @@ const topics = [
   "อื่น ๆ",
 ];
 
+/* ลำดับช่องในเมลที่ทีมขายได้รับ — name ต้องตรงกับ input ด้านล่าง */
+const spec: EnquirySpec = {
+  subject: "สอบถามจากเว็บไซต์",
+  topicField: "topic",
+  source: "หน้าติดต่อเรา",
+  fields: [
+    { name: "name", label: "ชื่อผู้ติดต่อ" },
+    { name: "company", label: "บริษัท/โครงการ" },
+    { name: "phone", label: "เบอร์โทร" },
+    { name: "email", label: "อีเมล" },
+    { name: "topic", label: "เรื่องที่สนใจ" },
+    { name: "message", label: "รายละเอียด", multiline: true },
+  ],
+};
+
+const sendContactEnquiry = sendEnquiry.bind(null, spec);
+const initialState: EnquiryState = { status: "idle" };
+
 const field =
   "w-full rounded-2xl border border-brand-200 bg-white px-4 py-3 text-[1.02rem] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-brand-400 focus:ring-4 focus:ring-brand-100";
 
 /**
- * No backend is wired up yet — submitting composes the enquiry and hands it to
- * the visitor's mail client. Swap `handleSubmit` for a server action or form
- * service when an inbox integration is available.
+ * ส่งผ่าน server action เข้าอีเมลทีมขายโดยตรง (ดู src/lib/enquiry)
+ * เดิมเปิด mailto: ซึ่งบนมือถือจำนวนมากไม่มีแอปเมลตั้งค่าไว้ ข้อความจึงหายกลางทาง
  */
 export default function ContactForm() {
   const { site } = useSite();
-  const [sent, setSent] = useState(false);
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const get = (k: string) => String(data.get(k) ?? "").trim();
-
-    const body = [
-      `ชื่อผู้ติดต่อ: ${get("name")}`,
-      `บริษัท/โครงการ: ${get("company") || "-"}`,
-      `เบอร์โทร: ${get("phone")}`,
-      `อีเมล: ${get("email") || "-"}`,
-      `เรื่องที่สนใจ: ${get("topic")}`,
-      "",
-      "รายละเอียด:",
-      get("message"),
-    ].join("\n");
-
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      `[สอบถามจากเว็บไซต์] ${get("topic")} — ${get("name")}`,
-    )}&body=${encodeURIComponent(body)}`;
-
-    setSent(true);
-  }
+  const [state, formAction, pending] = useActionState(sendContactEnquiry, initialState);
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4">
+    <form action={formAction} className="grid gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2">
           <span className="text-sm font-medium text-slate-700">
@@ -105,29 +100,42 @@ export default function ContactForm() {
         />
       </label>
 
+      {/* ช่องดักบอต — คนจริงมองไม่เห็น เซิร์ฟเวอร์ทิ้งฟอร์มที่ช่องนี้มีค่า */}
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+
       <button
         type="submit"
-        className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98]"
+        disabled={pending}
+        className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-brand-700 px-7 py-3.5 font-semibold text-white shadow-lg shadow-brand-900/20 transition hover:bg-accent-600 active:scale-[0.98] disabled:cursor-wait disabled:opacity-60"
       >
         <Icon.mail />
-        ส่งข้อความถึงเรา
+        {pending ? "กำลังส่ง…" : "ส่งข้อความถึงเรา"}
       </button>
 
       <p className="text-xs leading-relaxed text-slate-400">
-        เมื่อกดส่ง ระบบจะเปิดโปรแกรมอีเมลของคุณพร้อมข้อความที่กรอกไว้
-        หากไม่สะดวกสามารถโทรหรือทักไลน์หาเราได้โดยตรง
+        ข้อความจะส่งตรงถึงทีมงานทางอีเมล และจะติดต่อกลับภายใน 1–2 วันทำการ
+        หากเร่งด่วนสามารถโทรหรือทักไลน์หาเราได้โดยตรง
       </p>
 
-      {sent && (
+      {state.status === "sent" && (
         <p
           role="status"
           className="rounded-2xl bg-brand-50 px-5 py-4 text-sm text-brand-800 border border-slate-200"
         >
-          เปิดโปรแกรมอีเมลเรียบร้อยแล้ว หากไม่มีหน้าต่างขึ้นมา กรุณาส่งอีเมลมาที่{" "}
+          ได้รับข้อความแล้ว ขอบคุณครับ ทีมงานจะติดต่อกลับภายใน 1–2 วันทำการ หากเร่งด่วนโทร{" "}
+          {site.phones[0]}
+        </p>
+      )}
+
+      {state.status === "error" && (
+        <p
+          role="alert"
+          className="rounded-2xl bg-amber-50 px-5 py-4 text-sm leading-relaxed text-amber-900 ring-1 ring-inset ring-amber-100"
+        >
+          {state.message} กรุณาโทร {site.phones[0]} หรือส่งอีเมลมาที่{" "}
           <a href={`mailto:${site.email}`} className="font-semibold underline">
             {site.email}
-          </a>{" "}
-          หรือโทร {site.phones[0]}
+          </a>
         </p>
       )}
     </form>
