@@ -348,6 +348,12 @@
     "bytes": 174226
   },
   {
+    "url": "/assets/products/neocoat-paint-sw-cutout.webp",
+    "filename": "neocoat-paint-sw-cutout.webp",
+    "folder": "assets/products",
+    "bytes": 45916
+  },
+  {
     "url": "/assets/products/neocoat-paint-w-promo.webp",
     "filename": "neocoat-paint-w-promo.webp",
     "folder": "assets/products",
@@ -441,7 +447,7 @@
     "url": "/assets/service-supervision-docs.webp",
     "filename": "service-supervision-docs.webp",
     "folder": "assets",
-    "bytes": 132350
+    "bytes": 143428
   },
   {
     "url": "/assets/service-supervision.jpg",
@@ -594,10 +600,28 @@
     "bytes": 108122
   },
   {
+    "url": "/assets/work-site-delivery.webp",
+    "filename": "work-site-delivery.webp",
+    "folder": "assets",
+    "bytes": 164462
+  },
+  {
     "url": "/assets/work-site-erection.webp",
     "filename": "work-site-erection.webp",
     "folder": "assets",
     "bytes": 148948
+  },
+  {
+    "url": "/assets/work-stock-storefront.webp",
+    "filename": "work-stock-storefront.webp",
+    "folder": "assets",
+    "bytes": 192260
+  },
+  {
+    "url": "/assets/work-stock-warehouse.webp",
+    "filename": "work-stock-warehouse.webp",
+    "folder": "assets",
+    "bytes": 115136
   },
   {
     "url": "/assets/work-truss-lift.webp",
@@ -610,5 +634,11 @@
     "filename": "work-tubular-truss.webp",
     "folder": "assets",
     "bytes": 181108
+  },
+  {
+    "url": "/assets/work-warehouse-pallets.webp",
+    "filename": "work-warehouse-pallets.webp",
+    "folder": "assets",
+    "bytes": 80992
   }
 ]

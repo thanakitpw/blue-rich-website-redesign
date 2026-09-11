@@ -5,6 +5,7 @@ import LpStickyCta from "@/components/landing/LpStickyCta";
 import LpQuoteForm from "@/components/landing/LpQuoteForm";
 import LpFaq from "@/components/landing/LpFaq";
 import LpFooter from "@/components/landing/LpFooter";
+import LpGallery from "@/components/landing/LpGallery";
 import { Check, Wrap } from "@/components/landing/kit";
 import LpHero from "@/components/landing/LpHero";
 import { PRODUCT_HERO } from "@/components/product/ProductHero";
@@ -62,7 +63,6 @@ export default async function FireRetardantPaintLanding() {
     galleryImages,
     hero,
     legal,
-    mechanism,
     navSections,
     process,
     productSpecs,
@@ -120,11 +120,14 @@ export default async function FireRetardantPaintLanding() {
 
       <main>
         {/* ------------------------------------------------------------- Hero */}
-        {/* รูปแบนเนอร์กับถังสีใช้ไฟล์เดียวกับหน้าสินค้าสูตรน้ำมัน จะได้แก้ที่เดียว */}
+        {/* รูปแบนเนอร์ใช้ไฟล์เดียวกับหน้าสินค้าสูตรน้ำมัน จะได้แก้ที่เดียว
+            ส่วนถังสีเป็นไฟล์ถังคู่ (สูตรน้ำมัน + สูตรน้ำ) เพราะหน้านี้ขายทั้งสองสูตร
+            ต่างจากหน้าสินค้าที่โชว์ถังของสูตรตัวเองใบเดียว */}
         <LpHero
           hero={hero}
           banner={PRODUCT_HERO["neocoat-intumescent-paint-s"].banner}
-          cutout={PRODUCT_HERO["neocoat-intumescent-paint-s"].cutout}
+          cutout="/assets/products/neocoat-paint-sw-cutout.webp"
+          cutoutPair
           badges={standards.map((s) => s.label)}
           quoteLabel="ขอใบเสนอราคาฟรี"
           telHref={telHref}
@@ -179,15 +182,22 @@ export default async function FireRetardantPaintLanding() {
               {risk.facts.map((f, i) => (
                 <Reveal key={f.label} delay={i * 90}>
                   <div className="h-full rounded-3xl bg-white p-7 text-center ring-1 ring-slate-200/80">
-                    <p className="font-display text-4xl font-bold text-accent-600 lg:text-[2.75rem]">
+                    {/* การ์ดที่ค่าเป็นข้อความยาว (ไม่ใช่ตัวเลข) ลดขนาดลงหนึ่งขั้นให้ยังอยู่บรรทัดเดียว */}
+                    <p
+                      className={`font-display font-bold text-accent-600 ${
+                        f.value.length > 12 ? "text-3xl lg:text-4xl" : "text-4xl lg:text-[2.75rem]"
+                      }`}
+                    >
                       {f.value}
                     </p>
                     <p className="mt-3 font-display font-semibold text-brand-950">
                       {f.label}
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-500">
-                      {f.note}
-                    </p>
+                    {f.note && (
+                      <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                        {f.note}
+                      </p>
+                    )}
                   </div>
                 </Reveal>
               ))}
@@ -198,49 +208,6 @@ export default async function FireRetardantPaintLanding() {
                 {risk.outro}
               </p>
             </Reveal>
-          </Wrap>
-        </section>
-
-        {/* --------------------------------------------------------- Mechanism */}
-        <section className="relative overflow-hidden bg-brand-50 py-20 lg:py-24">
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(56rem_28rem_at_80%_0%,rgba(255,255,255,0.75),transparent_65%)]"
-          />
-          <Wrap className="relative">
-            <Reveal className="mx-auto max-w-3xl text-center">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-700 ring-1 ring-inset ring-brand-100">
-                <span className="size-1.5 rounded-full bg-current" />
-                {mechanism.eyebrow}
-              </span>
-              <h2 className="mt-4 text-3xl leading-[1.25] text-brand-900 sm:text-4xl lg:text-[2.6rem]">
-                {mechanism.title}
-              </h2>
-              <p className="mt-5 text-base leading-relaxed text-slate-600 sm:text-[1.12rem]">
-                {mechanism.description}
-              </p>
-            </Reveal>
-
-            <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {mechanism.steps.map((s, i) => (
-                <Reveal key={s.step} delay={i * 90}>
-                  <li className="relative h-full rounded-3xl bg-white p-7 ring-1 ring-inset ring-brand-100">
-                    <span className="font-display text-4xl font-bold text-brand-300">
-                      {s.step}
-                    </span>
-                    <span className="mt-3 inline-flex rounded-full bg-accent-500/15 px-3 py-1 text-[0.78rem] font-semibold text-accent-600">
-                      {s.temp}
-                    </span>
-                    <h3 className="mt-3 text-[1.12rem] text-brand-900">
-                      {s.title}
-                    </h3>
-                    <p className="mt-2.5 text-sm leading-relaxed text-slate-600">
-                      {s.text}
-                    </p>
-                  </li>
-                </Reveal>
-              ))}
-            </ol>
           </Wrap>
         </section>
 
@@ -696,23 +663,8 @@ export default async function FireRetardantPaintLanding() {
               </p>
             </Reveal>
 
-            <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
-              {galleryImages.map((g, i) => (
-                <Reveal key={g.src} delay={i * 60}>
-                  <figure className="group overflow-hidden rounded-2xl bg-slate-200">
-                    <div className="relative aspect-4/3">
-                      <CmsImage
-                        src={g.src}
-                        alt={g.alt}
-                        fill
-                        sizes="(min-width: 1024px) 25vw, 45vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  </figure>
-                </Reveal>
-              ))}
-            </div>
+            {/* กดรูปแล้วเปิดรูปใหญ่ได้ (ลูกค้าขอ) */}
+            <LpGallery images={galleryImages} />
           </Wrap>
         </section>
 

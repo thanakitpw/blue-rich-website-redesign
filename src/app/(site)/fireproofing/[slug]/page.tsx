@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { Button, Icon, MoreLink, PageHero, SectionHeading } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import { CtaBand, FaqList, MiniProduct, Section } from "@/components/hub";
+import SampleDocsDialog from "@/components/SampleDocsDialog";
+import { SERVICE_SAMPLES } from "@/data/service-samples";
 import { telHrefOf } from "@/data/site";
 import { getProducts, getService, getServices, getSiteInfo } from "@/lib/cms/content";
 import { copyFor } from "@/lib/cms/copy-pages";
@@ -43,6 +45,8 @@ export default async function ServicePage({
     .map((slug) => products.find((p) => p.slug === slug))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
   const other = services.filter((s) => s.slug !== service.slug);
+  /* ตัวอย่างเอกสารมีเฉพาะบางบริการ (ตอนนี้คือหน้ารับรองสีกันไฟ) — ไม่มีก็ไม่แสดงปุ่ม */
+  const samples = SERVICE_SAMPLES[service.slug];
 
   return (
     <>
@@ -106,6 +110,14 @@ export default async function ServicePage({
                 <Icon.phone />
                 ปรึกษาทีมวิศวกร
               </Button>
+              {samples && (
+                <SampleDocsDialog
+                  title={samples.title}
+                  description={samples.description}
+                  docs={samples.docs}
+                  buttonLabel="ดาวน์โหลดตัวอย่างเอกสารรับรอง"
+                />
+              )}
             </div>
           </Reveal>
         </div>

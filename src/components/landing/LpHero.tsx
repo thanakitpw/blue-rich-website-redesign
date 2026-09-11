@@ -28,6 +28,7 @@ export default function LpHero({
   hero,
   banner,
   cutout,
+  cutoutPair,
   badges,
   quoteLabel,
   secondary,
@@ -39,6 +40,8 @@ export default function LpHero({
   hero: LpHeroCopy;
   banner: string;
   cutout?: string;
+  /** cutout เป็นไฟล์ถังคู่ — ดู HeroBanner */
+  cutoutPair?: boolean;
   badges: string[];
   /** ข้อความปุ่มหลักที่พาไปฟอร์ม #quote — แต่ละหน้าใช้คำต่างกัน */
   quoteLabel: string;
@@ -63,6 +66,7 @@ export default function LpHero({
           <HeroBanner
             banner={banner}
             cutout={cutout}
+            cutoutPair={cutoutPair}
             eyebrow={hero.eyebrow}
             title={hero.title}
             tagline={hero.titleAccent}

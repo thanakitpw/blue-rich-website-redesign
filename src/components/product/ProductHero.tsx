@@ -4,6 +4,7 @@ import { CmsImage } from "@/components/CmsImage";
 import { Button, Container, Icon } from "@/components/ui";
 import Reveal from "@/components/ui/Reveal";
 import type { Category, Product } from "@/data/products";
+import { keepStandardsTogether } from "@/lib/text";
 
 /**
  * เลย์เอาต์แบบแบนเนอร์ใหญ่ ใช้เฉพาะหน้าสีกันไฟสองตัวตามที่ลูกค้าสั่ง
@@ -53,6 +54,7 @@ type Hero = { banner: string; eyebrow: string; cutout: string };
 export function HeroBanner({
   banner,
   cutout,
+  cutoutPair = false,
   eyebrow,
   title,
   tagline,
@@ -62,6 +64,9 @@ export function HeroBanner({
   banner: string;
   /** รูปสินค้าพื้นโปร่งใสวางมุมซ้ายล่าง — หน้าบริการหรือสินค้าที่ยังไม่มีไฟล์ตัดพื้นเว้นได้ */
   cutout?: string;
+  /** รูปตัดพื้นเป็นถังคู่ในไฟล์เดียว (สัดส่วน 769:450) — กล่องต้องกว้างขึ้นให้ถังแต่ละใบ
+      ยังโตเท่ากับตอนโชว์ใบเดียว ไม่งั้นสองใบจะถูกบีบเล็กลงครึ่งหนึ่ง */
+  cutoutPair?: boolean;
   eyebrow: string;
   title: string;
   tagline?: string;
@@ -113,15 +118,26 @@ export function HeroBanner({
         {/* รูปสินค้ามุมซ้ายล่าง วางลอยบนรูปถ่ายตรงๆ ไม่มีกรอบพื้นหลัง
             ใช้ไฟล์คนละใบกับรูปสินค้าปกติ — ใบนี้ตัดพื้นขาวออกให้โปร่งใสแล้ว
             (ไฟล์ในหน้าสินค้าและการ์ดหมวดยังเป็น PNG พื้นขาวเหมือนเดิม เพราะที่นั่น
-            วางบนพื้นขาวอยู่แล้ว) เงาใต้ภาพช่วยให้ถังไม่ดูแปะติดกับรูปถ่าย */}
+            วางบนพื้นขาวอยู่แล้ว) เงาใต้ภาพช่วยให้ถังไม่ดูแปะติดกับรูปถ่าย
+
+            ถังคู่: ไฟล์ 769:450 ถังแต่ละใบกินความกว้าง 45% ของรูป ส่วนไฟล์ถังเดี่ยว
+            (600:450 ในกล่องจัตุรัส) กิน 58% กล่องจึงกว้างขึ้น 1.28 เท่าให้ถังโตเท่ากัน */}
         {cutout && (
-          <div className="pointer-events-none absolute bottom-4 left-5 w-[46%] max-w-[176px] sm:bottom-5 sm:left-8 sm:w-[25%] sm:max-w-[190px] lg:bottom-6 lg:left-11 lg:max-w-[224px]">
-            <div className="relative aspect-square">
+          <div
+            className={`pointer-events-none absolute bottom-4 left-5 sm:bottom-5 sm:left-8 lg:bottom-6 lg:left-11 ${
+              cutoutPair
+                ? "w-[59%] max-w-[226px] sm:w-[32%] sm:max-w-[244px] lg:max-w-[288px]"
+                : "w-[46%] max-w-[176px] sm:w-[25%] sm:max-w-[190px] lg:max-w-[224px]"
+            }`}
+          >
+            <div className={`relative ${cutoutPair ? "aspect-[769/450]" : "aspect-square"}`}>
               <CmsImage
                 src={cutout}
                 alt=""
                 fill
-                sizes="(min-width: 1024px) 224px, 46vw"
+                sizes={
+                  cutoutPair ? "(min-width: 1024px) 288px, 59vw" : "(min-width: 1024px) 224px, 46vw"
+                }
                 className="object-contain object-bottom drop-shadow-[0_16px_28px_rgba(6,18,28,0.55)]"
               />
             </div>
@@ -145,13 +161,14 @@ export function HeroBanner({
               aria-hidden
               className="block h-[3px] w-10 rounded-full bg-accent-500 sm:ml-auto lg:w-12"
             />
-            <p className="eyebrow-en mt-3 text-[10.5px] text-white/75 lg:text-xs">{eyebrow}</p>
+            {/* ลูกค้าขอให้บรรทัดชื่อยี่ห้อโตขึ้น (เดิม 10.5px / 12px) */}
+            <p className="eyebrow-en mt-3 text-[14px] text-white/85 lg:text-[17px]">{eyebrow}</p>
             <h1 className="mt-1.5 text-[clamp(20px,3.4vw,40px)] break-words hyphens-auto leading-[1.18] font-semibold text-white drop-shadow-[0_2px_16px_rgba(12,26,36,0.6)]">
               {title}
             </h1>
             {tagline && (
               <p className="mt-2.5 ml-auto hidden text-[14.5px] leading-relaxed text-white/90 sm:block lg:mt-3.5 lg:text-[16px]">
-                {tagline}
+                {keepStandardsTogether(tagline)}
               </p>
             )}
 
