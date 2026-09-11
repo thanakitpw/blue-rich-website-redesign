@@ -1,0 +1,471 @@
+<title>แผน SEO Blue Rich</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #eef3f7;
+    --surface: #ffffff;
+    --surface-2: #f6f9fb;
+    --ink: #15242f;
+    --muted: #4f6879;
+    --line: #dbe5ee;
+    --line-strong: #b3d7ea;
+    --accent: #206ca4;
+    --accent-ink: #154668;
+    --accent-soft: #dfecf7;
+    --navy: #20404f;
+    --p0: #b3261e; --p0-soft: #fbe9e7;
+    --p1: #a15c00; --p1-soft: #fdf1df;
+    --p2: #206ca4; --p2-soft: #dfecf7;
+    --p3: #5b6f7c; --p3-soft: #e8eef2;
+    --done: #1f7a4d; --done-soft: #dff3e8;
+    --shadow: 0 1px 2px rgba(21,36,47,.06), 0 8px 24px rgba(42,80,104,.08);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f181f; --surface: #172530; --surface-2: #1d2d39; --ink: #e6eef4; --muted: #9db2c0;
+      --line: #2b3d4a; --line-strong: #3a6f92; --accent: #7db2d4; --accent-ink: #aecfe6; --accent-soft: #1e3647; --navy: #dfecf7;
+      --p0: #ff8a80; --p0-soft: #3a1f1d; --p1: #f2b866; --p1-soft: #3a2c14; --p2: #7db2d4; --p2-soft: #1e3647; --p3: #9db2c0; --p3-soft: #263440;
+      --done: #7fd3a5; --done-soft: #16332a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f181f; --surface: #172530; --surface-2: #1d2d39; --ink: #e6eef4; --muted: #9db2c0;
+    --line: #2b3d4a; --line-strong: #3a6f92; --accent: #7db2d4; --accent-ink: #aecfe6; --accent-soft: #1e3647; --navy: #dfecf7;
+    --p0: #ff8a80; --p0-soft: #3a1f1d; --p1: #f2b866; --p1-soft: #3a2c14; --p2: #7db2d4; --p2-soft: #1e3647; --p3: #9db2c0; --p3-soft: #263440;
+    --done: #7fd3a5; --done-soft: #16332a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.65 "Prompt", "Noto Sans Thai", system-ui, sans-serif;
+    padding-block: 0 64px; padding-inline: 20px;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1, h2, h3 { color: var(--navy); font-weight: 600; margin: 0; text-wrap: balance; line-height: 1.3; }
+  h1 { font-size: clamp(22px, 3vw, 30px); }
+  h2 { font-size: 19px; }
+  h3 { font-size: 16px; }
+  .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Masthead */
+  .mast { padding-block: 28px 20px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+  .mast-row { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: flex-end; justify-content: space-between; }
+  .mast p { margin: 6px 0 0; color: var(--muted); max-width: 62ch; }
+  .sync { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+  .sync .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--p3); }
+  .sync[data-state="live"] .dot { background: var(--done); }
+  .sync[data-state="local"] .dot { background: var(--p1); }
+
+  /* Summary strip */
+  .summary { display: grid; grid-template-columns: 1.6fr repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 22px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .stat .label { font-size: 12.5px; color: var(--muted); }
+  .stat .value { font-size: 26px; font-weight: 600; color: var(--navy); line-height: 1.1; margin-top: 4px; }
+  .stat .value small { font-size: 14px; font-weight: 500; color: var(--muted); }
+  .bar { height: 8px; background: var(--accent-soft); border-radius: 999px; overflow: hidden; margin-top: 10px; }
+  .bar > i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .35s ease; }
+  .stat[data-p] .value { color: var(--pc); }
+  @media (max-width: 760px) { .summary { grid-template-columns: 1fr 1fr; } .summary .stat:first-child { grid-column: 1 / -1; } }
+
+  /* Filters */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin-bottom: 18px; font-size: 13.5px; }
+  .filters .group { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .filters .group > span { color: var(--muted); margin-right: 2px; }
+  .chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 4px 12px; font: inherit; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip:focus-visible, .item input:focus-visible, select:focus-visible, .note:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Phases */
+  .phase { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 14px; box-shadow: var(--shadow); overflow: hidden; }
+  .phase > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; padding: 14px 18px; }
+  .phase > summary::-webkit-details-marker { display: none; }
+  .phase > summary .idx { width: 32px; height: 32px; border-radius: 10px; background: var(--accent-soft); color: var(--accent-ink); display: grid; place-items: center; font-weight: 600; font-size: 14px; }
+  .phase > summary .meta { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .phase > summary .mini { width: 90px; height: 6px; background: var(--accent-soft); border-radius: 999px; overflow: hidden; }
+  .phase > summary .mini i { display: block; height: 100%; background: var(--accent); width: 0; }
+  .phase > summary .desc { font-size: 13px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+  .phase[data-complete="true"] > summary .idx { background: var(--done-soft); color: var(--done); }
+  .items { border-top: 1px solid var(--line); }
+  .item { display: grid; grid-template-columns: 24px 44px 1fr auto; gap: 10px 12px; align-items: start; padding: 11px 18px; border-bottom: 1px solid var(--line); }
+  .item:last-child { border-bottom: 0; }
+  .item[hidden] { display: none; }
+  .item input[type="checkbox"] { width: 18px; height: 18px; margin: 4px 0 0; accent-color: var(--accent); cursor: pointer; }
+  .pri { font-size: 11.5px; font-weight: 600; letter-spacing: .04em; border-radius: 6px; padding: 3px 0; text-align: center; margin-top: 3px; color: var(--pc); background: var(--ps); }
+  .item .title { font-weight: 500; }
+  .item[data-done="true"] .title { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+  .item .detail { font-size: 13.5px; color: var(--muted); margin-top: 2px; max-width: 78ch; }
+  .item .detail code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+  .owner { font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; white-space: nowrap; margin-top: 3px; }
+  .note { display: block; width: 100%; margin-top: 8px; border: 1px dashed var(--line); background: transparent; color: var(--ink); font: inherit; font-size: 13px; padding: 6px 9px; border-radius: 8px; }
+  .note::placeholder { color: var(--muted); opacity: .8; }
+  .note:not(:placeholder-shown) { border-style: solid; background: var(--surface-2); }
+  .stamp { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  @media (max-width: 620px) {
+    .item { grid-template-columns: 24px 1fr; }
+    .item .pri { grid-column: 2; justify-self: start; width: 40px; order: -1; }
+    .item .owner { grid-column: 2; justify-self: start; }
+  }
+
+  /* Articles */
+  .section { margin-top: 30px; }
+  .section-head { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+  .section-head p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; min-width: 860px; font-size: 13.5px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: .04em; background: var(--surface-2); }
+  tr:last-child td { border-bottom: 0; }
+  td.t { font-weight: 500; min-width: 260px; }
+  td .kw { color: var(--muted); font-size: 12.5px; display: block; }
+  td.links { font-size: 12px; color: var(--muted); }
+  select.stage { font: inherit; font-size: 13px; border: 1px solid var(--line); border-radius: 8px; padding: 5px 8px; background: var(--surface); color: var(--ink); }
+  select.stage[data-stage="5"] { border-color: var(--done); color: var(--done); }
+  .stagebar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; font-size: 12.5px; color: var(--muted); }
+  .stagebar b { color: var(--ink); font-weight: 500; }
+
+  /* Decisions */
+  .decisions { display: grid; gap: 10px; }
+  .decision { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--p1); border-radius: 12px; padding: 12px 16px; }
+  .decision h3 { font-size: 15px; color: var(--ink); }
+  .decision p { margin: 4px 0 0; color: var(--muted); font-size: 13.5px; }
+  .decision .who { font-size: 12px; color: var(--p1); font-weight: 500; }
+
+  .sources { margin-top: 32px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+  .sources code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+  @media (prefers-reduced-motion: reduce) { .bar > i, .mini i { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="mast-row">
+      <div>
+        <div class="eyebrow">Blue Rich Material Products · www.blue-rich.com</div>
+        <h1>แผน SEO Blue Rich</h1>
+        <p>ตรวจ 37 หน้า 11 ก.ย. 2569 · ติ๊กแล้วสถานะเก็บร่วมกันทุกคนที่เปิดหน้านี้ · ที่มาของทุกข้ออยู่ใน <code>docs/seo-audit/2026-09-11/</code></p>
+      </div>
+      <div class="sync" id="sync" data-state="connecting"><span class="dot"></span><span id="sync-text">กำลังเชื่อมต่อที่เก็บสถานะ…</span></div>
+    </div>
+  </header>
+
+  <section class="summary" aria-label="สรุปความคืบหน้า">
+    <div class="stat">
+      <div class="label">งานทั้งหมด</div>
+      <div class="value num"><span id="done-all">0</span> <small>/ <span id="total-all">0</span> ข้อ</small></div>
+      <div class="bar"><i id="bar-all"></i></div>
+    </div>
+    <div class="stat" data-p="P0" style="--pc: var(--p0)"><div class="label">P0 ทันที</div><div class="value num" id="cnt-P0">0</div></div>
+    <div class="stat" data-p="P1" style="--pc: var(--p1)"><div class="label">P1 สัปดาห์นี้</div><div class="value num" id="cnt-P1">0</div></div>
+    <div class="stat" data-p="P2" style="--pc: var(--p2)"><div class="label">P2 วางแผน</div><div class="value num" id="cnt-P2">0</div></div>
+    <div class="stat" data-p="P3" style="--pc: var(--p3)"><div class="label">P3 เมื่อมีเวลา</div><div class="value num" id="cnt-P3">0</div></div>
+  </section>
+
+  <div class="filters" role="group" aria-label="ตัวกรอง">
+    <div class="group" data-filter="state"><span>สถานะ</span>
+      <button class="chip" type="button" data-value="all" aria-pressed="true">ทั้งหมด</button>
+      <button class="chip" type="button" data-value="open" aria-pressed="false">ค้าง</button>
+      <button class="chip" type="button" data-value="done" aria-pressed="false">เสร็จ</button>
+    </div>
+    <div class="group" data-filter="owner"><span>ผู้ทำ</span>
+      <button class="chip" type="button" data-value="all" aria-pressed="true">ทุกคน</button>
+      <button class="chip" type="button" data-value="dev" aria-pressed="false">dev</button>
+      <button class="chip" type="button" data-value="content" aria-pressed="false">content</button>
+      <button class="chip" type="button" data-value="client" aria-pressed="false">ลูกค้า</button>
+    </div>
+    <div class="group" data-filter="pri"><span>ระดับ</span>
+      <button class="chip" type="button" data-value="all" aria-pressed="true">ทุกระดับ</button>
+      <button class="chip" type="button" data-value="P0" aria-pressed="false">P0</button>
+      <button class="chip" type="button" data-value="P1" aria-pressed="false">P1</button>
+    </div>
+  </div>
+
+  <div id="phases"></div>
+
+  <section class="section" aria-labelledby="art-h">
+    <div class="section-head">
+      <h2 id="art-h">บทความ 12 บท</h2>
+      <p>ชื่อเรื่องเป็นประโยคบอกเล่า keyword อยู่ต้น ≤60 ตัวอักษร · 1,500–2,000 คำ · รูป 4 รูปทุกบท · เปลี่ยนสถานะได้ที่คอลัมน์ขวา</p>
+    </div>
+    <div class="stagebar" id="stagebar"></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>ชื่อเรื่อง / keyword หลัก</th><th>ประเภท</th><th>คำ</th><th>ลิงก์เข้าหน้า</th><th>สถานะ</th></tr></thead>
+        <tbody id="articles"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="dec-h">
+    <div class="section-head"><h2 id="dec-h">รอตัดสินใจก่อนลงมือ</h2><p>ข้อที่เปลี่ยนงานถัดไป ถ้ายังไม่ตอบ งานในเช็กลิสต์บางข้อเริ่มไม่ได้</p></div>
+    <div class="decisions" id="decisions"></div>
+  </section>
+
+  <footer class="sources">
+    ไฟล์อ้างอิงใน repo: <code>docs/seo-audit/2026-09-11/audit-summary.md</code> · <code>action-priorities.md</code> · <code>technical-audit.md</code> · <code>on-page-audit.md</code> · <code>content-audit.md</code> · <code>redirect-map.md</code> · <code>keyword-map.md</code> · <code>article-plan.md</code> · <code>tracking/kpi-baseline.md</code>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const PHASES = [
+    { id: "measure", name: "ตั้งระบบวัดผล", desc: "ก่อนแก้อะไร ต้องมีตัวเลขก่อน–หลัง", items: [
+      { id: "m1", p: "P0", o: "client", t: "ยืนยัน Search Console แบบ Domain property", d: "ใส่ DNS TXT ที่ผู้ดูแลโดเมน หรือขอสิทธิ์ property ที่ลูกค้ามีอยู่ — ทุกข้อหลังจากนี้วัดไม่ได้ถ้าไม่มี" },
+      { id: "m2", p: "P0", o: "dev", t: "ส่ง sitemap.xml ใน GSC + URL Inspection 5 หน้าหลัก", d: "หน้าแรก, /fireproofing, /products/neocoat-intumescent-paint-s, /intumescent, /news" },
+      { id: "m3", p: "P0", o: "dev", t: "ติด GA4 ผ่าน @next/third-parties + event จาก data-cta", d: "ทุกปุ่ม CTA มี <code>data-cta</code> อยู่แล้ว (hero-quote, sticky-line, form-submit-line) ผูกเป็น conversion โทร / LINE / ฟอร์ม" },
+      { id: "m4", p: "P0", o: "seo", t: "บันทึก baseline ลง tracking/kpi-baseline.md", d: "impressions/clicks 28 วัน, จำนวน URL ที่ index, อันดับ 18 คำใน keyword-map — ช่อง TBD ทั้งหมด" },
+      { id: "m5", p: "P3", o: "dev", t: "ติด Vercel Speed Insights เพื่อดู Core Web Vitals จากผู้ใช้จริง", d: "PageSpeed API โควตาสาธารณะเต็ม ตัวเลขตอนนี้เป็น lab จาก Lighthouse ในเครื่องเท่านั้น" },
+    ]},
+    { id: "technical", name: "Technical", desc: "ต่อจากเว็บเดิม + บอก Google ว่าหน้าไหนคือตัวจริง", items: [
+      { id: "t1", p: "P0", o: "dev", t: "301 redirect URL เว็บเดิม 36 URL + regex เลขซ้ำ ใน next.config.ts", d: "ตาม <code>redirect-map.md</code> — Google ยังเก็บ /News-159/161/163/164, /Cat-276, /download.php อยู่ และตอนนี้ตอบ 404 ทั้งหมด" },
+      { id: "t2", p: "P0", o: "dev", t: "ทดสอบ redirect 5 URL บน production ครั้งเดียว แล้ว Request indexing", d: "/Cat-276, /Item-14, /News-159, /Item-4-4, /download.php?file=x → ต้องได้ 308 ไปปลายทางถูกต้อง" },
+      { id: "t3", p: "P1", o: "dev", t: "ใส่ canonical ทุกหน้าใน (site)/ — 32 หน้าที่ยังไม่มี", d: "helper ใน generateMetadata: <code>alternates.canonical</code> จาก path จริง · ตอนนี้มีเฉพาะ LP 5 หน้า" },
+      { id: "t4", p: "P1", o: "dev", t: "/products?cat=… ชี้ canonical กลับ /products (หรือ noindex,follow)", d: "7 หมวด = 7 URL ที่ title/description เหมือน /products ทุกตัวอักษร" },
+      { id: "t5", p: "P2", o: "dev", t: "เอา /concept-b, /concept-c, /concept-d ออกจาก public/", d: "ยังตอบ 200 (74 KB) เนื้อหาซ้ำหน้าแรก robots Disallow อย่างเดียวไม่กัน index ถ้ามีลิงก์จากที่อื่น" },
+      { id: "t6", p: "P2", o: "dev", t: "หน้า /privacy (PDPA) + ลิงก์ใต้ฟอร์มและ footer", d: "ฟอร์มติดต่อ + ฟอร์มขอใบเสนอราคา 5 LP เก็บชื่อ เบอร์ อีเมล — ให้ลูกค้าตรวจข้อความก่อนขึ้น" },
+      { id: "t7", p: "P3", o: "dev", t: "sitemap ใส่ lastmod ทุก URL จาก published_at/updated_at ใน CMS", d: "ตอนนี้มีเฉพาะบทความ 7 URL (วันที่ 2567) อีก 30 URL ไม่มี" },
+      { id: "t8", p: "P3", o: "dev", t: "ตั้ง apex → https://www. ทีเดียวที่ Vercel domain", d: "http://blue-rich.com วิ่ง 2 hop (→ https apex → www)" },
+      { id: "t9", p: "P3", o: "seo", t: "เพิ่ม /llms.txt", d: "สรุปบริษัท สินค้า บริการ ลิงก์หน้าหลัก + ลิงก์ผลทดสอบ 3 ฉบับ" },
+    ]},
+    { id: "schema", name: "Schema / Open Graph", desc: "37 หน้ามี JSON-LD แต่มีแค่ 5 หน้าที่ type ตรงเนื้อหา", items: [
+      { id: "s1", p: "P1", o: "dev", t: "component JsonLd กลาง + BreadcrumbList จาก props ของ Breadcrumb", d: "33 หน้ามี breadcrumb มองเห็นแล้ว แค่ยังไม่มี schema" },
+      { id: "s2", p: "P1", o: "dev", t: "Product schema หน้าสินค้า 12 หน้า", d: "name, image, brand (Neocoat / อินทนิล / Four Plus), description, offers ไม่ระบุราคา ใช้ availability + seller · ตอนนี้มีเฉพาะ LP /neocoat และ /fire-blanket" },
+      { id: "s3", p: "P1", o: "dev", t: "Article schema บทความ 7 บทเดิม (+12 บทใหม่)", d: "headline, datePublished จาก <code>date_iso</code>, image, author = Organization — มี &lt;time datetime&gt; ISO อยู่แล้ว" },
+      { id: "s4", p: "P1", o: "dev", t: "Service schema /fireproofing, /certification, /supervision", d: "แบบเดียวกับที่ /engineering มี (provider, areaServed ประเทศไทย)" },
+      { id: "s5", p: "P2", o: "dev", t: "FAQPage จาก FAQ ที่มีอยู่ 60 ข้อ", d: "สินค้า 45 + บริการ 8 + หน้าแรก 7 — ไม่ได้ rich result แล้ว ใส่เป็นสัญญาณให้ AI search" },
+      { id: "s6", p: "P1", o: "dev", t: "แก้ LocalBusiness: openingHoursSpecification, PostalAddress, geo, sameAs, logo", d: "ตอนนี้ openingHours เป็นข้อความไทย \"จันทร์ – เสาร์ 08:00 – 17:00 น.\" ซึ่ง schema.org อ่านไม่ได้ · geo ต้องได้พิกัดจากลูกค้า (รอข้อ o7)" },
+      { id: "s7", p: "P2", o: "dev", t: "OG image 1200×630 ≤150 KB 13 รูป + og:type หน้าสินค้า", d: "ตอนนี้ 25 หน้าใช้ banner-fireproof.jpg 358 KB รูปเดียว · หน้าสินค้าไม่มี og:type เพราะ child openGraph ทับของ root ทั้งก้อน" },
+      { id: "s8", p: "P1", o: "dev", t: "ตรวจ Rich Results Test 4 หน้า", d: "หน้าแรก, หน้าสินค้า Neocoat-S, บทความ, /fireproofing/certification — ต้องไม่มี error" },
+      { id: "s9", p: "P2", o: "seo", t: "ทดสอบแชร์ผ่าน LINE 3 หน้า", d: "หน้าแรก, สินค้า, บทความ — รูป/ชื่อ/คำอธิบายขึ้นถูก" },
+    ]},
+    { id: "onpage", name: "On-page", desc: "title/description/alt และข้อความสินค้าที่ต้องเป็นของ Blue Rich เอง", items: [
+      { id: "o1", p: "P1", o: "dev", t: "title ใหม่ 8 หน้าที่ยาวเกิน 60", d: "/paint 85, /engineering 84, /fire-blanket 79, /four-plus 76, /thinner 75, /neocoat 68, /fireproofing 66, / 61 — ข้อเสนออยู่ใน on-page-audit.md §1" },
+      { id: "o2", p: "P1", o: "content", t: "description ใหม่ 12 หน้าที่ยาวเกิน 160", d: "ยาวสุด /products/thinner-2k 223 · หน้าสินค้า 3 ตัวแก้ที่ tagline ใน CMS" },
+      { id: "o3", p: "P1", o: "dev", t: "title หน้านำทาง 6 หน้าให้มี keyword", d: "/about 24, /projects 23, /contact 21, /products 25, /news 28, /standards 29 ตัวอักษร — เป็นชื่อหน้าเปล่า ๆ" },
+      { id: "o4", p: "P1", o: "content", t: "เขียน tagline + description สินค้า 12 ตัวใหม่ ไม่ซ้ำข้อความผู้ผลิต", d: "ประโยคปัจจุบันซ้ำคำต่อคำกับ beelievesourcing, uoneplusgroup, infinitematerialtech, laquatech — 150–250 คำ/สินค้า ผ่าน lint voice แล้วแก้ใน /admin/products" },
+      { id: "o5", p: "P2", o: "dev", t: "alt รูปเนื้อหา: โลโก้ header, การ์ดสินค้า, hero หน้าสินค้า, การ์ดบทความ", d: "หน้าแรก alt ว่าง 18/46 · Header.tsx:67, cards.tsx:127,195, ProductHero.tsx:89,122 · รูปตกแต่งจริงคง alt=\"\"" },
+      { id: "o6", p: "P3", o: "content", t: "h1/h2 ที่เป็นคำถามหรือมีคำต้องห้าม ปรับเป็นประโยคบอกเล่า", d: "h1 หน้าแรก \"…ครบวงจร\", /products \"ไม่แน่ใจว่าโครงการของคุณต้องใช้ระบบสีแบบไหน?\", \"คำถามที่พบบ่อย?\"" },
+      { id: "o7", p: "P2", o: "client", t: "ยืนยันที่อยู่/เบอร์/เวลาทำการ แล้วแก้ CMS settings", d: "เว็บใหม่ 288/60 + 092-998-8452 · เว็บเดิมและ Google 288/438 + 086-339-4682 · เวลาทำการเป็นข้อความที่แต่งขึ้น" },
+      { id: "o8", p: "P2", o: "client", t: "ยืนยันปีกฎกระทรวง (2566 หรือ 2567) และเลขฉบับ แล้วแก้ทุกจุด", d: "เว็บใช้ \"พ.ศ. 2567\" ใน site description, บทความ, LP, บริการ · ชื่อทางการที่พบภายนอกคือ พ.ศ. 2566 · ฉบับที่ 48/60 อ้างไม่เหมือนกันระหว่างหน้า" },
+    ]},
+    { id: "links", name: "Internal link", desc: "LP 5 หน้าไม่มีลิงก์เข้าเลย · บทความ ↔ สินค้า = 0 ทั้งสองทาง", items: [
+      { id: "l1", p: "P1", o: "client", t: "ตัดสินใจ: LP 5 หน้าติดอันดับเอง หรือใช้ยิงแอดอย่างเดียว", d: "ติดอันดับเอง → ต้องทำ l2–l4 · ยิงแอด → กลับไป noindex + ถอดจาก sitemap (HANDOFF บอกว่าลูกค้าขอให้ติดอันดับ)" },
+      { id: "l2", p: "P1", o: "dev", t: "ลิงก์เข้า LP ≥2 ต่อหน้า จากหน้าหมวด/สินค้าที่เกี่ยว", d: "/neocoat ← /intumescent + สินค้า Neocoat · /engineering ← /fireproofing · /thinner ← /hardware · /four-plus ← /paint · /fire-blanket ← /products/fiberglass-cloth" },
+      { id: "l3", p: "P1", o: "dev", t: "LP มีลิงก์ออกไปหน้าสินค้า/บริการ ≥3", d: "ตอนนี้ /four-plus 0, /thinner 1 (dead end ตามดีไซน์หน้าโฆษณา)" },
+      { id: "l4", p: "P1", o: "content", t: "แบ่ง title/h1 ระหว่างหน้าที่ชนกัน 5 กลุ่ม", d: "สีกันไฟ (4 หน้า), รับรอง (3), ทินเนอร์ (4), ผ้ากันไฟ (2), Four Plus (4) — ตารางใน content-audit.md §3" },
+      { id: "l5", p: "P2", o: "dev", t: "บล็อก \"บทความที่เกี่ยวข้อง\" บนหน้าสินค้า/บริการ 2–3 ลิงก์", d: "field relatedArticles หรือ match ด้วย tag — ทำหลังบทความขึ้นเว็บ" },
+      { id: "l6", p: "P2", o: "content", t: "/fireproofing ลิงก์ไปสินค้า + บทเดิม B2C ลิงก์ไปสินค้าที่เกี่ยว", d: "หน้าหมวดบริการลิงก์สินค้า 0 · สนิม → primer, อุปกรณ์ทาสี → ทินเนอร์" },
+    ]},
+    { id: "articles", name: "บทความ", desc: "โมเดลบทความปัจจุบันเป็นย่อหน้าล้วน ต้องเพิ่ม field ก่อนบทยาวจะขึ้นได้", items: [
+      { id: "a1", p: "P1", o: "content", t: "content/articles/VOICE-GUIDE.md ของโปรเจค", d: "ปรับผู้อ่าน (เจ้าของโครงการ วิศวกร ผู้รับเหมา จัดซื้อ) และศัพท์ (DFT, Hp/A, น.4-5) จาก references/voice-th-b2b.md" },
+      { id: "a2", p: "P1", o: "dev", t: "เพิ่มคอลัมน์ content_html ในตาราง articles + render + ช่องแก้ใน /admin", d: "body เป็น string[] ใส่ h2/ตาราง/ลิงก์ไม่ได้ — migration + snapshot function + fallback body เดิม" },
+      { id: "a3", p: "P1", o: "dev", t: "ตัวแปลง .md → HTML 2 โหมด (เว็บ / --doc) ใน scripts/ แล้ว commit ทันที", d: "ต้นแบบ scripts/md2article-example.py ในสกิล — บทเรียนจาก Infinite: เขียนแล้วลืม commit หลายชั่วโมง" },
+      { id: "a4", p: "P1", o: "content", t: "บทที่ 1 ผ่าน lint → ปรับ voice → ขึ้นเว็บ → ตรวจ production → Doc \"1. …\"", d: "บทเดียวที่ขึ้นเว็บก่อนลูกค้ารีวิว ใช้ตั้งโทนของอีก 11 บท" },
+      { id: "a5", p: "P1", o: "content", t: "บทที่ 2–12 เป็น .md lint ผ่าน + Google Doc ครบ (รอลูกค้ารีวิว)", d: "ติดตามรายบทที่ตารางด้านล่าง" },
+      { id: "a6", p: "P2", o: "content", t: "รีไรต์ /news/ministerial-regulation-2567 ในที่เดิมด้วยบท #3 + 301 fire-protection-law", d: "2 บทเดิมทับ intent กับบทใหม่ — รอผู้ดูแลตัดสิน (ดูรอตัดสินใจ)" },
+      { id: "a7", p: "P1", o: "seo", t: "ลิสต์สิ่งที่ต้องขอจากลูกค้า จัดกลุ่มตามบท ส่งเป็นข้อความเดียว", d: "ตารางความหนา Hp/A, ชื่อ-เลขใบอนุญาตวิศวกร, ปีกฎกระทรวง, เครื่องมือวัดฟิล์ม, สเปกผ้ารายเกรด …" },
+    ]},
+    { id: "speed", name: "รูปและความเร็ว", desc: "Lighthouse mobile lab: หน้าแรก 73 (LCP 6.3 s), สินค้า 87, บทความ 89", items: [
+      { id: "i1", p: "P1", o: "content", t: "สเปกรูป 4 รูปต่อบท ใน frontmatter (48 รูป)", d: "ปก 1600×840, ในเนื้อหา 1200×675 ×2, og 1200×630 · ชื่อไฟล์อังกฤษ alt ไทยบรรยายสิ่งที่เห็น" },
+      { id: "i2", p: "P1", o: "client", t: "เจนรูปตามสเปก → WebP ≤150 KB → ใส่ในเว็บพร้อม width/height/alt", d: "ผู้ดูแลโปรเจคเจนเอง ทำต่อบทตอน Phase 4" },
+      { id: "i3", p: "P2", o: "dev", t: "สไลด์หน้าแรก: priority เฉพาะรูปแรก สไลด์ 2–3 lazy", d: "ตอนนี้ 3 รูปโหลดพร้อมกัน 61 + 58 + 45 KB · LCP element คือรูปสไลด์แรก" },
+      { id: "i4", p: "P2", o: "dev", t: "ลดฟอนต์ Prompt เหลือ 4 น้ำหนัก ตัวแปรเดียว", d: "ตอนนี้ประกาศ 2 ตัวแปร 7 น้ำหนัก = 10 ไฟล์ 87 KB" },
+      { id: "i5", p: "P2", o: "dev", t: "ไล่ client component ที่ไม่จำเป็น / unused JS 85–89 KB ทุกหน้า", d: "JS 15 ไฟล์ 238 KB · HTML หน้าแรก 312 KB จาก RSC payload" },
+      { id: "i6", p: "P3", o: "dev", t: "Accessibility: color-contrast และ target-size ที่ Lighthouse ตก", d: "คะแนน 92–93 · สี muted บนพื้นฟ้า และปุ่ม/ลิงก์เล็กกว่า 24 px" },
+      { id: "i7", p: "P2", o: "seo", t: "วัด PageSpeed ซ้ำ 3 หน้าเมื่อโควตาคืน แล้วบันทึกลง kpi-baseline", d: "หน้าแรก, สินค้า Neocoat-S, บทความ — mobile + desktop" },
+    ]},
+    { id: "local", name: "Local / off-page", desc: "ไม่ซื้อ backlink · ใช้ของที่มี: GBP, ผู้ผลิต, ลูกค้าเดิม", items: [
+      { id: "g1", p: "P2", o: "client", t: "Google Business Profile: มีไหม → claim + NAP ตรงเว็บ + รูป 10 + เวลาทำการ", d: "หมวด ผู้จำหน่ายสี + บริการวิศวกรรม · ใช้ที่อยู่/เบอร์ที่ยืนยันแล้วในข้อ o7" },
+      { id: "g2", p: "P2", o: "dev", t: "sameAs: GBP/Maps, LINE OA, Facebook (ถ้ามี)", d: "ลูกค้าขอตัดไอคอน Facebook ออกจากเว็บแล้ว ใส่ใน schema อย่างเดียวได้" },
+      { id: "g3", p: "P2", o: "client", t: "ขอรีวิว Google จากลูกค้าเดิม 3 ราย", d: "เว็บเดิมมีรีวิว 3 ราย (HANDOFF §8) เว็บใหม่ไม่ได้ใส่ — ถ้าลงใน GBP ได้จะดีกว่าใส่ในเว็บ" },
+      { id: "g4", p: "P3", o: "client", t: "ขอลิงก์จากผู้ผลิต Unique Products (Neocoat) มาที่ /standards หรือหน้าสินค้า", d: "ตัวแทนจำหน่ายที่มีผลทดสอบ TÜV SÜD ให้โหลด — เป็นเหตุผลให้ผู้ผลิตลิงก์มาได้โดยไม่ต้องซื้อ" },
+      { id: "g5", p: "P3", o: "seo", t: "ลงทะเบียน directory ฟรี 3 แห่งด้วย NAP ชุดเดียวกัน", d: "Google Maps, LINE OA profile, directory ธุรกิจไทย 1 แห่ง — ทำหลัง o7 เท่านั้น" },
+    ]},
+    { id: "review", name: "วัดผล", desc: "ดูผลตามรอบ ไม่ยิง production ถี่", items: [
+      { id: "r1", p: "P1", o: "seo", t: "30 วัน: site: ไม่มี URL เดิมเหลือ + GSC ไม่มี 404 จาก URL เดิม", d: "ถ้ายังมี → ตรวจว่า redirect ตัวไหนพลาด" },
+      { id: "r2", p: "P1", o: "seo", t: "รายเดือน: อันดับ 18 คำใน keyword-map ลง kpi-baseline", d: "จาก GSC (ตำแหน่งเฉลี่ย) — ไม่ต้องค้นเองทุกคำ" },
+      { id: "r3", p: "P2", o: "seo", t: "3 เดือน: ตรวจ cannibalization LP vs หน้าเมนูจาก GSC queries", d: "ถ้าคำเดียวกันสลับหน้าไปมา → เลือกหน้าหลักแล้ว canonical ที่เหลือมา" },
+      { id: "r4", p: "P2", o: "dev", t: "หน้า /reports/seo-keywords บนโดเมนลูกค้า (noindex, ไม่อยู่ใน sitemap)", d: "ดึง keyword จาก frontmatter .md ตรง ๆ · โทนสว่าง สีแบรนด์ · ไม่ใส่ปัญหาหรือ checklist ภายใน" },
+      { id: "r5", p: "P3", o: "seo", t: "audit ซ้ำไตรมาสถัดไป (ธ.ค. 2569)", d: "เก็บใน docs/seo-audit/YYYY-MM-DD/ ไม่ทับของเดิม" },
+    ]},
+  ];
+
+  const ARTICLES = [
+    { n: 1, t: "สีกันไฟโครงสร้างเหล็ก พองตัวเป็นฉนวนกันความร้อนได้ 3 ชั่วโมง", k: "สีกันไฟโครงสร้างเหล็ก", type: "ความรู้", w: "1,800", l: "neocoat-s, neocoat-w, /neocoat, /fireproofing" },
+    { n: 2, t: "ความหนาสีกันไฟ คำนวณจากค่า Hp/A และอัตราการทนไฟของอาคาร", k: "ความหนาสีกันไฟ", type: "ความรู้", w: "1,800", l: "/fireproofing/certification, neocoat-s, /neocoat" },
+    { n: 3, t: "กฎกระทรวง พ.ศ. 2566 กำหนดอัตราการทนไฟของโครงสร้างเหล็ก", k: "กฎกระทรวง 2566 โครงสร้างเหล็ก", type: "กฎหมาย", w: "2,000", l: "/fireproofing, /certification, neocoat-s, /standards" },
+    { n: 4, t: "เอกสารรับรองสีกันไฟ น.4-5 และ น.4-9 พร้อมก่อนยื่นขออนุญาต", k: "เอกสารรับรองสีกันไฟ", type: "บริการ", w: "1,600", l: "/certification, /supervision, /engineering, neocoat-s" },
+    { n: 5, t: "วิศวกรควบคุมงานสีกันไฟ ตรวจวัดความหนาฟิล์มทุกชิ้นก่อนปิดงาน", k: "วิศวกรควบคุมงานสีกันไฟ", type: "บริการ", w: "1,600", l: "/supervision, neocoat-s, primer" },
+    { n: 6, t: "ระบบสีกันไฟ 3 ชั้น รองพื้นกันสนิม สีกันไฟ และสีทับหน้า", k: "ระบบสีกันไฟ", type: "ความรู้", w: "1,700", l: "primer, neogloss, neocoat-s, thinner-3a" },
+    { n: 7, t: "ผลทดสอบสีกันไฟ ASTM E-119 และ ISO 834 บอกอัตราการทนไฟจริง", k: "ผลทดสอบสีกันไฟ ASTM E-119", type: "ความรู้", w: "1,700", l: "/standards, neocoat-s, /certification" },
+    { n: 8, t: "ราคาสีกันไฟต่อตารางเมตร ขึ้นกับความหนาฟิล์มและหน้าตัดเหล็ก", k: "ราคาสีกันไฟ ต่อตารางเมตร", type: "ซื้อ", w: "1,600", l: "/neocoat, neocoat-s, /fireproofing, /contact" },
+    { n: 9, t: "สีกันไฟสูตรน้ำ Neocoat Paint-W ใช้ในอาคารที่ยังเปิดใช้งานได้", k: "สีกันไฟสูตรน้ำ", type: "ซื้อ", w: "1,500", l: "neocoat-w, neocoat-s, /neocoat, /intumescent" },
+    { n: 10, t: "ผ้ากันไฟ Fiberglass Cloth เกรด 550°C และ 1000°C เลือกตามงาน", k: "ผ้ากันไฟ 1000 องศา", type: "ซื้อ", w: "1,600", l: "fiberglass-cloth, /fire-blanket, /hardware" },
+    { n: 11, t: "ทินเนอร์ 3A กับน้ำมันสน ต่างกันที่ชนิดสีที่ใช้ผสมและการล้าง", k: "ทินเนอร์ 3A กับ น้ำมันสน", type: "ซื้อ", w: "1,500", l: "thinner-3a, turpentine, thinner-2k, thinner-wash, /thinner" },
+    { n: 12, t: "สีกันไฟ ซีเมนต์กันไฟ ยิปซัมทนไฟ เทียบข้อดีสำหรับโครงเหล็ก", k: "สีกันไฟ กับ ซีเมนต์กันไฟ", type: "ความรู้", w: "1,700", l: "/neocoat, /intumescent, /fireproofing, neocoat-s" },
+  ];
+  const STAGES = ["วางแผน", "ร่าง .md", "Doc ส่งลูกค้า", "ลูกค้ายืนยัน", "ขึ้นเว็บแล้ว"];
+
+  const DECISIONS = [
+    { who: "ผู้ดูแลโปรเจค + ลูกค้า", t: "LP 5 หน้า ติดอันดับเอง หรือยิงแอดอย่างเดียว", d: "HANDOFF บอกว่าลูกค้าขอให้ติดอันดับ แต่ตอนนี้ไม่มีลิงก์เข้าเลยและคำค้นซ้อนกับหน้าเมนู 5 กลุ่ม — ถ้าติดอันดับต้องทำ l2–l4, ถ้าไม่ต้อง noindex กลับ" },
+    { who: "ผู้ดูแลโปรเจค", t: "บทกฎหมาย: รีไรต์ ministerial-regulation-2567 ในที่เดิม + 301 fire-protection-law มาบท #3", d: "คง URL ที่ Google รู้จักแล้ว หรือจะเขียนบท #3 เป็น URL ใหม่แล้วปล่อยบทเดิมไว้ (จะแย่งกันเอง)" },
+    { who: "ลูกค้า", t: "ที่อยู่ 288/60 หรือ 288/438 · เบอร์ 092-998-8452 หรือ 086-339-4682 · เวลาทำการ", d: "ต้องตรงกันทั้งเว็บ, Google Business Profile, LINE, ใบเสนอราคา — schema geo กับ directory ทำต่อไม่ได้จนกว่าจะรู้" },
+    { who: "วุฒิวิศวกรของลูกค้า", t: "กฎกระทรวงกำหนดการออกแบบโครงสร้างอาคารฯ เป็น พ.ศ. 2566 หรือ 2567 · อ้างฉบับที่ 48 / 60 ข้อไหน", d: "เว็บใช้ 2567 ทุกหน้า แหล่งภายนอก (สภาสถาปนิก, สมาคมวิศวกรรมสถาน) ใช้ 2566 — บท #3 และ description ทั้งเว็บรออยู่" },
+    { who: "ลูกค้า", t: "สิทธิ์ Search Console / GA4 และชื่อ-เลขใบอนุญาตวุฒิวิศวกรผู้เซ็น", d: "ไม่มี GSC = วัดอะไรไม่ได้ · ไม่มีชื่อวิศวกร = บทความบริการ/กฎหมายไม่มีผู้รับรอง" },
+    { who: "ผู้ดูแลโปรเจค", t: "โฟลเดอร์ Google Drive สำหรับ Doc บทความ 12 ไฟล์", d: "ยังไม่ได้รับ — สร้าง Doc ไม่ได้จนกว่าจะมี" },
+  ];
+
+  /* ---------- state ---------- */
+  const ALL = PHASES.flatMap(p => p.items.map(i => ({ ...i, phase: p.id })));
+  const state = { done: {}, notes: {}, stamps: {}, stages: {} };
+  let filters = { state: "all", owner: "all", pri: "all" };
+  let db = null, writer = null;
+  const LS_KEY = "bluerich-seo-plan";
+
+  const el = (sel) => document.querySelector(sel);
+  const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const fmtWhen = (iso) => { try { const d = new Date(iso); return d.toLocaleString("th-TH", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch { return ""; } };
+
+  /* ---------- render ---------- */
+  function renderPhases() {
+    const host = el("#phases");
+    host.innerHTML = PHASES.map((p, idx) => `
+      <details class="phase" id="phase-${p.id}" open>
+        <summary>
+          <span class="idx num">${idx + 1}</span>
+          <span><h2>${esc(p.name)}</h2><div class="desc">${p.desc}</div></span>
+          <span class="meta"><span class="num" id="cnt-${p.id}">0 / ${p.items.length}</span><span class="mini"><i id="mini-${p.id}"></i></span></span>
+        </summary>
+        <div class="items">
+          ${p.items.map(i => `
+            <div class="item" data-id="${i.id}" data-pri="${i.p}" data-owner="${i.o}" style="--pc: var(--${i.p.toLowerCase()}); --ps: var(--${i.p.toLowerCase()}-soft)">
+              <input type="checkbox" id="chk-${i.id}" aria-labelledby="t-${i.id}">
+              <span class="pri">${i.p}</span>
+              <div>
+                <label class="title" id="t-${i.id}" for="chk-${i.id}">${esc(i.t)}</label>
+                <div class="detail">${i.d}</div>
+                <input class="note" id="note-${i.id}" type="text" placeholder="โน้ต (เช่น commit, ลิงก์, ผู้ทำ)" autocomplete="off">
+                <div class="stamp" id="stamp-${i.id}"></div>
+              </div>
+              <span class="owner">${{ dev: "dev", content: "content", client: "ลูกค้า", seo: "SEO" }[i.o]}</span>
+            </div>`).join("")}
+        </div>
+      </details>`).join("");
+  }
+
+  function renderArticles() {
+    el("#articles").innerHTML = ARTICLES.map(a => `
+      <tr data-n="${a.n}">
+        <td class="num">${a.n}</td>
+        <td class="t">${esc(a.t)} <span class="kw">${esc(a.k)}</span></td>
+        <td>${a.type}</td>
+        <td class="num">${a.w}</td>
+        <td class="links">${esc(a.l)}</td>
+        <td><select class="stage" id="stage-${a.n}" aria-label="สถานะบทที่ ${a.n}">${STAGES.map((s, i) => `<option value="${i + 1}">${i + 1}. ${s}</option>`).join("")}</select></td>
+      </tr>`).join("");
+  }
+
+  function renderDecisions() {
+    el("#decisions").innerHTML = DECISIONS.map(d => `<div class="decision"><div class="who">${esc(d.who)}</div><h3>${esc(d.t)}</h3><p>${esc(d.d)}</p></div>`).join("");
+  }
+
+  function applyState() {
+    let doneAll = 0; const openByP = { P0: 0, P1: 0, P2: 0, P3: 0 };
+    for (const p of PHASES) {
+      let d = 0;
+      for (const i of p.items) {
+        const isDone = !!state.done[i.id];
+        if (isDone) { d++; doneAll++; } else openByP[i.p]++;
+        const row = document.querySelector(`.item[data-id="${i.id}"]`);
+        row.dataset.done = isDone;
+        const chk = row.querySelector("input[type=checkbox]"); if (chk.checked !== isDone) chk.checked = isDone;
+        const note = row.querySelector(".note"); if (document.activeElement !== note && note.value !== (state.notes[i.id] || "")) note.value = state.notes[i.id] || "";
+        const st = state.stamps[i.id]; row.querySelector(".stamp").textContent = st ? `${isDone ? "เสร็จ" : "แก้ล่าสุด"} ${fmtWhen(st)}` : "";
+        const visible = (filters.state === "all" || (filters.state === "done") === isDone) && (filters.owner === "all" || filters.owner === i.o) && (filters.pri === "all" || filters.pri === i.p);
+        row.hidden = !visible;
+      }
+      el(`#cnt-${p.id}`).textContent = `${d} / ${p.items.length}`;
+      el(`#mini-${p.id}`).style.width = `${(d / p.items.length) * 100}%`;
+      el(`#phase-${p.id}`).dataset.complete = d === p.items.length;
+    }
+    el("#done-all").textContent = doneAll; el("#total-all").textContent = ALL.length;
+    el("#bar-all").style.width = `${(doneAll / ALL.length) * 100}%`;
+    for (const k of Object.keys(openByP)) el(`#cnt-${k}`).textContent = openByP[k];
+    const counts = STAGES.map(() => 0);
+    for (const a of ARTICLES) {
+      const s = state.stages[a.n] || 1;
+      const sel = el(`#stage-${a.n}`); if (String(sel.value) !== String(s)) sel.value = s; sel.dataset.stage = s;
+      counts[s - 1]++;
+    }
+    el("#stagebar").innerHTML = STAGES.map((s, i) => `<span><b class="num">${counts[i]}</b> ${esc(s)}</span>`).join("<span aria-hidden=\"true\">·</span>");
+  }
+
+  /* ---------- persistence ---------- */
+  function loadLocal() { try { Object.assign(state, JSON.parse(localStorage.getItem(LS_KEY) || "{}")); } catch {} }
+  function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {} }
+
+  function setSync(mode, text) { const s = el("#sync"); s.dataset.state = mode; el("#sync-text").textContent = text; }
+
+  async function writeItem(id) {
+    const body = { done: !!state.done[id], note: state.notes[id] || "", at: state.stamps[id] || new Date().toISOString() };
+    if (db) { try { await db.doc(`status/${id}`).set(body); } catch (e) { setSync("local", "บันทึกร่วมกันไม่สำเร็จ เก็บไว้ในเครื่องนี้ก่อน"); } }
+    saveLocal();
+  }
+  async function writeStage(n) {
+    const body = { stage: state.stages[n] || 1, at: new Date().toISOString() };
+    if (db) { try { await db.doc(`articles/${n}`).set(body); } catch (e) { setSync("local", "บันทึกร่วมกันไม่สำเร็จ เก็บไว้ในเครื่องนี้ก่อน"); } }
+    saveLocal();
+  }
+
+  /* ---------- events ---------- */
+  function wire() {
+    el("#phases").addEventListener("change", (e) => {
+      const row = e.target.closest(".item"); if (!row) return; const id = row.dataset.id;
+      if (e.target.matches("input[type=checkbox]")) { state.done[id] = e.target.checked; state.stamps[id] = new Date().toISOString(); applyState(); writeItem(id); }
+      if (e.target.matches(".note")) { state.notes[id] = e.target.value.trim(); state.stamps[id] = new Date().toISOString(); applyState(); writeItem(id); }
+    });
+    el("#articles").addEventListener("change", (e) => {
+      if (!e.target.matches("select.stage")) return; const n = Number(e.target.closest("tr").dataset.n);
+      state.stages[n] = Number(e.target.value); applyState(); writeStage(n);
+    });
+    for (const g of document.querySelectorAll(".filters .group")) {
+      g.addEventListener("click", (e) => {
+        const b = e.target.closest(".chip"); if (!b) return;
+        for (const c of g.querySelectorAll(".chip")) c.setAttribute("aria-pressed", c === b);
+        filters[g.dataset.filter] = b.dataset.value; applyState();
+      });
+    }
+  }
+
+  async function connect() {
+    if (!window.claude || !window.claude.use) { setSync("local", "เปิดนอกตัวดู: บันทึกเฉพาะเครื่องนี้"); return; }
+    db = await window.claude.use("db");
+    if (!db) { setSync("local", "ไม่มีที่เก็บร่วม: บันทึกเฉพาะเครื่องนี้"); return; }
+    let first = true;
+    db.collection("status").onSnapshot((snap) => {
+      for (const ch of snap.docChanges()) {
+        const id = ch.doc.id;
+        if (ch.type === "removed") { delete state.done[id]; delete state.notes[id]; delete state.stamps[id]; continue; }
+        const d = ch.doc.data() || {};
+        state.done[id] = !!d.done; state.notes[id] = typeof d.note === "string" ? d.note : ""; if (d.at) state.stamps[id] = d.at;
+      }
+      applyState(); saveLocal();
+      if (first) { first = false; setSync("live", "สถานะเก็บร่วมกัน · อัปเดตสด"); }
+    }, () => setSync("local", "ที่เก็บร่วมหลุด: บันทึกเฉพาะเครื่องนี้"));
+    db.collection("articles").onSnapshot((snap) => {
+      for (const ch of snap.docChanges()) {
+        const n = Number(ch.doc.id); if (!n) continue;
+        if (ch.type === "removed") { delete state.stages[n]; continue; }
+        const d = ch.doc.data() || {}; state.stages[n] = Number(d.stage) || 1;
+      }
+      applyState(); saveLocal();
+    }, () => {});
+  }
+
+  renderPhases(); renderArticles(); renderDecisions(); loadLocal(); applyState(); wire(); connect();
+})();
+</script>
