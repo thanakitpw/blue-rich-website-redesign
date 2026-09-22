@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { Icon } from "@/components/ui";
+import { Turnstile } from "@/components/Turnstile";
 import { useSite } from "@/components/SiteProvider";
 import { sendEnquiry, type EnquirySpec, type EnquiryState } from "@/lib/enquiry/actions";
 
@@ -24,7 +25,7 @@ const spec: EnquirySpec = {
     { name: "company", label: "บริษัท/โครงการ" },
     { name: "phone", label: "เบอร์โทร" },
     { name: "email", label: "อีเมล" },
-    { name: "topic", label: "เรื่องที่สนใจ" },
+    { name: "topic", label: "เรื่องที่สนใจ", select: true },
     { name: "message", label: "รายละเอียด", multiline: true },
   ],
 };
@@ -102,6 +103,7 @@ export default function ContactForm() {
 
       {/* ช่องดักบอต — คนจริงมองไม่เห็น เซิร์ฟเวอร์ทิ้งฟอร์มที่ช่องนี้มีค่า */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+      <Turnstile resetOn={state} />
 
       <button
         type="submit"

@@ -19,7 +19,10 @@ const items: { href: string; label: string; exact?: boolean; match?: string[] }[
   {
     href: "/admin/settings",
     label: "ตั้งค่าเว็บไซต์",
-    match: ["/admin/menu", "/admin/home", "/admin/projects", "/admin/faqs", "/admin/services"],
+    match: [
+      "/admin/menu", "/admin/home", "/admin/projects", "/admin/faqs", "/admin/services",
+      "/admin/enquiries",
+    ],
   },
 ];
 

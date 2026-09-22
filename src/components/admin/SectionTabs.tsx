@@ -21,6 +21,7 @@ const TABS = {
     { href: "/admin/projects", label: "ผลงาน" },
     { href: "/admin/faqs", label: "คำถามที่พบบ่อย" },
     { href: "/admin/services", label: "หน้าบริการรับรอง" },
+    { href: "/admin/enquiries", label: "ข้อความจากฟอร์ม" },
   ],
 } as const;
 

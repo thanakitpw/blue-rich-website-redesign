@@ -2,6 +2,7 @@
 
 import { useActionState, useMemo, useRef, useState } from "react";
 import { Icon } from "@/components/ui";
+import { Turnstile } from "@/components/Turnstile";
 import { useSite } from "@/components/SiteProvider";
 import { sendEnquiry, type EnquirySpec, type EnquiryState } from "@/lib/enquiry/actions";
 
@@ -45,7 +46,12 @@ function specFor(config: LpQuoteFormConfig): EnquirySpec {
     fields: [
       { name: "name", label: "ชื่อผู้ติดต่อ" },
       { name: "phone", label: "เบอร์โทร" },
-      ...config.fields.map((f) => ({ name: f.name, label: f.label, multiline: f.kind === "textarea" })),
+      ...config.fields.map((f) => ({
+        name: f.name,
+        label: f.label,
+        multiline: f.kind === "textarea",
+        select: f.kind === "select",
+      })),
     ],
   };
 }
@@ -173,6 +179,7 @@ export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
 
       {/* ช่องดักบอต — คนจริงมองไม่เห็น เซิร์ฟเวอร์ทิ้งฟอร์มที่ช่องนี้มีค่า */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+      <Turnstile resetOn={state} />
 
       <div className="mt-2 grid gap-3 sm:grid-cols-2">
         <button
