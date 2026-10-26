@@ -165,7 +165,7 @@ Two things bring it out on the day:
 
 - `/api/cron/publish-scheduled` (Vercel Cron, `vercel.json`, 17:05 UTC = 00:05 Bangkok) calls
   `revalidatePath("/", "layout")`. It only runs when the Vercel project has a `CRON_SECRET`
-  environment variable — check it exists before relying on it.
+  environment variable (set on the agency project since 2026-10-26).
 - `export const revalidate = 3600` on `/`, `/news`, `/news/[slug]` and `/sitemap.xml` is the
   fallback: without the cron, an article appears within about an hour of the first visit after midnight.
 
@@ -196,8 +196,27 @@ URL (308).
 
 **Content-only changes need no deploy.** A new row or edit reaches the live site through the
 hourly ISR or the nightly cron, and the admin "เผยแพร่" button revalidates immediately. **Code
-changes** (CSS, converter output classes, page) deploy by pushing `main`, because the Vercel
-project builds `main` for production. Check `git status` and `git log origin/main..` before you push.
+changes** (CSS, converter output classes, page) need a production deploy.
+
+Hosting moved on 2026-10-26. The original Vercel account (team `team_0Ltx…`) was blocked, so the
+site now runs on project `bluerich-website-redesign` in team **agencybestsolutions-9690**
+(`prj_aWQP3tzazDU26WdL3etHQqeAPPph`, alias bluerich-website-redesign-ten.vercel.app).
+`.vercel/project.json` points there. Until a GitHub Login Connection is added to that account,
+pushing `main` does **not** deploy. Deploy with:
+
+```bash
+git push origin main            # keep GitHub in step first
+vercel deploy --prod --yes      # builds remotely from the working tree
+```
+
+Check `git status` first, because the CLI uploads uncommitted files too. Env vars on the project:
+NEXT_PUBLIC_SUPABASE_URL / _ANON_KEY (non-sensitive — Vercel refuses NEXT_PUBLIC_* as sensitive),
+RESEND_API_KEY, CRON_SECRET. ENQUIRY_TO_EMAIL is deliberately unset, so form mail goes to the
+company email set in the admin.
+
+The live site sits behind a Vercel firewall challenge for unknown clients, so plain curl
+against www.blue-rich.com can return 403 `x-vercel-mitigated: challenge`. Smoke-test against
+the `.vercel.app` alias instead.
 
 ## Removing or renaming articles
 
