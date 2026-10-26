@@ -1,6 +1,10 @@
 import type { MetadataRoute } from "next";
 import { getArticles, getNav, getProducts, getSiteInfo } from "@/lib/cms/content";
 
+/* บทความตั้งเวลา (getArticles ซ่อนบทที่ยังไม่ถึงวัน) ต้องโผล่เองเมื่อถึงวัน — ISR รายชั่วโมงเป็นตัวสำรอง
+   ของ cron /api/cron/publish-scheduled ที่ revalidate ทั้งเว็บตอน 00:05 น. */
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [site, nav, products, articles] = await Promise.all([
     getSiteInfo(),

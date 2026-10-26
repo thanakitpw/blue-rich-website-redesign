@@ -11,7 +11,6 @@
  */
 import { createClient } from "@supabase/supabase-js";
 import { categories, installationSteps, legalInfo, products } from "../src/data/products.ts";
-import { articles } from "../src/data/news.ts";
 import { projects } from "../src/data/projects.ts";
 import { homeFaqs } from "../src/data/faq.ts";
 import { services } from "../src/data/fireproofing.ts";
@@ -81,8 +80,8 @@ await check("ผลงาน", "projects", { column: "sort_order" }, projects, (
 await check("หน้าบริการ", "services", { column: "sort_order" }, services, (s) => s.slug);
 await check("FAQ หน้าแรก", "faqs", { column: "sort_order" }, homeFaqs, (f) => f.q);
 
-/* บทความในไฟล์เรียงตามวันที่ใหม่→เก่าอยู่แล้ว ตรงกับลำดับที่หน้าเว็บใช้ */
-await check("บทความ", "articles", { column: "date_iso", ascending: false }, articles, (a) => a.slug);
+/* บทความไม่ได้มาจาก src/data/news.ts แล้ว (ต้นฉบับอยู่ที่ seo/blog — สกิล bluerich-blog-publish)
+   จึงไม่เทียบกับไฟล์ */
 
 // ── ค่าตั้งค่าเว็บไซต์ ─────────────────────────────────────────────────────
 const expectedSettings: Record<string, unknown> = {

@@ -48,6 +48,8 @@ export type ArticleRow = {
   date_label: string;
   tag: string;
   body: string[];
+  /** HTML จาก seo/blog — มีค่าเมื่อบทความลงผ่านสกิล bluerich-blog-publish แทนที่ body */
+  content_html: string;
   has_draft: boolean;
   published_at: string | null;
   updated_at: string;
@@ -106,7 +108,7 @@ const PRODUCT_COLS =
   "installation, legal_standards, faq, related, featured, best_seller, sort_order, " +
   "has_draft, published_at, updated_at";
 const ARTICLE_COLS =
-  "id, slug, title, excerpt, image, date_iso, date_label, tag, body, has_draft, published_at, updated_at";
+  "id, slug, title, excerpt, image, date_iso, date_label, tag, body, content_html, has_draft, published_at, updated_at";
 const SERVICE_COLS =
   "id, slug, label, eyebrow, title, lede, image, highlights, blocks, products, faq, " +
   "sort_order, has_draft, updated_at";

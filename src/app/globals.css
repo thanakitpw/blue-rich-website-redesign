@@ -300,3 +300,90 @@
     @apply rounded-lg ring-2 ring-accent-200 ring-offset-2;
   }
 }
+
+/* =========================================================================
+   เนื้อหาบทความ HTML — /news/[slug] ของบทความที่ลงผ่านสกิล bluerich-blog-publish
+   ตัวแปลง scripts/blog/md-to-article.mts เขียนเฉพาะคลาสในชุดนี้ ถ้าจะเพิ่มบล็อกใหม่
+   ให้เพิ่มทั้งสองที่พร้อมกัน คลาสที่ไม่ได้ประกาศตรงนี้จะไม่มีผลอะไรบนหน้า
+   ========================================================================= */
+@layer components {
+  .article-body {
+    @apply text-[1.08rem] leading-[1.95] text-slate-600;
+  }
+  .article-body > * + * {
+    margin-top: 1.15em;
+  }
+  .article-body h2 {
+    @apply mt-12 border-t border-slate-200 pt-8 text-[clamp(21px,2.4vw,26px)] leading-snug;
+  }
+  .article-body h3 {
+    @apply mt-8 text-[19px];
+  }
+  .article-body a {
+    @apply font-medium text-accent-600 underline decoration-accent-200 underline-offset-4 transition-colors hover:decoration-accent-500;
+  }
+  .article-body strong {
+    @apply font-semibold text-slate-800;
+  }
+  .article-body ul,
+  .article-body ol {
+    @apply space-y-2 pl-6;
+  }
+  .article-body ul {
+    list-style: disc;
+  }
+  .article-body ol {
+    list-style: decimal;
+  }
+  .article-body li::marker {
+    @apply text-accent-500;
+  }
+  .article-body .lead {
+    @apply text-[1.15rem] leading-[1.9];
+  }
+  .article-body blockquote {
+    @apply rounded-2xl border-l-4 border-accent-400 bg-accent-50 px-5 py-4 text-slate-700;
+  }
+
+  /* สารบัญ */
+  .article-body .toc {
+    @apply rounded-3xl border border-slate-200 bg-white px-6 py-5;
+  }
+  .article-body .toc-title {
+    @apply text-[15px] font-semibold text-brand-700;
+  }
+  .article-body .toc ol {
+    @apply mt-3 space-y-1.5 text-[15.5px] leading-relaxed;
+  }
+  .article-body .toc a {
+    @apply font-normal text-slate-600 no-underline hover:text-accent-600;
+  }
+
+  /* ตาราง — เลื่อนแนวนอนได้บนมือถือ ไม่ดันหน้ากว้าง */
+  .article-body .table-wrap {
+    @apply overflow-x-auto rounded-2xl border border-slate-200 bg-white;
+  }
+  .article-body table {
+    @apply w-full min-w-[560px] border-collapse text-[14.5px] leading-relaxed;
+  }
+  .article-body th {
+    @apply bg-brand-50 px-4 py-3 text-left align-top font-semibold text-brand-800;
+  }
+  .article-body td {
+    @apply border-t border-slate-200 px-4 py-3 align-top;
+  }
+
+  /* คำถามที่พบบ่อย — ห้ามซ้อน div ใน .faq-item: faqFromHtml อ่านถึง </div> แรก */
+  .article-body .faq {
+    @apply space-y-3;
+  }
+  .article-body .faq-item {
+    @apply rounded-2xl border border-slate-200 bg-white px-5 py-4;
+  }
+  .article-body .faq-item h3 {
+    @apply mt-0 text-[17px];
+  }
+  .article-body .faq-item p {
+    @apply mt-2 text-[15.5px] leading-[1.85];
+  }
+}

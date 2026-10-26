@@ -34,6 +34,7 @@ const blank = (): ArticleDraft => ({
   date_label: thaiDate(new Date().toISOString().slice(0, 10)),
   tag: "ความรู้",
   body: [""],
+  content_html: "",
 });
 
 export function ArticleForm({ row, media }: { row: ArticleRow | null; media: MediaItem[] }) {
@@ -97,7 +98,15 @@ export function ArticleForm({ row, media }: { row: ArticleRow | null; media: Med
         </Fieldset>
 
         <Fieldset title="เนื้อหา">
-          <TextListEditor value={d.body} onChange={(v) => set("body", v)} rows={7} addLabel="+ เพิ่มย่อหน้า" />
+          {d.content_html ? (
+            /* บทความ SEO มีหัวข้อ ตาราง และ FAQ ที่ช่องย่อหน้าเก็บไม่ได้ จึงแก้ที่ต้นฉบับแทน */
+            <p className="text-sm leading-relaxed text-slate-600">
+              เนื้อหาบทความนี้มาจากไฟล์ต้นฉบับ <code>seo/blog/</code> ในระบบ SEO
+              แก้ข้อความในบทความได้ที่ไฟล์นั้นแล้วเผยแพร่ใหม่ ส่วนชื่อ คำโปรย รูปปก และวันที่ แก้ที่หน้านี้ได้ตามปกติ
+            </p>
+          ) : (
+            <TextListEditor value={d.body} onChange={(v) => set("body", v)} rows={7} addLabel="+ เพิ่มย่อหน้า" />
+          )}
         </Fieldset>
       </div>
 

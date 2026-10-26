@@ -41,14 +41,17 @@ export type LegalInfo = {
 const snapshots = async <T>(
   name: string,
   order: { column: string; ascending?: boolean },
+  then?: { column: string; ascending?: boolean },
 ): Promise<T[] | null> => {
   const sb = publicClient();
   if (!sb) return null;
 
-  const { data, error } = await sb
+  let query = sb
     .from(name)
     .select("published")
     .order(order.column, { ascending: order.ascending ?? true });
+  if (then) query = query.order(then.column, { ascending: then.ascending ?? true });
+  const { data, error } = await query;
 
   if (error || !data) {
     // ไม่โยนต่อ — ปล่อยให้ผู้เรียกถอยไปใช้เนื้อหาตั้งต้น ดีกว่าทั้งหน้าพัง
@@ -85,10 +88,26 @@ export const getProducts = cache(async (): Promise<Product[]> => {
   return rows ?? (await import("@/data/products")).products;
 });
 
+/** วันนี้ตามเวลาไทย รูปแบบ YYYY-MM-DD เทียบกับ Article.date ได้ตรง ๆ */
+const todayInBangkok = () =>
+  new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Bangkok" }).format(new Date());
+
+/**
+ * บทความที่ "ขึ้นเว็บแล้ว" — ใหม่สุดก่อน วันเดียวกันเรียงตาม published_at ใหม่→เก่า
+ * (บทความชุดที่ลงพร้อมกันตั้ง published_at ห่างกันทีละนาทีให้บทที่ 1 นำ)
+ *
+ * บทความที่วันที่ยังไม่ถึงคือบทความตั้งเวลา (ทยอยลงตามแผนใน seo/blog) ถูกซ่อนจาก
+ * ทุกหน้า รวมถึง /news/[slug] และ sitemap พอถึงวัน cron ที่
+ * /api/cron/publish-scheduled สั่ง revalidate ทั้งเว็บหลังเที่ยงคืน บทความจึงโผล่เอง
+ */
 export const getArticles = cache(async (): Promise<Article[]> => {
-  // ใหม่สุดก่อน — ตรงกับลำดับเดิมในไฟล์ต้นฉบับ
-  const rows = await snapshots<Article>("articles", { column: "date_iso", ascending: false });
-  return rows ?? (await import("@/data/news")).articles;
+  const rows = await snapshots<Article>(
+    "articles",
+    { column: "date_iso", ascending: false },
+    { column: "published_at", ascending: false },
+  );
+  const today = todayInBangkok();
+  return (rows ?? (await import("@/data/news")).articles).filter((a) => !a.date || a.date <= today);
 });
 
 export const getProjects = cache(async (): Promise<Project[]> => {

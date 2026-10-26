@@ -19,6 +19,18 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
     ],
   },
+  /* บทความชุดเดิม 7 บทถูกถอดเมื่อ 26 ต.ค. 2569 แทนด้วยบทความ SEO ชุดใหม่ (seo/blog)
+     URL เก่าที่ Google เก็บไว้ส่งไปบทใหม่ที่ตอบเรื่องเดียวกัน ที่เหลือไปหน้ารวมบทความ
+     (ministerial-regulation-2567 ใช้ slug เดิมต่อ ไม่ต้อง redirect) */
+  async redirects() {
+    return [
+      { source: "/news/fire-protection-law", destination: "/news/ministerial-regulation-2567", permanent: true },
+      { source: "/news/neocoat-fireproof-painting-project", destination: "/news/fireproof-coating-system-3-layers", permanent: true },
+      ...["8-house-painting-tools", "5-ways-to-remove-rust", "heat-insulation-materials", "choosing-waterproofing"].map(
+        (slug) => ({ source: `/news/${slug}`, destination: "/news", permanent: true }),
+      ),
+    ];
+  },
 };
 
 export default nextConfig;

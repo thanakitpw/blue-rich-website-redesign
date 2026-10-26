@@ -7,6 +7,11 @@ import { NewsCard } from "@/components/cards";
 import { bundleFor } from "@/data/site";
 import { getArticle, getArticles, getSiteInfo } from "@/lib/cms/content";
 import { copyFor } from "@/lib/cms/copy-pages";
+import { articleSchemas, linkLiveArticlesOnly } from "@/lib/article-html";
+
+/* บทความตั้งเวลา (getArticles ซ่อนบทที่ยังไม่ถึงวัน) ต้องโผล่เองเมื่อถึงวัน — ISR รายชั่วโมงเป็นตัวสำรอง
+   ของ cron /api/cron/publish-scheduled ที่ revalidate ทั้งเว็บตอน 00:05 น. */
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   return (await getArticles()).map((a) => ({ slug: a.slug }));
@@ -21,8 +26,9 @@ export async function generateMetadata({
   const article = await getArticle(slug);
   if (!article) return { title: (await copyFor("article-detail")).notFoundTitle };
   return {
-    title: article.title,
-    description: article.excerpt,
+    title: article.seoTitle || article.title,
+    description: article.seoDescription || article.excerpt,
+    alternates: { canonical: `/news/${article.slug}` },
     openGraph: {
       type: "article",
       publishedTime: article.date,
@@ -40,6 +46,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const [all, info] = await Promise.all([getArticles(), getSiteInfo()]);
   const { telHref, lineHref } = bundleFor(info, []);
   const more = all.filter((a) => a.slug !== article.slug).slice(0, 3);
+  /* ลิงก์ไปบทความที่ตั้งเวลาไว้แต่ยังไม่ถึงวันจะกลายเป็นข้อความธรรมดา จนกว่าบทนั้นขึ้นเว็บ */
+  const html = article.html && linkLiveArticlesOnly(article.html, new Set(all.map((a) => a.slug)));
+  const schemas = articleSchemas(article, info, html || "");
 
   return (
     <>
@@ -86,13 +95,17 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               />
             </div>
 
-            <div className="mt-10 space-y-6">
-              {article.body.map((p, i) => (
-                <p key={i} className="text-[1.12rem] leading-[2] text-slate-600">
-                  {p}
-                </p>
-              ))}
-            </div>
+            {html ? (
+              <div className="article-body mt-10" dangerouslySetInnerHTML={{ __html: html }} />
+            ) : (
+              <div className="mt-10 space-y-6">
+                {article.body.map((p, i) => (
+                  <p key={i} className="text-[1.12rem] leading-[2] text-slate-600">
+                    {p}
+                  </p>
+                ))}
+              </div>
+            )}
 
             <div className="mt-12 rounded-4xl bg-brand-50 p-8 border border-slate-200">
               <h2 className="text-xl">{headings.cta}</h2>
@@ -134,6 +147,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           </div>
         </Container>
       </section>
+
+      {schemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
+        />
+      ))}
     </>
   );
 }

@@ -16,6 +16,10 @@ import {
 import { getArticles, getHomeFaqs, getHomeShowcase, getProjects } from "@/lib/cms/content";
 import { copyFor } from "@/lib/cms/copy-pages";
 
+/* บทความตั้งเวลา (getArticles ซ่อนบทที่ยังไม่ถึงวัน) ต้องโผล่เองเมื่อถึงวัน — ISR รายชั่วโมงเป็นตัวสำรอง
+   ของ cron /api/cron/publish-scheduled ที่ revalidate ทั้งเว็บตอน 00:05 น. */
+export const revalidate = 3600;
+
 /**
  * Home page — section order and component styling ported from the approved
  * Concept B mock-up at `public/concept-b/index.html`:
