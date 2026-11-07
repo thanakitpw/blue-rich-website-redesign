@@ -3,9 +3,9 @@
  *
  * หน้ารายงานให้ลูกค้าดู ไม่ผ่าน CMS ไม่อยู่ใน sitemap และ noindex
  * ที่มา: docs/seo-audit/2026-09-11/keyword-map.md (คีย์เวิร์ดหลัก → หน้าเป้าหมาย)
- * และ article-plan.md (บทความ 12 บท)
+ * และ article-plan.md (บทความ 12 บท) · คีย์เวิร์ดเพิ่มเติม 60 คำจาก Google autocomplete (7 พ.ย. 2569)
  *
- * ตารางบทความในหน้าจริงอ่านจาก frontmatter ของ content/articles/*.md
+ * ตารางบทความในหน้าจริงอ่านจาก seo/blog/*.md
  * (ดู src/lib/reports/article-keywords.ts) `plannedArticles` ข้างล่างใช้เฉพาะ
  * ตอนที่ยังไม่มีไฟล์บทความ จะได้ไม่ต้องพิมพ์คีย์เวิร์ดซ้ำสองที่เมื่อบทความเขียนแล้ว
  */
@@ -15,6 +15,8 @@ export const reportMeta = {
   domain: "www.blue-rich.com",
   /** วันที่จัดทำ เป็นข้อความไทยตรง ๆ เพราะหน้านี้ไม่ได้ใส่ schema */
   preparedOn: "11 กันยายน 2569",
+  /** วันที่เพิ่มคีย์เวิร์ด 60 คำและบทความ 13–24 */
+  updatedOn: "7 พฤศจิกายน 2569",
 };
 
 export const principles: { title: string; body: string }[] = [
@@ -173,11 +175,137 @@ export const pageKeywords: PageKeyword[] = [
   },
 ];
 
+/* ------------------------------------------------- คีย์เวิร์ดเพิ่มเติม 60 คำ */
+
+/**
+ * คำที่คนค้นจริงจาก Google autocomplete (hl=th, gl=th) เก็บ 7 พ.ย. 2569
+ * ตัดคำที่เป็นชื่อแบรนด์คู่แข่งหรือร้านค้า (TOA, ไทวัสดุ, Kobe) และคำที่ไม่ตรงสินค้าออก
+ * แต่ละคำให้หน้าที่มีอยู่แล้วรับ ไม่สร้างหน้าใหม่ — `article` คือเลขบทใน seo/blog
+ * หน้าแสดงเป็นลิงก์เฉพาะบทที่ขึ้นเว็บแล้ว บทที่ยังรอรีวิวแสดงเป็นข้อความ
+ */
+export type ExtraKeyword = {
+  keyword: string;
+  type: KeywordType;
+  /** path ของหน้าสินค้า/บริการที่รับคำนี้ */
+  target?: string;
+  /** หรือเลขบทความที่รับคำนี้ */
+  article?: number;
+};
+
+export const extraKeywordGroups: { group: string; note: string; keywords: ExtraKeyword[] }[] = [
+  {
+    group: "สีกันไฟ คำซื้อและราคา",
+    note: "คนที่กำลังจะซื้อ ให้หน้าสินค้าและบทราคาเป็นคนรับ",
+    keywords: [
+      { keyword: "สีกันไฟ ราคาถูก", type: "ซื้อ", article: 8 },
+      { keyword: "สีกันไฟ 1 ถัง ทาได้กี่ตารางเมตร", type: "ซื้อ", article: 8 },
+      { keyword: "สีกันไฟโครงสร้างเหล็ก ราคา", type: "ซื้อ", target: "/neocoat" },
+      { keyword: "สีกันไฟ unique", type: "แบรนด์", target: "/products/neocoat-intumescent-paint-s" },
+      { keyword: "สีกันไฟ สูตรน้ำมัน", type: "ซื้อ", target: "/products/neocoat-intumescent-paint-s" },
+      { keyword: "สีทนไฟ ราคา", type: "ซื้อ", target: "/intumescent" },
+      { keyword: "สีทากันไฟ", type: "ซื้อ", target: "/intumescent" },
+      { keyword: "สีกันไฟ ยี่ห้อ", type: "ซื้อ", target: "/intumescent" },
+    ],
+  },
+  {
+    group: "สีกันไฟ ความรู้และวิธีใช้",
+    note: "คำถามก่อนตัดสินใจ ให้บทความรับแล้วลิงก์เข้าหน้าสินค้า",
+    keywords: [
+      { keyword: "สีกันไฟ คือ", type: "ความรู้", article: 1 },
+      { keyword: "intumescent paint คือ", type: "ความรู้", article: 1 },
+      { keyword: "สีกันไฟ ทากี่รอบ", type: "ความรู้", article: 13 },
+      { keyword: "วิธีใช้สีกันไฟ", type: "ความรู้", article: 13 },
+      { keyword: "สีกันไฟ ทาเหล็ก", type: "ความรู้", article: 13 },
+      { keyword: "สีกันไฟทาตอนไหน", type: "ความรู้", article: 13 },
+      { keyword: "สีกันไฟ กี่ไมครอน", type: "ความรู้", article: 2 },
+      { keyword: "มาตรฐานความหนาสีกันไฟ", type: "ความรู้", article: 2 },
+      { keyword: "hp/a steel", type: "ความรู้", article: 2 },
+      { keyword: "วัดความหนาสี", type: "ความรู้", article: 5 },
+      { keyword: "sa 2.5 surface preparation", type: "ความรู้", article: 6 },
+    ],
+  },
+  {
+    group: "มาตรฐาน กฎหมาย และงานรับรอง",
+    note: "คำของผู้ออกแบบและเจ้าของโครงการ เป็นจุดแข็งของ Blue Rich ที่มีผลทดสอบและวุฒิวิศวกร",
+    keywords: [
+      { keyword: "astm e119 คือ", type: "ความรู้", target: "/standards" },
+      { keyword: "astm e119", type: "ความรู้", article: 7 },
+      { keyword: "iso 834 fire curve", type: "ความรู้", article: 7 },
+      { keyword: "กฎหมายสีกันไฟโครงสร้างเหล็ก", type: "กฎหมาย", article: 3 },
+      { keyword: "กฎกระทรวง สีทนไฟ 2566", type: "กฎหมาย", article: 3 },
+      { keyword: "กฎกระทรวง วัสดุทนไฟ", type: "กฎหมาย", article: 3 },
+      { keyword: "สีทนไฟ กฎหมาย", type: "กฎหมาย", article: 3 },
+      { keyword: "หนังสือรับรองสีกันไฟ", type: "บริการ", target: "/fireproofing/certification" },
+      { keyword: "โครงสร้างเหล็กทนไฟ", type: "บริการ", target: "/fireproofing" },
+      { keyword: "fireproofing", type: "บริการ", target: "/fireproofing" },
+    ],
+  },
+  {
+    group: "ผ้ากันไฟ",
+    note: "คำซื้อของงานเชื่อมและโรงงาน คู่แข่งเป็นผู้นำเข้าเฉพาะทาง",
+    keywords: [
+      { keyword: "ผ้ากันไฟงานเชื่อม", type: "ซื้อ", target: "/fire-blanket" },
+      { keyword: "ผ้ากันไฟงานเชื่อม ราคา", type: "ซื้อ", target: "/fire-blanket" },
+      { keyword: "ผ้ากันไฟ 1 ม้วน", type: "ซื้อ", target: "/products/fiberglass-cloth" },
+      { keyword: "ผ้ากันไฟ ราคา", type: "ซื้อ", target: "/products/fiberglass-cloth" },
+      { keyword: "ผ้าใยแก้วทนความร้อน", type: "ซื้อ", target: "/products/fiberglass-cloth" },
+      { keyword: "ผ้าใยแก้วเคลือบซิลิโคน", type: "ความรู้", article: 10 },
+    ],
+  },
+  {
+    group: "ทินเนอร์และน้ำมันสน",
+    note: "คำซื้อปริมาณมาก ใช้ชื่ออินทนิลและขนาดปี๊บช่วยแยกจากร้านค้าปลีก",
+    keywords: [
+      { keyword: "ทินเนอร์ 3a ราคา", type: "ซื้อ", target: "/products/thinner-3a-intanin" },
+      { keyword: "ทินเนอร์ 3a ปี๊บใหญ่", type: "ซื้อ", target: "/products/thinner-3a-intanin" },
+      { keyword: "ทินเนอร์ aaa", type: "ซื้อ", target: "/products/thinner-3a-intanin" },
+      { keyword: "ทินเนอร์ผสมสีน้ำมัน", type: "ความรู้", article: 11 },
+      { keyword: "ทินเนอร์ล้างแปรง", type: "ซื้อ", target: "/products/thinner-wash-aaa" },
+      { keyword: "ทินเนอร์ล้างกา", type: "ซื้อ", target: "/products/thinner-wash-aaa" },
+      { keyword: "ทินเนอร์ผสมสีพ่นรถยนต์", type: "ซื้อ", target: "/products/thinner-2k" },
+      { keyword: "น้ำมันสน ราคา", type: "ซื้อ", target: "/products/turpentine-intanin" },
+      { keyword: "น้ำมันสนใช้ทำอะไร", type: "ความรู้", article: 11 },
+    ],
+  },
+  {
+    group: "สีรองพื้นและสีทาเหล็ก",
+    note: "คำของงานเหล็กทั่วไปที่ไม่ใช่สีกันไฟ ใช้ระบบ Neocoat Primer กับ Neogloss",
+    keywords: [
+      { keyword: "สีรองพื้นเหล็กเก่า", type: "ความรู้", article: 14 },
+      { keyword: "สีกันสนิมเหล็ก", type: "ความรู้", article: 14 },
+      { keyword: "สีรองพื้นกันสนิม สีเทา", type: "ซื้อ", target: "/products/neocoat-primer-grey-oxide" },
+      { keyword: "สีรองพื้นกันสนิมแดง", type: "ซื้อ", target: "/products/neocoat-primer-grey-oxide" },
+      { keyword: "สีรองพื้นกันสนิม ราคา", type: "ซื้อ", target: "/products/neocoat-primer-grey-oxide" },
+      { keyword: "สีน้ำมันทาเหล็ก ราคา", type: "ซื้อ", target: "/products/neogloss-enamel" },
+      { keyword: "สีเคลือบเงาเหล็ก", type: "ซื้อ", target: "/products/neogloss-enamel" },
+      { keyword: "สีน้ำมันทาเหล็กกันสนิม", type: "ความรู้", article: 15 },
+      { keyword: "สีทาเหล็กไม่ต้องรองพื้น", type: "ความรู้", article: 15 },
+      { keyword: "ทาสีเหล็กที่เป็นสนิม", type: "ความรู้", article: 15 },
+    ],
+  },
+  {
+    group: "สีน้ำพลาสติกและผนังปูน",
+    note: "สินค้ามูลค่าต่ำกว่า ให้หน้า Four Plus และบทผนังปูนใหม่รับ",
+    keywords: [
+      { keyword: "ปูนใหม่กี่วันทาสีได้", type: "ความรู้", article: 16 },
+      { keyword: "ปูนใหม่ต้องทาสีรองพื้นไหม", type: "ความรู้", article: 16 },
+      { keyword: "สีรองพื้นปูนใหม่ ราคา", type: "ซื้อ", target: "/products/four-plus-pro-masonry-sealer" },
+      { keyword: "สีน้ำพลาสติก 18 ลิตร ทาได้กี่ตารางเมตร", type: "ซื้อ", target: "/four-plus" },
+      { keyword: "สีน้ำพลาสติก ภายนอก", type: "ซื้อ", target: "/products/four-plus-exterior" },
+      { keyword: "สีน้ำพลาสติก ทาภายใน", type: "ซื้อ", target: "/products/four-plus-pro-interior" },
+    ],
+  },
+];
+
 export type ArticleKeyword = {
   n: number;
   title: string;
   keyword: string;
   secondary: string[];
+  /** slug ของบทความ (มีเมื่ออ่านจาก seo/blog) */
+  slug?: string;
+  /** ขึ้นเว็บแล้วหรือยัง — ดูจากไฟล์ seo/published/<slug>.json */
+  live?: boolean;
 };
 
 /** แผนบทความ 12 บท ใช้จนกว่า content/articles/*.md จะมีจริง */

@@ -4,6 +4,7 @@ import { Container } from "@/components/ui";
 import { getSiteInfo } from "@/lib/cms/content";
 import { getArticleKeywords } from "@/lib/reports/article-keywords";
 import {
+  extraKeywordGroups,
   pageKeywords,
   principles,
   reportMeta,
@@ -16,11 +17,11 @@ import {
  * อยู่นอก route group (site) จึงไม่มีเมนู ท้ายเว็บ หรือปุ่ม LINE ลอย
  * ไม่ผ่าน CMS ไม่อยู่ใน sitemap และตั้ง noindex เพราะเป็นเอกสารภายในที่แชร์
  * เป็นลิงก์ตรงเท่านั้น ข้อมูลอยู่ที่ @/data/reports/seo-keywords ส่วนคีย์เวิร์ด
- * ของบทความอ่านจาก frontmatter ของ content/articles/*.md เมื่อมีไฟล์แล้ว
+ * ของบทความอ่านจากต้นฉบับใน seo/blog/*.md (ดู @/lib/reports/article-keywords)
  */
 export const metadata: Metadata = {
   title: reportMeta.title,
-  description: `คีย์เวิร์ดหลัก หน้าเป้าหมาย และคีย์เวิร์ดของบทความ 12 บท สำหรับเว็บ ${reportMeta.domain}`,
+  description: `คีย์เวิร์ดหลัก หน้าเป้าหมาย คีย์เวิร์ดเพิ่มเติม และคีย์เวิร์ดของบทความ สำหรับเว็บ ${reportMeta.domain}`,
   robots: { index: false, follow: false },
 };
 
@@ -37,6 +38,9 @@ export default async function SeoKeywordsReport() {
   const site = await getSiteInfo();
   const { rows: articles } = getArticleKeywords();
   const targets = new Set(pageKeywords.map((k) => k.target)).size;
+  const extraCount = extraKeywordGroups.reduce((sum, g) => sum + g.keywords.length, 0);
+  const liveCount = articles.filter((a) => a.live).length;
+  const byNumber = new Map(articles.map((a) => [a.n, a]));
 
   return (
     <div className="bg-white text-slate-950">
@@ -47,9 +51,10 @@ export default async function SeoKeywordsReport() {
             คีย์เวิร์ด SEO เว็บ {reportMeta.domain}
           </h1>
           <p className="mt-4 max-w-3xl text-[16px] leading-relaxed text-slate-600">
-            จัดทำ {reportMeta.preparedOn} สำหรับ {site.name} — คีย์เวิร์ดหลัก {pageKeywords.length} คำ
-            กำหนดหน้าเป้าหมาย {targets} หน้า และบทความ {articles.length} บท
-            ที่แต่ละบทรับคำหลักของตัวเองแล้วลิงก์กลับเข้าหน้าสินค้าและหน้าบริการ
+            จัดทำ {reportMeta.preparedOn} ปรับปรุง {reportMeta.updatedOn} สำหรับ {site.name} —
+            คีย์เวิร์ดหลัก {pageKeywords.length} คำ กำหนดหน้าเป้าหมาย {targets} หน้า
+            คีย์เวิร์ดเพิ่มเติมจากคำที่คนค้นจริง {extraCount} คำ และบทความ {articles.length} บท
+            (ขึ้นเว็บแล้ว {liveCount} บท) ที่แต่ละบทรับคำหลักของตัวเองแล้วลิงก์กลับเข้าหน้าสินค้าและหน้าบริการ
           </p>
         </Container>
       </header>
@@ -123,6 +128,66 @@ export default async function SeoKeywordsReport() {
           </Container>
         </section>
 
+        <section className="border-t border-slate-200 py-[38px] lg:py-[52px]">
+          <Container>
+            <h2 className="rule-bar text-2xl sm:text-3xl">คีย์เวิร์ดเพิ่มเติม {extraCount} คำ</h2>
+            <p className="mt-3 max-w-3xl text-[15px] text-slate-600">
+              คำที่คนพิมพ์ค้นจริงจากคำแนะนำการค้นหาของ Google ({reportMeta.updatedOn}) คัดเฉพาะคำที่ตรงกับสินค้าและบริการของ
+              Blue Rich ไม่รวมชื่อแบรนด์คู่แข่งหรือร้านค้า ทุกคำให้หน้าหรือบทความที่มีอยู่แล้วรับ ไม่ต้องสร้างหน้าใหม่
+            </p>
+            <div className="mt-8 grid gap-6 lg:grid-cols-2">
+              {extraKeywordGroups.map((g) => (
+                <div key={g.group} className="overflow-hidden rounded-3xl border border-slate-200">
+                  <div className="bg-slate-50 px-5 py-4">
+                    <h3 className="text-[17px]">
+                      {g.group} <span className="text-[14px] font-normal text-slate-500">· {g.keywords.length} คำ</span>
+                    </h3>
+                    <p className="mt-1 text-[13.5px] leading-relaxed text-slate-500">{g.note}</p>
+                  </div>
+                  <table className="w-full border-collapse text-[14px]">
+                    <tbody>
+                      {g.keywords.map((k) => {
+                        const art = k.article ? byNumber.get(k.article) : undefined;
+                        return (
+                          <tr key={k.keyword} className="border-t border-slate-200 align-top">
+                            <td className="px-5 py-2.5 font-medium text-brand-700">{k.keyword}</td>
+                            <td className="px-2 py-2.5">
+                              <span
+                                className={`inline-block rounded-full px-2.5 py-0.5 text-[12px] font-medium whitespace-nowrap ${typeStyle[k.type]}`}
+                              >
+                                {k.type}
+                              </span>
+                            </td>
+                            <td className="px-5 py-2.5 text-[13px] text-slate-600">
+                              {k.target ? (
+                                <Link
+                                  href={k.target}
+                                  className="font-mono text-accent-600 underline decoration-accent-200 underline-offset-4 hover:decoration-accent-500"
+                                >
+                                  {k.target}
+                                </Link>
+                              ) : art?.live && art.slug ? (
+                                <Link
+                                  href={`/news/${art.slug}`}
+                                  className="text-accent-600 underline decoration-accent-200 underline-offset-4 hover:decoration-accent-500"
+                                >
+                                  บทที่ {k.article}
+                                </Link>
+                              ) : (
+                                <span>บทที่ {k.article} (รอรีวิว)</span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </section>
+
         <section className="border-t border-slate-200 bg-slate-50 py-[38px] lg:py-[52px]">
           <Container>
             <h2 className="rule-bar text-2xl sm:text-3xl">
@@ -139,16 +204,35 @@ export default async function SeoKeywordsReport() {
                     <th className="px-4 py-3 font-medium">ชื่อเรื่อง</th>
                     <th className="px-4 py-3 font-medium">คีย์เวิร์ดหลัก</th>
                     <th className="px-4 py-3 font-medium">คีย์เวิร์ดรอง</th>
+                    <th className="px-4 py-3 font-medium">สถานะ</th>
                   </tr>
                 </thead>
                 <tbody>
                   {articles.map((a) => (
                     <tr key={a.n} className="border-t border-slate-200 align-top">
                       <td className="px-4 py-3 tabular-nums text-slate-500">{a.n}</td>
-                      <td className="px-4 py-3 font-medium text-brand-700">{a.title}</td>
+                      <td className="px-4 py-3 font-medium text-brand-700">
+                        {a.live && a.slug ? (
+                          <Link
+                            href={`/news/${a.slug}`}
+                            className="underline decoration-accent-200 underline-offset-4 hover:decoration-accent-500"
+                          >
+                            {a.title}
+                          </Link>
+                        ) : (
+                          a.title
+                        )}
+                      </td>
                       <td className="px-4 py-3 whitespace-nowrap">{a.keyword}</td>
                       <td className="px-4 py-3 text-[13.5px] leading-relaxed text-slate-600">
                         {a.secondary.join(" · ")}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap text-[13px]">
+                        {a.live ? (
+                          <span className="text-accent-700">ขึ้นเว็บแล้ว</span>
+                        ) : (
+                          <span className="text-slate-500">รอลูกค้ารีวิว</span>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -162,7 +246,7 @@ export default async function SeoKeywordsReport() {
       <footer className="border-t border-slate-200">
         <Container className="py-8 text-[13.5px] leading-relaxed text-slate-500">
           <p>
-            จัดทำสำหรับ {site.name} · {reportMeta.preparedOn}
+            จัดทำสำหรับ {site.name} · {reportMeta.preparedOn} · ปรับปรุง {reportMeta.updatedOn}
           </p>
           <p className="mt-1">
             ปริมาณการค้นหาและอันดับปัจจุบันของแต่ละคำจะรายงานแยกต่างหาก หลังตั้งค่า Google Search Console เสร็จ
