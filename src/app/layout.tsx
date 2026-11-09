@@ -7,6 +7,7 @@ import { PreviewBridge } from "@/components/admin/PreviewBridge";
 import { getNav, getSiteInfo } from "@/lib/cms/content";
 import { getImageOverrides } from "@/lib/cms/images";
 import { inPreview } from "@/lib/cms/copy-pages";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 
 /* Concept B is set entirely in Prompt — one family for both roles. */
 const display = Prompt({
@@ -104,6 +105,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </ImageOverrideProvider>
         {/* สะพานคุยกับหน้าจอแก้ไข ติดเฉพาะตอนพรีวิว ผู้เข้าชมทั่วไปไม่ได้สคริปต์นี้ */}
         {preview && <PreviewBridge />}
+        {/* ไม่นับตอนพรีวิวจากหลังบ้าน ตัวเลขใน GA4 จะได้เป็นลูกค้าจริงล้วน */}
+        {!preview && <GoogleAnalytics />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

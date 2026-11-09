@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { Icon } from "@/components/ui";
 import { Turnstile } from "@/components/Turnstile";
 import { useSite } from "@/components/SiteProvider";
+import { trackLead } from "@/lib/analytics";
 import { sendEnquiry, type EnquirySpec, type EnquiryState } from "@/lib/enquiry/actions";
 
 const topics = [
@@ -43,6 +44,11 @@ const field =
 export default function ContactForm() {
   const { site } = useSite();
   const [state, formAction, pending] = useActionState(sendContactEnquiry, initialState);
+
+  // state เป็น object ใหม่ทุกครั้งที่ส่ง ส่งซ้ำสองรอบจึงนับสองครั้งตามจริง
+  useEffect(() => {
+    if (state.status === "sent") trackLead({ form: "contact" });
+  }, [state]);
 
   return (
     <form action={formAction} className="grid gap-4">

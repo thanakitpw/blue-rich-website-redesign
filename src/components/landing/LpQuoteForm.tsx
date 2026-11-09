@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useMemo, useRef, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "@/components/ui";
 import { Turnstile } from "@/components/Turnstile";
 import { useSite } from "@/components/SiteProvider";
+import { trackLead } from "@/lib/analytics";
 import { sendEnquiry, type EnquirySpec, type EnquiryState } from "@/lib/enquiry/actions";
 
 export type LpFormField =
@@ -70,6 +71,10 @@ export default function LpQuoteForm({ config }: { config: LpQuoteFormConfig }) {
 
   const action = useMemo(() => sendEnquiry.bind(null, specFor(config)), [config]);
   const [state, formAction, pending] = useActionState(action, initialState);
+
+  useEffect(() => {
+    if (state.status === "sent") trackLead({ form: "landing", topic: config.subject });
+  }, [state, config.subject]);
 
   const [lineStatus, setLineStatus] = useState<"idle" | "copied" | "copyFailed">("idle");
   /* กล่องสถานะมีกล่องเดียว โชว์ผลของปุ่มที่กดล่าสุด */
